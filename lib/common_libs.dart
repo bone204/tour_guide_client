@@ -1,0 +1,18 @@
+/// Consolidate imports that are common across the app.
+library;
+
+// Libraries
+export 'package:flutter/material.dart';
+export 'package:flutter_screenutil/flutter_screenutil.dart';
+export 'package:tour_guide_app/core/services/localizations_service.dart';
+
+// Configurations
+export 'package:tour_guide_app/core/config/routes/routes.dart';
+export 'package:tour_guide_app/core/config/theme/color.dart';
+export 'package:tour_guide_app/core/config/theme/theme.dart';
+export 'package:tour_guide_app/core/config/theme/typography.dart';
+
+// Constants
+export 'package:tour_guide_app/common/constants/route.constant.dart';
+export 'package:tour_guide_app/common/constants/app_icon.constant.dart';
+export 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
