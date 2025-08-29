@@ -94,7 +94,7 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushReplacementNamed(context, RouteConstant.signUp);
+                                Navigator.pushReplacementNamed(context, AppRouteConstant.signUp);
                               },
                               child: Text(
                                 AppLocalizations.of(context).translate('Sign up'),

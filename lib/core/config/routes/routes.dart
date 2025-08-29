@@ -7,7 +7,7 @@ import 'package:tour_guide_app/features/main_screen.dart';
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case RouteConstant.signIn:
+      case AppRouteConstant.signIn:
         return MaterialPageRoute(
           settings: settings,
           builder:
@@ -21,7 +21,7 @@ class AppRouter {
               ),
         );
 
-      case RouteConstant.signUp:
+      case AppRouteConstant.signUp:
         return MaterialPageRoute(
           settings: settings,
           builder:
@@ -35,7 +35,7 @@ class AppRouter {
               ),
         );
 
-      case RouteConstant.mainScreen:
+      case AppRouteConstant.mainScreen:
         return MaterialPageRoute(
           settings: settings,
           builder:

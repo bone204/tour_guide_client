@@ -8,7 +8,7 @@ class AppLocalizations {
   Map<String, String> _localizedStrings = {}; 
 
   AppLocalizations(this.locale) {
-    load(); // Gọi load() trong constructor
+    load(); 
   }
 
   static AppLocalizations of(BuildContext context) {
@@ -25,9 +25,7 @@ class AppLocalizations {
   Future<bool> load() async {
     try {
       String path = 'assets/lang/${locale.languageCode}.json';
-      print("Loading language file: $path"); 
       String jsonString = await rootBundle.loadString(path);
-      print("JSON content: $jsonString");
       Map<String, dynamic> jsonMap = json.decode(jsonString);
 
       _localizedStrings = jsonMap.map((key, value) {
@@ -36,7 +34,6 @@ class AppLocalizations {
 
       return true;
     } catch (e) {
-      print("Error loading localization file: $e"); 
       if (kDebugMode) {
         print("Lỗi khi tải tệp bản địa hóa: $e");
       }
@@ -62,13 +59,11 @@ class AppLocalizations {
 
   String formatPrice(double price) {
     if (locale.languageCode == 'vi') {
-      // Định dạng tiền tệ kiểu Việt Nam (dùng dấu chấm)
       return price.toStringAsFixed(0).replaceAllMapped(
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
         (Match m) => '${m[1]}.'
       );
     } else {
-      // Định dạng tiền tệ kiểu quốc tế (dùng dấu phẩy)
       return price.toStringAsFixed(0).replaceAllMapped(
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
         (Match m) => '${m[1]},'
@@ -83,7 +78,6 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) {
-    // Kiểm tra nếu ngôn ngữ được hỗ trợ
     return ['en', 'vi'].contains(locale.languageCode);
   }
 

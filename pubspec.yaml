@@ -23,7 +23,6 @@ dependencies:
   like_button: ^2.0.5
   pin_code_fields: ^8.0.1
   flutter_localization: ^0.3.3
-
   image_picker: ^1.1.2
 
 
@@ -71,3 +70,61 @@ flutter:
   assets:
   - assets/images/
   - assets/icons/
+  - assets/lang/
+
+  fonts:
+    - family: NotoSans-Thin
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-Thin.ttf
+    - family: NotoSans-ThinItalic
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-ThinItalic.ttf
+    - family: NotoSans-ExtraLight
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-ExtraLight.ttf
+    - family: NotoSans-ExtraLightItalic
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-ExtraLightItalic.ttf
+    - family: NotoSans-Light
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-Light.ttf
+    - family: NotoSans-LightItalic
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-LightItalic.ttf
+    - family: NotoSans-Regular
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-Regular.ttf
+    - family: NotoSans-Italic
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-Italic.ttf
+    - family: NotoSans-Medium
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-Medium.ttf
+    - family: NotoSans-MediumItalic
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-MediumItalic.ttf
+    - family: NotoSans-SemiBold
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-SemiBold.ttf
+    - family: NotoSans-SemiBoldItalic
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-SemiBoldItalic.ttf
+    - family: NotoSans-Bold
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-Bold.ttf
+    - family: NotoSans-BoldItalic
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-BoldItalic.ttf
+    - family: NotoSans-ExtraBold
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-ExtraBold.ttf
+    - family: NotoSans-ExtraBoldItalic
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-ExtraBoldItalic.ttf
+    - family: NotoSans-Black
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-Black.ttf
+    - family: NotoSans-BlackItalic
+      fonts:
+        - asset: assets/fonts/NotoSans/NotoSans-BlackItalic.ttf
+

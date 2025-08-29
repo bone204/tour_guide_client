@@ -14,7 +14,7 @@ void main() {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      String initialRoute = RouteConstant.signIn;
+      String initialRoute = AppRouteConstant.signIn;
 
       FlutterError.onError = (FlutterErrorDetails details) {
         if (kDebugMode &&
@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const MainScreen()),
               );
             } else if (state is UnAuthenticated) {
-              Navigator.of(context).pushReplacementNamed(RouteConstant.signIn);
+              Navigator.of(context).pushReplacementNamed(AppRouteConstant.signIn);
             }
           },
           child: Container(),

@@ -82,7 +82,7 @@ class SignUpPage extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushReplacementNamed(context, RouteConstant.signIn);
+                              Navigator.pushReplacementNamed(context, AppRouteConstant.signIn);
                             },
                             child: Text(
                               AppLocalizations.of(context).translate('Sign in'), 

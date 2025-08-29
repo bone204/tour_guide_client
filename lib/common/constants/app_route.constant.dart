@@ -1,4 +1,4 @@
-class RouteConstant {
+class AppRouteConstant {
   static const String root = "/";
   static const String mainScreen = '/main_screen';
   static const String signIn = '/sign_in';
