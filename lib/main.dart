@@ -79,22 +79,29 @@ class MyApp extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => AuthStateCubit()..appStarted(),
-      child: MaterialApp(
-        theme: AppTheme.lightTheme,
-        onGenerateRoute: AppRouter.generateRoute,
-        debugShowCheckedModeBanner: false,
-        home: BlocListener<AuthStateCubit, AuthState>(
-          listener: (context, state) {
-            if (state is Authenticated) {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => const MainScreen()),
-              );
-            } else if (state is UnAuthenticated) {
-              Navigator.of(context).pushReplacementNamed(AppRouteConstant.signIn);
-            }
-          },
-          child: Container(),
-        ),
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812), 
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MaterialApp(
+            theme: AppTheme.lightTheme,
+            onGenerateRoute: AppRouter.generateRoute,
+            debugShowCheckedModeBanner: false,
+            home: BlocListener<AuthStateCubit, AuthState>(
+              listener: (context, state) {
+                if (state is Authenticated) {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => const MainScreen()),
+                  );
+                } else if (state is UnAuthenticated) {
+                  Navigator.of(context).pushReplacementNamed(AppRouteConstant.signIn);
+                }
+              },
+              child: Container(),
+            ),
+          );
+        },
       ),
     );
   }

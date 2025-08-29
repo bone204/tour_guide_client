@@ -73,58 +73,46 @@ flutter:
   - assets/lang/
 
   fonts:
-    - family: NotoSans-Thin
+    - family: Rubik-Black
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-Thin.ttf
-    - family: NotoSans-ThinItalic
+        - asset: assets/fonts/Rubik/Rubik-Black.ttf
+    - family: Rubik-BlackItalic
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-ThinItalic.ttf
-    - family: NotoSans-ExtraLight
+        - asset: assets/fonts/Rubik/Rubik-BlackItalic.ttf
+    - family: Rubik-Bold
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-ExtraLight.ttf
-    - family: NotoSans-ExtraLightItalic
+        - asset: assets/fonts/Rubik/Rubik-Bold.ttf
+    - family: Rubik-BoldItalic
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-ExtraLightItalic.ttf
-    - family: NotoSans-Light
+        - asset: assets/fonts/Rubik/Rubik-BoldItalic.ttf
+    - family: Rubik-ExtraBold
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-Light.ttf
-    - family: NotoSans-LightItalic
+        - asset: assets/fonts/Rubik/Rubik-ExtraBold.ttf
+    - family: Rubik-ExtraBoldItalic
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-LightItalic.ttf
-    - family: NotoSans-Regular
+        - asset: assets/fonts/Rubik/Rubik-ExtraBoldItalic.ttf
+    - family: Rubik-Italic
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-Regular.ttf
-    - family: NotoSans-Italic
+        - asset: assets/fonts/Rubik/Rubik-Italic.ttf
+    - family: Rubik-Light
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-Italic.ttf
-    - family: NotoSans-Medium
+        - asset: assets/fonts/Rubik/Rubik-Light.ttf
+    - family: Rubik-LightItalic
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-Medium.ttf
-    - family: NotoSans-MediumItalic
+        - asset: assets/fonts/Rubik/Rubik-LightItalic.ttf
+    - family: Rubik-Medium
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-MediumItalic.ttf
-    - family: NotoSans-SemiBold
+        - asset: assets/fonts/Rubik/Rubik-Medium.ttf
+    - family: Rubik-MediumItalic
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-SemiBold.ttf
-    - family: NotoSans-SemiBoldItalic
+        - asset: assets/fonts/Rubik/Rubik-MediumItalic.ttf
+    - family: Rubik-Regular
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-SemiBoldItalic.ttf
-    - family: NotoSans-Bold
+        - asset: assets/fonts/Rubik/Rubik-Regular.ttf
+    - family: Rubik-SemiBold
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-Bold.ttf
-    - family: NotoSans-BoldItalic
+        - asset: assets/fonts/Rubik/Rubik-SemiBold.ttf
+    - family: Rubik-SemiBoldItalic
       fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-BoldItalic.ttf
-    - family: NotoSans-ExtraBold
-      fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-ExtraBold.ttf
-    - family: NotoSans-ExtraBoldItalic
-      fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-ExtraBoldItalic.ttf
-    - family: NotoSans-Black
-      fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-Black.ttf
-    - family: NotoSans-BlackItalic
-      fonts:
-        - asset: assets/fonts/NotoSans/NotoSans-BlackItalic.ttf
+        - asset: assets/fonts/Rubik/Rubik-SemiBoldItalic.ttf
 

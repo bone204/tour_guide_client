@@ -35,19 +35,7 @@ class SignUpPage extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CustomTextField(
-                        hintText: AppLocalizations.of(context).translate('Username'), 
-                        controller: _usernameController,
-                      ),
-                      SizedBox(height: 16.h), 
-                      CustomTextField(
-                        hintText: AppLocalizations.of(context).translate('Email'), 
-                        controller: _emailController,
-                      ),
-                      SizedBox(height: 16.h), 
-                      CustomPasswordField(
-                        controller: _passwordController,
-                      ),
+
                       SizedBox(height: 16.h), 
                       Align(
                         alignment: Alignment.centerLeft,

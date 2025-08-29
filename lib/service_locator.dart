@@ -5,6 +5,8 @@ import 'package:tour_guide_app/features/auth/data/data_sources/remote/auth_api_s
 import 'package:tour_guide_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:tour_guide_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/is_logged_in.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/sign_in.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/sign_up.dart';
 
 final sl = GetIt.instance;
 
@@ -19,5 +21,7 @@ void setUpServiceLocator() {
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
 
   // Usecases
+  sl.registerSingleton<SignInUseCase>(SignInUseCase());
+  sl.registerSingleton<SignUpUseCase>(SignUpUseCase());
   sl.registerSingleton<IsLoggedInUseCase>(IsLoggedInUseCase());
 }

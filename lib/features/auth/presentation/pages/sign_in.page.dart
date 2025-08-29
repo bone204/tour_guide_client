@@ -1,154 +1,251 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tour_guide_app/common/bloc/button/button_state.dart';
+import 'package:tour_guide_app/common/bloc/button/button_state_cubit.dart';
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
+import 'package:tour_guide_app/common/widgets/textfield/custom_password_field.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/auth/data/models/signin_params.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/sign_in.dart';
+import 'package:tour_guide_app/service_locator.dart';
 
 class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
+
   @override
   _SignInPageState createState() => _SignInPageState();
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _identifierController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _isFormSubmitted = false;
 
-  void _login() async {
+  String? _validateIdentifier(String? value) {
+    if (!_isFormSubmitted) return null;
+    if (value == null || value.isEmpty) {
+      return 'Vui lòng nhập email hoặc tên đăng nhập';
+    }
+    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final usernameRegex = RegExp(r'^[a-zA-Z0-9._-]{3,}$');
+    if (!emailRegex.hasMatch(value) && !usernameRegex.hasMatch(value)) {
+      return 'Vui lòng nhập email hoặc tên đăng nhập hợp lệ';
+    }
+    return null;
+  }
 
+  String? _validatePassword(String? value) {
+    if (!_isFormSubmitted) return null;
+    if (value == null || value.isEmpty) {
+      return 'Vui lòng nhập mật khẩu';
+    }
+    if (value.length < 8) {
+      return 'Mật khẩu phải có ít nhất 8 ký tự';
+    }
+    return null;
+  }
+
+  void _handleSignIn(BuildContext context) async {
+    setState(() {
+      _isFormSubmitted = true;
+    });
+    _formKey.currentState!.validate();
+
+    if (_identifierController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty &&
+        _validateIdentifier(_identifierController.text) == null &&
+        _validatePassword(_passwordController.text) == null) {
+      context.read<ButtonStateCubit>().execute(
+        usecase: sl<SignInUseCase>(),
+        params: SignInParams(
+          identifier: _identifierController.text,
+          password: _passwordController.text,
+          rememberMe: null,
+        ),
+      );
+    }
+  }
+
+  void _handleTapOutside() {
+    FocusScope.of(context).unfocus();
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: GestureDetector(
-        onTap: FocusScope.of(context).unfocus,
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(20.w, 140.h, 20.w, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context).translate('Sign in now'),
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 26.sp),
+      body: BlocProvider(
+        create: (context) => ButtonStateCubit(),
+        child: BlocListener<ButtonStateCubit, ButtonState>(
+          listener: (context, state) {
+            if (state is ButtonSuccessState) {
+              Navigator.pushReplacementNamed(context, AppRouteConstant.mainScreen);
+            }
+            if (state is ButtonFailureState) {
+              showAppDialog(
+                context: context,
+                title: 'Lỗi',
+                content: state.errorMessage,
+                icon: Icons.error_outline,
+                iconColor: Colors.red,
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('Đóng'),
                   ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    AppLocalizations.of(context).translate('Please sign in to continue using our app'),
-                    style: TextStyle(fontSize: 16.sp, color: const Color(0xFF7D848D)),
-                  ),
-                  SizedBox(height: 40.h),
-                  Container(
-                    padding: EdgeInsets.all(15.w),
+                ],
+              );
+            }
+          },
+          child: GestureDetector(
+            onTap: _handleTapOutside,
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(20.w, 140.h, 20.w, 0),
+                  child: Form(
+                    key: _formKey,
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomTextField(
-                          hintText: AppLocalizations.of(context).translate('Email'),
-                          controller: _emailController,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          AppLocalizations.of(context).translate('Sign in now'),
+                          style: Theme.of(context).textTheme.headlineLarge,
                         ),
                         SizedBox(height: 16.h),
-                        CustomPasswordField(
-                          controller: _passwordController,
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => const ForgotPasswordPhoneScreen(),
-                              //   ),
-                              // );
-                            },
-                            child: Text(
-                              AppLocalizations.of(context).translate('Forgot Password?'),
-                              style: TextStyle(fontSize: 14.sp, color: const Color(0xFFFF7029)),
-                            ),
+                        Text(
+                          AppLocalizations.of(context).translate(
+                            'Please sign in to continue using our app',
                           ),
-                        ),
-                        SizedBox(height: 30.h),
-                        ElevatedButton(
-                          onPressed: _login,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF007BFF),
-                            minimumSize: Size(double.infinity, 50.h),
-                            padding: EdgeInsets.symmetric(vertical: 16.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context).translate('Sign In'),
-                            style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 16.sp),
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: AppColors.textSubtitle,
+                              ),
                         ),
                         SizedBox(height: 40.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context).translate("Don't have an account?"),
-                              style: TextStyle(fontSize: 14.sp, color: const Color(0xFF7D848D)),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(context, AppRouteConstant.signUp);
-                              },
-                              child: Text(
-                                AppLocalizations.of(context).translate('Sign up'),
-                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14.sp, color: const Color(0xFFFF7029)),
+                        Container(
+                          padding: EdgeInsets.all(15.w),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomTextField(
+                                label: 'Tên đăng nhập/Email',
+                                placeholder: 'Nhập tên đăng nhập hoặc email',
+                                prefixIconData: Icons.person_outline,
+                                controller: _identifierController,
+                                validator: _validateIdentifier,
                               ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          AppLocalizations.of(context).translate('Or connect'),
-                          style: TextStyle(fontSize: 14.sp, color: const Color(0xFF7D848D)),
+                              SizedBox(height: 16),
+                              CustomPasswordField(
+                                label: 'Mật khẩu',
+                                placeholder: 'Nhập mật khẩu',
+                                prefixIcon: Icon(Icons.lock_outline),
+                                controller: _passwordController,
+                                validator: _validatePassword,
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {
+                                    // Navigator.pushNamed(
+                                    //   context,
+                                    //   AppRouteConstant.forgotPassword,
+                                    // );
+                                  },
+                                  child: Text(
+                                    AppLocalizations.of(context)
+                                        .translate('Forgot Password?'),
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: const Color(0xFFFF7029),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 30.h),
+                              Builder(
+                                builder: (context) {
+                                  return PrimaryButton(
+                                    title: AppLocalizations.of(context).translate('Sign In'),
+                                    onPressed: () => _handleSignIn(context),
+                                    backgroundColor: const Color(0xFF007BFF),
+                                    textColor: Colors.white,
+                                  );
+                                },
+                              ),
+                              SizedBox(height: 40.h),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context).translate(
+                                        "Don't have an account?"),
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: const Color(0xFF7D848D),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, AppRouteConstant.signUp);
+                                    },
+                                    child: Text(
+                                      AppLocalizations.of(context)
+                                          .translate('Sign up'),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14.sp,
+                                        color: const Color(0xFFFF7029),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('Or connect'),
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: const Color(0xFF7D848D),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 25.h),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     SocialIconButton(
-                  //       icon: FontAwesomeIcons.google,
-                  //       label: AppLocalizations.of(context).translate('Google'),
-                  //       color: const Color(0xFFDB4437),
-                  //       onPressed: () async {
-                  //         User? user = await loginViewModel.signInWithGoogle();
-                  //         if (user != null && mounted) {
-                  //           Navigator.pushReplacementNamed(context, '/home');
-                  //         } else if (kDebugMode) {
-                  //           print("Google login failed");
-                  //         }
-                  //       },
-                  //     ),
-                  //     SizedBox(width: 15.w),
-                  //     SocialIconButton(
-                  //       icon: FontAwesomeIcons.facebook,
-                  //       label: AppLocalizations.of(context).translate('Facebook'),
-                  //       color: const Color(0xFF4267B2),
-                  //       onPressed: () async {
-                  //         User? user = await loginViewModel.signInWithFacebook();
-                  //         if (user != null && mounted) {
-                  //           Navigator.pushReplacementNamed(context, '/home');
-                  //         } else if (kDebugMode) {
-                  //           print("Facebook login failed");
-                  //         }
-                  //       },
-                  //     ),
-                  //   ],
-                  // ),
-                ],
-              ),
+                ),
+                BlocBuilder<ButtonStateCubit, ButtonState>(
+                  builder: (context, state) {
+                    if (state is ButtonLoadingState) {
+                      FocusScope.of(context).unfocus();
+                      return Container(
+                        color: Colors.black.withOpacity(0.5),
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _identifierController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
