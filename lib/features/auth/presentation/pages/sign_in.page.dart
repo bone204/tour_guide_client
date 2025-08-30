@@ -171,8 +171,8 @@ class _SignInPageState extends State<SignInPage> {
                                   return PrimaryButton(
                                     title: AppLocalizations.of(context).translate('Sign In'),
                                     onPressed: () => _handleSignIn(context),
-                                    backgroundColor: const Color(0xFF007BFF),
-                                    textColor: Colors.white,
+                                    backgroundColor: AppColors.primaryBlue,
+                                    textColor: AppColors.textSecondary,
                                   );
                                 },
                               ),
