@@ -1,133 +1,277 @@
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
+import 'package:tour_guide_app/common/widgets/textfield/custom_password_field.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/auth/data/models/signup_params.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/sign_up.dart';
+import 'package:tour_guide_app/service_locator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tour_guide_app/common/bloc/button/button_state.dart';
+import 'package:tour_guide_app/common/bloc/button/button_state_cubit.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmedPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _isFormSubmitted = false;
 
-  SignUpPage({super.key});
+  // ===== Validation =====
+  String? _validateUsername(String? value) {
+    if (!_isFormSubmitted) return null;
+    if (value == null || value.isEmpty) return 'Vui lòng nhập tên đăng nhập';
+    if (value.length < 3) return 'Tên đăng nhập phải có ít nhất 3 ký tự';
+    if (value.length > 20) return 'Tên đăng nhập không được vượt quá 20 ký tự';
+    final regex = RegExp(r'^[a-zA-Z0-9_]+$');
+    if (!regex.hasMatch(value)) return 'Tên đăng nhập chỉ gồm chữ, số và gạch dưới';
+    return null;
+  }
+
+  String? _validateEmail(String? value) {
+    if (!_isFormSubmitted) return null;
+    if (value == null || value.isEmpty) return 'Vui lòng nhập email';
+    final regex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (!regex.hasMatch(value)) return 'Email không hợp lệ';
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (!_isFormSubmitted) return null;
+    if (value == null || value.isEmpty) return 'Vui lòng nhập mật khẩu';
+    if (value.length < 8) return 'Mật khẩu phải có ít nhất 8 ký tự';
+    if (value.length > 50) return 'Mật khẩu không được vượt quá 50 ký tự';
+    if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)').hasMatch(value)) {
+      return 'Phải có ít nhất 1 chữ hoa, 1 chữ thường và 1 số';
+    }
+    return null;
+  }
+
+  String? _validateConfirmedPassword(String? value) {
+    if (!_isFormSubmitted) return null;
+    if (value == null || value.isEmpty) return 'Vui lòng xác nhận mật khẩu';
+    if (value != _passwordController.text) return 'Mật khẩu không khớp';
+    return null;
+  }
+
+  // ===== Handle Sign Up =====
+  void _handleSignUp(BuildContext context) async {
+    setState(() => _isFormSubmitted = true);
+    _formKey.currentState!.validate();
+    if (_validateUsername(_usernameController.text) == null &&
+        _validateEmail(_emailController.text) == null &&
+        _validatePassword(_passwordController.text) == null &&
+        _validateConfirmedPassword(_confirmedPasswordController.text) == null) {
+      context.read<ButtonStateCubit>().execute(
+        usecase: sl<SignUpUseCase>(),
+        params: SignUpParams(
+          username: _usernameController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+        ),
+      );
+    }
+  }
+
+  void _handleSignIn() {
+    Navigator.pushReplacementNamed(context, AppRouteConstant.signIn);
+  }
+
+  void _handleTapOutside() {
+    FocusScope.of(context).unfocus();
+  }
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(375, 812)); 
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(20.w, 90.h, 20.w, 0), 
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  AppLocalizations.of(context).translate('Sign up now'), 
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 26.sp), 
-                ),
-                SizedBox(height: 15.h), 
-                Text(
-                  AppLocalizations.of(context).translate('Please fill the details and create account'), 
-                  style: TextStyle(fontSize: 16.sp, color: const Color(0xFF7D848D)), 
-                ),
-                SizedBox(height: 40.h), 
-                Container(
-                  padding: EdgeInsets.all(16.w), 
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-
-                      SizedBox(height: 16.h), 
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          AppLocalizations.of(context).translate("Password must be at least 8 characters long"), 
-                          style: TextStyle(fontSize: 14.sp, color: const Color(0xFF7D848D)), 
+      body: BlocProvider(
+        create: (_) => ButtonStateCubit(),
+        child: BlocListener<ButtonStateCubit, ButtonState>(
+          listener: (context, state) {
+            if (state is ButtonSuccessState) {
+              Navigator.pushReplacementNamed(context, AppRouteConstant.mainScreen);
+            }
+            if (state is ButtonFailureState) {
+              showAppDialog(
+                context: context,
+                title: 'Lỗi',
+                content: state.errorMessage,
+                icon: Icons.error_outline,
+                iconColor: Colors.red,
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Đóng'),
+                  ),
+                ],
+              );
+            }
+          },
+          child: Stack(
+            children: [
+              GestureDetector(
+                onTap: _handleTapOutside,
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(20.w, 90.h, 20.w, 0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context).translate('Sign up now'),
+                          style: Theme.of(context).textTheme.headlineLarge,
                         ),
-                      ),
-                      SizedBox(height: 40.h), 
-                      ElevatedButton(
-                        onPressed: () => {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF007BFF),
-                          minimumSize: Size(double.infinity, 50.h), 
-                          padding: EdgeInsets.symmetric(vertical: 16.h), 
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r), 
+                        SizedBox(height: 15.h),
+                        Text(
+                          AppLocalizations.of(context).translate(
+                            'Please fill the details and create account',
+                          ),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.textSubtitle,
                           ),
                         ),
-                        child: Text(
-                          AppLocalizations.of(context).translate('Sign Up'), 
-                          style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 16.sp), 
+                        SizedBox(height: 40.h),
+                        Container(
+                          padding: EdgeInsets.all(16.w),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomTextField(
+                                label: 'Tên đăng nhập',
+                                placeholder: 'Nhập tên đăng nhập',
+                                prefixIconData: Icons.person_outline,
+                                controller: _usernameController,
+                                validator: _validateUsername,
+                              ),
+                              SizedBox(height: 16.h),
+                              CustomTextField(
+                                label: 'Email',
+                                placeholder: 'Nhập email',
+                                prefixIconData: Icons.email,
+                                controller: _emailController,
+                                validator: _validateEmail,
+                              ),
+                              SizedBox(height: 16.h),
+                              CustomPasswordField(
+                                label: 'Mật khẩu',
+                                placeholder: 'Nhập mật khẩu',
+                                prefixIcon: Icon(Icons.lock_outline),
+                                controller: _passwordController,
+                                validator: _validatePassword,
+                              ),
+                              SizedBox(height: 16.h),
+                              CustomPasswordField(
+                                label: 'Mật khẩu',
+                                placeholder: 'Nhập mật khẩu',
+                                prefixIcon: Icon(Icons.lock_outline),
+                                controller: _confirmedPasswordController,
+                                validator: _validateConfirmedPassword,
+                              ),
+                              SizedBox(height: 16.h),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  AppLocalizations.of(context).translate("Password must be at least 8 characters long"),
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.textSubtitle,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 40.h),
+                              Builder(
+                                builder: (context) {
+                                  return PrimaryButton(
+                                    title: AppLocalizations.of(context).translate('Sign Up'),
+                                    onPressed: () => _handleSignUp(context),
+                                    backgroundColor: AppColors.primaryBlue,
+                                    textColor: AppColors.textSecondary,
+                                  );
+                                },
+                              ),
+                              SizedBox(height: 40.h),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context).translate(
+                                        "Already have an account?"),
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: const Color(0xFF7D848D),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: _handleSignIn,
+                                    child: Text(
+                                      AppLocalizations.of(context).translate('Sign in'),
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: const Color(0xFFFF7029),
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                AppLocalizations.of(context)
+                                    .translate('Or connect'),
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: const Color(0xFF7D848D),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 40.h), 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context).translate("Already have an account?"), 
-                            style: TextStyle(fontSize: 14.sp, color: const Color(0xFF7D848D)), 
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(context, AppRouteConstant.signIn);
-                            },
-                            child: Text(
-                              AppLocalizations.of(context).translate('Sign in'), 
-                              style: TextStyle(fontSize: 14.sp, color: const Color(0xFFFF7029), fontWeight: FontWeight.w700), 
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        AppLocalizations.of(context).translate('Or connect'), 
-                        style: TextStyle(fontSize: 14.sp, color: const Color(0xFF7D848D)), 
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(height: 25.h), 
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     SocialIconButton(
-                //       icon: FontAwesomeIcons.google,
-                //       label: AppLocalizations.of(context).translate('Google'),
-                //       color: const Color(0xFFDB4437),
-                //       onPressed: () async {
-                //         User? user = await signupViewModel.signInWithGoogle();
-                //         if (user != null) {
-                //           Navigator.pushNamed(context, "/home");
-                //         } else {
-                //           if (kDebugMode) {
-                //             print("Google sign-up failed");
-                //           }
-                //         }
-                //       },
-                //     ),
-                //     SizedBox(width: 15.w), 
-                //     SocialIconButton(
-                //       icon: FontAwesomeIcons.facebook,
-                //       label: AppLocalizations.of(context).translate('Facebook'),
-                //       color: const Color(0xFF4267B2),
-                //       onPressed: () async {
-                //         User? user = await signupViewModel.signInWithFacebook();
-                //         if (user != null) {
-                //           Navigator.pushNamed(context, "/home");
-                //         } else {
-                //           if (kDebugMode) {
-                //             print("Facebook sign-up failed");
-                //           }
-                //         }
-                //       },
-                //     ),
-                //   ],
-                // ),
-              ],
-            ),
+              ),
+              BlocBuilder<ButtonStateCubit, ButtonState>(
+                builder: (context, state) {
+                  if (state is ButtonLoadingState) {
+                    FocusScope.of(context).unfocus();
+                    return AbsorbPointer(
+                      absorbing: true,
+                      child: Container(
+                        color: Colors.black.withOpacity(0.5),
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmedPasswordController.dispose();
+    super.dispose();
   }
 }

@@ -122,8 +122,8 @@ class _SignInPageState extends State<SignInPage> {
                             'Please sign in to continue using our app',
                           ),
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.textSubtitle,
-                              ),
+                            color: AppColors.textSubtitle,
+                          ),
                         ),
                         SizedBox(height: 40.h),
                         Container(
