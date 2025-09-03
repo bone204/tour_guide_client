@@ -1,0 +1,43 @@
+{
+  "signInNow": "Đăng nhập ngay",
+
+  "signInDescription": "Vui lòng đăng nhập để tiếp tục sử dụng ứng dụng của chúng tôi",
+
+  "usernameOrEmail": "Tên đăng nhập/Email",
+
+  "enterUsernameOrEmail": "Nhập tên đăng nhập hoặc email",
+
+  "password": "Mật khẩu",
+
+  "enterPassword": "Nhập mật khẩu",
+
+  "forgotPassword": "Quên mật khẩu?",
+
+  "signIn": "Đăng nhập",
+
+  "noAccount": "Chưa có tài khoản?",
+
+  "orConnect": "Hoặc kết nối",
+
+  "signUpNow": "Đăng ký ngay",
+
+  "signUpDescription": "Vui lòng điền thông tin và tạo tài khoản",
+
+  "username": "Tên đăng nhập",
+
+  "enterUsername": "Nhập tên đăng nhập",
+
+  "email": "Email",
+
+  "enterEmail": "Nhập email",
+
+  "confirmPassword": "Xác nhận mật khẩu",
+
+  "enterConfirmPassword": "Nhập lại mật khẩu",
+
+  "signUp": "Đăng ký",
+
+  "alreadyHaveAccount": "Đã có tài khoản?",
+
+   "signOut": "Đăng Xuất"
+}

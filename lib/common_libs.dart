@@ -4,7 +4,7 @@ library;
 // Libraries
 export 'package:flutter/material.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
-export 'package:tour_guide_app/core/services/localizations_service.dart';
+export 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 
 // Configurations
 export 'package:tour_guide_app/core/config/routes/routes.dart';

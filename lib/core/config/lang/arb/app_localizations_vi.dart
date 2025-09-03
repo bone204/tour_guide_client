@@ -1,0 +1,73 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Vietnamese (`vi`).
+class AppLocalizationsVi extends AppLocalizations {
+  AppLocalizationsVi([String locale = 'vi']) : super(locale);
+
+  @override
+  String get signInNow => 'Đăng nhập ngay';
+
+  @override
+  String get signInDescription => 'Vui lòng đăng nhập để tiếp tục sử dụng ứng dụng của chúng tôi';
+
+  @override
+  String get usernameOrEmail => 'Tên đăng nhập/Email';
+
+  @override
+  String get enterUsernameOrEmail => 'Nhập tên đăng nhập hoặc email';
+
+  @override
+  String get password => 'Mật khẩu';
+
+  @override
+  String get enterPassword => 'Nhập mật khẩu';
+
+  @override
+  String get forgotPassword => 'Quên mật khẩu?';
+
+  @override
+  String get signIn => 'Đăng nhập';
+
+  @override
+  String get noAccount => 'Chưa có tài khoản?';
+
+  @override
+  String get orConnect => 'Hoặc kết nối';
+
+  @override
+  String get signUpNow => 'Đăng ký ngay';
+
+  @override
+  String get signUpDescription => 'Vui lòng điền thông tin và tạo tài khoản';
+
+  @override
+  String get username => 'Tên đăng nhập';
+
+  @override
+  String get enterUsername => 'Nhập tên đăng nhập';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get enterEmail => 'Nhập email';
+
+  @override
+  String get confirmPassword => 'Xác nhận mật khẩu';
+
+  @override
+  String get enterConfirmPassword => 'Nhập lại mật khẩu';
+
+  @override
+  String get signUp => 'Đăng ký';
+
+  @override
+  String get alreadyHaveAccount => 'Đã có tài khoản?';
+
+  @override
+  String get signOut => 'Đăng Xuất';
+}

@@ -129,14 +129,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          AppLocalizations.of(context).translate('Sign up now'),
+                          AppLocalizations.of(context)!.signUpNow,
                           style: Theme.of(context).textTheme.headlineLarge,
                         ),
                         SizedBox(height: 15.h),
                         Text(
-                          AppLocalizations.of(context).translate(
-                            'Please fill the details and create account',
-                          ),
+                          AppLocalizations.of(context)!.signUpDescription,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: AppColors.textSubtitle,
                           ),
@@ -178,21 +176,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                 controller: _confirmedPasswordController,
                                 validator: _validateConfirmedPassword,
                               ),
-                              SizedBox(height: 16.h),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  AppLocalizations.of(context).translate("Password must be at least 8 characters long"),
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.textSubtitle,
-                                  ),
-                                ),
-                              ),
                               SizedBox(height: 40.h),
                               Builder(
                                 builder: (context) {
                                   return PrimaryButton(
-                                    title: AppLocalizations.of(context).translate('Sign Up'),
+                                    title: AppLocalizations.of(context)!.signUp,
                                     onPressed: () => _handleSignUp(context),
                                     backgroundColor: AppColors.primaryBlue,
                                     textColor: AppColors.textSecondary,
@@ -204,32 +192,26 @@ class _SignUpPageState extends State<SignUpPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context).translate(
-                                        "Already have an account?"),
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: const Color(0xFF7D848D),
+                                    AppLocalizations.of(context)!.alreadyHaveAccount,
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      color: AppColors.textSubtitle,
                                     ),
                                   ),
                                   TextButton(
                                     onPressed: _handleSignIn,
                                     child: Text(
-                                      AppLocalizations.of(context).translate('Sign in'),
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: const Color(0xFFFF7029),
-                                        fontWeight: FontWeight.w700,
+                                      AppLocalizations.of(context)!.signIn,
+                                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                                        color: AppColors.primaryOrange,
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
                               Text(
-                                AppLocalizations.of(context)
-                                    .translate('Or connect'),
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: const Color(0xFF7D848D),
+                                AppLocalizations.of(context)!.orConnect,
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.textSubtitle,
                                 ),
                               ),
                             ],

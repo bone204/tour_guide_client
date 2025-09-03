@@ -1,0 +1,43 @@
+{
+  "signInNow": "Sign in now",
+
+  "signInDescription": "Please sign in to continue using our app",
+
+  "usernameOrEmail": "Username/Email",
+
+  "enterUsernameOrEmail": "Enter username or email",
+
+  "password": "Password",
+
+  "enterPassword": "Enter password",
+
+  "forgotPassword": "Forgot Password?",
+
+  "signIn": "Sign In",
+
+  "noAccount": "Don't have an account?",
+
+  "orConnect": "Or connect",
+
+  "signUpNow": "Sign up now",
+
+  "signUpDescription": "Please fill the details and create account",
+
+  "username": "Username",
+
+  "enterUsername": "Enter username",
+
+  "email": "Email",
+
+  "enterEmail": "Enter email",
+
+  "confirmPassword": "Confirm Password",
+
+  "enterConfirmPassword": "Re-enter your password",
+
+  "signUp": "Sign Up",
+
+  "alreadyHaveAccount": "Already have an account?",
+
+  "signOut": "Sign Out"
+}

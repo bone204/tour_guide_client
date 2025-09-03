@@ -1,12 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tour_guide_app/common/bloc/button/button_state.dart';
 import 'package:tour_guide_app/common/bloc/button/button_state_cubit.dart';
-import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
-import 'package:tour_guide_app/core/config/theme/color.dart';
-import 'package:tour_guide_app/core/services/localizations_service.dart';
+import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/usecases/no_params.dart';
 import 'package:tour_guide_app/features/settings/domain/usecases/logout.dart';
 import 'package:tour_guide_app/features/settings/presentation/widgets/navigation_button.widget.dart';
@@ -95,7 +91,7 @@ class SettingsPage extends StatelessWidget {
                         builder:
                           (context) => PrimaryButton(
                             onPressed: () => _logOut(context),
-                            title: AppLocalizations.of(context).translate('Sign Out'),
+                            title: AppLocalizations.of(context)!.signOut,
                             backgroundColor: AppColors.primaryGrey,
                             textColor: AppColors.textSecondary,
                           ),
