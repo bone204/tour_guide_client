@@ -130,7 +130,7 @@ class _SignInPageState extends State<SignInPage> {
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context)!.signInNow,
-                            style: Theme.of(context).textTheme.headlineLarge,
+                            style: Theme.of(context).textTheme.headlineLarge
                           ),
                           SizedBox(height: 16.h),
                           Text(

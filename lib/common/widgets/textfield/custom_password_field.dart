@@ -61,7 +61,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
         if (widget.label != null) ...[
           Text(
             widget.label!,
-            style: Theme.of(context).textTheme.bodyMedium),
+            style: Theme.of(context).textTheme.displayLarge),
           const SizedBox(height: 6),
         ],
         TextFormField(

@@ -1,15 +1,14 @@
 import 'package:tour_guide_app/common_libs.dart';
 
 class AppTypography {
-  // Font constants - sử dụng đúng family Rubik đã khai báo
-  static const String fontLight = 'Rubik-Light';
-  static const String fontRegular = 'Rubik-Regular';
-  static const String fontMedium = 'Rubik-Medium';
-  static const String fontSemiBold = 'Rubik-SemiBold';
-  static const String fontBold = 'Rubik-Bold';
-  static const String fontExtraBold = 'Rubik-ExtraBold';
-  static const String fontBlack = 'Rubik-Black';
-  static const String fontItalic = 'Rubik-Italic';
+  // Font constants - sử dụng đúng family Inter đã khai báo
+  static const String fontLight = 'Inter-Light';
+  static const String fontRegular = 'Inter-Regular';
+  static const String fontMedium = 'Inter-Medium';
+  static const String fontSemiBold = 'Inter-SemiBold';
+  static const String fontBold = 'Inter-Bold';
+  static const String fontExtraBold = 'Inter-ExtraBold';
+  static const String fontBlack = 'Inter-Black';
 
   static TextTheme getTextTheme() {
     return TextTheme(

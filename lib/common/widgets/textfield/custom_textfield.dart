@@ -58,7 +58,7 @@ class CustomTextField extends StatelessWidget {
         if (label != null) ...[
           Text(
             label!,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.displayLarge,
           ),
           const SizedBox(height: 6),
         ],

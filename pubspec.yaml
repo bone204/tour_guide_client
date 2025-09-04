@@ -75,46 +75,32 @@ flutter:
   - assets/icons/
 
   fonts:
-    - family: Rubik-Black
+    - family: Inter-Thin
       fonts:
-        - asset: assets/fonts/Rubik/Rubik-Black.ttf
-    - family: Rubik-BlackItalic
+        - asset: assets/fonts/Inter/Inter_18pt-Thin.ttf
+    - family: Inter-ExtraLight
       fonts:
-        - asset: assets/fonts/Rubik/Rubik-BlackItalic.ttf
-    - family: Rubik-Bold
+        - asset: assets/fonts/Inter/Inter_18pt-ExtraLight.ttf
+    - family: Inter-Light
       fonts:
-        - asset: assets/fonts/Rubik/Rubik-Bold.ttf
-    - family: Rubik-BoldItalic
+        - asset: assets/fonts/Inter/Inter_18pt-Light.ttf
+    - family: Inter-Regular
       fonts:
-        - asset: assets/fonts/Rubik/Rubik-BoldItalic.ttf
-    - family: Rubik-ExtraBold
+        - asset: assets/fonts/Inter/Inter_18pt-Regular.ttf
+    - family: Inter-Medium
       fonts:
-        - asset: assets/fonts/Rubik/Rubik-ExtraBold.ttf
-    - family: Rubik-ExtraBoldItalic
+        - asset: assets/fonts/Inter/Inter_18pt-Medium.ttf
+    - family: Inter-SemiBold
       fonts:
-        - asset: assets/fonts/Rubik/Rubik-ExtraBoldItalic.ttf
-    - family: Rubik-Italic
+        - asset: assets/fonts/Inter/Inter_18pt-SemiBold.ttf
+    - family: Inter-Bold
       fonts:
-        - asset: assets/fonts/Rubik/Rubik-Italic.ttf
-    - family: Rubik-Light
+        - asset: assets/fonts/Inter/Inter_18pt-Bold.ttf
+    - family: Inter-ExtraBold
       fonts:
-        - asset: assets/fonts/Rubik/Rubik-Light.ttf
-    - family: Rubik-LightItalic
+        - asset: assets/fonts/Inter/Inter_18pt-ExtraBold.ttf
+    - family: Inter-Black
       fonts:
-        - asset: assets/fonts/Rubik/Rubik-LightItalic.ttf
-    - family: Rubik-Medium
-      fonts:
-        - asset: assets/fonts/Rubik/Rubik-Medium.ttf
-    - family: Rubik-MediumItalic
-      fonts:
-        - asset: assets/fonts/Rubik/Rubik-MediumItalic.ttf
-    - family: Rubik-Regular
-      fonts:
-        - asset: assets/fonts/Rubik/Rubik-Regular.ttf
-    - family: Rubik-SemiBold
-      fonts:
-        - asset: assets/fonts/Rubik/Rubik-SemiBold.ttf
-    - family: Rubik-SemiBoldItalic
-      fonts:
-        - asset: assets/fonts/Rubik/Rubik-SemiBoldItalic.ttf
+        - asset: assets/fonts/Inter/Inter_18pt-Black.ttf
+
 
