@@ -43,5 +43,23 @@
 
   "discoverSub": "Discover and share unique travel experiences",
 
-  "search": "Search..."
+  "search": "Search...",
+
+  "accountAndSecurity": "Account & Security",
+
+  "personalInfo": "Personal Information",
+
+  "accountInfo": "Account Information",
+
+  "changePassword": "Change Password",
+
+  "language": "Language",
+
+  "terms": "Terms & Conditions",
+
+  "policy": "Privacy Policy",
+
+  "contact": "Contact Us",
+
+  "settings": "Settings"
 }

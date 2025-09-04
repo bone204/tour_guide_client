@@ -125,8 +125,8 @@ Widget buildEButton() {
     alignment: Alignment.center,
     child: SvgPicture.asset(
       AppIcons.travel, 
-      width: 24.w,
-      height: 24.h,
+      width: 40.w,
+      height: 40.h,
       // ignore: deprecated_member_use
       color: Colors.white, 
     ),

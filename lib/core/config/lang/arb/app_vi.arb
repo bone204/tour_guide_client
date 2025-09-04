@@ -43,5 +43,23 @@
 
    "discoverSub": "Khám phá và chia sẻ những trải nghiệm du lịch độc đáo",
 
-   "search": "Tìm kiếm..."
+   "search": "Tìm kiếm...",
+
+   "accountAndSecurity": "Tài khoản & Bảo mật",
+
+   "personalInfo": "Thông tin cá nhân",
+
+   "accountInfo": "Thông tin tài khoản",
+
+   "changePassword": "Đổi mật khẩu",
+
+   "language": "Ngôn ngữ",
+
+   "terms": "Điều khoản & Điều kiện",
+
+   "policy": "Chính sách bảo mật",
+
+   "contact": "Liên hệ",
+
+   "settings": "Cài đặt"
 }

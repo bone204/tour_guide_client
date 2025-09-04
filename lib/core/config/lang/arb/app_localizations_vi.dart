@@ -76,4 +76,31 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get search => 'Tìm kiếm...';
+
+  @override
+  String get accountAndSecurity => 'Tài khoản & Bảo mật';
+
+  @override
+  String get personalInfo => 'Thông tin cá nhân';
+
+  @override
+  String get accountInfo => 'Thông tin tài khoản';
+
+  @override
+  String get changePassword => 'Đổi mật khẩu';
+
+  @override
+  String get language => 'Ngôn ngữ';
+
+  @override
+  String get terms => 'Điều khoản & Điều kiện';
+
+  @override
+  String get policy => 'Chính sách bảo mật';
+
+  @override
+  String get contact => 'Liên hệ';
+
+  @override
+  String get settings => 'Cài đặt';
 }

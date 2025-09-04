@@ -2,6 +2,13 @@ class AppIcons {
   // Basic icons
   static const String search = 'assets/icons/ic_search.svg';
   static const String travel = 'assets/icons/ic_travel.svg';
+  static const String user = 'assets/icons/ic_user.svg';
+  static const String lock = 'assets/icons/ic_lock.svg';
+  static const String policy = 'assets/icons/ic_policy.svg';
+  static const String term = 'assets/icons/ic_term.svg';
+  static const String language = 'assets/icons/ic_language.svg';
+  static const String contact = 'assets/icons/ic_contact.svg';
+  static const String arrorRight = 'assets/icons/ic_right.svg';
 
   // Bottom navigation bar icons
   static const String homeActive = 'assets/icons/ic_home_active.svg';

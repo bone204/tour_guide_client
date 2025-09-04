@@ -232,6 +232,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search...'**
   String get search;
+
+  /// No description provided for @accountAndSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Account & Security'**
+  String get accountAndSecurity;
+
+  /// No description provided for @personalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInfo;
+
+  /// No description provided for @accountInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Information'**
+  String get accountInfo;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @terms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get terms;
+
+  /// No description provided for @policy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get policy;
+
+  /// No description provided for @contact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get contact;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -2,20 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 
 class NavigationButton extends StatefulWidget {
-  final IconData leadingIcon;
+  final String icon; 
   final String title;
-  final IconData? trailingIcon;
+  final String? trailingIcon;
   final VoidCallback onTap;
   final bool isSelected;
 
   const NavigationButton({
     super.key,
-    required this.leadingIcon,
+    required this.icon,
     required this.title,
-    this.trailingIcon,
+    this.trailingIcon, 
     required this.onTap,
     this.isSelected = false,
   });
@@ -53,7 +54,7 @@ class _NavigationButtonState extends State<NavigationButton> {
       onTapUp: _handleTapUp,
       onTapCancel: _handleTapCancel,
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 120),
+        duration: const Duration(milliseconds: 120),
         curve: Curves.easeInOut,
         padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
         decoration: BoxDecoration(
@@ -73,15 +74,26 @@ class _NavigationButtonState extends State<NavigationButton> {
           children: [
             Row(
               children: [
-                Icon(widget.leadingIcon, color: AppColors.textPrimary, size: 24.sp),
-                SizedBox(width: 12),
+                SvgPicture.asset(
+                  widget.icon,
+                  width: 24.w,
+                  height: 24.h,
+                  color: AppColors.textPrimary,
+                ),
+                SizedBox(width: 12.w),
                 Text(
                   widget.title,
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
               ],
             ),
-            Icon(widget.trailingIcon, color: AppColors.textPrimary, size: 20.sp),
+            if (widget.trailingIcon != null)
+              SvgPicture.asset(
+                widget.trailingIcon!,
+                width: 20.w,
+                height: 20.h,
+                color: AppColors.textPrimary,
+              ),
           ],
         ),
       ),
