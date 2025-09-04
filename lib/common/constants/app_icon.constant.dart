@@ -1,5 +1,7 @@
 class AppIcons {
   // Basic icons
+  static const String search = 'assets/icons/ic_search.svg';
+  static const String travel = 'assets/icons/ic_travel.svg';
 
   // Bottom navigation bar icons
   static const String homeActive = 'assets/icons/ic_home_active.svg';

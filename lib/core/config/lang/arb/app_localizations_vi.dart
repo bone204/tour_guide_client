@@ -70,4 +70,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get signOut => 'Đăng Xuất';
+
+  @override
+  String get discoverSub => 'Khám phá và chia sẻ những trải nghiệm du lịch độc đáo';
+
+  @override
+  String get search => 'Tìm kiếm...';
 }

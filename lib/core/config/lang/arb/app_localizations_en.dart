@@ -70,4 +70,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signOut => 'Sign Out';
+
+  @override
+  String get discoverSub => 'Discover and share unique travel experiences';
+
+  @override
+  String get search => 'Search...';
 }

@@ -220,6 +220,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign Out'**
   String get signOut;
+
+  /// No description provided for @discoverSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover and share unique travel experiences'**
+  String get discoverSub;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search...'**
+  String get search;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
