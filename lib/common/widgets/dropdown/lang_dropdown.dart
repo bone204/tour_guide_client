@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tour_guide_app/common/bloc/lang/locale_cubit.dart';
 import 'package:tour_guide_app/common/bloc/lang/locale_state.dart';
+import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 
 class LanguageDropdown extends StatelessWidget {
@@ -48,7 +49,7 @@ class LanguageDropdown extends StatelessWidget {
                   children: [
                     const Text("🇺🇸"),
                     SizedBox(width: 8.w),
-                    Text("English", style: Theme.of(context).textTheme.displayMedium),
+                    Text(AppLocalizations.of(context)!.english, style: Theme.of(context).textTheme.displayMedium),
                   ],
                 ),
               ),
@@ -58,7 +59,7 @@ class LanguageDropdown extends StatelessWidget {
                   children: [
                     const Text("🇻🇳"),
                     SizedBox(width: 8.w),
-                    Text("Tiếng Việt", style: Theme.of(context).textTheme.displayMedium),
+                    Text(AppLocalizations.of(context)!.vietnamese, style: Theme.of(context).textTheme.displayMedium),
                   ],
                 ),
               ),

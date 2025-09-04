@@ -36,13 +36,13 @@ class ChangeLanguagePage extends StatelessWidget {
               children: [
                 LanguageTile(
                   code: "en",
-                  label: "English",
+                  label: AppLocalizations.of(context)!.english,
                   flag: "🇺🇸",
                   selected: currentValue == "en",
                 ),
                 LanguageTile(
                   code: "vi",
-                  label: "Tiếng Việt",
+                  label: AppLocalizations.of(context)!.vietnamese,
                   flag: "🇻🇳",
                   selected: currentValue == "vi",
                 ),

@@ -49,8 +49,8 @@ class _LanguageTileState extends State<LanguageTile> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 120),
         curve: Curves.easeInOut,
-        margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
           color: _isPressed ? Colors.grey[200] : AppColors.primaryWhite,
           borderRadius: BorderRadius.circular(8.r),
@@ -68,11 +68,11 @@ class _LanguageTileState extends State<LanguageTile> {
           children: [
             Row(
               children: [
-                Text(widget.flag, style: TextStyle(fontSize: 20.sp)),
-                SizedBox(width: 10.w),
+                Text(widget.flag, style: TextStyle(fontSize: 24.sp)),
+                SizedBox(width: 16.w),
                 Text(
                   widget.label,
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                  style: Theme.of(context).textTheme.displayLarge!.copyWith(
                         color: widget.selected
                             ? AppColors.primaryBlue
                             : AppColors.primaryBlack,

@@ -103,4 +103,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings => 'Settings';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get vietnamese => 'Vietnamese';
 }

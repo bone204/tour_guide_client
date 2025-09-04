@@ -107,15 +107,6 @@ class _SignInPageState extends State<SignInPage> {
                   }
                 },
               ),
-              BlocListener<LocaleCubit, LocaleState>(
-                listener: (context, state) {
-                  if (state is LocaleLoaded) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Đổi ngôn ngữ thành công")),
-                    );
-                  }
-                },
-              ),
             ],
             child: GestureDetector(
               onTap: _handleTapOutside,

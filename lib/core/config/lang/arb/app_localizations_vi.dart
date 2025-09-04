@@ -103,4 +103,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get settings => 'Cài đặt';
+
+  @override
+  String get english => 'Tiếng Anh';
+
+  @override
+  String get vietnamese => 'Tiếng Việt';
 }
