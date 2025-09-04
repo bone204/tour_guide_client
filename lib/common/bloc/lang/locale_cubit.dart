@@ -22,7 +22,6 @@ class LocaleCubit extends Cubit<LocaleState> {
 
   Future<void> setLocale(Locale locale) async {
     emit(LocaleLoading());
-    await Future.delayed(const Duration(seconds: 3));
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_localeKey, locale.languageCode);
     emit(LocaleLoaded(locale));

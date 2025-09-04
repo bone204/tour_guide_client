@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:tour_guide_app/common/constants/app_icon.constant.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/features/home/presentation/pages/home.page.dart';
-import 'package:tour_guide_app/features/settings/presentation/pages/settings.pages.dart';
+import 'package:tour_guide_app/features/settings/presentation/pages/settings.page.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

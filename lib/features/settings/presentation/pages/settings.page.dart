@@ -13,8 +13,12 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _logOut(BuildContext context) {
+    void logOut(BuildContext context) {
       context.read<ButtonStateCubit>().execute(usecase: sl<LogOutUseCase>(), params: NoParams());
+    }
+
+    void openLanguageScreen(BuildContext context) {
+      Navigator.pushNamed(context, AppRouteConstant.language);
     }
 
     return MultiBlocProvider(
@@ -77,7 +81,7 @@ class SettingsPage extends StatelessWidget {
                         icon: AppIcons.language,
                         title: AppLocalizations.of(context)!.language,
                         trailingIcon: AppIcons.arrorRight,
-                        onTap: () {},
+                        onTap: () => openLanguageScreen(context),
                       ),
                       SizedBox(height: 12.w),
                       NavigationButton(
@@ -104,7 +108,7 @@ class SettingsPage extends StatelessWidget {
                       Builder(
                         builder:
                           (context) => PrimaryButton(
-                            onPressed: () => _logOut(context),
+                            onPressed: () => logOut(context),
                             title: AppLocalizations.of(context)!.signOut,
                             backgroundColor: AppColors.primaryGrey,
                             textColor: AppColors.textSecondary,
