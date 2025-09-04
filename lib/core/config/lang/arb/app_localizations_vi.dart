@@ -109,4 +109,22 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get vietnamese => 'Tiếng Việt';
+
+  @override
+  String get carRental => 'Thuê Xe Hơi';
+
+  @override
+  String get bikeRental => 'Thuê Xe Máy';
+
+  @override
+  String get busBooking => 'Đặt Xe Buýt';
+
+  @override
+  String get findRes => 'Tìm Nhà Hàng';
+
+  @override
+  String get delivery => 'Giao Hàng';
+
+  @override
+  String get findHotel => 'Tìm Khách Sạn';
 }

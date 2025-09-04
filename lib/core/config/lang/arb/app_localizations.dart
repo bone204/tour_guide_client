@@ -298,6 +298,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Vietnamese'**
   String get vietnamese;
+
+  /// No description provided for @carRental.
+  ///
+  /// In en, this message translates to:
+  /// **'Car Rental'**
+  String get carRental;
+
+  /// No description provided for @bikeRental.
+  ///
+  /// In en, this message translates to:
+  /// **'Bike Rental'**
+  String get bikeRental;
+
+  /// No description provided for @busBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus Booking'**
+  String get busBooking;
+
+  /// No description provided for @findRes.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Restaurant'**
+  String get findRes;
+
+  /// No description provided for @delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast Delivery'**
+  String get delivery;
+
+  /// No description provided for @findHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Hotel'**
+  String get findHotel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

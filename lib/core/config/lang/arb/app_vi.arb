@@ -65,5 +65,18 @@
 
    "english": "Tiếng Anh",
 
-  "vietnamese": "Tiếng Việt"
+  "vietnamese": "Tiếng Việt",
+
+  "carRental": "Thuê Xe Hơi",
+
+  "bikeRental": "Thuê Xe Máy",
+  
+  "busBooking": "Đặt Xe Buýt",
+
+  "findRes": "Tìm Nhà Hàng",
+
+  "delivery": "Giao Hàng",
+
+  "findHotel": "Tìm Khách Sạn"
+
 }

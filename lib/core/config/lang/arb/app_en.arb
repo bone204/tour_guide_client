@@ -65,5 +65,17 @@
 
   "english": "English",
 
-  "vietnamese": "Vietnamese"
+  "vietnamese": "Vietnamese",
+
+  "carRental": "Car Rental",
+
+  "bikeRental": "Bike Rental",
+
+  "busBooking": "Bus Booking",
+
+  "findRes": "Find Restaurant",
+
+  "delivery": "Fast Delivery",
+
+  "findHotel": "Find Hotel"
 }

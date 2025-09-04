@@ -109,4 +109,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vietnamese => 'Vietnamese';
+
+  @override
+  String get carRental => 'Car Rental';
+
+  @override
+  String get bikeRental => 'Bike Rental';
+
+  @override
+  String get busBooking => 'Bus Booking';
+
+  @override
+  String get findRes => 'Find Restaurant';
+
+  @override
+  String get delivery => 'Fast Delivery';
+
+  @override
+  String get findHotel => 'Find Hotel';
 }
