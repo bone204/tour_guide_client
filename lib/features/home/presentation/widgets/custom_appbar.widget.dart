@@ -38,22 +38,14 @@ Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
       // Background gradient
       Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [
-              AppColors.primaryBlue,
-              Color(0xFF2563EB),
-              Color(0xFF1E40AF),
-            ],
-          ),
+          color: AppColors.primaryBlue,
         ),
       ),
       // Title + subtitle, fade theo scroll
       Positioned(
         top: statusBarHeight.h + 12.h + offsetY.h,
-        left: 8.w,
-        right: 8.w,
+        left: 12.w,
+        right: 12.w,
         child: Opacity(
           opacity: fade,
           child: Row(

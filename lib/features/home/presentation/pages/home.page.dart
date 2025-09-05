@@ -52,18 +52,20 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   // Background
                   Container(
-                    height: 170.h, 
+                    height: 150.h, 
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.blue.shade200, Colors.blue.shade400],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          AppColors.primaryLightBlue,
+                        ],
                       ),
                     ),
                   ),
                   // Card
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
                     child: NavigationCard(),
                   ),
                 ],
