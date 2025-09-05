@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
+                          AppColors.primaryBlue,
                           AppColors.primaryLightBlue,
                         ],
                       ),
