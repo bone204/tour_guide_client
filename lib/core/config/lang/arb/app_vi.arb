@@ -79,6 +79,14 @@
 
   "findHotel": "Tìm Khách Sạn",
 
-  "exclusiveVouchers": "Ưu đãi đặc biệt"
+  "exclusiveVouchers": "Ưu đãi đặc biệt",
+  
+  "popular": "Phổ biến",
+
+  "popularDes": "Điểm đến tốt nhất dành cho bạn",
+
+  "nearby": "Các địa điểm gần đây",
+
+  "nearbyDes": "Khám phá các địa điểm xung quanh bạn"
 
 }

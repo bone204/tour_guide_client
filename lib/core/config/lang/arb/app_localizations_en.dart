@@ -130,4 +130,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exclusiveVouchers => 'Exclusive Vouchers';
+
+  @override
+  String get popular => 'Popular';
+
+  @override
+  String get popularDes => 'The best destination for you';
+
+  @override
+  String get nearby => 'Destination nearby';
+
+  @override
+  String get nearbyDes => 'Explore spots around you';
 }

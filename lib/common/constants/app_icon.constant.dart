@@ -11,6 +11,8 @@ class AppIcons {
   static const String arrorRight = 'assets/icons/ic_right.svg';
   static const String tree1 = 'assets/icons/ic_tree1.svg';
   static const String gift = 'assets/icons/ic_gift.svg';
+  static const String star = 'assets/icons/ic_star.svg';
+  static const String location= 'assets/icons/ic_location.svg';
 
   // Bottom navigation bar icons
   static const String homeActive = 'assets/icons/ic_home_active.svg';

@@ -340,6 +340,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Exclusive Vouchers'**
   String get exclusiveVouchers;
+
+  /// No description provided for @popular.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular'**
+  String get popular;
+
+  /// No description provided for @popularDes.
+  ///
+  /// In en, this message translates to:
+  /// **'The best destination for you'**
+  String get popularDes;
+
+  /// No description provided for @nearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination nearby'**
+  String get nearby;
+
+  /// No description provided for @nearbyDes.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore spots around you'**
+  String get nearbyDes;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

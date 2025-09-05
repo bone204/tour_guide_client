@@ -79,5 +79,13 @@
 
   "findHotel": "Find Hotel",
 
-  "exclusiveVouchers": "Exclusive Vouchers"
+  "exclusiveVouchers": "Exclusive Vouchers",
+
+  "popular": "Popular",
+
+  "popularDes": "The best destination for you",
+
+  "nearby": "Destination nearby",
+
+  "nearbyDes": "Explore spots around you"
 }

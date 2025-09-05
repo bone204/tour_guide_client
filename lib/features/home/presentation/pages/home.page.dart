@@ -3,7 +3,9 @@ import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_header.widget.dart';
-import 'package:tour_guide_app/features/home/presentation/widgets/voucher_carousel.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/nearby_destination_list.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/popular_destination_list.widget.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/voucher_carousel.widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -48,6 +50,8 @@ class _HomePageState extends State<HomePage> {
             ),
             SliverHeader(),
             SliverVoucherCarousel(),
+            SliverPopularDestinationList(),
+            SliverNearbyDestinationList(),
             SliverToBoxAdapter(
               child: Container(
                 height: 500,

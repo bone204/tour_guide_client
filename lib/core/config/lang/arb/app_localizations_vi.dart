@@ -130,4 +130,16 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get exclusiveVouchers => 'Ưu đãi đặc biệt';
+
+  @override
+  String get popular => 'Phổ biến';
+
+  @override
+  String get popularDes => 'Điểm đến tốt nhất dành cho bạn';
+
+  @override
+  String get nearby => 'Các địa điểm gần đây';
+
+  @override
+  String get nearbyDes => 'Khám phá các địa điểm xung quanh bạn';
 }
