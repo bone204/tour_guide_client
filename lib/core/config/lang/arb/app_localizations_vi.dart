@@ -127,4 +127,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get findHotel => 'Tìm Khách Sạn';
+
+  @override
+  String get exclusiveVouchers => 'Ưu đãi đặc biệt';
 }

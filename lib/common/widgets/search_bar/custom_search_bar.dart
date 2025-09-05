@@ -40,7 +40,7 @@ class CustomSearchBar extends StatelessWidget {
           filled: true,
           fillColor: AppColors.primaryWhite,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.r),
+            borderRadius: BorderRadius.circular(12.r),
             borderSide: BorderSide.none,
           ),
         ),

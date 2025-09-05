@@ -127,4 +127,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get findHotel => 'Find Hotel';
+
+  @override
+  String get exclusiveVouchers => 'Exclusive Vouchers';
 }

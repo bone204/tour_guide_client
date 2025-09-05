@@ -334,6 +334,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Find Hotel'**
   String get findHotel;
+
+  /// No description provided for @exclusiveVouchers.
+  ///
+  /// In en, this message translates to:
+  /// **'Exclusive Vouchers'**
+  String get exclusiveVouchers;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
