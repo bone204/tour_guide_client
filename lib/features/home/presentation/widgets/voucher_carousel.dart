@@ -18,136 +18,191 @@ class SliverVoucherCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppColors.primaryBlue,
-              AppColors.primaryBlue.withOpacity(0.6),
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-        ),
-        margin: EdgeInsets.symmetric(vertical: 8.h),
-        padding: EdgeInsets.symmetric(vertical: 20.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 🔹 Title
-            Padding(
-              padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 16.h),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SvgPicture.asset(AppIcons.gift, width: 28.w, height: 28.h, color: AppColors.primaryWhite,),
-                  SizedBox(width: 12.w,),
-                  Text(
-                    AppLocalizations.of(context)!.exclusiveVouchers,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppColors.textSecondary,
-                    )
-                  ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primaryBlue,
+                  AppColors.primaryBlue.withOpacity(0.6),
                 ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+            ),
+            margin: EdgeInsets.symmetric(vertical: 8.h),
+            padding: EdgeInsets.symmetric(vertical: 20.h),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                // Coin nằm trên background
+                Positioned(
+                  top: 16,
+                  right: 12,
+                  child: Image.asset(
+                    AppImage.coin,
+                    width: 140.w,
+                    height: 140.h,
+                  ),
+                ),
+
+                // Nội dung (title + carousel)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 🔹 Title
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: 12.w, right: 12.w, bottom: 16.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          SvgPicture.asset(
+                            AppIcons.gift,
+                            width: 28.w,
+                            height: 28.h,
+                            color: AppColors.primaryWhite,
+                          ),
+                          SizedBox(width: 12.w),
+                          Text(
+                            AppLocalizations.of(context)!.exclusiveVouchers,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(color: AppColors.textSecondary),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // 🔹 Carousel
+                    CarouselSlider.builder(
+                      itemCount: vouchers.length,
+                      itemBuilder: (context, index, realIndex) {
+                        return buildVoucherCard(context, vouchers[index]);
+                      },
+                      options: CarouselOptions(
+                        height: 140,
+                        autoPlay: true,
+                        enableInfiniteScroll: true,
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                        viewportFraction: 0.8,
+                        padEnds: false,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget buildVoucherCard(BuildContext context, String voucherText) {
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+    child: ClipPath(
+      clipper: TicketClipper(),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.primaryWhite,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryBlack.withOpacity(0.6),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            // 🔹 Header Voucher
+            Expanded(
+              flex: 6,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.card_giftcard,color: AppColors.primaryBlue, size: 36.sp),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            voucherText,
+                            style: Theme.of(context).textTheme.displayLarge,
+                          ),
+                          SizedBox(height: 4.h),
+                          Text(
+                            "Ưu đãi đặc biệt cho bạn",
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSubtitle,
+                            overflow: TextOverflow.ellipsis,
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
 
-            // 🔹 Carousel
-            CarouselSlider.builder(
-              itemCount: vouchers.length,
-              itemBuilder: (context, index, realIndex) {
-                return buildVoucherCard(context, vouchers[index]);
-              },
-              options: CarouselOptions(
-                height: 130, 
-                autoPlay: true,
-                enableInfiniteScroll: true,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                viewportFraction: 0.75,
+            // 🔹 Dash line
+            SizedBox(
+              height: 1.h,
+              child: DottedLine(
+                dashLength: 6.w,
+                dashGapLength: 4.w,
+                lineThickness: 1.sp,
+                dashColor: AppColors.secondaryGrey,
+              ),
+            ),
+
+            // 🔹 Footer Info
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Sử dụng ngay để nhận ưu đãi',
+                        style: Theme.of(context).textTheme.displayMedium,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        
+                      },
+                      icon: SvgPicture.asset(
+                        AppIcons.arrorRight, 
+                        width: 14.w,
+                        height: 14.h,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget buildVoucherCard(BuildContext context, String voucherText) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: ClipPath(
-        clipper: TicketClipper(),
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.primaryWhite,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 6,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 6,
-                child: Container(
-                  color: AppColors.primaryWhite,
-                  child: Center(
-                    child: Text(
-                      voucherText,
-                      style: const TextStyle(
-                        fontSize: 20, // giảm xuống
-                        fontWeight: FontWeight.w900,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
 
-              // 🔹 Dash line
-              SizedBox(
-                height: 1,
-                child: DottedLine(
-                  dashLength: 6,
-                  dashGapLength: 4,
-                  lineThickness: 1,
-                  dashColor: Colors.grey.shade400,
-                ),
-              ),
-
-              Expanded(
-                flex: 4,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.local_offer,
-                          color: Colors.black, size: 22), // giảm size icon
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'Sử dụng ngay để nhận ưu đãi',
-                          style: const TextStyle(
-                            fontSize: 13, // giảm size text
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                      const Icon(Icons.arrow_forward_ios,
-                          color: Colors.black54, size: 14),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
