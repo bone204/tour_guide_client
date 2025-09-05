@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.widget.dart';
-import 'package:tour_guide_app/features/home/presentation/widgets/navigation_card.widget.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/custom_header.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/voucher_carousel.dart';
 
 class HomePage extends StatefulWidget {
@@ -47,34 +46,14 @@ class _HomePageState extends State<HomePage> {
               ),
               pinned: true, 
             ),
-            SliverToBoxAdapter(
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  // Background
-                  Container(
-                    height: 150.h, 
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          AppColors.primaryBlue,
-                          // ignore: deprecated_member_use
-                          AppColors.primaryBlue.withOpacity(0.6),
-                        ],
-                      ),
-                    ),
-                  ),
-                  // Card
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-                    child: NavigationCard(),
-                  ),
-                ],
-              ),
-            ),
+            SliverHeader(),
             SliverVoucherCarousel(),
+            SliverToBoxAdapter(
+              child: Container(
+                height: 500,
+                color: AppColors.primaryWhite,
+              ),
+            )
           ],
         ),
       ),
