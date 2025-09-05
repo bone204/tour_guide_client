@@ -87,5 +87,13 @@
 
   "nearby": "Destination nearby",
 
-  "nearbyDes": "Explore spots around you"
+  "nearbyDes": "Explore spots around you",
+
+  "hotelNearby": "Hotels nearby",
+
+  "hotelNearbyDes": "Nearby hotels for your stay",
+
+  "restaurantNearby": "Hotels nearby",
+
+  "restaurantNearbyDes": "Dining options nearby"
 }

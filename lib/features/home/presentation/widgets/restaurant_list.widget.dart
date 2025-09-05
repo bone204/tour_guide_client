@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/destination_card.widget.dart';
 
-class SliverNearbyDestinationList extends StatelessWidget {
+class SliverRestaurantNearbyDestinationList extends StatelessWidget {
   final List<DestinationCard> fakeDestinations = [
     DestinationCard(
       imageUrl:
@@ -46,11 +46,12 @@ class SliverNearbyDestinationList extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primaryRed,
-                  AppColors.primaryRed.withOpacity(0.6),
+                  AppColors.primaryYellow,
+                  AppColors.primaryYellow.withOpacity(0.6),
                 ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
+                stops: [0.6,1.0]
               ),
             ),
             margin: EdgeInsets.only(bottom: 8.h),
@@ -59,16 +60,15 @@ class SliverNearbyDestinationList extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 Positioned(
-                  top: -28,
-                  right: -20,
+                  top: -12,
+                  right: 24,
                   child: Image.asset(
-                    AppImage.rose,
-                    width: 140.w,
-                    height: 140.h,
+                    AppImage.food,
+                    width: 60.w,
+                    height: 60.h,
                   ),
                 ),
 
-                // 🔹 Nội dung
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -79,7 +79,7 @@ class SliverNearbyDestinationList extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.nearby,
+                            AppLocalizations.of(context)!.restaurantNearby,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -87,7 +87,7 @@ class SliverNearbyDestinationList extends StatelessWidget {
                           ),
                           SizedBox(height: 4.h),
                           Text(
-                            AppLocalizations.of(context)!.nearbyDes,
+                            AppLocalizations.of(context)!.restaurantNearbyDes,
                             style: Theme.of(context)
                                 .textTheme
                                 .displayMedium

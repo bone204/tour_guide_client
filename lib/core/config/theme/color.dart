@@ -12,6 +12,8 @@ class AppColors {
   static const Color primaryOrange = Color(0xFFFF7029);
   static const Color primaryYellow = Color(0xFFFFD336);
   static const Color primaryBlack = Color(0xFF000000);
+  static const Color primaryPink = Color(0xFFFF69B4);
+  static const Color primaryPurple = Color(0xFF800080);
 
   static const Color secondaryGrey = Color(0xFFC4C4C4);
 

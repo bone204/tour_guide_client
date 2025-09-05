@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/destination_card.widget.dart';
 
-class SliverNearbyDestinationList extends StatelessWidget {
+class SliverHotelNearbyDestinationList extends StatelessWidget {
   final List<DestinationCard> fakeDestinations = [
     DestinationCard(
       imageUrl:
@@ -46,8 +46,8 @@ class SliverNearbyDestinationList extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primaryRed,
-                  AppColors.primaryRed.withOpacity(0.6),
+                  AppColors.primaryPurple,
+                  AppColors.primaryPurple.withOpacity(0.6),
                 ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -59,12 +59,12 @@ class SliverNearbyDestinationList extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 Positioned(
-                  top: -28,
-                  right: -20,
+                  top: -24,
+                  right: 0,
                   child: Image.asset(
-                    AppImage.rose,
-                    width: 140.w,
-                    height: 140.h,
+                    AppImage.cloud,
+                    width: 100.w,
+                    height: 100.h,
                   ),
                 ),
 
@@ -79,7 +79,7 @@ class SliverNearbyDestinationList extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.nearby,
+                            AppLocalizations.of(context)!.hotelNearby,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -87,7 +87,7 @@ class SliverNearbyDestinationList extends StatelessWidget {
                           ),
                           SizedBox(height: 4.h),
                           Text(
-                            AppLocalizations.of(context)!.nearbyDes,
+                            AppLocalizations.of(context)!.hotelNearbyDes,
                             style: Theme.of(context)
                                 .textTheme
                                 .displayMedium

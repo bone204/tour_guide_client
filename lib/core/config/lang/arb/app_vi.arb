@@ -87,6 +87,14 @@
 
   "nearby": "Các địa điểm gần đây",
 
-  "nearbyDes": "Khám phá các địa điểm xung quanh bạn"
+  "nearbyDes": "Khám phá các địa điểm xung quanh bạn",
+
+  "hotelNearby": "Khách sạn gần bạn",
+
+  "hotelNearbyDes": "Những khách sạn thuận tiện ngay gần bạn",
+
+  "restaurantNearby": "Nhà hàng gần bạn",
+
+  "restaurantNearbyDes": "Các quán ăn ngon ngay gần bạn"
 
 }

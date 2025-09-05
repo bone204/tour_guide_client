@@ -364,6 +364,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Explore spots around you'**
   String get nearbyDes;
+
+  /// No description provided for @hotelNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotels nearby'**
+  String get hotelNearby;
+
+  /// No description provided for @hotelNearbyDes.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby hotels for your stay'**
+  String get hotelNearbyDes;
+
+  /// No description provided for @restaurantNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotels nearby'**
+  String get restaurantNearby;
+
+  /// No description provided for @restaurantNearbyDes.
+  ///
+  /// In en, this message translates to:
+  /// **'Dining options nearby'**
+  String get restaurantNearbyDes;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

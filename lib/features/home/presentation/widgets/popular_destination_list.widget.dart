@@ -58,7 +58,6 @@ class SliverPopularDestinationList extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                // 🔹 Coin overlay (giống SliverVoucherCarousel)
                 Positioned(
                   top: -28,
                   right: 0,
