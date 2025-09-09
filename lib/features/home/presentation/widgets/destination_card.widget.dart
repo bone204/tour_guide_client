@@ -27,7 +27,7 @@ class DestinationCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 360.w,
-        margin: EdgeInsets.only(left: 12.w),
+        margin: EdgeInsets.only(left: 16.w),
         decoration: BoxDecoration(
           color: AppColors.primaryWhite,
           borderRadius: BorderRadius.circular(12.r),
@@ -87,7 +87,7 @@ class DestinationCard extends StatelessWidget {
                   SizedBox(height: 8.h),
                   Row(
                     children: [
-                      SvgPicture.asset(AppIcons.location, width: 14.w, height: 14.h, color: AppColors.primaryGrey),
+                      SvgPicture.asset(AppIcons.location, width: 14.w, height: 14.h, color: AppColors.primaryBlue),
                       SizedBox(width: 4.w),
                       Text(
                         location,

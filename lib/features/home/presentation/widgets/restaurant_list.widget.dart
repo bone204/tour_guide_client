@@ -61,9 +61,19 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
               children: [
                 Positioned(
                   top: -12,
-                  right: 24,
+                  right: 56,
                   child: Image.asset(
                     AppImage.food,
+                    width: 60.w,
+                    height: 60.h,
+                  ),
+                ),
+
+                Positioned(
+                  top: -8,
+                  right: 8,
+                  child: Image.asset(
+                    AppImage.drink,
                     width: 60.w,
                     height: 60.h,
                   ),
@@ -74,7 +84,7 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
                   children: [
                     // Title
                     Padding(
-                      padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 20.h),
+                      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

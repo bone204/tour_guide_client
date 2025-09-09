@@ -93,7 +93,11 @@
 
   "hotelNearbyDes": "Nearby hotels for your stay",
 
-  "restaurantNearby": "Hotels nearby",
+  "restaurantNearby": "Restaurants nearby",
 
-  "restaurantNearbyDes": "Dining options nearby"
+  "restaurantNearbyDes": "Dining options nearby",
+
+  "attraction": "More travel inspiration",
+
+  "attractionDes": "Extra highlights for you!"
 }

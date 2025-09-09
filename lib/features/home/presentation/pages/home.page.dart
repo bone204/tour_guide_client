@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/attraction_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_header.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/hotel_list.widget.dart';
@@ -56,6 +57,7 @@ class _HomePageState extends State<HomePage> {
             SliverNearbyDestinationList(),
             SliverHotelNearbyDestinationList(),
             SliverRestaurantNearbyDestinationList(),
+            SliverRestaurantNearbyAttractionList(),
             SliverToBoxAdapter(
               child: Container(
                 height: 500,

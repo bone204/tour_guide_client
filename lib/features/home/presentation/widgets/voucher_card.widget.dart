@@ -13,7 +13,7 @@ class VoucherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       child: ClipPath(
         clipper: TicketClipper(),
         child: Container(
@@ -36,8 +36,7 @@ class VoucherCard extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(Icons.card_giftcard,
-                          color: AppColors.primaryBlue, size: 36.sp),
+                      Icon(Icons.card_giftcard, color: AppColors.primaryBlue, size: 36.sp),
                       SizedBox(width: 12.w),
                       Expanded(
                         child: Column(

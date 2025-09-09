@@ -51,7 +51,7 @@ class SliverVoucherCarousel extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 16.h),
+                      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.h),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [

@@ -74,7 +74,7 @@ class SliverPopularDestinationList extends StatelessWidget {
                   children: [
                     // Title
                     Padding(
-                      padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 20.h),
+                      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

@@ -154,4 +154,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get restaurantNearbyDes => 'Các quán ăn ngon ngay gần bạn';
+
+  @override
+  String get attraction => 'Cảm hứng du lịch';
+
+  @override
+  String get attractionDes => 'Điểm nhấn thêm cho bạn!';
 }

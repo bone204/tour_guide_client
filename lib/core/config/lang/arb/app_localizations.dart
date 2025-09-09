@@ -380,7 +380,7 @@ abstract class AppLocalizations {
   /// No description provided for @restaurantNearby.
   ///
   /// In en, this message translates to:
-  /// **'Hotels nearby'**
+  /// **'Restaurants nearby'**
   String get restaurantNearby;
 
   /// No description provided for @restaurantNearbyDes.
@@ -388,6 +388,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dining options nearby'**
   String get restaurantNearbyDes;
+
+  /// No description provided for @attraction.
+  ///
+  /// In en, this message translates to:
+  /// **'More travel inspiration'**
+  String get attraction;
+
+  /// No description provided for @attractionDes.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra highlights for you!'**
+  String get attractionDes;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

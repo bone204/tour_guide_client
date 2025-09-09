@@ -4,4 +4,5 @@ class AppImage {
   static const String coin = 'assets/images/gif_coin.gif';
   static const String cloud = 'assets/images/gif_cloud.gif';
   static const String food = 'assets/images/gif_food.gif';
+  static const String drink = 'assets/images/gif_drink.gif';
 }

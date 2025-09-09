@@ -44,111 +44,94 @@ class _NavigationCardState extends State<NavigationCard> {
     final int totalPages = (navItems.length / itemsPerPage).ceil();
     final int cols = 4;
 
-    return Stack(
-      children: [
-        // Background tree
-        Positioned(
-          bottom: 0,
-          left: 0,
-          child: SvgPicture.asset(
-            AppIcons.tree1,
-            width: 100.w, 
-            height: 100.h,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryBlack.withOpacity(0.4),
+            blurRadius: 4.r,
+            offset: Offset(2.w, 2.h),
           ),
-        ),
-
-        // Card container phía trên
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16.r),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primaryBlack.withOpacity(0.4),
-
-                blurRadius: 4.r,
-                offset: Offset(2.w, 2.h),
-              ),
-            ],
-          ),
-          padding: EdgeInsets.all(8.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: cardSize.h + 8.h + 20.h,
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: totalPages,
-                  onPageChanged: (index) => setState(() => currentPage = index),
-                  itemBuilder: (context, pageIndex) {
-                    final start = pageIndex * itemsPerPage;
-                    final end = (start + itemsPerPage) > navItems.length
-                        ? navItems.length
-                        : start + itemsPerPage;
-                    final pageItems = navItems.sublist(start, end);
-
-                    int emptySlots = cols - pageItems.length; 
-                    return Row(
-                      children: [
-                        ...pageItems.map((item) => Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              InkWell(
-                                onTap: () {},
-                                borderRadius: BorderRadius.circular(16.r),
-                                child: Container(
-                                  width: cardSize.w,
-                                  height: cardSize.h,
-                                  decoration: BoxDecoration(
-                                    color: item['color'],
-                                    shape: BoxShape.circle,
-                                  ),
-                                  padding: EdgeInsets.all(12.w),
-                                  child: SvgPicture.asset(
-                                    item['icon'],
-                                    colorFilter: ColorFilter.mode(
-                                      Colors.white,
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
+        ],
+      ),
+      padding: EdgeInsets.all(8.w),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: cardSize.h + 8.h + 20.h,
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: totalPages,
+              onPageChanged: (index) => setState(() => currentPage = index),
+              itemBuilder: (context, pageIndex) {
+                final start = pageIndex * itemsPerPage;
+                final end = (start + itemsPerPage) > navItems.length
+                    ? navItems.length
+                    : start + itemsPerPage;
+                final pageItems = navItems.sublist(start, end);
+    
+                int emptySlots = cols - pageItems.length; 
+                return Row(
+                  children: [
+                    ...pageItems.map((item) => Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          InkWell(
+                            onTap: () {},
+                            borderRadius: BorderRadius.circular(16.r),
+                            child: Container(
+                              width: cardSize.w,
+                              height: cardSize.h,
+                              decoration: BoxDecoration(
+                                color: item['color'],
+                                shape: BoxShape.circle,
+                              ),
+                              padding: EdgeInsets.all(12.w),
+                              child: SvgPicture.asset(
+                                item['icon'],
+                                colorFilter: ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn,
                                 ),
                               ),
-                              SizedBox(height: 8.h),
-                              Text(
-                                item['title'],
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.displaySmall,
-                              ),
-                            ],
+                            ),
                           ),
-                        )),
-                        for (int i = 0; i < emptySlots; i++) Expanded(child: SizedBox()),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 12.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(totalPages, (index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 4.w),
-                    width: currentPage == index ? 16.w : 8.w,
-                    height: 8.h,
-                    decoration: BoxDecoration(
-                      color: currentPage == index ? AppColors.primaryBlue : Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                  );
-                }),
-              ),
-            ],
+                          SizedBox(height: 8.h),
+                          Text(
+                            item['title'],
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.displaySmall,
+                          ),
+                        ],
+                      ),
+                    )),
+                    for (int i = 0; i < emptySlots; i++) Expanded(child: SizedBox()),
+                  ],
+                );
+              },
+            ),
           ),
-        ),
-      ],
+          SizedBox(height: 12.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(totalPages, (index) {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 4.w),
+                width: currentPage == index ? 16.w : 8.w,
+                height: 8.h,
+                decoration: BoxDecoration(
+                  color: currentPage == index ? AppColors.primaryBlue : Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 }
