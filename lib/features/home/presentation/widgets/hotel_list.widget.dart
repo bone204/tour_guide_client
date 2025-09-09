@@ -8,7 +8,7 @@ class SliverHotelNearbyDestinationList extends StatelessWidget {
     DestinationCard(
       imageUrl:
           "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Eiffel Towerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+      name: "Eiffel Tower",
       rating: "4.8",
       location: "Paris, France",
     ),

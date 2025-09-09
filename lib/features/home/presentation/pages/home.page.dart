@@ -58,12 +58,6 @@ class _HomePageState extends State<HomePage> {
             SliverHotelNearbyDestinationList(),
             SliverRestaurantNearbyDestinationList(),
             SliverRestaurantNearbyAttractionList(),
-            SliverToBoxAdapter(
-              child: Container(
-                height: 500,
-                color: AppColors.primaryWhite,
-              ),
-            )
           ],
         ),
       ),

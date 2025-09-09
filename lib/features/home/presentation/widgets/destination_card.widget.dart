@@ -31,13 +31,6 @@ class DestinationCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.primaryWhite,
           borderRadius: BorderRadius.circular(12.r),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryBlack.withOpacity(0.1),
-              blurRadius: 6,
-              offset: const Offset(0, 4),
-            ),
-          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
