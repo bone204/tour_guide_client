@@ -95,7 +95,7 @@ class VoucherCard extends StatelessWidget {
                       IconButton(
                         onPressed: () {},
                         icon: SvgPicture.asset(
-                          AppIcons.arrorRight,
+                          AppIcons.arrowRight,
                           width: 14.w,
                           height: 14.h,
                         ),

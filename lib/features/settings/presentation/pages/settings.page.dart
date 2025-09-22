@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
     }
 
     void openLanguageScreen(BuildContext context) {
-      Navigator.pushNamed(context, AppRouteConstant.language);
+      Navigator.of(context, rootNavigator: true).pushNamed(AppRouteConstant.language);
     }
 
     return MultiBlocProvider(
@@ -61,21 +61,21 @@ class SettingsPage extends StatelessWidget {
                   NavigationButton(
                     icon: AppIcons.user,
                     title: AppLocalizations.of(context)!.personalInfo,
-                    trailingIcon: AppIcons.arrorRight,
+                    trailingIcon: AppIcons.arrowRight,
                     onTap: () {},
                   ),
                   SizedBox(height: 12.w),
                   NavigationButton(
                     icon: AppIcons.userActive,
                     title: AppLocalizations.of(context)!.accountInfo,
-                    trailingIcon: AppIcons.arrorRight,
+                    trailingIcon: AppIcons.arrowRight,
                     onTap: () {},
                   ),
                   SizedBox(height: 12.w),
                   NavigationButton(
                     icon: AppIcons.lock,
                     title: AppLocalizations.of(context)!.changePassword,
-                    trailingIcon: AppIcons.arrorRight,
+                    trailingIcon: AppIcons.arrowRight,
                     onTap: () {},
                   ),
                   SizedBox(height: 16.w),
@@ -87,28 +87,28 @@ class SettingsPage extends StatelessWidget {
                   NavigationButton(
                     icon: AppIcons.language,
                     title: AppLocalizations.of(context)!.language,
-                    trailingIcon: AppIcons.arrorRight,
+                    trailingIcon: AppIcons.arrowRight,
                     onTap: () => openLanguageScreen(context),
                   ),
                   SizedBox(height: 12.w),
                   NavigationButton(
                     icon: AppIcons.term,
                     title: AppLocalizations.of(context)!.terms,
-                    trailingIcon: AppIcons.arrorRight,
+                    trailingIcon: AppIcons.arrowRight,
                     onTap: () {},
                   ),
                   SizedBox(height: 12.w),
                   NavigationButton(
                     icon: AppIcons.policy,
                     title: AppLocalizations.of(context)!.policy,
-                    trailingIcon: AppIcons.arrorRight,
+                    trailingIcon: AppIcons.arrowRight,
                     onTap: () {},
                   ),
                   SizedBox(height: 12.w),
                   NavigationButton(
                     icon: AppIcons.contact,
                     title: AppLocalizations.of(context)!.contact,
-                    trailingIcon: AppIcons.arrorRight,
+                    trailingIcon: AppIcons.arrowRight,
                     onTap: () {},
                   ),
                   SizedBox(height: 12.w),

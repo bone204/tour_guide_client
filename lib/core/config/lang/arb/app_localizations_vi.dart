@@ -160,4 +160,40 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get attractionDes => 'Điểm nhấn thêm cho bạn!';
+
+  @override
+  String get priceRange => 'Khoảng giá';
+
+  @override
+  String get hourlyRent => 'Thuê theo giờ';
+
+  @override
+  String get dailyRent => 'Thuê theo ngày';
+
+  @override
+  String get startDate => 'Ngày bắt đầu';
+
+  @override
+  String get endDate => 'Ngày kết thúc';
+
+  @override
+  String get selectDateAndHour => 'Chọn ngày và giờ';
+
+  @override
+  String get startHour => 'Giờ bắt đầu';
+
+  @override
+  String get endHour => 'Giờ kết thúc';
+
+  @override
+  String get selectHour => 'Chọn giờ';
+
+  @override
+  String get pickupLocation => 'Địa điểm nhận';
+
+  @override
+  String get selectPickupLocation => 'Chọn địa điểm nhận';
+
+  @override
+  String get rent => 'Thuê';
 }

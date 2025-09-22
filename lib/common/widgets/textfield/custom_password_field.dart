@@ -1,6 +1,4 @@
 // ignore_for_file: library_private_types_in_public_api
-
-
 import 'package:tour_guide_app/common_libs.dart';
 
 class CustomPasswordField extends StatefulWidget {
@@ -35,11 +33,11 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
       if (widget.prefixIcon is Icon) {
         final icon = widget.prefixIcon as Icon;
         styledPrefixIcon = Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 8.w),
           child: Icon(
             icon.icon,
             color: icon.color ?? AppColors.primaryGrey,
-            size: icon.size ?? 20,
+            size: icon.size ?? 20.sp,
           ),
         );
       } else {
@@ -47,11 +45,11 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
       }
     } else if (widget.prefixIconData != null) {
       styledPrefixIcon = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: EdgeInsets.symmetric(horizontal: 8.w),
         child: Icon(
           widget.prefixIconData,
           color: AppColors.primaryGrey,
-          size: 20,
+          size: 20.sp,
         ),
       );
     }
@@ -62,7 +60,7 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
           Text(
             widget.label!,
             style: Theme.of(context).textTheme.displayLarge),
-          const SizedBox(height: 6),
+          SizedBox(height: 6.h),
         ],
         TextFormField(
           controller: widget.controller,
@@ -77,43 +75,43 @@ class _CustomPasswordFieldState extends State<CustomPasswordField> {
             ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
             filled: true,
             fillColor: AppColors.primaryWhite,
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 12,
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 10.h,
+              horizontal: 12.w,
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: AppColors.secondaryGrey,
                 width: 1.0,
               ),
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                color: AppColors.primaryBlue,
-                width: 2.0,
+              borderSide: BorderSide(
+                color: AppColors.primaryGrey,
+                width: 2.w,
               ),
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             errorBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: AppColors.primaryRed,
-                width: 2.0,
+                width: 2.w,
               ),
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: AppColors.primaryRed,
-                width: 2.0,
+                width: 2.w,
               ),
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             suffixIcon: IconButton(
               icon: Icon(
                 _obscureText ? Icons.visibility_off : Icons.visibility,
                 color: AppColors.primaryGrey,
-                size: 20,
+                size: 20.sp,
               ),
               style: ButtonStyle(splashFactory: NoSplash.splashFactory),
               onPressed: () {

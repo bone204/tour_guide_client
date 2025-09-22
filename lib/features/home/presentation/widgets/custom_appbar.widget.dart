@@ -35,13 +35,11 @@ Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
   return Stack(
     fit: StackFit.expand,
     children: [
-      // Background gradient
       Container(
         decoration: BoxDecoration(
           color: AppColors.primaryBlue,
         ),
       ),
-      // Title + subtitle, fade theo scroll
       Positioned(
         top: statusBarHeight.h + 12.h + offsetY.h,
         left: 12.w,

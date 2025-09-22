@@ -160,4 +160,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get attractionDes => 'Extra highlights for you!';
+
+  @override
+  String get priceRange => 'Price range';
+
+  @override
+  String get hourlyRent => 'Hourly Rent';
+
+  @override
+  String get dailyRent => 'Daily Rent';
+
+  @override
+  String get startDate => 'Start date';
+
+  @override
+  String get endDate => 'End date';
+
+  @override
+  String get selectDateAndHour => 'Select date and hour';
+
+  @override
+  String get startHour => 'Start hour';
+
+  @override
+  String get endHour => 'End hour';
+
+  @override
+  String get selectHour => 'Selecr hour';
+
+  @override
+  String get pickupLocation => 'Pickup location';
+
+  @override
+  String get selectPickupLocation => 'Select pickup location';
+
+  @override
+  String get rent => 'Rent';
 }

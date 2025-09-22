@@ -35,11 +35,11 @@ class CustomTextField extends StatelessWidget {
       if (prefixIcon is Icon) {
         final icon = prefixIcon as Icon;
         styledPrefixIcon = Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 8.w),
           child: Icon(
             icon.icon,
             color: icon.color ?? AppColors.primaryGrey,
-            size: icon.size ?? 20,
+            size: icon.size ?? 20.sp,
           ),
         );
       } else {
@@ -47,8 +47,8 @@ class CustomTextField extends StatelessWidget {
       }
     } else if (prefixIconData != null) {
       styledPrefixIcon = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Icon(prefixIconData, color: AppColors.primaryGrey, size: 20),
+        padding: EdgeInsets.symmetric(horizontal: 8.w),
+        child: Icon(prefixIconData, color: AppColors.primaryGrey, size: 20.sp),
       );
     }
 
@@ -60,7 +60,7 @@ class CustomTextField extends StatelessWidget {
             label!,
             style: Theme.of(context).textTheme.displayLarge,
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6.h),
         ],
         TextFormField(
           controller: controller,
@@ -75,22 +75,22 @@ class CustomTextField extends StatelessWidget {
             hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
             filled: true,
             fillColor: AppColors.primaryWhite,
-            contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            contentPadding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 12.w),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.secondaryGrey, width: 1.0),
-              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide(color: AppColors.secondaryGrey, width: 1.w),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2.0),
-              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide(color: AppColors.primaryGrey, width: 2.w),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             errorBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColors.primaryRed, width: 2.0),
-              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide(color: AppColors.primaryRed, width: 2.w),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColors.primaryRed, width: 2.0),
-              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide(color: AppColors.primaryRed, width: 2.w),
+              borderRadius: BorderRadius.circular(8.r),
             ),
             suffixIcon: suffixIcon,
             prefixIcon: styledPrefixIcon,

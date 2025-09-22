@@ -99,5 +99,29 @@
 
   "attraction": "More travel inspiration",
 
-  "attractionDes": "Extra highlights for you!"
+  "attractionDes": "Extra highlights for you!",
+
+  "priceRange": "Price range",
+
+  "hourlyRent": "Hourly Rent",
+  
+  "dailyRent": "Daily Rent",
+
+  "startDate": "Start date",
+
+  "endDate": "End date",
+
+  "selectDateAndHour": "Select date and hour",
+
+  "startHour": "Start hour",
+
+  "endHour": "End hour",
+
+  "selectHour": "Selecr hour",
+
+  "pickupLocation": "Pickup location",
+
+  "selectPickupLocation": "Select pickup location",
+
+  "rent": "Rent"
 }

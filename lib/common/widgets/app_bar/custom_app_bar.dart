@@ -1,5 +1,6 @@
 
 
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -47,9 +48,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   Widget _buildBackButton() {
     return IconButton(
-      icon: Icon(
-        Icons.chevron_left,
-        size: 32.sp,
+      icon: SvgPicture.asset(
+        AppIcons.arrowLeft,
+        width: 16.w,
+        height: 16.h,
         color: AppColors.primaryBlack,
       ),
       onPressed: onBackPressed,

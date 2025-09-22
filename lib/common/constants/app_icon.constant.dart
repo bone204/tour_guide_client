@@ -8,11 +8,16 @@ class AppIcons {
   static const String term = 'assets/icons/ic_term.svg';
   static const String language = 'assets/icons/ic_language.svg';
   static const String contact = 'assets/icons/ic_contact.svg';
-  static const String arrorRight = 'assets/icons/ic_right.svg';
+  static const String arrowRight = 'assets/icons/ic_right.svg';
+  static const String arrowLeft = 'assets/icons/ic_left.svg';
   static const String tree1 = 'assets/icons/ic_tree1.svg';
   static const String gift = 'assets/icons/ic_gift.svg';
   static const String star = 'assets/icons/ic_star.svg';
   static const String location= 'assets/icons/ic_location.svg';
+  static const String calendar= 'assets/icons/ic_calendar.svg';
+  static const String clock= 'assets/icons/ic_clock.svg';
+  static const String car= 'assets/icons/ic_car.svg';
+  static const String bike= 'assets/icons/ic_bike.svg';
 
   // Bottom navigation bar icons
   static const String homeActive = 'assets/icons/ic_home_active.svg';

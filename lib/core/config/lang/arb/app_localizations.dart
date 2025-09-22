@@ -400,6 +400,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Extra highlights for you!'**
   String get attractionDes;
+
+  /// No description provided for @priceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Price range'**
+  String get priceRange;
+
+  /// No description provided for @hourlyRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Hourly Rent'**
+  String get hourlyRent;
+
+  /// No description provided for @dailyRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Rent'**
+  String get dailyRent;
+
+  /// No description provided for @startDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get startDate;
+
+  /// No description provided for @endDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get endDate;
+
+  /// No description provided for @selectDateAndHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date and hour'**
+  String get selectDateAndHour;
+
+  /// No description provided for @startHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Start hour'**
+  String get startHour;
+
+  /// No description provided for @endHour.
+  ///
+  /// In en, this message translates to:
+  /// **'End hour'**
+  String get endHour;
+
+  /// No description provided for @selectHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Selecr hour'**
+  String get selectHour;
+
+  /// No description provided for @pickupLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup location'**
+  String get pickupLocation;
+
+  /// No description provided for @selectPickupLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Select pickup location'**
+  String get selectPickupLocation;
+
+  /// No description provided for @rent.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent'**
+  String get rent;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

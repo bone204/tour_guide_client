@@ -2,6 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/sign_in.page.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/sign_up.page.dart';
+import 'package:tour_guide_app/features/bike_rental/presentation/pages/bike_rental.page.dart';
+import 'package:tour_guide_app/features/car_rental/presentation/pages/car_rental.page.dart';
 import 'package:tour_guide_app/features/main_screen.dart';
 import 'package:tour_guide_app/features/settings/presentation/pages/change_language.page.dart';
 
@@ -54,6 +56,18 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ChangeLanguagePage(),
+        );
+
+      case AppRouteConstant.carRental:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => CarRentalPage(),
+        );
+
+      case AppRouteConstant.bikeRental:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BikeRentalPage(),
         );
 
       default:

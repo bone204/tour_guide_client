@@ -99,5 +99,29 @@
 
   "attraction": "Cảm hứng du lịch",
 
-  "attractionDes": "Điểm nhấn thêm cho bạn!"
+  "attractionDes": "Điểm nhấn thêm cho bạn!",
+
+  "priceRange": "Khoảng giá",
+
+  "hourlyRent": "Thuê theo giờ",
+  
+  "dailyRent": "Thuê theo ngày",
+
+  "startDate": "Ngày bắt đầu",
+
+  "endDate": "Ngày kết thúc",
+
+  "selectDateAndHour": "Chọn ngày và giờ",
+
+  "startHour": "Giờ bắt đầu",
+
+  "endHour": "Giờ kết thúc",
+
+  "selectHour": "Chọn giờ",
+
+  "pickupLocation": "Địa điểm nhận",
+
+  "selectPickupLocation": "Chọn địa điểm nhận",
+
+  "rent": "Thuê"
 }
