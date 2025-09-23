@@ -123,5 +123,15 @@
 
   "selectPickupLocation": "Chọn địa điểm nhận",
 
-  "rent": "Thuê"
+  "rent": "Thuê",
+
+  "carList": "Danh Sách Xe Hơi",
+
+  "motorbikeList": "Danh Sách Xe Máy",
+
+  "details": "Chi tiết",
+
+  "day": "ngày",
+
+  "seats": "chỗ"
 }

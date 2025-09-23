@@ -114,7 +114,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get carRental => 'Car Rental';
 
   @override
-  String get bikeRental => 'Bike Rental';
+  String get bikeRental => 'Motorbike Rental';
 
   @override
   String get busBooking => 'Bus Booking';
@@ -196,4 +196,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rent => 'Rent';
+
+  @override
+  String get details => 'Details';
+
+  @override
+  String get day => 'day';
+
+  @override
+  String get seats => 'seats';
+
+  @override
+  String get carList => 'Car List';
+
+  @override
+  String get motorbikeList => 'Motorbike List';
 }

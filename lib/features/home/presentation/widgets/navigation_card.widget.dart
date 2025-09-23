@@ -41,7 +41,7 @@ class _NavigationCardState extends State<NavigationCard> {
       {
         'icon': AppIcons.bike,
         'title': AppLocalizations.of(context)!.bikeRental,
-        'route': AppRouteConstant.bikeRental,
+        'route': AppRouteConstant.motorbikeRental,
         'color': AppColors.primaryBlue
       },
       {

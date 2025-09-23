@@ -69,7 +69,7 @@
 
   "carRental": "Car Rental",
 
-  "bikeRental": "Bike Rental",
+  "bikeRental": "Motorbike Rental",
 
   "busBooking": "Bus Booking",
 
@@ -123,5 +123,15 @@
 
   "selectPickupLocation": "Select pickup location",
 
-  "rent": "Rent"
+  "rent": "Rent",
+
+  "details": "Details",
+
+  "day": "day",
+
+  "seats": "seats",
+
+  "carList": "Car List",
+
+  "motorbikeList": "Motorbike List"
 }

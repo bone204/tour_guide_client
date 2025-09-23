@@ -196,4 +196,19 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get rent => 'Thuê';
+
+  @override
+  String get details => 'Chi tiết';
+
+  @override
+  String get day => 'ngày';
+
+  @override
+  String get seats => 'chỗ';
+
+  @override
+  String get carList => 'Danh Sách Xe Hơi';
+
+  @override
+  String get motorbikeList => 'Danh Sách Xe Máy';
 }

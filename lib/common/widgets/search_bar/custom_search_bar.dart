@@ -23,7 +23,6 @@ class CustomSearchBar extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.primaryWhite,
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: AppColors.primaryGrey, width: 1.w),
         ),
         child: Row(
           children: [

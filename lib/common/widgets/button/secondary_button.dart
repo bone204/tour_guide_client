@@ -1,21 +1,21 @@
 import 'package:tour_guide_app/common_libs.dart';
 
-class PrimaryButton extends StatelessWidget {
+class SecondaryButton extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
-  final Color backgroundColor;
+  final Color borderColor;
   final Color textColor;
   final double borderRadius;
   final double height;
   final double? width;
   final IconData? icon;
 
-  const PrimaryButton({
+  const SecondaryButton({
     Key? key,
     required this.title,
     required this.onPressed,
-    this.backgroundColor = AppColors.primaryBlue,
-    this.textColor = AppColors.textSecondary,
+    this.borderColor = AppColors.primaryBlue,
+    this.textColor = AppColors.primaryBlue,
     this.borderRadius = 8.0,
     this.height = 50,
     this.width,
@@ -24,10 +24,10 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return OutlinedButton(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(color: borderColor, width: 1.5),
         minimumSize: Size(width ?? double.infinity, height.h),
         padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
         shape: RoundedRectangleBorder(
@@ -44,8 +44,8 @@ class PrimaryButton extends StatelessWidget {
           Text(
             title,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: AppColors.textSecondary,
-            )
+                  color: textColor,
+                ),
           ),
         ],
       ),

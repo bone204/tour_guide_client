@@ -27,6 +27,13 @@ class _CarRentalPageState extends State<CarRentalPage> {
 
   String? pickupLocation;
 
+  void _navigateToCarListPage(BuildContext context) {
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).pushNamed(AppRouteConstant.carList);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,11 +141,7 @@ class _CarRentalPageState extends State<CarRentalPage> {
             SizedBox(height: 32.h),
             PrimaryButton(
               title: AppLocalizations.of(context)!.rent,
-              onPressed: () {
-                // Sử dụng:
-                // selectedRentType == RentType.daily => startDateTime, endDateTime
-                // selectedRentType == RentType.hourly => startHour, endHour
-              },
+              onPressed: () => _navigateToCarListPage(context),
               backgroundColor: AppColors.primaryBlue,
               textColor: AppColors.textSecondary,
             )

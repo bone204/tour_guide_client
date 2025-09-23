@@ -308,7 +308,7 @@ abstract class AppLocalizations {
   /// No description provided for @bikeRental.
   ///
   /// In en, this message translates to:
-  /// **'Bike Rental'**
+  /// **'Motorbike Rental'**
   String get bikeRental;
 
   /// No description provided for @busBooking.
@@ -472,6 +472,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rent'**
   String get rent;
+
+  /// No description provided for @details.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get details;
+
+  /// No description provided for @day.
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get day;
+
+  /// No description provided for @seats.
+  ///
+  /// In en, this message translates to:
+  /// **'seats'**
+  String get seats;
+
+  /// No description provided for @carList.
+  ///
+  /// In en, this message translates to:
+  /// **'Car List'**
+  String get carList;
+
+  /// No description provided for @motorbikeList.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorbike List'**
+  String get motorbikeList;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

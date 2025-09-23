@@ -8,14 +8,14 @@ import 'package:tour_guide_app/common/widgets/slider/price_range_slider.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/selector/rent_type.widget.dart';
 
-class BikeRentalPage extends StatefulWidget {
-  BikeRentalPage({Key? key}) : super(key: key);
+class MotorbikeRentalPage extends StatefulWidget {
+  MotorbikeRentalPage({Key? key}) : super(key: key);
 
   @override
-  State<BikeRentalPage> createState() => _BikeRentalPagePageState();
+  State<MotorbikeRentalPage> createState() => _MotorbikeRentalPageState();
 }
 
-class _BikeRentalPagePageState extends State<BikeRentalPage> {
+class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
   RangeValues selectedRange = const RangeValues(10000, 5000000);
   RentType selectedRentType = RentType.hourly;
 
