@@ -1,5 +1,5 @@
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tour_guide_app/common/widgets/app_bar/custom_app_bar.dart';
+import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common/widgets/picker/date_and_hour_picker.dart';
 import 'package:tour_guide_app/common/widgets/picker/hour_picker.dart';

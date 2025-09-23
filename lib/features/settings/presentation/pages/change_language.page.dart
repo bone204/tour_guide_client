@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/bloc/lang/locale_cubit.dart';
 import 'package:tour_guide_app/common/bloc/lang/locale_state.dart';
-import 'package:tour_guide_app/common/widgets/app_bar/custom_app_bar.dart';
+import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/loading/dialog_loading.dart';
 import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/features/settings/presentation/widgets/language_tile.widget.dart';

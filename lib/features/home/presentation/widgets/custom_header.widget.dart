@@ -23,7 +23,7 @@ class _CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
       clipBehavior: Clip.none,
       children: [
         Container(
-          height: 140.h,
+          height: 150.h,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -36,7 +36,6 @@ class _CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
           ),
         ),
 
-        // Card
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
           child: const NavigationCard(),
@@ -46,10 +45,10 @@ class _CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 140.h;
+  double get maxExtent => 150.h;
 
   @override
-  double get minExtent => 140.h;
+  double get minExtent => 150.h;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

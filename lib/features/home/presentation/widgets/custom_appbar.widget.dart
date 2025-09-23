@@ -24,76 +24,77 @@ class AnimatedSliverAppBar extends SliverPersistentHeaderDelegate {
   @override
   double get maxExtent => statusBarHeight.h + expandedHeight.h + 40.h;
 
-@override
-Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-  final double fadeDistance = maxExtent - minExtent;
-  final double fade = (1 - (shrinkOffset / fadeDistance)).clamp(0.0, 1.0);
-  final double offsetY = -shrinkOffset * 0.5;
+  void _openSearchPage(BuildContext context) {
+    Navigator.of(context).pushNamed(AppRouteConstant.homeSearch);
+  }
 
-  final double searchBarHeight = 56.h;
+  
 
-  return Stack(
-    fit: StackFit.expand,
-    children: [
-      Container(
-        decoration: BoxDecoration(
-          color: AppColors.primaryBlue,
-        ),
-      ),
-      Positioned(
-        top: statusBarHeight.h + 12.h + offsetY.h,
-        left: 12.w,
-        right: 12.w,
-        child: Opacity(
-          opacity: fade,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              GestureDetector(onTap: () {}, child: buildEButton()),
-              SizedBox(width: 8.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(color: AppColors.textSecondary),
-                    ),
-                    SizedBox(height: 4.h),
-                    TypewriterText(
-                      text: subtitle,
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                      typingDuration: const Duration(milliseconds: 70),
-                      holdDuration: const Duration(seconds: 2),
-                      fadeDuration: const Duration(milliseconds: 800),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    final double fadeDistance = maxExtent - minExtent;
+    final double fade = (1 - (shrinkOffset / fadeDistance)).clamp(0.0, 1.0);
+    final double offsetY = -shrinkOffset * 0.5;
+    
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.primaryBlue,
           ),
         ),
-      ),
-      Positioned(
-        bottom: 0,
-        left: 2.w,
-        right: 2.w,
-        child: CustomSearchBar(
-          height: searchBarHeight,
-          hintText: hintText,
+        Positioned(
+          top: statusBarHeight.h + 12.h + offsetY.h,
+          left: 12.w,
+          right: 12.w,
+          child: Opacity(
+            opacity: fade,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(onTap: () {}, child: buildEButton()),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(color: AppColors.textSecondary),
+                      ),
+                      SizedBox(height: 4.h),
+                      TypewriterText(
+                        text: subtitle,
+                        style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                        typingDuration: const Duration(milliseconds: 70),
+                        holdDuration: const Duration(seconds: 2),
+                        fadeDuration: const Duration(milliseconds: 800),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
-    ],
-  );
-}
-
-
-
+        Positioned(
+          bottom: 0,
+          left: 2.w,
+          right: 2.w,
+          child: CustomSearchBar(
+            hintText: hintText,
+            onTap: () => _openSearchPage(context),
+          ),
+        ),
+      ],
+    );
+  }
   @override
   bool shouldRebuild(covariant AnimatedSliverAppBar oldDelegate) => true;
 }

@@ -1,48 +1,56 @@
-
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/core/utils/typewritter_text.dart';
 
 class CustomSearchBar extends StatelessWidget {
-  final double height;
   final String hintText;
+  final VoidCallback? onTap;
 
-  const CustomSearchBar({super.key, this.height = 56, required this.hintText});
+  const CustomSearchBar({
+    super.key,
+    required this.hintText,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-      child: TextField(
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-          prefixIcon: Padding(
-            padding: EdgeInsets.only(left: 12.w, right: 8.w),
-            child: SvgPicture.asset(
-              AppIcons.search,
-              width: 20.w,
-              height: 20.h,
-              colorFilter: const ColorFilter.mode(
-                AppColors.primaryGrey,
-                BlendMode.srcIn,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 44.h,
+        margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: AppColors.primaryWhite,
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(color: AppColors.primaryGrey, width: 1.w),
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(right: 8.w),
+              child: SvgPicture.asset(
+                AppIcons.search,
+                width: 20.w,
+                height: 20.h,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.primaryGrey,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
-          ),
-          prefixIconConstraints: BoxConstraints(
-            minWidth: 40.w,
-            minHeight: 40.h,
-          ),
-          hintText: hintText,
-          hintStyle: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(color: AppColors.textSubtitle),
-          filled: true,
-          fillColor: AppColors.primaryWhite,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.r),
-            borderSide: BorderSide.none,
-          ),
+            Expanded(
+              child: TypewriterText(
+                text: hintText,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.textSubtitle,
+                ),
+                typingDuration: const Duration(milliseconds: 70),
+                holdDuration: const Duration(seconds: 2),
+                fadeDuration: const Duration(milliseconds: 800),
+              ),
+            ),
+          ],
         ),
       ),
     );

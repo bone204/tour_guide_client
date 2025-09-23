@@ -1,7 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/material.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
 class NavigationCard extends StatefulWidget {
@@ -46,25 +45,25 @@ class _NavigationCardState extends State<NavigationCard> {
         'color': AppColors.primaryBlue
       },
       {
-        'icon': AppIcons.travel,
+        'icon': AppIcons.bus,
         'title': AppLocalizations.of(context)!.busBooking,
         'route': '/busBooking',
         'color': AppColors.primaryGreen
       },
       {
-        'icon': AppIcons.travel,
+        'icon': AppIcons.restaurant,
         'title': AppLocalizations.of(context)!.findRes,
         'route': '/findRestaurant',
         'color': AppColors.primaryYellow
       },
       {
-        'icon': AppIcons.travel,
+        'icon': AppIcons.delivery,
         'title': AppLocalizations.of(context)!.delivery,
         'route': '/delivery',
         'color': AppColors.primaryRed
       },
       {
-        'icon': AppIcons.travel,
+        'icon': AppIcons.hotel,
         'title': AppLocalizations.of(context)!.findHotel,
         'route': '/findHotel',
         'color': AppColors.primaryBlue
@@ -86,7 +85,7 @@ class _NavigationCardState extends State<NavigationCard> {
           ),
         ],
       ),
-      padding: EdgeInsets.all(8.w),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

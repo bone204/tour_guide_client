@@ -18,6 +18,10 @@ class AppIcons {
   static const String clock= 'assets/icons/ic_clock.svg';
   static const String car= 'assets/icons/ic_car.svg';
   static const String bike= 'assets/icons/ic_bike.svg';
+  static const String hotel= 'assets/icons/ic_hotel.svg';
+  static const String restaurant= 'assets/icons/ic_restaurant.svg';
+  static const String delivery= 'assets/icons/ic_delivery.svg';
+  static const String bus= 'assets/icons/ic_bus.svg';
 
   // Bottom navigation bar icons
   static const String homeActive = 'assets/icons/ic_home_active.svg';

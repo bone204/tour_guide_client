@@ -7,4 +7,5 @@ class AppRouteConstant {
   static const String language = '/language_screen';
   static const String carRental = '/car_rental';
   static const String bikeRental = '/bike_rental';
+  static const String homeSearch = '/home_search';
 }
