@@ -1,7 +1,7 @@
-import 'package:intl/intl.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common/widgets/button/secondary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/core/utils/money_formatter.dart';
 
 class VehicleCard extends StatelessWidget {
   final String name;
@@ -22,12 +22,6 @@ class VehicleCard extends StatelessWidget {
     this.onDetail,
     this.onRent,
   });
-
-  final NumberFormat _currencyFormat = NumberFormat.currency(
-    locale: 'vi_VN',
-    symbol: '₫',
-    decimalDigits: 0,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +95,7 @@ class VehicleCard extends StatelessWidget {
                       SizedBox(height: 12.h),
 
                       Text(
-                        "${_currencyFormat.format(price)} / ${AppLocalizations.of(context)!.day}",
+                        "${Formatter.currency(price)} / ${AppLocalizations.of(context)!.day}",
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               color: AppColors.primaryOrange,
                             ),

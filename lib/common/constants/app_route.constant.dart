@@ -12,4 +12,6 @@ class AppRouteConstant {
   static const String motorbikeList = '/motorbike_list';
   static const String carDetails = '/car_details';
   static const String motorbikeDetails = '/motorbike_details';
+  static const String carBill = '/car_bill';
+  static const String motorbikeBill = '/motorbike_bill';
 }

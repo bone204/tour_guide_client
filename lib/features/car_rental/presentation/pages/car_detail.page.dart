@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/widgets/car_info_item.widget.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/widgets/feature_chip.widget.dart';
+import 'package:tour_guide_app/features/car_rental/presentation/widgets/review_card.widget.dart';
 
 class CarDetailPage extends StatelessWidget {
   final Map<String, dynamic>? car;
@@ -52,7 +52,6 @@ class CarDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = car ?? _fakeCar;
-    final formatter = NumberFormat.currency(locale: 'vi_VN', symbol: '₫', decimalDigits: 0);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
@@ -136,7 +135,7 @@ class CarDetailPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            formatter.format(c['price']),
+                            Formatter.currency(c['price']),
                             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                               color: AppColors.primaryOrange,
                             ),
@@ -197,46 +196,16 @@ class CarDetailPage extends StatelessWidget {
                   SizedBox(height: 12.h),
 
                   Text(AppLocalizations.of(context)!.reviews, style: Theme.of(context).textTheme.titleSmall),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryBlue.withOpacity(0.08),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Row(
-                          children: [
-                            Text((c['rating'] as double).toStringAsFixed(1), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.sp)),
-                            SizedBox(width: 6.w),
-                            Icon(Icons.star, size: 16.sp, color: Colors.amber),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Text('${(c['reviews'] as List).length} đánh giá', style: TextStyle(color: AppColors.textSubtitle)),
-                    ],
-                  ),
-
                   SizedBox(height: 12.h),
                   Column(
                     children: (c['reviews'] as List<dynamic>)
-                        .map((r) => ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: CircleAvatar(child: Text((r['author'] as String).substring(0, 1))),
-                              title: Text(r['author'] as String, style: TextStyle(fontWeight: FontWeight.w600)),
-                              subtitle: Text(r['text'] as String),
-                              trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                                Text((r['rating'] as int).toString()),
-                                SizedBox(width: 4.w),
-                                Icon(Icons.star, size: 14.sp, color: Colors.amber)
-                              ]),
-                            ))
-                        .toList(),
+                      .map((r) => ReviewCard(
+                            author: r['author'] as String,
+                            rating: r['rating'] as int,
+                            text: r['text'] as String,
+                          ))
+                      .toList(),
                   ),
-
-                  SizedBox(height: 80.h), 
                 ],
               ),
             )

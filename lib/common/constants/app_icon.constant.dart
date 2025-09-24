@@ -24,7 +24,7 @@ class AppIcons {
   static const String bus= 'assets/icons/ic_bus.svg';
   static const String setting= 'assets/icons/ic_setting.svg';
   static const String speed= 'assets/icons/ic_speed.svg';
-  static const String gasPump= 'assets/icons/ic_gasPump.svg';
+  static const String gasPump= 'assets/icons/ic_gas_pump.svg';
   static const String seat= 'assets/icons/ic_seat.svg';
 
   // Bottom navigation bar icons

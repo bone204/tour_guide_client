@@ -226,4 +226,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reviews => 'Reviews';
+
+  @override
+  String get rentalInfo => 'Rental Information';
+
+  @override
+  String get customers => 'Customer';
+
+  @override
+  String get phone => 'Phone number';
+
+  @override
+  String get owner => 'Car owner';
+
+  @override
+  String get rentalDays => 'Rental days';
+
+  @override
+  String get subtotal => 'Subtotal';
+
+  @override
+  String get discountPoint => 'Reward points discount';
+
+  @override
+  String get totalPayment => 'Total payment';
+
+  @override
+  String get choosePayment => 'Choose payment method';
+
+  @override
+  String get pricePerDay => 'Price Per Day';
+
+  @override
+  String get useRewardPoint => 'Use reward points';
+
+  @override
+  String get availablePoints => 'Available points';
+
+  @override
+  String get noUsePoint => 'Do not use points';
+
+  @override
+  String get points => 'points';
 }

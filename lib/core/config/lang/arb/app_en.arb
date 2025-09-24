@@ -143,5 +143,33 @@
 
   "description": "Description",
 
-  "reviews": "Reviews"
+  "reviews": "Reviews",
+
+  "rentalInfo": "Rental Information",
+
+  "customers": "Customer",
+
+  "phone": "Phone number",
+
+  "owner": "Car owner",
+
+  "rentalDays": "Rental days",
+
+  "subtotal": "Subtotal",
+
+  "discountPoint": "Reward points discount",
+
+  "totalPayment": "Total payment",
+
+  "choosePayment": "Choose payment method",
+
+  "pricePerDay": "Price Per Day",
+
+  "useRewardPoint": "Use reward points",
+
+  "availablePoints": "Available points",
+
+  "noUsePoint": "Do not use points",
+  
+  "points": "points"
 }

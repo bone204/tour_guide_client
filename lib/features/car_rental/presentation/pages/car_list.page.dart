@@ -12,6 +12,13 @@ class CarListPage extends StatelessWidget {
     ).pushNamed(AppRouteConstant.carDetails);
   }
 
+  void _navigateToCarBillPage(BuildContext context) {
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).pushNamed(AppRouteConstant.carBill);
+  }
+
   @override
   Widget build(BuildContext context) {
     final cars = [
@@ -58,9 +65,7 @@ class CarListPage extends StatelessWidget {
             imageUrl: car["image"] as String,
             seats: car["seats"] as int,
             onDetail: () => _navigateToCarDetailsPage(context),
-            onRent: () {
-              
-            },
+            onRent: () => _navigateToCarBillPage(context),
           );
         },
       ),

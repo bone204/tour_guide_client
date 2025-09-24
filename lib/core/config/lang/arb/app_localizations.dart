@@ -532,6 +532,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reviews'**
   String get reviews;
+
+  /// No description provided for @rentalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Information'**
+  String get rentalInfo;
+
+  /// No description provided for @customers.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get customers;
+
+  /// No description provided for @phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get phone;
+
+  /// No description provided for @owner.
+  ///
+  /// In en, this message translates to:
+  /// **'Car owner'**
+  String get owner;
+
+  /// No description provided for @rentalDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental days'**
+  String get rentalDays;
+
+  /// No description provided for @subtotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal'**
+  String get subtotal;
+
+  /// No description provided for @discountPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward points discount'**
+  String get discountPoint;
+
+  /// No description provided for @totalPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Total payment'**
+  String get totalPayment;
+
+  /// No description provided for @choosePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose payment method'**
+  String get choosePayment;
+
+  /// No description provided for @pricePerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Per Day'**
+  String get pricePerDay;
+
+  /// No description provided for @useRewardPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use reward points'**
+  String get useRewardPoint;
+
+  /// No description provided for @availablePoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Available points'**
+  String get availablePoints;
+
+  /// No description provided for @noUsePoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not use points'**
+  String get noUsePoint;
+
+  /// No description provided for @points.
+  ///
+  /// In en, this message translates to:
+  /// **'points'**
+  String get points;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

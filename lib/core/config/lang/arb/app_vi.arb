@@ -143,5 +143,33 @@
 
   "description": "Mô tả",
 
-  "reviews": "Đánh giá"
+  "reviews": "Đánh giá",
+
+  "rentalInfo": "Thông Tin Thuê Xe",
+
+  "customers": "Khách hàng",
+
+  "phone": "Số điện thoại",
+
+  "owner": "Chủ xe",
+
+  "rentalDays": "Số ngày thuê",
+
+  "subtotal": "Tạm tính",
+
+  "discountPoint": "Trừ điểm thưởng",
+
+  "totalPayment": "Tổng thanh toán",
+
+  "choosePayment": "Chọn phương thức thanh toán",
+
+  "pricePerDay": "Giá mỗi ngày",
+
+  "useRewardPoint": "Sử dụng điểm thưởng",
+
+  "availablePoints": "Điểm hiện có",
+
+  "noUsePoint": "Không sử dụng điểm",
+  
+  "points": "điểm"
 }

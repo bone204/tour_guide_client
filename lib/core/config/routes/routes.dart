@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/sign_in.page.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/sign_up.page.dart';
+import 'package:tour_guide_app/features/car_rental/presentation/pages/car_bill.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_detail.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_list.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_rental.page.dart';
@@ -124,6 +125,18 @@ class AppRouter {
         );
 
       case AppRouteConstant.motorbikeDetails:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => MotorbikeRentalPage(),
+        );
+
+      case AppRouteConstant.carBill:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => CarBillPage(),
+        );
+
+      case AppRouteConstant.motorbikeBill:
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => MotorbikeRentalPage(),

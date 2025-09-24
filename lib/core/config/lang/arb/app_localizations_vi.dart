@@ -226,4 +226,46 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get reviews => 'Đánh giá';
+
+  @override
+  String get rentalInfo => 'Thông Tin Thuê Xe';
+
+  @override
+  String get customers => 'Khách hàng';
+
+  @override
+  String get phone => 'Số điện thoại';
+
+  @override
+  String get owner => 'Chủ xe';
+
+  @override
+  String get rentalDays => 'Số ngày thuê';
+
+  @override
+  String get subtotal => 'Tạm tính';
+
+  @override
+  String get discountPoint => 'Trừ điểm thưởng';
+
+  @override
+  String get totalPayment => 'Tổng thanh toán';
+
+  @override
+  String get choosePayment => 'Chọn phương thức thanh toán';
+
+  @override
+  String get pricePerDay => 'Giá mỗi ngày';
+
+  @override
+  String get useRewardPoint => 'Sử dụng điểm thưởng';
+
+  @override
+  String get availablePoints => 'Điểm hiện có';
+
+  @override
+  String get noUsePoint => 'Không sử dụng điểm';
+
+  @override
+  String get points => 'điểm';
 }
