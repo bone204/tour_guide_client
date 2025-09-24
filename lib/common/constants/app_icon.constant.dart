@@ -22,6 +22,10 @@ class AppIcons {
   static const String restaurant= 'assets/icons/ic_restaurant.svg';
   static const String delivery= 'assets/icons/ic_delivery.svg';
   static const String bus= 'assets/icons/ic_bus.svg';
+  static const String setting= 'assets/icons/ic_setting.svg';
+  static const String speed= 'assets/icons/ic_speed.svg';
+  static const String gasPump= 'assets/icons/ic_gasPump.svg';
+  static const String seat= 'assets/icons/ic_seat.svg';
 
   // Bottom navigation bar icons
   static const String homeActive = 'assets/icons/ic_home_active.svg';

@@ -502,6 +502,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Motorbike List'**
   String get motorbikeList;
+
+  /// No description provided for @carDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Car Details'**
+  String get carDetails;
+
+  /// No description provided for @mortorbikeDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorbike Details'**
+  String get mortorbikeDetails;
+
+  /// No description provided for @features.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get features;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get reviews;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

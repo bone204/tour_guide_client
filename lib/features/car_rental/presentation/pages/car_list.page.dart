@@ -5,9 +5,15 @@ import 'package:tour_guide_app/common_libs.dart';
 class CarListPage extends StatelessWidget {
   const CarListPage({super.key});
 
+  void _navigateToCarDetailsPage(BuildContext context) {
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).pushNamed(AppRouteConstant.carDetails);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // fake data
     final cars = [
       {
         "name": "Toyota Vios",
@@ -51,6 +57,10 @@ class CarListPage extends StatelessWidget {
             price: car["price"] as int,
             imageUrl: car["image"] as String,
             seats: car["seats"] as int,
+            onDetail: () => _navigateToCarDetailsPage(context),
+            onRent: () {
+              
+            },
           );
         },
       ),

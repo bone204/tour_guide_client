@@ -211,4 +211,19 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get motorbikeList => 'Danh Sách Xe Máy';
+
+  @override
+  String get carDetails => 'Chi Tiết Xe';
+
+  @override
+  String get mortorbikeDetails => 'Chi Tiết Xe';
+
+  @override
+  String get features => 'Tiện ích';
+
+  @override
+  String get description => 'Mô tả';
+
+  @override
+  String get reviews => 'Đánh giá';
 }

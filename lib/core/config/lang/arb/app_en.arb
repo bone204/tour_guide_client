@@ -133,5 +133,15 @@
 
   "carList": "Car List",
 
-  "motorbikeList": "Motorbike List"
+  "motorbikeList": "Motorbike List",
+
+  "carDetails": "Car Details",
+
+  "mortorbikeDetails": "Motorbike Details",
+
+  "features": "Features",
+
+  "description": "Description",
+
+  "reviews": "Reviews"
 }

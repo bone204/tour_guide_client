@@ -133,5 +133,15 @@
 
   "day": "ngày",
 
-  "seats": "chỗ"
+  "seats": "chỗ",
+
+  "carDetails": "Chi Tiết Xe",
+
+  "mortorbikeDetails": "Chi Tiết Xe",
+
+  "features": "Tiện ích",
+
+  "description": "Mô tả",
+
+  "reviews": "Đánh giá"
 }

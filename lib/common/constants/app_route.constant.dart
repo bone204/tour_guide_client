@@ -10,4 +10,6 @@ class AppRouteConstant {
   static const String homeSearch = '/home_search';
   static const String carList = '/car_list';
   static const String motorbikeList = '/motorbike_list';
+  static const String carDetails = '/car_details';
+  static const String motorbikeDetails = '/motorbike_details';
 }

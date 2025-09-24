@@ -211,4 +211,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get motorbikeList => 'Motorbike List';
+
+  @override
+  String get carDetails => 'Car Details';
+
+  @override
+  String get mortorbikeDetails => 'Motorbike Details';
+
+  @override
+  String get features => 'Features';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get reviews => 'Reviews';
 }

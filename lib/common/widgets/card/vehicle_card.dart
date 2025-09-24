@@ -103,7 +103,7 @@ class VehicleCard extends StatelessWidget {
                       Text(
                         "${_currencyFormat.format(price)} / ${AppLocalizations.of(context)!.day}",
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: const Color(0xFFFF7029),
+                              color: AppColors.primaryOrange,
                             ),
                       ),
                     ],

@@ -80,7 +80,7 @@ class SliverVoucherCarousel extends StatelessWidget {
                         return VoucherCard(voucherText: vouchers[index]);
                       },
                       options: CarouselOptions(
-                        height: 140,
+                        height: 140.h,
                         autoPlay: true,
                         enableInfiniteScroll: true,
                         autoPlayCurve: Curves.fastOutSlowIn,
