@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/destination_card.widget.dart';
 
 class SliverNearbyDestinationList extends StatelessWidget {
@@ -115,7 +116,17 @@ class SliverNearbyDestinationList extends StatelessWidget {
                             location: destination.location,
                             category: destination.category,
                             onTap: () {
-                              // TODO: navigate to detail page
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                  builder: (context) => DestinationDetailPage(
+                                    imageUrl: destination.imageUrl,
+                                    name: destination.name,
+                                    location: destination.location,
+                                    rating: destination.rating,
+                                    category: destination.category,
+                                  ),
+                                ),
+                              );
                             },
                             onFavorite: () {
                               // TODO: add/remove from favorites
