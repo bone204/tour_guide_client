@@ -8,30 +8,34 @@ class SliverNearbyDestinationList extends StatelessWidget {
     DestinationCard(
       imageUrl:
           "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Eiffel Tower",
-      rating: "4.8",
-      location: "Paris, France",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Mount Fuji",
-      rating: "4.7",
-      location: "Tokyo, Japan",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Ha Long Bay",
+      name: "Santorini Beach",
       rating: "4.9",
-      location: "Quang Ninh, Vietnam",
+      location: "Santorini, Greece",
+      category: "Bãi biển",
     ),
     DestinationCard(
       imageUrl:
           "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Grand Canyon",
+      name: "Kyoto Temple",
+      rating: "4.7",
+      location: "Kyoto, Japan",
+      category: "Văn hóa",
+    ),
+    DestinationCard(
+      imageUrl:
+          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
+      name: "Swiss Alps",
+      rating: "4.8",
+      location: "Interlaken, Switzerland",
+      category: "Núi cao",
+    ),
+    DestinationCard(
+      imageUrl:
+          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
+      name: "Bali Waterfall",
       rating: "4.6",
-      location: "Arizona, USA",
+      location: "Ubud, Bali",
+      category: "Thiên nhiên",
     ),
   ];
 
@@ -98,30 +102,34 @@ class SliverNearbyDestinationList extends StatelessWidget {
                     ),
 
                     // Carousel Destination Cards
-                    CarouselSlider.builder(
-                      itemCount: fakeDestinations.length,
-                      itemBuilder: (context, index, realIndex) {
-                        final destination = fakeDestinations[index];
-                        return DestinationCard(
-                          imageUrl: destination.imageUrl,
-                          name: destination.name,
-                          rating: destination.rating,
-                          location: destination.location,
-                          onTap: () {
-                            // TODO: navigate to detail page
-                          },
-                          onFavorite: () {
-                            // TODO: add/remove from favorites
-                          },
-                        );
-                      },
-                      options: CarouselOptions(
-                        height: 210.h,
-                        padEnds: false,
-                        autoPlay: false,
-                        enableInfiniteScroll: false,
-                        viewportFraction: 0.7,
-                        enlargeCenterPage: false,
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: CarouselSlider.builder(
+                        itemCount: fakeDestinations.length,
+                        itemBuilder: (context, index, realIndex) {
+                          final destination = fakeDestinations[index];
+                          return DestinationCard(
+                            imageUrl: destination.imageUrl,
+                            name: destination.name,
+                            rating: destination.rating,
+                            location: destination.location,
+                            category: destination.category,
+                            onTap: () {
+                              // TODO: navigate to detail page
+                            },
+                            onFavorite: () {
+                              // TODO: add/remove from favorites
+                            },
+                          );
+                        },
+                        options: CarouselOptions(
+                          height: 300.h,
+                          padEnds: false,
+                          autoPlay: false,
+                          enableInfiniteScroll: false,
+                          viewportFraction: 0.8,
+                          enlargeCenterPage: false,
+                        ),
                       ),
                     ),
                   ],

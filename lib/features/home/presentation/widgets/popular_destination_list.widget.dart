@@ -8,9 +8,10 @@ class SliverPopularDestinationList extends StatelessWidget {
     DestinationCard(
       imageUrl:
           "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Eiffel Towerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+      name: "Eiffel Tower",
       rating: "4.8",
       location: "Paris, France",
+      category: "Địa danh",
     ),
     DestinationCard(
       imageUrl:
@@ -18,6 +19,7 @@ class SliverPopularDestinationList extends StatelessWidget {
       name: "Mount Fuji",
       rating: "4.7",
       location: "Tokyo, Japan",
+      category: "Thiên nhiên",
     ),
     DestinationCard(
       imageUrl:
@@ -25,6 +27,7 @@ class SliverPopularDestinationList extends StatelessWidget {
       name: "Ha Long Bay",
       rating: "4.9",
       location: "Quang Ninh, Vietnam",
+      category: "Bãi biển",
     ),
     DestinationCard(
       imageUrl:
@@ -32,6 +35,7 @@ class SliverPopularDestinationList extends StatelessWidget {
       name: "Grand Canyon",
       rating: "4.6",
       location: "Arizona, USA",
+      category: "Phiêu lưu",
     ),
   ];
 
@@ -98,30 +102,34 @@ class SliverPopularDestinationList extends StatelessWidget {
                     ),
 
                     // Carousel Destination Cards
-                    CarouselSlider.builder(
-                      itemCount: fakeDestinations.length,
-                      itemBuilder: (context, index, realIndex) {
-                        final destination = fakeDestinations[index];
-                        return DestinationCard(
-                          imageUrl: destination.imageUrl,
-                          name: destination.name,
-                          rating: destination.rating,
-                          location: destination.location,
-                          onTap: () {
-                            // TODO: navigate to detail page
-                          },
-                          onFavorite: () {
-                            // TODO: add/remove from favorites
-                          },
-                        );
-                      },
-                      options: CarouselOptions(
-                        height: 210.h,
-                        padEnds: false,
-                        autoPlay: false,
-                        enableInfiniteScroll: false,
-                        viewportFraction: 0.7,
-                        enlargeCenterPage: false,
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: CarouselSlider.builder(
+                        itemCount: fakeDestinations.length,
+                        itemBuilder: (context, index, realIndex) {
+                          final destination = fakeDestinations[index];
+                          return DestinationCard(
+                            imageUrl: destination.imageUrl,
+                            name: destination.name,
+                            rating: destination.rating,
+                            location: destination.location,
+                            category: destination.category,
+                            onTap: () {
+                              // TODO: navigate to detail page
+                            },
+                            onFavorite: () {
+                              // TODO: add/remove from favorites
+                            },
+                          );
+                        },
+                        options: CarouselOptions(
+                          height: 300.h,
+                          padEnds: false,
+                          autoPlay: false,
+                          enableInfiniteScroll: false,
+                          viewportFraction: 0.8,
+                          enlargeCenterPage: false,
+                        ),
                       ),
                     ),
                   ],

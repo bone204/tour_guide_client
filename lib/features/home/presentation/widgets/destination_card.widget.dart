@@ -8,6 +8,7 @@ class DestinationCard extends StatelessWidget {
   final String name;
   final String rating;
   final String location;
+  final String? category;
   final VoidCallback? onTap;
   final VoidCallback? onFavorite;
 
@@ -17,6 +18,7 @@ class DestinationCard extends StatelessWidget {
     required this.name,
     required this.rating,
     required this.location,
+    this.category,
     this.onTap,
     this.onFavorite,
   });
@@ -26,71 +28,194 @@ class DestinationCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 360.w,
-        margin: EdgeInsets.only(left: 16.w),
+        width: 290.w,
+        margin: EdgeInsets.only(right: 16.w),
         decoration: BoxDecoration(
           color: AppColors.primaryWhite,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(20.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 16,
+              offset: Offset(0, 4),
+              spreadRadius: 0,
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 8,
+              offset: Offset(0, 2),
+              spreadRadius: 0,
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🔹 Image
-            ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
-              child: Image.network(
-                imageUrl,
-                width: double.infinity,
-                height: 120.h,
-                fit: BoxFit.cover,
-              ),
+            // 🔹 Image Section with Overlay
+            Stack(
+              children: [
+                // Image with gradient overlay
+                ClipRRect(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+                  child: Stack(
+                    children: [
+                      Image.network(
+                        imageUrl,
+                        width: double.infinity,
+                        height: 170.h,
+                        fit: BoxFit.cover,
+                      ),
+                      // Subtle gradient overlay for better text contrast
+                      Container(
+                        width: double.infinity,
+                        height: 170.h,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.03),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Favorite Button
+                if (onFavorite != null)
+                  Positioned(
+                    top: 12.h,
+                    right: 12.w,
+                    child: GestureDetector(
+                      onTap: onFavorite,
+                      child: Container(
+                        padding: EdgeInsets.all(8.r),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhite.withOpacity(0.95),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 8,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.favorite_border_rounded,
+                          size: 18.r,
+                          color: AppColors.primaryRed,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
 
-            // 🔹 Info Section
+            // 🔹 Content Section
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+              padding: EdgeInsets.all(12.w),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Rating and Category Badges
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: 180.w,
+                      // Rating Badge
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryYellow.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.star,
+                              width: 16.w,
+                              height: 16.h,
+                              color: AppColors.primaryYellow,
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              rating,
+                              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      
+                      // Category Badge
+                      if (category != null) ...[
+                        SizedBox(width: 8.w),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryBlue.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Text(
+                            category!,
+                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  SizedBox(height: 12.h),
+                  // Name
+                  Text(
+                    name,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      letterSpacing: -0.3,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  
+                  SizedBox(height: 10.h),
+                  
+                  // Location
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(4.r),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryBlue.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        child: SvgPicture.asset(
+                          AppIcons.location,
+                          width: 12.w,
+                          height: 12.h,
+                          color: AppColors.primaryBlue,
+                        ),
+                      ),
+                      SizedBox(width: 6.w),
+                      Expanded(
                         child: Text(
-                          name,
-                          style: Theme.of(context).textTheme.titleMedium,
+                          location,
+                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                            color: AppColors.textSubtitle,
+                          ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
                       ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppIcons.star, width: 14.w, height: 14.h, color: AppColors.primaryYellow),
-                          SizedBox(width: 2.w),
-                          Text(
-                            rating,
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: AppColors.textSubtitle,
-                            )
-                          )
-                        ],
-                      )
                     ],
                   ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      SvgPicture.asset(AppIcons.location, width: 14.w, height: 14.h, color: AppColors.primaryBlue),
-                      SizedBox(width: 4.w),
-                      Text(
-                        location,
-                        style: Theme.of(context).textTheme.titleSmall,
-                      )
-                    ],
-                  )
+                  
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
