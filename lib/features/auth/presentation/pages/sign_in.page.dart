@@ -44,9 +44,9 @@ class _SignInPageState extends State<SignInPage> {
     if (value == null || value.isEmpty) {
       return 'Vui lòng nhập mật khẩu';
     }
-    if (value.length < 8) {
-      return 'Mật khẩu phải có ít nhất 8 ký tự';
-    }
+    // if (value.length < 8) {
+    //   return 'Mật khẩu phải có ít nhất 8 ký tự';
+    // }
     return null;
   }
 
@@ -63,9 +63,8 @@ class _SignInPageState extends State<SignInPage> {
       context.read<ButtonStateCubit>().execute(
         usecase: sl<SignInUseCase>(),
         params: SignInParams(
-          identifier: _identifierController.text,
+          username: _identifierController.text,
           password: _passwordController.text,
-          rememberMe: null,
         ),
       );
     }

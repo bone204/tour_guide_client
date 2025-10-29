@@ -19,7 +19,6 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmedPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -36,22 +35,14 @@ class _SignUpPageState extends State<SignUpPage> {
     return null;
   }
 
-  String? _validateEmail(String? value) {
-    if (!_isFormSubmitted) return null;
-    if (value == null || value.isEmpty) return 'Vui lòng nhập email';
-    final regex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-    if (!regex.hasMatch(value)) return 'Email không hợp lệ';
-    return null;
-  }
-
   String? _validatePassword(String? value) {
     if (!_isFormSubmitted) return null;
     if (value == null || value.isEmpty) return 'Vui lòng nhập mật khẩu';
-    if (value.length < 8) return 'Mật khẩu phải có ít nhất 8 ký tự';
-    if (value.length > 50) return 'Mật khẩu không được vượt quá 50 ký tự';
-    if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)').hasMatch(value)) {
-      return 'Phải có ít nhất 1 chữ hoa, 1 chữ thường và 1 số';
-    }
+    // if (value.length < 8) return 'Mật khẩu phải có ít nhất 8 ký tự';
+    // if (value.length > 50) return 'Mật khẩu không được vượt quá 50 ký tự';
+    // if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)').hasMatch(value)) {
+    //   return 'Phải có ít nhất 1 chữ hoa, 1 chữ thường và 1 số';
+    // }
     return null;
   }
 
@@ -67,14 +58,12 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() => _isFormSubmitted = true);
     _formKey.currentState!.validate();
     if (_validateUsername(_usernameController.text) == null &&
-        _validateEmail(_emailController.text) == null &&
         _validatePassword(_passwordController.text) == null &&
         _validateConfirmedPassword(_confirmedPasswordController.text) == null) {
       context.read<ButtonStateCubit>().execute(
         usecase: sl<SignUpUseCase>(),
         params: SignUpParams(
           username: _usernameController.text,
-          email: _emailController.text,
           password: _passwordController.text,
         ),
       );
@@ -99,7 +88,9 @@ class _SignUpPageState extends State<SignUpPage> {
         child: BlocListener<ButtonStateCubit, ButtonState>(
           listener: (context, state) {
             if (state is ButtonSuccessState) {
-              Navigator.pushReplacementNamed(context, AppRouteConstant.mainScreen);
+              // Navigate to sign in page after successful registration
+              Navigator.pushReplacementNamed(context, AppRouteConstant.signIn);
+              
             }
             if (state is ButtonFailureState) {
               showAppDialog(
@@ -151,14 +142,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 prefixIconData: Icons.person_outline,
                                 controller: _usernameController,
                                 validator: _validateUsername,
-                              ),
-                              SizedBox(height: 16.h),
-                              CustomTextField(
-                                label: 'Email',
-                                placeholder: 'Nhập email',
-                                prefixIconData: Icons.email,
-                                controller: _emailController,
-                                validator: _validateEmail,
                               ),
                               SizedBox(height: 16.h),
                               CustomPasswordField(
@@ -251,7 +234,6 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void dispose() {
     _usernameController.dispose();
-    _emailController.dispose();
     _passwordController.dispose();
     _confirmedPasswordController.dispose();
     super.dispose();

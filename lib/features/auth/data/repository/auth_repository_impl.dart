@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/local/auth_local_service.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/remote/auth_api_service.dart';
-import 'package:tour_guide_app/features/auth/data/models/fake_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/signin_params.dart';
 import 'package:tour_guide_app/features/auth/data/models/signin_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/signup_params.dart';
@@ -20,9 +19,9 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either<Failure, FakeResponse>> signIn(SignInParams signinParams) async {
+  Future<Either<Failure, SignInResponse>> signIn(SignInParams signinParams) async {
     final result = await _apiService.signIn(signinParams);
-    return await result.fold<Future<Either<Failure, FakeResponse>>>(
+    return await result.fold<Future<Either<Failure, SignInResponse>>>(
       (error) async => Left(error),
       (signInResponse) async {
         await _localService.saveTokens(signInResponse.accessToken, signInResponse.refreshToken);

@@ -1,18 +1,16 @@
-import 'package:tour_guide_app/features/auth/data/models/user.dart';
-
 class SignUpResponse {
-  final String message;
-  final UserModel user;
+  final int id;
+  final String username;
 
   SignUpResponse({
-    required this.message,
-    required this.user,
+    required this.id,
+    required this.username,
   });
 
   factory SignUpResponse.fromJson(Map<String, dynamic> json) {
     return SignUpResponse(
-      message: json['message'],
-      user: UserModel.fromJson(json['user']),
+      id: json['id'],
+      username: json['username'],
     );
   }
 }
