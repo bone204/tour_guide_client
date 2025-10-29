@@ -47,7 +47,7 @@ class _NavigationCardState extends State<NavigationCard> {
       {
         'icon': AppIcons.bus,
         'title': AppLocalizations.of(context)!.busBooking,
-        'route': '/busBooking',
+        'route': AppRouteConstant.busBooking,
         'color': AppColors.primaryGreen
       },
       {

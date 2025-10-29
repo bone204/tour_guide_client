@@ -1,3 +1,4 @@
+import 'package:flutter_svg/svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -8,7 +9,7 @@ class PrimaryButton extends StatelessWidget {
   final double borderRadius;
   final double height;
   final double? width;
-  final IconData? icon;
+  final String? icon;
 
   const PrimaryButton({
     Key? key,
@@ -38,7 +39,7 @@ class PrimaryButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (icon != null) ...[
-            Icon(icon, color: textColor, size: 20.sp),
+            SvgPicture.asset(icon!, width: 20.w, height: 20.h, colorFilter: ColorFilter.mode(textColor , BlendMode.srcIn)),
             SizedBox(width: 8.w),
           ],
           Text(

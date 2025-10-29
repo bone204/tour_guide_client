@@ -5,12 +5,16 @@ class LocationField extends StatelessWidget {
   final String? label;
   final String placeholder;
   final String? locationText;
+  final VoidCallback? onTap;
+  final Widget? prefixIcon;
 
   const LocationField({
     super.key,
     this.label,
     required this.placeholder,
     this.locationText,
+    this.onTap,
+    this.prefixIcon,
   });
 
   @override
@@ -28,7 +32,7 @@ class LocationField extends StatelessWidget {
           SizedBox(height: 8.h),
         ],
         GestureDetector(
-          onTap: () {
+          onTap: onTap ?? () {
             debugPrint('LocationField tapped: $displayText');
           },
           child: Container(
@@ -41,14 +45,14 @@ class LocationField extends StatelessWidget {
             child: Row(
               children: [
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: SvgPicture.asset(
-                      AppIcons.location,
-                      width: 20.w,
-                      height: 20.h,
-                      color: AppColors.primaryBlack,
-                    )
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  child: prefixIcon ?? SvgPicture.asset(
+                    AppIcons.location,
+                    width: 20.w,
+                    height: 20.h,
+                    color: AppColors.primaryBlack,
                   ),
+                ),
                 Expanded(
                   child: Text(
                     displayText,
