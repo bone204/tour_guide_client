@@ -5,8 +5,11 @@ import 'package:tour_guide_app/features/auth/presentation/pages/sign_up.page.dar
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_bill.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_detail.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_list.page.dart';
-import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_rental.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_rental.page.dart';
+import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_rental.page.dart';
+import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_list.page.dart';
+import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_detail.page.dart';
+import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_bill.page.dart';
 import 'package:tour_guide_app/features/bus_booking/presentation/pages/bus_search.page.dart';
 import 'package:tour_guide_app/features/home/presentation/pages/home_search.page.dart';
 import 'package:tour_guide_app/features/main_screen.dart';
@@ -122,7 +125,7 @@ class AppRouter {
       case AppRouteConstant.motorbikeList:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => MotorbikeRentalPage(),
+          builder: (_) => MotorbikeListPage(),
         );
 
       case AppRouteConstant.carDetails:
@@ -134,7 +137,7 @@ class AppRouter {
       case AppRouteConstant.motorbikeDetails:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => MotorbikeRentalPage(),
+          builder: (_) => MotorbikeDetailPage(),
         );
 
       case AppRouteConstant.carBill:
@@ -146,7 +149,7 @@ class AppRouter {
       case AppRouteConstant.motorbikeBill:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => MotorbikeRentalPage(),
+          builder: (_) => MotorbikeBillPage(),
         );
 
       default:

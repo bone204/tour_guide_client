@@ -27,6 +27,13 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
 
   String? pickupLocation;
 
+  void _navigateToMotorbikeListPage(BuildContext context) {
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).pushNamed(AppRouteConstant.motorbikeList);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,9 +141,7 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
             SizedBox(height: 32.h),
             PrimaryButton(
               title: AppLocalizations.of(context)!.rent,
-              onPressed: () {
-
-              },
+              onPressed: () => _navigateToMotorbikeListPage(context),
               backgroundColor: AppColors.primaryBlue,
               textColor: AppColors.textSecondary,
             )
