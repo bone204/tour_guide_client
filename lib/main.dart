@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tour_guide_app/common/bloc/auth/auth_state.dart';
 import 'package:tour_guide_app/common/bloc/auth/auth_state_cubit.dart';
 import 'package:tour_guide_app/common/bloc/lang/locale_cubit.dart';
@@ -33,7 +34,8 @@ void main() {
         );
       };
 
-      setUpServiceLocator();
+      final prefs = await SharedPreferences.getInstance();
+      setUpServiceLocator(prefs);
 
       runApp(MyApp(initialRoute: initialRoute));
     },

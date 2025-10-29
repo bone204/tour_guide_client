@@ -25,6 +25,20 @@ class NewsPage extends StatelessWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late final PersistentTabController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(initialIndex: 0);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   final List<PersistentTabConfig> _tabs = [
     PersistentTabConfig(
       screen: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -124,11 +138,55 @@ class _MainScreenState extends State<MainScreen> {
     ),
   ];
 
+  Future<bool> _showExitConfirmDialog(BuildContext context) async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Thoát ứng dụng?'),
+        content: const Text('Bạn có chắc chắn muốn thoát ứng dụng?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(
+              'Hủy',
+              style: TextStyle(color: AppColors.primaryGrey),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(
+              'Thoát',
+              style: TextStyle(color: AppColors.primaryRed),
+            ),
+          ),
+        ],
+      ),
+    ) ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      tabs: _tabs,
-      navBarBuilder: (navBarConfig) {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (!didPop) {
+          // Kiểm tra xem đang ở tab đầu tiên không
+          if (_controller.index == 0) {
+            // Nếu đang ở tab đầu, hiển thị dialog xác nhận thoát
+            final shouldExit = await _showExitConfirmDialog(context);
+            if (shouldExit) {
+              SystemNavigator.pop();
+            }
+          } else {
+            // Nếu không ở tab đầu, chuyển về tab đầu
+            _controller.jumpToTab(0);
+          }
+        }
+      },
+      child: PersistentTabView(
+        controller: _controller,
+        tabs: _tabs,
+        navBarBuilder: (navBarConfig) {
       final selectedIndex = navBarConfig.selectedIndex;
       return Container(
         height: 55,
@@ -199,6 +257,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         );
       },
+      ),
     );
   }
 }

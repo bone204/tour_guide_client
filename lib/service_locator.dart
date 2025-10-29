@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/local/auth_local_service.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/remote/auth_api_service.dart';
@@ -14,9 +15,10 @@ import 'package:tour_guide_app/features/settings/domain/usecases/logout.dart';
 
 final sl = GetIt.instance;
 
-void setUpServiceLocator() {
-  sl.registerSingleton<DioClient>(DioClient());
-  
+void setUpServiceLocator(SharedPreferences prefs) {
+  sl.registerSingleton<DioClient>(DioClient(prefs));
+  sl.registerSingleton<SharedPreferences>(prefs);
+
   // Services
   sl.registerSingleton<AuthApiService>(AuthApiServiceImpl());
   sl.registerSingleton<AuthLocalService>(AuthLocalServiceImpl());
