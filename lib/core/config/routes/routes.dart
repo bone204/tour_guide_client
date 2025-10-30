@@ -14,6 +14,11 @@ import 'package:tour_guide_app/features/bus_booking/presentation/pages/bus_searc
 import 'package:tour_guide_app/features/home/presentation/pages/home_search.page.dart';
 import 'package:tour_guide_app/features/main_screen.dart';
 import 'package:tour_guide_app/features/settings/presentation/pages/change_language.page.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/pages/find_restaurant.page.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_list.page.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_detail.page.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_table_list.page.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_booking_info.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -150,6 +155,36 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => MotorbikeBillPage(),
+        );
+
+      case AppRouteConstant.findRestaurant:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => FindRestaurantPage(),
+        );
+
+      case AppRouteConstant.restaurantList:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => RestaurantListPage(),
+        );
+
+      case AppRouteConstant.restaurantDetail:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => RestaurantDetailPage(),
+        );
+
+      case AppRouteConstant.restaurantTableList:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => RestaurantTableListPage(),
+        );
+
+      case AppRouteConstant.restaurantBookingInfo:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => RestaurantBookingInfoPage(),
         );
 
       default:

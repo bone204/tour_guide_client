@@ -53,7 +53,7 @@ class _NavigationCardState extends State<NavigationCard> {
       {
         'icon': AppIcons.restaurant,
         'title': AppLocalizations.of(context)!.findRes,
-        'route': '/findRestaurant',
+        'route': AppRouteConstant.findRestaurant,
         'color': AppColors.primaryYellow
       },
       {

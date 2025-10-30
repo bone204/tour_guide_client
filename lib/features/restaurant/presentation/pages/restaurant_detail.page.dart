@@ -1,33 +1,30 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/videos_tab.widget.dart';
 
-class DestinationDetailPage extends StatefulWidget {
-  final String imageUrl;
-  final String name;
-  final String location;
-  final String rating;
-  final String? category;
+class RestaurantDetailPage extends StatefulWidget {
+  final String? imageUrl;
+  final String? name;
+  final String? location;
+  final String? cuisine;
 
-  const DestinationDetailPage({
+  const RestaurantDetailPage({
     super.key,
-    required this.imageUrl,
-    required this.name,
-    required this.location,
-    required this.rating,
-    this.category,
+    this.imageUrl,
+    this.name,
+    this.location,
+    this.cuisine,
   });
 
   @override
-  State<DestinationDetailPage> createState() => _DestinationDetailPageState();
+  State<RestaurantDetailPage> createState() => _RestaurantDetailPageState();
 }
 
-class _DestinationDetailPageState extends State<DestinationDetailPage>
+class _RestaurantDetailPageState extends State<RestaurantDetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final DraggableScrollableController _sheetController =
@@ -47,30 +44,37 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
     super.dispose();
   }
 
+  void _navigateToTableList(BuildContext context) {
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).pushNamed(AppRouteConstant.restaurantTableList);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final displayImageUrl = widget.imageUrl ?? AppImage.defaultCar;
+    final displayName = widget.name ?? 'Nhà hàng Sài Gòn';
+    final displayLocation = widget.location ?? 'Quận 1, TP.HCM';
+    final displayCuisine = widget.cuisine ?? 'Món Việt';
+
     return Scaffold(
       body: Stack(
         children: [
-          // 🔹 Header Image/Map Section
-          _buildHeaderImage(),
-
-          // 🔹 Top App Bar (Back & Favorite)
+          _buildHeaderImage(displayImageUrl),
           _buildTopAppBar(),
-
-          // 🔹 Draggable Bottom Sheet - Nằm trên cùng để che phủ khi kéo lên
-          _buildDraggableBottomSheet(),
+          _buildDraggableBottomSheet(displayName, displayLocation, displayCuisine, displayImageUrl),
         ],
       ),
     );
   }
 
-  Widget _buildHeaderImage() {
+  Widget _buildHeaderImage(String imageUrl) {
     return Positioned.fill(
       child: Hero(
-        tag: 'destination_${widget.name}',
-        child: Image.network(
-          widget.imageUrl,
+        tag: 'restaurant_${widget.name}',
+        child: Image.asset(
+          imageUrl,
           fit: BoxFit.cover,
         ),
       ),
@@ -88,7 +92,6 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Back Button
               GestureDetector(
                 onTap: () => Navigator.of(context, rootNavigator: true).pop(),
                 child: Container(
@@ -111,8 +114,6 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
                   ),
                 ),
               ),
-
-              // Favorite Button
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -148,17 +149,17 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
     );
   }
 
-  Widget _buildDraggableBottomSheet() {
+  Widget _buildDraggableBottomSheet(String name, String location, String cuisine, String imageUrl) {
     return DraggableScrollableSheet(
-        controller: _sheetController,
-        initialChildSize: 0.5,
-        minChildSize: 0.5,
-        maxChildSize: 0.95,
-        snap: true,
-        snapSizes: [0.5, 0.7, 0.95],
-        snapAnimationDuration: Duration(milliseconds: 300),
-        builder: (context, scrollController) {
-          return Container(
+      controller: _sheetController,
+      initialChildSize: 0.5,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
+      snap: true,
+      snapSizes: [0.5, 0.7, 0.95],
+      snapAnimationDuration: Duration(milliseconds: 300),
+      builder: (context, scrollController) {
+        return Container(
           decoration: BoxDecoration(
             color: AppColors.primaryWhite,
             borderRadius: BorderRadius.vertical(
@@ -175,10 +176,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
           ),
           child: Column(
             children: [
-              // Drag Handle
               _buildDragHandle(),
-
-              // Content
               Expanded(
                 child: ListView(
                   controller: scrollController,
@@ -190,18 +188,19 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Header Info
-                          _buildHeaderInfo(),
-
+                          _buildHeaderInfo(name, location, cuisine),
                           SizedBox(height: 20.h),
-
-                          // Tabs
                           _buildTabs(),
-
                           SizedBox(height: 20.h),
-
-                          // Tab Content
-                          _buildTabContent(),
+                          _buildTabContent(name, imageUrl),
+                          SizedBox(height: 20.h),
+                          PrimaryButton(
+                            title: 'Đặt bàn',
+                            onPressed: () => _navigateToTableList(context),
+                            backgroundColor: AppColors.primaryBlue,
+                            textColor: AppColors.textSecondary,
+                          ),
+                          SizedBox(height: 20.h),
                         ],
                       ),
                     ),
@@ -227,22 +226,23 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
     );
   }
 
-  Widget _buildHeaderInfo() {
+  Widget _buildHeaderInfo(String name, String location, String cuisine) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 20.h),
-        // Title
         Text(
-          widget.name,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
+          name,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        SizedBox(height: 8.h),
+        Text(
+          cuisine,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: AppColors.textSubtitle,
           ),
         ),
-
         SizedBox(height: 12.h),
-
-        // Location
         Row(
           children: [
             Container(
@@ -261,7 +261,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
             SizedBox(width: 8.w),
             Expanded(
               child: Text(
-                widget.location,
+                location,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: AppColors.textSubtitle,
                 ),
@@ -303,25 +303,24 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
     );
   }
 
-  Widget _buildTabContent() {
+  Widget _buildTabContent(String name, String imageUrl) {
     return AnimatedBuilder(
       animation: _tabController,
       builder: (context, child) {
         switch (_tabController.index) {
           case 0:
-            return AboutTab(name: widget.name);
+            return AboutTab(name: name);
           case 1:
             return ReviewsTab();
           case 2:
-            return PhotosTab(imageUrl: widget.imageUrl);
+            return PhotosTab(imageUrl: imageUrl);
           case 3:
-            return VideosTab(imageUrl: widget.imageUrl);
+            return VideosTab(imageUrl: imageUrl);
           default:
-            return AboutTab(name: widget.name);
+            return AboutTab(name: name);
         }
       },
     );
   }
-
 }
 

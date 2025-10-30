@@ -15,4 +15,9 @@ class AppRouteConstant {
   static const String motorbikeDetails = '/motorbike_details';
   static const String carBill = '/car_bill';
   static const String motorbikeBill = '/motorbike_bill';
+  static const String findRestaurant = '/find_restaurant';
+  static const String restaurantList = '/restaurant_list';
+  static const String restaurantDetail = '/restaurant_detail';
+  static const String restaurantTableList = '/restaurant_table_list';
+  static const String restaurantBookingInfo = '/restaurant_booking_info';
 }
