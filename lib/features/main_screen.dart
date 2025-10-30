@@ -108,22 +108,6 @@ class _MainScreenState extends State<MainScreen> {
       screen: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark.copyWith(
           statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.light,
-          statusBarBrightness: Brightness.light,
-        ),
-        child: const NewsPage(),
-      ),
-      item: ItemConfig(
-        icon: const Icon(Icons.person),
-        title: '',
-        activeForegroundColor: AppColors.primaryBlue,
-        inactiveForegroundColor: AppColors.primaryGrey,
-      ),
-    ),
-    PersistentTabConfig(
-      screen: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.light,
         ),
@@ -216,9 +200,6 @@ class _MainScreenState extends State<MainScreen> {
                 svgPath = isSelected ? AppIcons.universityActive : AppIcons.universityInactive;
                 break;
               case 4:
-                svgPath = isSelected ? AppIcons.userActive : AppIcons.userInactive;
-                break;
-              case 5:
                 svgPath = isSelected ? AppIcons.barActive : AppIcons.barInactive;
                 break;
               default:

@@ -2,13 +2,12 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tour_guide_app/common/bloc/auth/auth_state.dart';
 import 'package:tour_guide_app/common/bloc/auth/auth_state_cubit.dart';
 import 'package:tour_guide_app/common/bloc/lang/locale_cubit.dart';
 import 'package:tour_guide_app/common/bloc/lang/locale_state.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/config/lang/l10n.dart';
-import 'package:tour_guide_app/features/main_screen.dart';
+import 'package:tour_guide_app/features/splash/presentation/pages/splash_screen.page.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -82,24 +81,7 @@ class MyApp extends StatelessWidget {
                   GlobalWidgetsLocalizations.delegate,
                   GlobalCupertinoLocalizations.delegate,
                 ],
-                home: Stack(
-                  children: [
-                    BlocListener<AuthStateCubit, AuthState>(
-                      listener: (context, state) {
-                        if (state is Authenticated) {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (_) => const MainScreen()),
-                          );
-                        } else if (state is UnAuthenticated) {
-                          Navigator.of(context)
-                              .pushReplacementNamed(AppRouteConstant.signIn);
-                        }
-                      },
-                      child: Container(),
-                    ),
-                  ],
-                ),
+                home: const SplashScreenPage(),
               );
             },
           );

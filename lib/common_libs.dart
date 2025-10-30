@@ -16,3 +16,4 @@ export 'package:tour_guide_app/core/config/theme/typography.dart';
 export 'package:tour_guide_app/common/constants/app_route.constant.dart';
 export 'package:tour_guide_app/common/constants/app_icon.constant.dart';
 export 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
+export 'package:tour_guide_app/common/constants/app_lotties.constant.dart';

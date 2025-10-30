@@ -59,6 +59,8 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   carousel_slider: ^5.1.1
   dotted_line: ^3.2.3
+  connectivity_plus: ^7.0.0
+  lottie: ^3.2.0
 
 
 dev_dependencies:
@@ -77,6 +79,7 @@ flutter:
   assets:
   - assets/images/
   - assets/icons/
+  - assets/lottie/
 
   fonts:
     - family: Inter-Thin

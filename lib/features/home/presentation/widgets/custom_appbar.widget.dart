@@ -20,7 +20,7 @@ class AnimatedSliverAppBar extends SliverPersistentHeaderDelegate {
   });
 
   @override
-  double get minExtent => statusBarHeight.h + 56.h;
+  double get minExtent => statusBarHeight.h + 60.h;
   @override
   double get maxExtent => statusBarHeight.h + expandedHeight.h + 40.h;
 
@@ -84,7 +84,7 @@ class AnimatedSliverAppBar extends SliverPersistentHeaderDelegate {
           ),
         ),
         Positioned(
-          bottom: 0,
+          bottom: 0.h,
           left: 2.w,
           right: 2.w,
           child: CustomSearchBar(
