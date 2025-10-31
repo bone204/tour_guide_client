@@ -19,6 +19,10 @@ import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_detail.page.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_table_list.page.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_booking_info.page.dart';
+import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery.page.dart';
+import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery_detail.page.dart';
+import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery_bill.page.dart';
+import 'package:tour_guide_app/features/fast_delivery/data/models/delivery_order.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -185,6 +189,26 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => RestaurantBookingInfoPage(),
+        );
+
+      case AppRouteConstant.fastDelivery:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const FastDeliveryPage(),
+        );
+
+      case AppRouteConstant.fastDeliveryDetail:
+        final order = settings.arguments as DeliveryOrder;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => FastDeliveryDetailPage(initialOrder: order),
+        );
+
+      case AppRouteConstant.fastDeliveryBill:
+        final order = settings.arguments as DeliveryOrder;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => FastDeliveryBillPage(deliveryOrder: order),
         );
 
       default:

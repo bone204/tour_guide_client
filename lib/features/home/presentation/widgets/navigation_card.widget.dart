@@ -59,7 +59,7 @@ class _NavigationCardState extends State<NavigationCard> {
       {
         'icon': AppIcons.delivery,
         'title': AppLocalizations.of(context)!.delivery,
-        'route': '/delivery',
+        'route': AppRouteConstant.fastDelivery,
         'color': AppColors.primaryRed
       },
       {

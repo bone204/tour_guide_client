@@ -330,7 +330,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
 
               // App title
               Text(
-                'TraveLine',
+                'Traveline',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 28.sp,
