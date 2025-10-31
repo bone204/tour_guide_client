@@ -5,6 +5,7 @@ library;
 export 'package:flutter/material.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
+export 'package:flutter_svg/flutter_svg.dart';
 
 // Configurations
 export 'package:tour_guide_app/core/config/routes/routes.dart';

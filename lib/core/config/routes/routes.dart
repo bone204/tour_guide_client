@@ -23,6 +23,12 @@ import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_de
 import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery_detail.page.dart';
 import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery_bill.page.dart';
 import 'package:tour_guide_app/features/fast_delivery/data/models/delivery_order.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_search.page.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_list.page.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_detail.page.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_room_list.page.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_booking_info.page.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -209,6 +215,37 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => FastDeliveryBillPage(deliveryOrder: order),
+        );
+
+      case AppRouteConstant.hotelSearch:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const HotelSearchPage(),
+        );
+
+      case AppRouteConstant.hotelList:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const HotelListPage(),
+        );
+
+      case AppRouteConstant.hotelDetail:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const HotelDetailPage(),
+        );
+
+      case AppRouteConstant.hotelRoomList:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const HotelRoomListPage(),
+        );
+
+      case AppRouteConstant.hotelBookingInfo:
+        final booking = settings.arguments as HotelBooking;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => HotelBookingInfoPage(hotelBooking: booking),
         );
 
       default:

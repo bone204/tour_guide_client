@@ -23,4 +23,9 @@ class AppRouteConstant {
   static const String fastDelivery = '/fast_delivery';
   static const String fastDeliveryDetail = '/fast_delivery_detail';
   static const String fastDeliveryBill = '/fast_delivery_bill';
+  static const String hotelSearch = '/hotel_search';
+  static const String hotelList = '/hotel_list';
+  static const String hotelDetail = '/hotel_detail';
+  static const String hotelRoomList = '/hotel_room_list';
+  static const String hotelBookingInfo = '/hotel_booking_info';
 }
