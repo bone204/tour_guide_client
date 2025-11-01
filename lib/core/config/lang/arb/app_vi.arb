@@ -171,5 +171,9 @@
 
   "noUsePoint": "Không sử dụng điểm",
   
-  "points": "điểm"
+  "points": "điểm",
+
+  "flight": "Chuyến bay",
+
+  "train": "Tàu"
 }

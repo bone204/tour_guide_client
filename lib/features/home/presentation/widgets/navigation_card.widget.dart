@@ -66,7 +66,19 @@ class _NavigationCardState extends State<NavigationCard> {
         'icon': AppIcons.hotel,
         'title': AppLocalizations.of(context)!.findHotel,
         'route': AppRouteConstant.hotelSearch,
+        'color': AppColors.primaryPurple
+      },
+      {
+        'icon': AppIcons.flight,
+        'title': AppLocalizations.of(context)!.flight,
+        'route': AppRouteConstant.flightBooking,
         'color': AppColors.primaryBlue
+      },
+      {
+        'icon': AppIcons.train,
+        'title': AppLocalizations.of(context)!.train,
+        'route': AppRouteConstant.trainBooking,
+        'color': AppColors.primaryRed
       },
     ];
 

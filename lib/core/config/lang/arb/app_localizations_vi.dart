@@ -268,4 +268,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get points => 'điểm';
+
+  @override
+  String get flight => 'Chuyến bay';
+
+  @override
+  String get train => 'Tàu';
 }

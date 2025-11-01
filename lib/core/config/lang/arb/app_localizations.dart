@@ -616,6 +616,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'points'**
   String get points;
+
+  /// No description provided for @flight.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight'**
+  String get flight;
+
+  /// No description provided for @train.
+  ///
+  /// In en, this message translates to:
+  /// **'Train'**
+  String get train;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

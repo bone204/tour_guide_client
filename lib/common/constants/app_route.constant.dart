@@ -28,4 +28,6 @@ class AppRouteConstant {
   static const String hotelDetail = '/hotel_detail';
   static const String hotelRoomList = '/hotel_room_list';
   static const String hotelBookingInfo = '/hotel_booking_info';
+  static const String flightBooking = '/flight_booking';
+  static const String trainBooking = '/train_booking';
 }

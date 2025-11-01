@@ -171,5 +171,9 @@
 
   "noUsePoint": "Do not use points",
   
-  "points": "points"
+  "points": "points",
+
+  "flight": "Flight",
+
+  "train": "Train"
 }
