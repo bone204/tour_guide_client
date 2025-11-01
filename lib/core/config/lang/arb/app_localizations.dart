@@ -620,13 +620,13 @@ abstract class AppLocalizations {
   /// No description provided for @flight.
   ///
   /// In en, this message translates to:
-  /// **'Flight'**
+  /// **'Flight Booking'**
   String get flight;
 
   /// No description provided for @train.
   ///
   /// In en, this message translates to:
-  /// **'Train'**
+  /// **'Train Booking'**
   String get train;
 }
 

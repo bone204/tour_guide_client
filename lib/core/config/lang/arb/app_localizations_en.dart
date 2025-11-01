@@ -270,8 +270,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get points => 'points';
 
   @override
-  String get flight => 'Flight';
+  String get flight => 'Flight Booking';
 
   @override
-  String get train => 'Train';
+  String get train => 'Train Booking';
 }
