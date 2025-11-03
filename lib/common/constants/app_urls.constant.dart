@@ -14,4 +14,7 @@
     
     //Rental Vehicles URLs
     static const rentalVehicles = "$baseURL/rental-vehicles";
+
+    //Rental Vehicles URLs
+    static const chatbot = "$baseURL/chat";
   }
