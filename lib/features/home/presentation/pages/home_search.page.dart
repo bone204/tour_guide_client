@@ -1,9 +1,24 @@
 import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_search_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
+import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/attraction_card.widget.dart';
 
 class HomeSearchPage extends StatefulWidget {
   const HomeSearchPage({super.key});
+
+  // Static method to create with BlocProvider
+  static Widget withProvider() {
+    return BlocProvider(
+      create: (context) => GetDestinationCubit(),
+      child: const HomeSearchPage(),
+    );
+  }
 
   @override
   State<HomeSearchPage> createState() => _HomeSearchPageState();
@@ -13,31 +28,27 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
   final TextEditingController _controller = TextEditingController();
   Timer? _debounce;
 
-  List<String> _results = [];
-  bool _isLoading = false;
-
   void _onSearchChanged(String value) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 400), () {
-      _doFakeSearch(value.trim());
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      _performSearch(value.trim());
     });
   }
 
-  void _doFakeSearch(String query) async {
-    setState(() => _isLoading = true);
+  void _performSearch(String query) {
+    if (query.isEmpty) {
+      return;
+    }
 
-    await Future.delayed(const Duration(milliseconds: 500));
-    setState(() {
-      _isLoading = false;
-      if (query.isEmpty) {
-        _results = [];
-      } else {
-        _results = List.generate(
-          6,
-          (i) => "Kết quả ${i + 1} cho '$query'",
-        );
-      }
-    });
+    // Call API with search query
+    context.read<GetDestinationCubit>().getDestinations(
+      query: DestinationQuery(
+        q: query,
+        offset: 0,
+        limit: 20,
+        available: true,
+      ),
+    );
   }
 
   @override
@@ -52,45 +63,151 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomSearchAppBar(
-        hintText: "Tìm kiếm...",
+        hintText: "Tìm kiếm địa điểm...",
         controller: _controller,
         onBack: () => Navigator.of(context).pop(),
         onSearchChanged: _onSearchChanged,
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _results.isEmpty
-              ? Center(
-                  child: Text(
-                    "Không có kết quả",
-                    style: Theme.of(context).textTheme.bodyMedium,
+      body: BlocBuilder<GetDestinationCubit, GetDestinationState>(
+        builder: (context, state) {
+          if (state is GetDestinationLoading) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primaryBlue,
+              ),
+            );
+          }
+
+          if (state is GetDestinationError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64.r,
+                    color: AppColors.primaryRed,
                   ),
-                )
-              : ListView.separated(
-                  padding: EdgeInsets.all(16.w),
-                  itemCount: _results.length,
-                  separatorBuilder: (_, __) => SizedBox(height: 12.h),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.all(16.w),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
+                  SizedBox(height: 16.h),
+                  Text(
+                    state.message,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSubtitle,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          if (state is GetDestinationLoaded) {
+            final destinations = state.destinations;
+
+            if (destinations.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.search_off,
+                      size: 64.r,
+                      color: AppColors.textSubtitle.withOpacity(0.5),
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      _controller.text.isEmpty
+                          ? "Nhập từ khóa để tìm kiếm"
+                          : "Không tìm thấy kết quả",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textSubtitle,
                       ),
-                      child: Text(
-                        _results[index],
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
+              );
+            }
+
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Search result header
+                  Text(
+                    'Tìm thấy ${destinations.length} kết quả',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+
+                  // Grid of attraction cards
+                  MasonryGridView.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 8.h,
+                    crossAxisSpacing: 16.w,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: destinations.length,
+                    itemBuilder: (context, index) {
+                      final destination = destinations[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: true).push(
+                            MaterialPageRoute(
+                              builder: (context) => DestinationDetailPage.withProvider(
+                                destinationId: destination.id,
+                              ),
+                            ),
+                          );
+                        },
+                        child: AttractionCard(
+                          imageUrl: destination.photos?.isNotEmpty == true
+                              ? destination.photos!.first
+                              : AppImage.defaultDestination,
+                          title: destination.name,
+                          location: destination.province ?? "Unknown",
+                          rating: destination.rating ?? 0.0,
+                          reviews: destination.userRatingsTotal ?? 0,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // Initial state - show search hint
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.search,
+                  size: 64.r,
+                  color: AppColors.textSubtitle.withOpacity(0.3),
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  "Tìm kiếm địa điểm du lịch",
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.textSubtitle,
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  "Nhập tên địa điểm, tỉnh thành...",
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSubtitle.withOpacity(0.7),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

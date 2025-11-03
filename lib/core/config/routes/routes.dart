@@ -80,7 +80,7 @@ class AppRouter {
       case AppRouteConstant.homeSearch:
         return PageRouteBuilder(
           settings: settings,
-          pageBuilder: (_, __, ___) => const HomeSearchPage(),
+          pageBuilder: (_, __, ___) => HomeSearchPage.withProvider(),
           transitionsBuilder: (_, animation, __, child) {
             final curvedAnimation = CurvedAnimation(
               parent: animation,
