@@ -12,8 +12,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signInNow => 'Đăng nhập ngay';
 
   @override
-  String get signInDescription =>
-      'Vui lòng đăng nhập để tiếp tục sử dụng ứng dụng của chúng tôi';
+  String get signInDescription => 'Vui lòng đăng nhập để tiếp tục sử dụng ứng dụng của chúng tôi';
 
   @override
   String get usernameOrEmail => 'Tên đăng nhập/Email';
@@ -73,8 +72,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signOut => 'Đăng Xuất';
 
   @override
-  String get discoverSub =>
-      'Khám phá và chia sẻ những trải nghiệm du lịch độc đáo';
+  String get discoverSub => 'Khám phá và chia sẻ những trải nghiệm du lịch độc đáo';
 
   @override
   String get search => 'Tìm kiếm...';

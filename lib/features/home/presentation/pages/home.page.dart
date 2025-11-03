@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
-import 'package:tour_guide_app/core/config/theme/color.dart';
+import 'package:lottie/lottie.dart';
+import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/chat_bot/presentation/pages/chat_bot.page.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_list.widget.dart';
@@ -78,30 +78,70 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        body: CustomScrollView(
-          controller: _scrollController,
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverPersistentHeader(
-              delegate: AnimatedSliverAppBar(
-                statusBarHeight: MediaQuery.of(context).padding.top,
-                title: 'Traveline - Vietnam in your mind',
-                subtitle: AppLocalizations.of(context)!.discoverSub,
-                hintText: AppLocalizations.of(context)!.search,
-              ),
-              pinned: true, 
+      child: Stack(
+        children: [
+          Scaffold(
+            backgroundColor: AppColors.backgroundColor,
+            body: CustomScrollView(
+              controller: _scrollController,
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverPersistentHeader(
+                  delegate: AnimatedSliverAppBar(
+                    statusBarHeight: MediaQuery.of(context).padding.top,
+                    title: 'Traveline - Vietnam in your mind',
+                    subtitle: AppLocalizations.of(context)!.discoverSub,
+                    hintText: AppLocalizations.of(context)!.search,
+                  ),
+                  pinned: true, 
+                ),
+                SliverHeader(),
+                SliverVoucherCarousel(),
+                SliverPopularDestinationList(),
+                SliverNearbyDestinationList(),
+                SliverHotelNearbyDestinationList(),
+                SliverRestaurantNearbyDestinationList(),
+                SliverRestaurantNearbyAttractionList(),
+              ],
             ),
-            SliverHeader(),
-            SliverVoucherCarousel(),
-            SliverPopularDestinationList(),
-            SliverNearbyDestinationList(),
-            SliverHotelNearbyDestinationList(),
-            SliverRestaurantNearbyDestinationList(),
-            SliverRestaurantNearbyAttractionList(),
-          ],
-        ),
+          ),
+          // ✅ Lottie animation ở góc dưới phải - Tap để mở chat bot
+          Positioned(
+            right: 4.w,
+            bottom: 0.h,
+            child: GestureDetector(
+              onTap: () {
+                // Mở trang Chat Bot với root navigator (fullscreen)
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (_) => ChatBotPage.withProvider(),
+                  ),
+                );
+              },
+              child: Lottie.asset(
+                AppLotties.botFloating,
+                width: 140.w,
+                height: 140.h,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: 100.w,
+                    height: 100.h,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryBlue.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Icon(
+                      Icons.animation,
+                      size: 50,
+                      color: AppColors.primaryBlue,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

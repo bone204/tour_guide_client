@@ -8,6 +8,7 @@ import 'package:tour_guide_app/features/auth/domain/repository/auth_repository.d
 import 'package:tour_guide_app/features/auth/domain/usecases/is_logged_in.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/sign_in.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/sign_up.dart';
+import 'package:tour_guide_app/features/chat_bot/domain/usecases/send_chat_message.dart';
 import 'package:tour_guide_app/features/destination/data/data_source/destination_api_service.dart';
 import 'package:tour_guide_app/features/destination/data/repository/destination_repository_impl.dart';
 import 'package:tour_guide_app/features/destination/domain/repository/destination_repository.dart';
@@ -27,6 +28,9 @@ import 'package:tour_guide_app/features/settings/data/data_source/local/settings
 import 'package:tour_guide_app/features/settings/data/repository/settings_repository_impl.dart';
 import 'package:tour_guide_app/features/settings/domain/repository/settings_repository.dart';
 import 'package:tour_guide_app/features/settings/domain/usecases/logout.dart';
+import 'package:tour_guide_app/features/chat_bot/data/data_source/chat_api_service.dart';
+import 'package:tour_guide_app/features/chat_bot/data/repository/chat_repository_impl.dart';
+import 'package:tour_guide_app/features/chat_bot/domain/repository/chat_repository.dart';
 
 final sl = GetIt.instance;
 
@@ -40,11 +44,13 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<SettingsLocalService>(SettingsLocalServiceImpl());
   sl.registerSingleton<DestinationApiService>(DestinationApiServiceImpl());
   sl.registerSingleton<MyVehicleApiService>(MyVehicleApiServiceImpl());
+  sl.registerSingleton<ChatApiService>(ChatApiServiceImpl());
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
   sl.registerSingleton<DestinationRepository>(DestinationRepositoryImpl());
   sl.registerSingleton<MyVehicleRepository>(MyVehicleRepositoryImpl());
+  sl.registerSingleton<ChatRepository>(ChatRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());
@@ -56,6 +62,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<RegisterRentalVehicleUseCase>(RegisterRentalVehicleUseCase());
   sl.registerSingleton<GetContractsUseCase>(GetContractsUseCase());
   sl.registerSingleton<AddVehicleUseCase>(AddVehicleUseCase());
+  sl.registerSingleton<SendChatMessageUseCase>(SendChatMessageUseCase());
 
   // Cubits
   sl.registerFactory<RegisterRentalVehicleCubit>(() => RegisterRentalVehicleCubit());
