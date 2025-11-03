@@ -313,9 +313,9 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
           case 1:
             return ReviewsTab();
           case 2:
-            return PhotosTab(imageUrl: imageUrl);
+            return PhotosTab();
           case 3:
-            return VideosTab(imageUrl: imageUrl);
+            return VideosTab();
           default:
             return AboutTab(name: name);
         }

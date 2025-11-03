@@ -19,6 +19,9 @@ class AttractionCard extends StatelessWidget {
     required this.reviews,
   }) : super(key: key);
 
+  // Check if imageUrl is network or asset
+  bool get _isNetworkImage => imageUrl.startsWith('http');
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,12 +47,27 @@ class AttractionCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
-                  child: Image.network(
-                    imageUrl,
-                    width: double.infinity,
-                    height: 120.h,
-                    fit: BoxFit.cover,
-                  ),
+                  child: _isNetworkImage
+                      ? Image.network(
+                          imageUrl,
+                          width: double.infinity,
+                          height: 120.h,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              AppImage.defaultDestination,
+                              width: double.infinity,
+                              height: 120.h,
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        )
+                      : Image.asset(
+                          imageUrl,
+                          width: double.infinity,
+                          height: 120.h,
+                          fit: BoxFit.cover,
+                        ),
                 ),
 
                 /// Rating badge

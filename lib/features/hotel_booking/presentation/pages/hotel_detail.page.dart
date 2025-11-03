@@ -316,9 +316,9 @@ class _HotelDetailPageState extends State<HotelDetailPage>
           case 1:
             return const ReviewsTab();
           case 2:
-            return PhotosTab(imageUrl: imageUrl);
+            return PhotosTab();
           case 3:
-            return VideosTab(imageUrl: imageUrl);
+            return VideosTab();
           default:
             return AboutTab(name: name);
         }

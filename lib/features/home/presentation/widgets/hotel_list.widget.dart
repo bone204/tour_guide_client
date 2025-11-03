@@ -116,14 +116,11 @@ class SliverHotelNearbyDestinationList extends StatelessWidget {
                             location: destination.location,
                             category: destination.category,
                             onTap: () {
+                              // TODO: Replace with real destination ID from API when integrated
                               Navigator.of(context, rootNavigator: true).push(
                                 MaterialPageRoute(
-                                  builder: (context) => DestinationDetailPage(
-                                    imageUrl: destination.imageUrl,
-                                    name: destination.name,
-                                    location: destination.location,
-                                    rating: destination.rating,
-                                    category: destination.category,
+                                  builder: (context) => DestinationDetailPage.withProvider(
+                                    destinationId: index + 1, // Temporary: use index as ID
                                   ),
                                 ),
                               );

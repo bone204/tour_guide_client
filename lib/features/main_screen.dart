@@ -47,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
           statusBarIconBrightness: Brightness.light,
           statusBarBrightness: Brightness.light,
         ),
-        child: HomePage(),
+        child: HomePage.withProvider(),
       ),
       item: ItemConfig(
         icon: const Icon(Icons.home_filled),

@@ -117,7 +117,7 @@ class DestinationCard extends StatelessWidget {
 
             // 🔹 Content Section
             Padding(
-              padding: EdgeInsets.all(12.w),
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -204,7 +204,7 @@ class DestinationCard extends StatelessWidget {
                         child: Text(
                           location,
                           style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: AppColors.textSubtitle,
+                            color: AppColors.textPrimary,
                           ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,

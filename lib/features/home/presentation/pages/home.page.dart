@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_header.widget.dart';
@@ -13,6 +16,14 @@ import 'package:tour_guide_app/features/home/presentation/widgets/voucher_carous
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  // Static method to create page with BlocProvider
+  static Widget withProvider() {
+    return BlocProvider(
+      create: (context) => GetDestinationCubit()..getDestinations(),
+      child: const HomePage(),
+    );
+  }
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -20,10 +31,41 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   final ScrollController _scrollController = ScrollController();
+  DateTime? _lastLoadMoreTime;
 
   @override
   void initState() {
     super.initState();
+    _setupScrollListener();
+  }
+
+  void _setupScrollListener() {
+    _scrollController.addListener(() {
+      // Khi scroll gần cuối (còn 500 pixels)
+      if (_scrollController.position.pixels >= 
+          _scrollController.position.maxScrollExtent - 500) {
+        _loadMoreIfNeeded();
+      }
+    });
+  }
+
+  void _loadMoreIfNeeded() {
+    // Debounce: Chỉ load more sau 1 giây từ lần load trước
+    final now = DateTime.now();
+    if (_lastLoadMoreTime != null && 
+        now.difference(_lastLoadMoreTime!).inSeconds < 1) {
+      return;
+    }
+
+    final cubit = context.read<GetDestinationCubit>();
+    final state = cubit.state;
+    
+    if (state is GetDestinationLoaded) {
+      if (!state.hasReachedEnd && !state.isLoadingMore) {
+        _lastLoadMoreTime = now;
+        cubit.loadMoreDestinations();
+      }
+    }
   }
 
   @override

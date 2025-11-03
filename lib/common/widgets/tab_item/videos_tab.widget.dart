@@ -1,15 +1,21 @@
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
 
 class VideosTab extends StatelessWidget {
-  final String imageUrl;
+  final List<String>? photos;
+  final String? defaultImage;
 
   const VideosTab({
     super.key,
-    required this.imageUrl,
+    this.photos,
+    this.defaultImage,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bool hasPhotos = photos != null && photos!.isNotEmpty;
+    final String fallbackImage = defaultImage ?? AppImage.defaultDestination;
+
     return Column(
       children: [
         GridView.builder(
@@ -26,16 +32,29 @@ class VideosTab extends StatelessWidget {
           itemBuilder: (context, index) {
             return Stack(
               children: [
+                // Background image
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12.r),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(imageUrl),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  child: hasPhotos
+                      ? Image.network(
+                          photos!.first,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                          errorBuilder: (context, error, stackTrace) {
+                            // Nếu network image lỗi, fallback sang asset image
+                            return Image.asset(
+                              fallbackImage,
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        )
+                      : Image.asset(
+                          fallbackImage,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
                 ),
                 // Play button overlay
                 Positioned.fill(

@@ -1,27 +1,28 @@
 // ignore_for_file: deprecated_member_use
-
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
-import 'package:tour_guide_app/common/widgets/tab_item/videos_tab.widget.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/get_destination_by_id_cubit.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/get_destination_by_id_state.dart';
 
 class DestinationDetailPage extends StatefulWidget {
-  final String imageUrl;
-  final String name;
-  final String location;
-  final String rating;
-  final String? category;
+  final int destinationId;
 
   const DestinationDetailPage({
     super.key,
-    required this.imageUrl,
-    required this.name,
-    required this.location,
-    required this.rating,
-    this.category,
+    required this.destinationId,
   });
+
+  // Static method to create route with BlocProvider
+  static Widget withProvider({required int destinationId}) {
+    return BlocProvider(
+      create: (context) => GetDestinationByIdCubit(),
+      child: DestinationDetailPage(destinationId: destinationId),
+    );
+  }
 
   @override
   State<DestinationDetailPage> createState() => _DestinationDetailPageState();
@@ -37,7 +38,9 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
+    // Load destination data when page opens
+    context.read<GetDestinationByIdCubit>().getDestinationById(widget.destinationId);
   }
 
   @override
@@ -49,30 +52,116 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          // 🔹 Header Image/Map Section
-          _buildHeaderImage(),
+    return BlocConsumer<GetDestinationByIdCubit, GetDestinationByIdState>(
+      listener: (context, state) {
+        if (state is GetDestinationByIdError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: AppColors.primaryRed,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is GetDestinationByIdLoading) {
+          return Scaffold(
+            backgroundColor: AppColors.backgroundColor,
+            body: Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primaryBlue,
+              ),
+            ),
+          );
+        }
 
-          // 🔹 Top App Bar (Back & Favorite)
-          _buildTopAppBar(),
+        if (state is GetDestinationByIdError) {
+          return Scaffold(
+            backgroundColor: AppColors.backgroundColor,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64.r,
+                    color: AppColors.primaryRed,
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'Failed to load destination',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    state.message,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSubtitle,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 24.h),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<GetDestinationByIdCubit>()
+                          .getDestinationById(widget.destinationId);
+                    },
+                    child: Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
 
-          // 🔹 Draggable Bottom Sheet - Nằm trên cùng để che phủ khi kéo lên
-          _buildDraggableBottomSheet(),
-        ],
-      ),
+        if (state is GetDestinationByIdLoaded) {
+          final destination = state.destination;
+          return Scaffold(
+            body: Stack(
+              children: [
+                // 🔹 Header Image/Map Section
+                _buildHeaderImage(destination.photos),
+
+                // 🔹 Top App Bar (Back & Favorite)
+                _buildTopAppBar(),
+
+                // 🔹 Draggable Bottom Sheet - Nằm trên cùng để che phủ khi kéo lên
+                _buildDraggableBottomSheet(destination),
+              ],
+            ),
+          );
+        }
+
+        return Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          body: Center(child: Text('Something went wrong')),
+        );
+      },
     );
   }
 
-  Widget _buildHeaderImage() {
+  Widget _buildHeaderImage(List<String>? photos) {
+    final bool hasPhotos = photos != null && photos.isNotEmpty;
+    
     return Positioned.fill(
       child: Hero(
-        tag: 'destination_${widget.name}',
-        child: Image.network(
-          widget.imageUrl,
-          fit: BoxFit.cover,
-        ),
+        tag: 'destination_${widget.destinationId}',
+        child: hasPhotos
+            ? Image.network(
+                photos.first,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  // Nếu network image lỗi, fallback sang asset image
+                  return Image.asset(
+                    AppImage.defaultDestination,
+                    fit: BoxFit.cover,
+                  );
+                },
+              )
+            : Image.asset(
+                AppImage.defaultDestination,
+                fit: BoxFit.cover,
+              ),
       ),
     );
   }
@@ -148,7 +237,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
     );
   }
 
-  Widget _buildDraggableBottomSheet() {
+  Widget _buildDraggableBottomSheet(destination) {
     return DraggableScrollableSheet(
         controller: _sheetController,
         initialChildSize: 0.5,
@@ -191,7 +280,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Header Info
-                          _buildHeaderInfo(),
+                          _buildHeaderInfo(destination),
 
                           SizedBox(height: 20.h),
 
@@ -201,7 +290,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
                           SizedBox(height: 20.h),
 
                           // Tab Content
-                          _buildTabContent(),
+                          _buildTabContent(destination),
                         ],
                       ),
                     ),
@@ -227,14 +316,14 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
     );
   }
 
-  Widget _buildHeaderInfo() {
+  Widget _buildHeaderInfo(destination) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 20.h),
         // Title
         Text(
-          widget.name,
+          destination.name,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: AppColors.textPrimary,
           ),
@@ -261,7 +350,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
             SizedBox(width: 8.w),
             Expanded(
               child: Text(
-                widget.location,
+                destination.specificAddress ?? destination.province ?? 'Unknown location',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: AppColors.textSubtitle,
                 ),
@@ -269,6 +358,36 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
             ),
           ],
         ),
+        
+        // Rating (if available)
+        if (destination.rating != null) ...[
+          SizedBox(height: 12.h),
+          Row(
+            children: [
+              Icon(
+                Icons.star_rounded,
+                color: Colors.amber,
+                size: 20.r,
+              ),
+              SizedBox(width: 4.w),
+              Text(
+                destination.rating!.toStringAsFixed(1),
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              if (destination.userRatingsTotal != null) ...[
+                SizedBox(width: 4.w),
+                Text(
+                  '(${destination.userRatingsTotal} reviews)',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSubtitle,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ],
       ],
     );
   }
@@ -297,27 +416,27 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
           Tab(text: 'About'),
           Tab(text: 'Reviews'),
           Tab(text: 'Photos'),
-          Tab(text: 'Videos'),
         ],
       ),
     );
   }
 
-  Widget _buildTabContent() {
+  Widget _buildTabContent(destination) {
     return AnimatedBuilder(
       animation: _tabController,
       builder: (context, child) {
         switch (_tabController.index) {
           case 0:
-            return AboutTab(name: widget.name);
+            return AboutTab(name: destination.name);
           case 1:
             return ReviewsTab();
           case 2:
-            return PhotosTab(imageUrl: widget.imageUrl);
-          case 3:
-            return VideosTab(imageUrl: widget.imageUrl);
+            return PhotosTab(
+              photos: destination.photos,
+              defaultImage: AppImage.defaultDestination,
+            );
           default:
-            return AboutTab(name: widget.name);
+            return AboutTab(name: destination.name);
         }
       },
     );

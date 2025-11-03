@@ -1,45 +1,18 @@
 // ignore_for_file: deprecated_member_use
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/destination_card.widget.dart';
 
-class SliverNearbyDestinationList extends StatelessWidget {
-  final List<DestinationCard> fakeDestinations = [
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Santorini Beach",
-      rating: "4.9",
-      location: "Santorini, Greece",
-      category: "Bãi biển",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Kyoto Temple",
-      rating: "4.7",
-      location: "Kyoto, Japan",
-      category: "Văn hóa",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Swiss Alps",
-      rating: "4.8",
-      location: "Interlaken, Switzerland",
-      category: "Núi cao",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Bali Waterfall",
-      rating: "4.6",
-      location: "Ubud, Bali",
-      category: "Thiên nhiên",
-    ),
-  ];
+class SliverNearbyDestinationList extends StatefulWidget {
+  @override
+  State<SliverNearbyDestinationList> createState() => _SliverNearbyDestinationListState();
+}
 
+class _SliverNearbyDestinationListState extends State<SliverNearbyDestinationList> {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -103,45 +76,93 @@ class SliverNearbyDestinationList extends StatelessWidget {
                     ),
 
                     // Carousel Destination Cards
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: CarouselSlider.builder(
-                        itemCount: fakeDestinations.length,
-                        itemBuilder: (context, index, realIndex) {
-                          final destination = fakeDestinations[index];
-                          return DestinationCard(
-                            imageUrl: destination.imageUrl,
-                            name: destination.name,
-                            rating: destination.rating,
-                            location: destination.location,
-                            category: destination.category,
-                            onTap: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) => DestinationDetailPage(
-                                    imageUrl: destination.imageUrl,
-                                    name: destination.name,
-                                    location: destination.location,
-                                    rating: destination.rating,
-                                    category: destination.category,
-                                  ),
-                                ),
-                              );
-                            },
-                            onFavorite: () {
-                              // TODO: add/remove from favorites
-                            },
+                    BlocBuilder<GetDestinationCubit, GetDestinationState>(
+                      builder: (context, state) {
+                        if (state is GetDestinationLoading) {
+                          return Container(
+                            height: 300.h,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.primaryWhite,
+                              ),
+                            ),
                           );
-                        },
-                        options: CarouselOptions(
-                          height: 300.h,
-                          padEnds: false,
-                          autoPlay: false,
-                          enableInfiniteScroll: false,
-                          viewportFraction: 0.8,
-                          enlargeCenterPage: false,
-                        ),
-                      ),
+                        }
+
+                        if (state is GetDestinationError) {
+                          return Container(
+                            height: 300.h,
+                            padding: EdgeInsets.all(16.w),
+                            child: Center(
+                              child: Text(
+                                state.message,
+                                style: TextStyle(color: AppColors.primaryWhite),
+                              ),
+                            ),
+                          );
+                        }
+
+                        if (state is GetDestinationLoaded) {
+                          final destinations = state.destinations;
+
+                          if (destinations.isEmpty) {
+                            return Container(
+                              height: 300.h,
+                              child: Center(
+                                child: Text(
+                                  'No destinations found',
+                                  style: TextStyle(color: AppColors.primaryWhite),
+                                ),
+                              ),
+                            );
+                          }
+
+                          return Padding(
+                            padding: EdgeInsets.only(left: 16.w),
+                            child: CarouselSlider.builder(
+                              itemCount: destinations.length,
+                              itemBuilder: (context, index, realIndex) {
+                                final destination = destinations[index];
+
+                                return DestinationCard(
+                                  imageUrl: destination.photos?.isNotEmpty == true
+                                      ? destination.photos!.first
+                                      : AppImage.defaultDestination,
+                                  name: destination.name,
+                                  rating: destination.rating?.toString() ?? "0.0",
+                                  location:  destination.province ?? "Unknown",
+                                  category: destination.type ?? 
+                                      (destination.categories?.isNotEmpty == true 
+                                          ? destination.categories!.first 
+                                          : "Destination"),
+                                  onTap: () {
+                                    Navigator.of(context, rootNavigator: true).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => DestinationDetailPage.withProvider(
+                                          destinationId: destination.id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  onFavorite: () {
+                                    // TODO: add/remove from favorites
+                                  },
+                                );
+                              },
+                              options: CarouselOptions(
+                                height: 300.h,
+                                padEnds: false,
+                                autoPlay: false,
+                                enableInfiniteScroll: false,
+                                viewportFraction: 0.8,
+                                enlargeCenterPage: false,
+                              ),
+                            ),
+                          );
+                        }
+
+                        return Container(height: 300.h);
+                      },
                     ),
                   ],
                 ),
