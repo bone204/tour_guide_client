@@ -2,43 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
-import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/register_rental_vehicle/register_rental_vehicle_cubit.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/register_rental_vehicle/register_rental_vehicle_state.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_rental_params.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_state.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/step_indicator.widget.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/pages/steps/identify_info_step.page.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/pages/steps/tax_info_step.page.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/pages/steps/banking_info_step.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/steps/vehicle_info_step.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/steps/documentation_step.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/steps/rental_info_step.page.dart';
 
-class VehicleRentalRegisterPage extends StatefulWidget {
-  const VehicleRentalRegisterPage({super.key});
+class AddVehiclePage extends StatefulWidget {
+  const AddVehiclePage({super.key});
 
   @override
-  State<VehicleRentalRegisterPage> createState() => _VehicleRentalRegisterPageState();
+  State<AddVehiclePage> createState() => _AddVehiclePageState();
 }
 
-class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
+class _AddVehiclePageState extends State<AddVehiclePage> {
   int _currentStep = 0;
   
-  // Step 1 data
-  String _fullName = '';
-  String _email = '';
-  String _phone = '';
-  String _identificationNumber = '';
-  String? _identificationPhoto;
+  // Step 1 data - Vehicle Information
+  String _licensePlate = '';
+  String _vehicleRegistration = '';
+  String _vehicleType = 'car';
+  String _vehicleBrand = '';
+  String _vehicleModel = '';
+  String _vehicleColor = '';
   
-  // Step 2 data
-  String _businessType = 'personal';
-  String? _businessName;
-  String? _businessAddress;
-  String? _taxCode;
-  String? _businessRegisterPhoto;
+  // Step 2 data - Documentation
+  String? _registrationFrontPhoto;
+  String? _registrationBackPhoto;
   
-  // Step 3 data
-  String? _bankName;
-  String? _bankAccountNumber;
-  String? _bankAccountName;
-  bool _termsAccepted = false;
+  // Step 3 data - Rental Information
+  String? _pricePerHour;
+  String? _pricePerDay;
+  String? _requirements;
 
   void _nextStep() {
     if (_currentStep < 2) {
@@ -58,9 +55,9 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegisterRentalVehicleCubit, RegisterRentalVehicleState>(
+    return BlocListener<AddVehicleCubit, AddVehicleState>(
       listener: (context, state) {
-        if (state is RegisterRentalVehicleLoading) {
+        if (state is AddVehicleLoading) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -68,43 +65,47 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
               child: CircularProgressIndicator(),
             ),
           );
-        } else if (state is RegisterRentalVehicleSuccess) {
-          Navigator.of(context).pop(); // Close loading dialog
-          _showSuccessDialog();
-        } else if (state is RegisterRentalVehicleFailure) {
-          Navigator.of(context).pop(); // Close loading dialog
-          _showErrorDialog(state.errorMessage);
+        } else if (state is AddVehicleSuccess) {
+          if (mounted) {
+            Navigator.of(context).pop(); // Close loading dialog
+            _showSuccessDialog();
+          }
+        } else if (state is AddVehicleFailure) {
+          if (mounted) {
+            Navigator.of(context).pop(); // Close loading dialog
+            _showErrorDialog(state.errorMessage);
+          }
         }
       },
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: CustomAppBar(
-          title: "Vehicle Rental Register",
+          title: "Add Vehicle",
           showBackButton: true,
           onBackPressed: () {
             Navigator.of(context, rootNavigator: true).pop();
           },
         ),
         body: Column(
-          children: [
-            // Step Indicator
-            Container(
-              color: AppColors.primaryWhite,
-              child: StepIndicator(
-                currentStep: _currentStep,
-                totalSteps: 3,
-                stepTitles: const [
-                  'Identity Information',
-                  'Tax\nInformation',
-                  'Banking Information',
-                ],
-              ),
+        children: [
+          // Step Indicator
+          Container(
+            color: AppColors.primaryWhite,
+            child: StepIndicator(
+              currentStep: _currentStep,
+              totalSteps: 3,
+              stepTitles: const [
+                'Vehicle Information',
+                'Documentation\n',
+                'Rental Information',
+              ],
             ),
-            // Step Content
-            Expanded(
-              child: _buildStepContent(),
-            ),
-          ],
+          ),
+          // Step Content
+          Expanded(
+            child: _buildStepContent(),
+          ),
+        ],
         ),
       ),
     );
@@ -113,71 +114,62 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
   Widget _buildStepContent() {
     switch (_currentStep) {
       case 0:
-        return IdentifyInfoStep(
-          fullName: _fullName,
-          email: _email,
-          phone: _phone,
-          identificationNumber: _identificationNumber,
-          identificationPhoto: _identificationPhoto,
+        return VehicleInfoStep(
+          licensePlate: _licensePlate,
+          vehicleRegistration: _vehicleRegistration,
+          vehicleType: _vehicleType,
+          vehicleBrand: _vehicleBrand,
+          vehicleModel: _vehicleModel,
+          vehicleColor: _vehicleColor,
           onNext: ({
-            required String fullName,
-            required String email,
-            required String phone,
-            required String identificationNumber,
-            String? identificationPhoto,
+            required String licensePlate,
+            required String vehicleRegistration,
+            required String vehicleType,
+            required String vehicleBrand,
+            required String vehicleModel,
+            required String vehicleColor,
           }) {
             setState(() {
-              _fullName = fullName;
-              _email = email;
-              _phone = phone;
-              _identificationNumber = identificationNumber;
-              _identificationPhoto = identificationPhoto;
+              _licensePlate = licensePlate;
+              _vehicleRegistration = vehicleRegistration;
+              _vehicleType = vehicleType;
+              _vehicleBrand = vehicleBrand;
+              _vehicleModel = vehicleModel;
+              _vehicleColor = vehicleColor;
             });
             _nextStep();
           },
         );
       case 1:
-        return TaxInfoStep(
-          businessType: _businessType,
-          businessName: _businessName,
-          businessAddress: _businessAddress,
-          taxCode: _taxCode,
-          businessRegisterPhoto: _businessRegisterPhoto,
+        return DocumentationStep(
+          registrationFrontPhoto: _registrationFrontPhoto,
+          registrationBackPhoto: _registrationBackPhoto,
           onNext: ({
-            required String businessType,
-            String? businessName,
-            String? businessAddress,
-            String? taxCode,
-            String? businessRegisterPhoto,
+            String? registrationFrontPhoto,
+            String? registrationBackPhoto,
           }) {
             setState(() {
-              _businessType = businessType;
-              _businessName = businessName;
-              _businessAddress = businessAddress;
-              _taxCode = taxCode;
-              _businessRegisterPhoto = businessRegisterPhoto;
+              _registrationFrontPhoto = registrationFrontPhoto;
+              _registrationBackPhoto = registrationBackPhoto;
             });
             _nextStep();
           },
           onBack: _previousStep,
         );
       case 2:
-        return BankingInfoStep(
-          bankName: _bankName,
-          bankAccountNumber: _bankAccountNumber,
-          bankAccountName: _bankAccountName,
-          termsAccepted: _termsAccepted,
+        return RentalInfoStep(
+          pricePerHour: _pricePerHour,
+          pricePerDay: _pricePerDay,
+          requirements: _requirements,
           onSubmit: ({
-            String? bankName,
-            String? bankAccountNumber,
-            String? bankAccountName,
-            required bool termsAccepted,
+            String? pricePerHour,
+            String? pricePerDay,
+            String? requirements,
           }) {
             setState(() {
-              _bankName = bankName;
-              _bankAccountNumber = bankAccountNumber;
-              _bankAccountName = bankAccountName;
-              _termsAccepted = termsAccepted;
+              _pricePerHour = pricePerHour;
+              _pricePerDay = pricePerDay;
+              _requirements = requirements;
             });
             _handleSubmit();
           },
@@ -189,32 +181,28 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
   }
 
   void _handleSubmit() {
-    final contractParams = ContractParams(
-      userId: 1,
+    // TODO: Get real contractId from approved contract
+    final vehicle = VehicleRentalParams(
+      licensePlate: _licensePlate,
+      contractId: 1, // Replace with real contractId
+      vehicleType: _vehicleType,
+      vehicleBrand: _vehicleBrand,
+      vehicleModel: _vehicleModel,
+      vehicleColor: _vehicleColor,
+      manufactureYear: null,
+      pricePerHour: _pricePerHour != null ? double.tryParse(_pricePerHour!) : null,
+      pricePerDay: _pricePerDay != null ? double.tryParse(_pricePerDay!) : null,
+      requirements: _requirements,
+      vehicleRegistrationFront: _registrationFrontPhoto,
+      vehicleRegistrationBack: _registrationBackPhoto,
+      photoUrls: null,
+      description: null,
+      status: 'draft',
+      availability: 'available',
       externalId: null,
-      fullName: _fullName,
-      email: _email,
-      phone: _phone,
-      identificationNumber: _identificationNumber,
-      identificationPhoto: _identificationPhoto,
-      businessType: _businessType,
-      businessName: _businessName,
-      businessProvince: null,
-      businessCity: null,
-      businessAddress: _businessAddress,
-      taxCode: _taxCode,
-      businessRegisterPhoto: _businessRegisterPhoto,
-      citizenFrontPhoto: null,
-      citizenBackPhoto: null,
-      contractTerm: null,
-      notes: null,
-      bankName: _bankName,
-      bankAccountNumber: _bankAccountNumber,
-      bankAccountName: _bankAccountName,
-      termsAccepted: _termsAccepted,
     );
 
-    context.read<RegisterRentalVehicleCubit>().registerRentalVehicle(contractParams);
+    context.read<AddVehicleCubit>().addVehicle(vehicle);
   }
 
   void _showSuccessDialog() {
@@ -246,7 +234,7 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  'Registration Successful!',
+                  'Vehicle Added Successfully!',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -254,7 +242,7 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  'Your vehicle rental registration has been submitted successfully. We will review your information and contact you soon.',
+                  'Your vehicle has been added successfully and is now available for rental.',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSubtitle,
                       ),
@@ -266,7 +254,7 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(dialogContext).pop();
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true); // Return true to refresh
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
@@ -320,7 +308,7 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  'Registration Failed',
+                  'Failed to Add Vehicle',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -365,3 +353,4 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
     );
   }
 }
+

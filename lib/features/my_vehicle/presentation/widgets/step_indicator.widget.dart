@@ -66,7 +66,7 @@ class StepIndicator extends StatelessWidget {
                 SizedBox(height: 8.h),
                 // Step title
                 SizedBox(
-                  width: 80.w,
+                  width: 85.w,
                   child: Text(
                     stepTitles[index],
                     textAlign: TextAlign.center,

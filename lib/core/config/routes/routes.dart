@@ -32,8 +32,12 @@ import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_r
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_booking_info.page.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/my_vehicle.page.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/pages/vehicle_rental_register.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/vehicle_rental_register.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/add_vehicle.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/register_rental_vehicle/register_rental_vehicle_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -270,7 +274,13 @@ class AppRouter {
       case AppRouteConstant.myVehicle:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const MyVehiclePage(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => sl<GetContractsCubit>()),
+              BlocProvider(create: (_) => sl<GetVehiclesCubit>()),
+            ],
+            child: const MyVehiclePage(),
+          ),
         );
 
       case AppRouteConstant.vehicleRentalRegister:
@@ -279,6 +289,15 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (_) => sl<RegisterRentalVehicleCubit>(),
             child: const VehicleRentalRegisterPage(),
+          ),
+        );
+
+      case AppRouteConstant.addVehicle:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => sl<AddVehicleCubit>(),
+            child: const AddVehiclePage(),
           ),
         );
 

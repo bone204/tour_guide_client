@@ -19,6 +19,10 @@ import 'package:tour_guide_app/features/my_vehicle/domain/repository/my_vehicle_
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_contracts.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/register_rental_vehicle.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/register_rental_vehicle/register_rental_vehicle_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/add_vehicle.dart';
 import 'package:tour_guide_app/features/settings/data/data_source/local/settings_local_service.dart';
 import 'package:tour_guide_app/features/settings/data/repository/settings_repository_impl.dart';
 import 'package:tour_guide_app/features/settings/domain/repository/settings_repository.dart';
@@ -51,7 +55,11 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetDestinationUseCase>(GetDestinationUseCase());
   sl.registerSingleton<RegisterRentalVehicleUseCase>(RegisterRentalVehicleUseCase());
   sl.registerSingleton<GetContractsUseCase>(GetContractsUseCase());
+  sl.registerSingleton<AddVehicleUseCase>(AddVehicleUseCase());
 
   // Cubits
   sl.registerFactory<RegisterRentalVehicleCubit>(() => RegisterRentalVehicleCubit());
+  sl.registerFactory<GetContractsCubit>(() => GetContractsCubit());
+  sl.registerFactory<AddVehicleCubit>(() => AddVehicleCubit());
+  sl.registerFactory<GetVehiclesCubit>(() => GetVehiclesCubit());
 }

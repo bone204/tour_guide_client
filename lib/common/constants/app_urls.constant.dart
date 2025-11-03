@@ -10,5 +10,8 @@
     static const getDestinations = "$baseURL/destinations";
     
     //Rental Contracts URLs
-    static const rentalContract = "$baseURL/rental-contracts";
+    static const rentalContracts = "$baseURL/rental-contracts";
+    
+    //Rental Vehicles URLs
+    static const rentalVehicles = "$baseURL/rental-vehicles";
   }
