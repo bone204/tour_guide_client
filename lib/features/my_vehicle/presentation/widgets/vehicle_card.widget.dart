@@ -21,15 +21,11 @@ class VehicleCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.primaryWhite,
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(
-            color: AppColors.secondaryGrey,
-            width: 1.w,
-          ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primaryGrey.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              color: AppColors.primaryBlack.withOpacity(0.2),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
             ),
           ],
         ),

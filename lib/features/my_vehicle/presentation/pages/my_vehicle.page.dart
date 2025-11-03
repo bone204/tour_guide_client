@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/constants/app_route.constant.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_state.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
@@ -18,6 +20,42 @@ class MyVehiclePage extends StatefulWidget {
 }
 
 class _MyVehiclePageState extends State<MyVehiclePage> {
+  StreamSubscription? _contractEventSubscription;
+  StreamSubscription? _vehicleEventSubscription;
+  int? _currentContractId; // Track contractId hiện tại
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // Lắng nghe event contract registered
+    _contractEventSubscription = eventBus.on<ContractRegisteredEvent>().listen((event) {
+      if (mounted) {
+        // Reset contractId để force reload vehicles với contract mới
+        _currentContractId = null;
+        // Refresh contracts khi có contract mới
+        context.read<GetContractsCubit>().getContracts(1);
+      }
+    });
+    
+    // Lắng nghe event vehicle added
+    _vehicleEventSubscription = eventBus.on<VehicleAddedEvent>().listen((event) {
+      if (mounted) {
+        // Reset GetVehiclesCubit về initial để trigger reload
+        context.read<GetVehiclesCubit>().reset();
+        // Refresh contracts để lấy contractId và totalVehicles mới nhất
+        context.read<GetContractsCubit>().getContracts(1);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _contractEventSubscription?.cancel();
+    _vehicleEventSubscription?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,10 +87,23 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
             final hasApprovedContract = approvedContract.status?.toLowerCase() == 'approved';
             
             if (hasApprovedContract) {
+              // Kiểm tra nếu contractId thay đổi thì reset vehicles
+              if (_currentContractId != null && _currentContractId != approvedContract.id) {
+                // ContractId đã thay đổi, cần reload vehicles
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) {
+                    context.read<GetVehiclesCubit>().reset();
+                  }
+                });
+              }
+              // Cập nhật contractId hiện tại
+              _currentContractId = approvedContract.id;
+              
               // Load vehicles nếu có approved contract
               return BlocBuilder<GetVehiclesCubit, GetVehiclesState>(
                 builder: (context, vehicleState) {
                   if (vehicleState is GetVehiclesInitial) {
+                    // ✅ Load với contractId mới nhất từ API get contracts
                     context.read<GetVehiclesCubit>().getVehicles(approvedContract.id);
                     return const Center(child: CircularProgressIndicator());
                   } else if (vehicleState is GetVehiclesLoading) {
@@ -60,9 +111,9 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                   } else if (vehicleState is GetVehiclesSuccess) {
                     return _buildVehiclesList(vehicleState.vehicles, approvedContract.id);
                   } else if (vehicleState is GetVehiclesEmpty) {
-                    return _buildApprovedView();
+                    return _buildApprovedView(approvedContract.id);
                   } else {
-                    return _buildApprovedView();
+                    return _buildApprovedView(approvedContract.id);
                   }
                 },
               );
@@ -93,10 +144,12 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
             // Add Vehicle Button
             ElevatedButton(
               onPressed: () async {
-                final result = await Navigator.of(context).pushNamed(
+                // ✅ Dùng root navigator để mở fullscreen (lên cả bottom bar)
+                final result = await Navigator.of(context, rootNavigator: true).pushNamed(
                   AppRouteConstant.addVehicle,
+                  arguments: contractId, // ✅ Truyền contractId thật
                 );
-                if (result == true) {
+                if (mounted && result == true) {
                   context.read<GetVehiclesCubit>().getVehicles(contractId);
                 }
               },
@@ -149,10 +202,10 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
     );
   }
 
-  Widget _buildApprovedView() {
+  Widget _buildApprovedView(int contractId) {
     return RefreshIndicator(
       onRefresh: () async {
-        context.read<GetContractsCubit>().getContracts(1);
+        context.read<GetVehiclesCubit>().getVehicles(contractId);
       },
       child: Center(
         child: SingleChildScrollView(
@@ -197,12 +250,14 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    final result = await Navigator.of(context).pushNamed(
+                    // ✅ Dùng root navigator để mở fullscreen (lên cả bottom bar)
+                    final result = await Navigator.of(context, rootNavigator: true).pushNamed(
                       AppRouteConstant.addVehicle,
+                      arguments: contractId, // ✅ Truyền contractId thật
                     );
                     // Refresh nếu thêm vehicle thành công
-                    if (result == true) {
-                      context.read<GetContractsCubit>().getContracts(1);
+                    if (mounted && result == true) {
+                      context.read<GetVehiclesCubit>().getVehicles(contractId);
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -384,12 +439,17 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
             // Register Button
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    AppRouteConstant.vehicleRentalRegister,
-                  );
-                },
+                child: ElevatedButton(
+                  onPressed: () async {
+                    // ✅ Dùng root navigator để mở fullscreen (lên cả bottom bar)
+                    final result = await Navigator.of(context, rootNavigator: true).pushNamed(
+                      AppRouteConstant.vehicleRentalRegister,
+                    );
+                    // Refresh contracts nếu register thành công (event sẽ handle)
+                    if (mounted && result == true) {
+                      // Event bus đã handle rồi, không cần reload thủ công
+                    }
+                  },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryBlue,
                   padding: EdgeInsets.symmetric(vertical: 16.h),

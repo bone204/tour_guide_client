@@ -11,7 +11,12 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicl
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/steps/rental_info_step.page.dart';
 
 class AddVehiclePage extends StatefulWidget {
-  const AddVehiclePage({super.key});
+  final int contractId;
+  
+  const AddVehiclePage({
+    super.key,
+    required this.contractId,
+  });
 
   @override
   State<AddVehiclePage> createState() => _AddVehiclePageState();
@@ -66,15 +71,23 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
             ),
           );
         } else if (state is AddVehicleSuccess) {
-          if (mounted) {
-            Navigator.of(context).pop(); // Close loading dialog
-            _showSuccessDialog();
-          }
+          // Đóng loading dialog trước
+          Navigator.of(context, rootNavigator: true).pop();
+          // Delay nhỏ trước khi hiển thị success dialog
+          Future.delayed(const Duration(milliseconds: 100), () {
+            if (mounted) {
+              _showSuccessDialog();
+            }
+          });
         } else if (state is AddVehicleFailure) {
-          if (mounted) {
-            Navigator.of(context).pop(); // Close loading dialog
-            _showErrorDialog(state.errorMessage);
-          }
+          // Đóng loading dialog trước
+          Navigator.of(context, rootNavigator: true).pop();
+          // Delay nhỏ trước khi hiển thị error dialog
+          Future.delayed(const Duration(milliseconds: 100), () {
+            if (mounted) {
+              _showErrorDialog(state.errorMessage);
+            }
+          });
         }
       },
       child: Scaffold(
@@ -181,10 +194,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   }
 
   void _handleSubmit() {
-    // TODO: Get real contractId from approved contract
     final vehicle = VehicleRentalParams(
       licensePlate: _licensePlate,
-      contractId: 1, // Replace with real contractId
+      contractId: widget.contractId, 
       vehicleType: _vehicleType,
       vehicleBrand: _vehicleBrand,
       vehicleModel: _vehicleModel,
@@ -197,7 +209,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
       vehicleRegistrationBack: _registrationBackPhoto,
       photoUrls: null,
       description: null,
-      status: 'draft',
+      status: 'Pending',
       availability: 'available',
       externalId: null,
     );
@@ -209,6 +221,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
     showDialog(
       context: context,
       barrierDismissible: false,
+      useRootNavigator: true,
       builder: (BuildContext dialogContext) {
         return Dialog(
           shape: RoundedRectangleBorder(
@@ -253,8 +266,12 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(dialogContext).pop();
-                      Navigator.of(context).pop(true); // Return true to refresh
+                      // Đóng success dialog
+                      Navigator.of(dialogContext, rootNavigator: true).pop();
+                      // Đóng Add Vehicle page và return true
+                      if (mounted) {
+                        Navigator.of(context, rootNavigator: true).pop(true);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,
@@ -283,6 +300,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
+      useRootNavigator: true,
       builder: (BuildContext dialogContext) {
         return Dialog(
           shape: RoundedRectangleBorder(
@@ -327,7 +345,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(dialogContext).pop();
+                      Navigator.of(dialogContext, rootNavigator: true).pop();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryRed,

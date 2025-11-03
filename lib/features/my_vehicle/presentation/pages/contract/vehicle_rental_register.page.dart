@@ -69,11 +69,15 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
             ),
           );
         } else if (state is RegisterRentalVehicleSuccess) {
-          Navigator.of(context).pop(); // Close loading dialog
-          _showSuccessDialog();
+          if (mounted) {
+            Navigator.of(context).pop(); // Close loading dialog
+            _showSuccessDialog();
+          }
         } else if (state is RegisterRentalVehicleFailure) {
-          Navigator.of(context).pop(); // Close loading dialog
-          _showErrorDialog(state.errorMessage);
+          if (mounted) {
+            Navigator.of(context).pop(); // Close loading dialog
+            _showErrorDialog(state.errorMessage);
+          }
         }
       },
       child: Scaffold(
@@ -266,7 +270,10 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(dialogContext).pop();
-                      Navigator.of(context).pop();
+                      if (mounted) {
+                        // ✅ Return true để báo success
+                        Navigator.of(context, rootNavigator: true).pop(true);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryBlue,

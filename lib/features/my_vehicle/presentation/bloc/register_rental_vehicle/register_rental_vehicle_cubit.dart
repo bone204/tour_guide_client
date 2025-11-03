@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/repository/my_vehicle_repository.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/register_rental_vehicle/register_rental_vehicle_state.dart';
@@ -16,7 +17,11 @@ class RegisterRentalVehicleCubit extends Cubit<RegisterRentalVehicleState> {
 
     result.fold(
       (failure) => emit(RegisterRentalVehicleFailure(errorMessage: failure.message)),
-      (response) => emit(RegisterRentalVehicleSuccess(message: response.message)),
+      (response) {
+        emit(RegisterRentalVehicleSuccess(message: response.message));
+        // ✅ Fire event để My Vehicle page refresh
+        eventBus.fire(ContractRegisteredEvent());
+      },
     );
   }
 

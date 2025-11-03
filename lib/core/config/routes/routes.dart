@@ -293,11 +293,12 @@ class AppRouter {
         );
 
       case AppRouteConstant.addVehicle:
+        final contractId = settings.arguments as int;
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => BlocProvider(
             create: (_) => sl<AddVehicleCubit>(),
-            child: const AddVehiclePage(),
+            child: AddVehiclePage(contractId: contractId),
           ),
         );
 
