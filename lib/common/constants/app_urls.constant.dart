@@ -8,4 +8,7 @@
 
     //Destination URLs
     static const getDestinations = "$baseURL/destinations";
+    
+    //Rental Contracts URLs
+    static const rentalContract = "$baseURL/rental-contracts";
   }

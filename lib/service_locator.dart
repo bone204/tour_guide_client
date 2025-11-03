@@ -13,6 +13,12 @@ import 'package:tour_guide_app/features/destination/data/repository/destination_
 import 'package:tour_guide_app/features/destination/domain/repository/destination_repository.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_destination_by_id.dart';
 import 'package:tour_guide_app/features/home/domain/usecases/get_destinations.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/data_source/my_vehicle_api_service.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/repository/my_vehicle_repository_impl.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/repository/my_vehicle_repository.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_contracts.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/register_rental_vehicle.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/register_rental_vehicle/register_rental_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/settings/data/data_source/local/settings_local_service.dart';
 import 'package:tour_guide_app/features/settings/data/repository/settings_repository_impl.dart';
 import 'package:tour_guide_app/features/settings/domain/repository/settings_repository.dart';
@@ -29,10 +35,12 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<AuthLocalService>(AuthLocalServiceImpl());
   sl.registerSingleton<SettingsLocalService>(SettingsLocalServiceImpl());
   sl.registerSingleton<DestinationApiService>(DestinationApiServiceImpl());
+  sl.registerSingleton<MyVehicleApiService>(MyVehicleApiServiceImpl());
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
   sl.registerSingleton<DestinationRepository>(DestinationRepositoryImpl());
+  sl.registerSingleton<MyVehicleRepository>(MyVehicleRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());
@@ -41,4 +49,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<LogOutUseCase>(LogOutUseCase());
   sl.registerSingleton<GetDestinationByIdUseCase>(GetDestinationByIdUseCase());
   sl.registerSingleton<GetDestinationUseCase>(GetDestinationUseCase());
+  sl.registerSingleton<RegisterRentalVehicleUseCase>(RegisterRentalVehicleUseCase());
+  sl.registerSingleton<GetContractsUseCase>(GetContractsUseCase());
+
+  // Cubits
+  sl.registerFactory<RegisterRentalVehicleCubit>(() => RegisterRentalVehicleCubit());
 }

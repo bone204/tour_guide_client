@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:tour_guide_app/common/constants/app_icon.constant.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/features/home/presentation/pages/home.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/my_vehicle.page.dart';
 import 'package:tour_guide_app/features/settings/presentation/pages/settings.page.dart';
 
 class MainScreen extends StatefulWidget {
@@ -95,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
           statusBarIconBrightness: Brightness.light,
           statusBarBrightness: Brightness.light,
         ),
-        child: const NewsPage(),
+        child: const MyVehiclePage(),
       ),
       item: ItemConfig(
         icon: const Icon(Icons.explore),

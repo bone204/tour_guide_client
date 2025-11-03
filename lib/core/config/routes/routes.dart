@@ -31,6 +31,11 @@ import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_d
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_room_list.page.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_booking_info.page.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/my_vehicle.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/vehicle_rental_register.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/register_rental_vehicle/register_rental_vehicle_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tour_guide_app/service_locator.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -260,6 +265,21 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const TrainSearchPage(),
+        );
+
+      case AppRouteConstant.myVehicle:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const MyVehiclePage(),
+        );
+
+      case AppRouteConstant.vehicleRentalRegister:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => sl<RegisterRentalVehicleCubit>(),
+            child: const VehicleRentalRegisterPage(),
+          ),
         );
 
       default:
