@@ -38,6 +38,11 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/register_re
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/pages/province_selection.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/pages/destination_selection.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/pages/itinerary_creation.page.dart';
+import 'package:tour_guide_app/features/destination/data/models/destination.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -299,6 +304,34 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (_) => sl<AddVehicleCubit>(),
             child: AddVehiclePage(contractId: contractId),
+          ),
+        );
+
+      case AppRouteConstant.itineraryProvinceSelection:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ProvinceSelectionPage.withProvider(),
+        );
+
+      case AppRouteConstant.itineraryDestinationSelection:
+        final province = settings.arguments as String;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => sl<GetDestinationCubit>(),
+            child: DestinationSelectionPage(province: province),
+          ),
+        );
+
+      case AppRouteConstant.itineraryCreation:
+        final args = settings.arguments as Map<String, dynamic>;
+        final province = args['province'] as String;
+        final destinations = args['destinations'] as List<Destination>;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ItineraryCreationPage(
+            province: province,
+            selectedDestinations: destinations,
           ),
         );
 

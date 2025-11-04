@@ -14,6 +14,7 @@ import 'package:tour_guide_app/features/destination/data/repository/destination_
 import 'package:tour_guide_app/features/destination/domain/repository/destination_repository.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_destination_by_id.dart';
 import 'package:tour_guide_app/features/home/domain/usecases/get_destinations.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/data_source/my_vehicle_api_service.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/repository/my_vehicle_repository_impl.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/repository/my_vehicle_repository.dart';
@@ -69,4 +70,5 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<GetContractsCubit>(() => GetContractsCubit());
   sl.registerFactory<AddVehicleCubit>(() => AddVehicleCubit());
   sl.registerFactory<GetVehiclesCubit>(() => GetVehiclesCubit());
+  sl.registerFactory<GetDestinationCubit>(() => GetDestinationCubit());
 }

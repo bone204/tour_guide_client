@@ -80,6 +80,13 @@ class _NavigationCardState extends State<NavigationCard> {
         'route': AppRouteConstant.trainBooking,
         'color': AppColors.primaryRed
       },
+      {
+        'icon': Icons.map_rounded,
+        'title': 'Lộ trình',
+        'route': AppRouteConstant.itineraryProvinceSelection,
+        'color': AppColors.primaryBlue,
+        'isIconData': true,
+      },
     ];
 
     final int totalPages = (navItems.length / itemsPerPage).ceil();
@@ -134,13 +141,19 @@ class _NavigationCardState extends State<NavigationCard> {
                                     shape: BoxShape.circle,
                                   ),
                                   padding: EdgeInsets.all(12.w),
-                                  child: SvgPicture.asset(
-                                    item['icon'],
-                                    colorFilter: const ColorFilter.mode(
-                                      Colors.white,
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
+                                  child: item['isIconData'] == true
+                                      ? Icon(
+                                          item['icon'] as IconData,
+                                          color: Colors.white,
+                                          size: 24.sp,
+                                        )
+                                      : SvgPicture.asset(
+                                          item['icon'] as String,
+                                          colorFilter: const ColorFilter.mode(
+                                            Colors.white,
+                                            BlendMode.srcIn,
+                                          ),
+                                        ),
                                 ),
                               ),
                               SizedBox(height: 8.h),
