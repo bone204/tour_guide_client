@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
+import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
 import 'package:tour_guide_app/features/home/domain/usecases/get_destinations.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -295,6 +296,278 @@ class _DestinationMarker extends StatelessWidget {
   }
 }
 
+class _DestinationPreviewSheet extends StatelessWidget {
+  const _DestinationPreviewSheet({
+    required this.destination,
+    required this.onViewDetail,
+  });
+
+  final Destination destination;
+  final VoidCallback onViewDetail;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final imageUrl =
+        destination.photos != null && destination.photos!.isNotEmpty
+            ? destination.photos!.first
+            : null;
+    final address =
+        destination.specificAddress ?? destination.province ?? 'Đang cập nhật';
+    String? description = destination.descriptionViet?.trim();
+    if (description == null || description.isEmpty) {
+      description = destination.descriptionEng?.trim();
+    }
+
+    return SafeArea(
+      top: false,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        child: Material(
+          color: theme.colorScheme.surface,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 220,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    if (imageUrl != null)
+                      Image.network(
+                        imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            _PreviewImageFallback(destination: destination),
+                      )
+                    else
+                      _PreviewImageFallback(destination: destination),
+                    Positioned.fill(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.black.withOpacity(0.35),
+                              Colors.black.withOpacity(0.05),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 20,
+                      right: 20,
+                      bottom: 18,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            destination.name,
+                            style: theme.textTheme.headlineSmall?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on_outlined,
+                                color: Colors.white70,
+                                size: 18,
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  address,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.star_rounded,
+                              color: Colors.amber.shade500, size: 20),
+                          const SizedBox(width: 6),
+                          Text(
+                            destination.rating != null
+                                ? destination.rating!.toStringAsFixed(1)
+                                : 'Chưa có đánh giá',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          if (destination.userRatingsTotal != null)
+                            Text(
+                              '  (${destination.userRatingsTotal} đánh giá)',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      if (destination.categories != null &&
+                          destination.categories!.isNotEmpty)
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: destination.categories!
+                              .take(6)
+                              .map(
+                                (category) => Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.primary
+                                        .withOpacity(0.12),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    category,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.primary,
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      if (destination.categories != null &&
+                          destination.categories!.isNotEmpty)
+                        const SizedBox(height: 20),
+                      if ((description ?? '').isNotEmpty)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Giới thiệu',
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              description ?? '',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: Colors.grey.shade700,
+                                height: 1.45,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        ),
+                      if (destination.specificAddress != null ||
+                          destination.province != null)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Địa chỉ',
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.place_outlined,
+                                  color: theme.colorScheme.primary,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    address,
+                                    style: theme.textTheme.bodyMedium,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: onViewDetail,
+                          style: ElevatedButton.styleFrom(
+                            padding:
+                                const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            textStyle: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          child: const Text('Xem chi tiết đầy đủ'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PreviewImageFallback extends StatelessWidget {
+  const _PreviewImageFallback({required this.destination});
+
+  final Destination destination;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            theme.colorScheme.primary.withOpacity(0.5),
+            theme.colorScheme.primary.withOpacity(0.3),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Center(
+        child: Icon(
+          Icons.image_outlined,
+          color: Colors.white.withOpacity(0.85),
+          size: 48,
+        ),
+      ),
+    );
+  }
+}
+
 class _MarkerImage extends StatelessWidget {
   const _MarkerImage({this.url});
 
@@ -370,6 +643,56 @@ class _MarkerPlaceholder extends StatelessWidget {
   }
 }
 
+class _DestinationIcon extends StatelessWidget {
+  const _DestinationIcon({
+    required this.destination,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final Destination destination;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final accent = theme.colorScheme.primary;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedScale(
+        duration: const Duration(milliseconds: 200),
+        scale: isSelected ? 1.1 : 1.0,
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isSelected
+                ? accent
+                : theme.colorScheme.primary.withOpacity(0.85),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.25),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Icon(
+              Icons.place_rounded,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _DestinationAvatar extends StatelessWidget {
   const _DestinationAvatar({required this.index});
 
@@ -423,6 +746,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   LatLng? _currentPosition;
   LatLng? _selectedDestinationPosition;
   int? _selectedDestinationId;
+  double _currentMapZoom = _defaultZoom;
 
   bool _isLoading = true;
   String? _errorMessage;
@@ -590,6 +914,14 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     }
   }
 
+  Future<void> _handleMarkerTap(Destination destination) async {
+    await _selectDestination(destination);
+    if (!mounted) {
+      return;
+    }
+    _openDestinationBottomSheet(destination);
+  }
+
   Future<void> _selectDestination(Destination destination) async {
     final latitude = destination.latitude;
     final longitude = destination.longitude;
@@ -708,6 +1040,14 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
               minZoom: 3,
               maxZoom: 18,
               onMapReady: _handleMapReady,
+              onPositionChanged: (position, _) {
+                final zoom = position.zoom;
+                if ((zoom - _currentMapZoom).abs() > 0.01) {
+                  setState(() {
+                    _currentMapZoom = zoom;
+                  });
+                }
+              },
               onTap: (_, __) => _dismissSearchOverlay(),
             ),
             children: [
@@ -781,6 +1121,9 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   }
 
   List<Marker> _buildDestinationMarkers() {
+    const photoZoomThreshold = 13.0;
+    final showPhotoMarkers = _currentMapZoom >= photoZoomThreshold;
+
     return _destinations
         .where(
           (destination) =>
@@ -794,15 +1137,21 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       final isSelected = destination.id == _selectedDestinationId;
 
       return Marker(
-        width: 108,
-        height: 124,
+        width: showPhotoMarkers ? 108 : 40,
+        height: showPhotoMarkers ? 124 : 40,
         point: point,
         alignment: Alignment.bottomCenter,
-        child: _DestinationMarker(
-          destination: destination,
-          isSelected: isSelected,
-          onTap: () => _selectDestination(destination),
-        ),
+        child: showPhotoMarkers
+            ? _DestinationMarker(
+                destination: destination,
+                isSelected: isSelected,
+                onTap: () => _handleMarkerTap(destination),
+              )
+            : _DestinationIcon(
+                destination: destination,
+                isSelected: isSelected,
+                onTap: () => _handleMarkerTap(destination),
+              ),
       );
     }).toList();
   }
@@ -950,8 +1299,36 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
         (a.longitude - b.longitude).abs() < epsilon;
   }
 
+  void _openDestinationBottomSheet(Destination destination) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        return FractionallySizedBox(
+          heightFactor: 0.78,
+          child: _DestinationPreviewSheet(
+            destination: destination,
+            onViewDetail: () =>
+                _navigateToDestinationDetail(sheetContext, destination.id),
+          ),
+        );
+      },
+    );
+  }
+
+  void _navigateToDestinationDetail(BuildContext sheetContext, int destinationId) {
+    Navigator.of(sheetContext).pop();
+    Navigator.of(context, rootNavigator: true).push(
+      MaterialPageRoute(
+        builder: (_) => DestinationDetailPage.withProvider(destinationId: destinationId),
+      ),
+    );
+  }
+
   void _handleMapReady() {
     _isMapReady = true;
+    _currentMapZoom = _mapController.camera.zoom;
     if (_pendingMove != null) {
       final target = _pendingMove!;
       final zoom = _pendingZoom ?? _defaultZoom;
