@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:tour_guide_app/common/constants/app_icon.constant.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/features/home/presentation/pages/home.page.dart';
+import 'package:tour_guide_app/features/map/map.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/my_vehicle.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
@@ -84,7 +85,9 @@ class _MainScreenState extends State<MainScreen> {
           statusBarIconBrightness: Brightness.light,
           statusBarBrightness: Brightness.light,
         ),
-        child: const NewsPage(),
+        child: Builder(
+          builder: (context) => const MapPage(),
+        ),
       ),
       item: ItemConfig(
         icon: const Icon(Icons.newspaper),

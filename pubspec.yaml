@@ -61,6 +61,9 @@ dependencies:
   dotted_line: ^3.2.3
   connectivity_plus: ^7.0.0
   lottie: ^3.2.0
+  flutter_map: ^8.2.2
+  latlong2: ^0.9.1
+  geolocator: ^14.0.2
 
 
 dev_dependencies:
