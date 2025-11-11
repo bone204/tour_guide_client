@@ -12,6 +12,7 @@ import 'package:tour_guide_app/features/map/map.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/my_vehicle.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
+import 'package:tour_guide_app/features/profile/presentation/pages/profile.page.dart';
 import 'package:tour_guide_app/features/settings/presentation/pages/settings.page.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -46,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   final List<PersistentTabConfig> _tabs = [
-    PersistentTabConfig(
+    PersistentTabConfig(  
       screen: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light.copyWith(
           statusBarColor: Colors.transparent,
@@ -113,6 +114,24 @@ class _MainScreenState extends State<MainScreen> {
       ),
       item: ItemConfig(
         icon: const Icon(Icons.explore),
+        title: '',
+        activeForegroundColor: AppColors.primaryBlue,
+        inactiveForegroundColor: AppColors.primaryGrey,
+      ),
+    ),
+    PersistentTabConfig(
+      screen: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.light,
+        ),
+        child: Builder(
+          builder: (context) => const ProfilePage(),
+        ),
+      ),
+      item: ItemConfig(
+        icon: const Icon(Icons.newspaper),
         title: '',
         activeForegroundColor: AppColors.primaryBlue,
         inactiveForegroundColor: AppColors.primaryGrey,
@@ -208,12 +227,15 @@ class _MainScreenState extends State<MainScreen> {
                 svgPath = isSelected ? AppIcons.notificationsActive : AppIcons.notificationsInactive;
                 break;
               case 2:
-                svgPath = isSelected ? AppIcons.communityActive : AppIcons.communityInactive;
+                svgPath = isSelected ? AppIcons.mapActive : AppIcons.mapInactive;
                 break;
               case 3:
-                svgPath = isSelected ? AppIcons.universityActive : AppIcons.universityInactive;
+                svgPath = isSelected ? AppIcons.vehicleActive : AppIcons.vehicleInactive;
                 break;
               case 4:
+                svgPath = isSelected ? AppIcons.accountActive : AppIcons.accountInactive;
+                break;
+              case 5:
                 svgPath = isSelected ? AppIcons.barActive : AppIcons.barInactive;
                 break;
               default:

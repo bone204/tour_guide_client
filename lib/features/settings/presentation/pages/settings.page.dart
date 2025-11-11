@@ -24,7 +24,6 @@ class SettingsPage extends StatelessWidget {
     void openLanguageScreen(BuildContext context) {
       Navigator.of(context, rootNavigator: true).pushNamed(AppRouteConstant.language);
     }
-
     return MultiBlocProvider(
       providers: [BlocProvider(create: (context) => ButtonStateCubit())],
       child: BlocListener<ButtonStateCubit, ButtonState>(
@@ -61,13 +60,6 @@ class SettingsPage extends StatelessWidget {
                   NavigationButton(
                     icon: AppIcons.user,
                     title: AppLocalizations.of(context)!.personalInfo,
-                    trailingIcon: AppIcons.arrowRight,
-                    onTap: () {},
-                  ),
-                  SizedBox(height: 12.w),
-                  NavigationButton(
-                    icon: AppIcons.userActive,
-                    title: AppLocalizations.of(context)!.accountInfo,
                     trailingIcon: AppIcons.arrowRight,
                     onTap: () {},
                   ),

@@ -39,9 +39,14 @@ class AppIcons {
   static const String barInactive = 'assets/icons/ic_bar_inactive.svg';
   static const String communityActive = 'assets/icons/ic_community_active.svg';
   static const String communityInactive = 'assets/icons/ic_community_inactive.svg';
-  static const String universityActive = 'assets/icons/ic_star_active.svg';
-  static const String universityInactive = 'assets/icons/ic_star_inactive.svg';
+  static const String starActive = 'assets/icons/ic_star_active.svg';
+  static const String starInactive = 'assets/icons/ic_star_inactive.svg';
   static const String notificationsActive = 'assets/icons/ic_notifications_active.svg';
   static const String notificationsInactive = 'assets/icons/ic_notifications_inactive.svg';
-  // State icons
+  static const String vehicleActive = 'assets/icons/ic_vehicle_active.svg';
+  static const String vehicleInactive = 'assets/icons/ic_vehicle_inactive.svg';
+  static const String accountActive = 'assets/icons/ic_account_active.svg';
+  static const String accountInactive = 'assets/icons/ic_account_inactive.svg';
+  static const String mapActive = 'assets/icons/ic_map_active.svg';
+  static const String mapInactive = 'assets/icons/ic_map_inactive.svg';
 }
