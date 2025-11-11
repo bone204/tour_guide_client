@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tour_guide_app/common/widgets/button/like_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
 class DestinationCard extends StatelessWidget {
@@ -11,6 +12,7 @@ class DestinationCard extends StatelessWidget {
   final String? category;
   final VoidCallback? onTap;
   final VoidCallback? onFavorite;
+  final bool isFavorite;
 
   const DestinationCard({
     super.key,
@@ -21,6 +23,7 @@ class DestinationCard extends StatelessWidget {
     this.category,
     this.onTap,
     this.onFavorite,
+    this.isFavorite = false,
   });
 
   @override
@@ -85,33 +88,34 @@ class DestinationCard extends StatelessWidget {
                 ),
                 
                 // Favorite Button
-                if (onFavorite != null)
-                  Positioned(
-                    top: 12.h,
-                    right: 12.w,
-                    child: GestureDetector(
-                      onTap: onFavorite,
-                      child: Container(
-                        padding: EdgeInsets.all(8.r),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryWhite.withOpacity(0.95),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 8,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
+                Positioned(
+                  top: 12.h,
+                  right: 12.w,
+                  child: Container(
+                    padding: EdgeInsets.all(8.r),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryWhite.withOpacity(0.95),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: Offset(0, 2),
                         ),
-                        child: Icon(
-                          Icons.favorite_border_rounded,
-                          size: 18.r,
-                          color: AppColors.primaryRed,
-                        ),
-                      ),
+                      ],
+                    ),
+                    child: CustomLikeButton(
+                      size: 22.r,
+                      isLiked: isFavorite,
+                      likedColor: AppColors.primaryRed,
+                      unlikedColor: AppColors.textSubtitle.withOpacity(0.6),
+                      onTap: (bool liked) async {
+                        onFavorite?.call();
+                        return !liked;
+                      },
                     ),
                   ),
+                ),
               ],
             ),
 

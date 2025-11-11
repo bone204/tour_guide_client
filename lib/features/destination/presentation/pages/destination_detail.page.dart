@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
-import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
+import 'package:tour_guide_app/common/widgets/button/like_button.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
@@ -201,33 +201,31 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
                 ),
               ),
 
-              // Favorite Button
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isFavorite = !_isFavorite;
-                  });
-                },
-                child: Container(
-                  padding: EdgeInsets.all(10.r),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryWhite.withOpacity(0.9),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    _isFavorite
-                        ? Icons.favorite_rounded
-                        : Icons.favorite_border_rounded,
-                    size: 20.r,
-                    color: AppColors.primaryRed,
-                  ),
+              Container(
+                padding: EdgeInsets.all(10.r),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryWhite.withOpacity(0.9),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: CustomLikeButton(
+                  size: 22.r,
+                  isLiked: _isFavorite,
+                  likedColor: AppColors.primaryRed,
+                  unlikedColor: AppColors.textSubtitle.withOpacity(0.6),
+                  onTap: (bool liked) async {
+                    final nextState = !liked;
+                    setState(() {
+                      _isFavorite = nextState;
+                    });
+                    return nextState;
+                  },
                 ),
               ),
             ],
