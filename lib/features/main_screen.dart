@@ -14,6 +14,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contrac
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
 import 'package:tour_guide_app/features/profile/presentation/pages/profile.page.dart';
 import 'package:tour_guide_app/features/settings/presentation/pages/settings.page.dart';
+import 'package:tour_guide_app/features/translate/translate.page.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class MainScreen extends StatefulWidget {
@@ -70,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.light,
         ),
-        child: const NewsPage(),
+        child: const TranslatePage(),
       ),
       item: ItemConfig(
         icon: const Icon(Icons.newspaper),
@@ -224,7 +225,7 @@ class _MainScreenState extends State<MainScreen> {
                 svgPath = isSelected ? AppIcons.homeActive : AppIcons.homeInactive;
                 break;
               case 1:
-                svgPath = isSelected ? AppIcons.notificationsActive : AppIcons.notificationsInactive;
+                svgPath = isSelected ? AppIcons.translateActive : AppIcons.translateInactive;
                 break;
               case 2:
                 svgPath = isSelected ? AppIcons.mapActive : AppIcons.mapInactive;

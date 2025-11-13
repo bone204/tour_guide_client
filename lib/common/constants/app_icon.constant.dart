@@ -49,4 +49,6 @@ class AppIcons {
   static const String accountInactive = 'assets/icons/ic_account_inactive.svg';
   static const String mapActive = 'assets/icons/ic_map_active.svg';
   static const String mapInactive = 'assets/icons/ic_map_inactive.svg';
+  static const String translateActive = 'assets/icons/ic_translate_active.svg';
+  static const String translateInactive = 'assets/icons/ic_translate_inactive.svg';
 }

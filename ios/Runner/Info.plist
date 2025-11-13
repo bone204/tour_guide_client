@@ -49,5 +49,9 @@
 	<string>Ứng dụng cần truy cập vị trí để hiển thị bản đồ xung quanh bạn.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Ứng dụng sử dụng vị trí của bạn để hiển thị thông tin du lịch gần bạn.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Ứng dụng sử dụng chức năng nhận dạng giọng nói để dịch ngôn ngữ.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Ứng dụng sử dụng microphone để nhận dạng giọng nói.</string>
 </dict>
 </plist>
