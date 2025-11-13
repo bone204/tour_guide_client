@@ -81,18 +81,25 @@ class _DestinationPreviewSheet extends StatelessWidget {
                                     Container(
                                       padding: EdgeInsets.all(6.r),
                                       decoration: BoxDecoration(
-                                        color: AppColors.primaryBlue
-                                            .withOpacity(0.18),
+                                        color: destination.isFromDatabase
+                                            ? AppColors.primaryBlue.withOpacity(0.18)
+                                            : AppColors.primaryGreen.withOpacity(0.18),
                                         borderRadius: BorderRadius.circular(
                                           8.r,
                                         ),
                                       ),
-                                      child: SvgPicture.asset(
-                                        AppIcons.location,
-                                        width: 16.w,
-                                        height: 16.h,
-                                        color: Colors.white,
-                                      ),
+                                      child: destination.isFromDatabase
+                                          ? SvgPicture.asset(
+                                              AppIcons.location,
+                                              width: 16.w,
+                                              height: 16.h,
+                                              color: Colors.white,
+                                            )
+                                          : Icon(
+                                              Icons.location_on_rounded,
+                                              size: 16.sp,
+                                              color: Colors.white,
+                                            ),
                                     ),
                                     SizedBox(width: 8.w),
                                     Expanded(
@@ -179,15 +186,23 @@ class _DestinationPreviewSheet extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(6.r),
               decoration: BoxDecoration(
-                color: AppColors.primaryBlue.withOpacity(0.1),
+                color: destination.isFromDatabase
+                    ? AppColors.primaryBlue.withOpacity(0.1)
+                    : AppColors.primaryGreen.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: SvgPicture.asset(
-                AppIcons.location,
-                width: 16.w,
-                height: 16.h,
-                color: AppColors.primaryBlue,
-              ),
+              child: destination.isFromDatabase
+                  ? SvgPicture.asset(
+                      AppIcons.location,
+                      width: 16.w,
+                      height: 16.h,
+                      color: AppColors.primaryBlue,
+                    )
+                  : Icon(
+                      Icons.location_on_rounded,
+                      size: 16.sp,
+                      color: AppColors.primaryGreen,
+                    ),
             ),
             SizedBox(width: 8.w),
             Expanded(

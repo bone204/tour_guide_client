@@ -65,27 +65,48 @@ class _SearchResultsList extends StatelessWidget {
           onTap: () => onDestinationTap(destination),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Text(
-                  destination.name,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                if (hasAddress) ...[
-                  const SizedBox(height: 6),
-                  Text(
-                    destination.specificAddress ?? destination.province ?? '',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.shade600,
-                      height: 1.35,
+                // Icon ngôi sao cho destinations từ database
+                if (destination.isFromDatabase)
+                  Container(
+                    margin: const EdgeInsets.only(right: 12),
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.star_rounded,
+                      color: Colors.amber,
+                      size: 18,
                     ),
                   ),
-                ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        destination.name,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      if (hasAddress) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          destination.specificAddress ?? destination.province ?? '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.grey.shade600,
+                            height: 1.35,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

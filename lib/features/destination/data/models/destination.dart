@@ -20,6 +20,7 @@ class Destination {
   final bool? available;
   final String? createdAt;
   final String? updatedAt;
+  final bool isFromDatabase; // true nếu từ DB, false nếu từ OSM
 
   const Destination({ 
     required this.id,
@@ -43,6 +44,7 @@ class Destination {
     this.available,
     this.createdAt,
     this.updatedAt,
+    this.isFromDatabase = true, // Mặc định là từ database
   });
 
   factory Destination.fromJson(Map<String, dynamic> json) {
@@ -68,6 +70,19 @@ class Destination {
       available: json['available'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
+      isFromDatabase: json['isFromDatabase'] ?? true,
+    );
+  }
+
+  /// Tạo Destination từ OSM POI
+  factory Destination.fromOSMPOI(String id, String name, double lat, double lon, String? type) {
+    return Destination(
+      id: id.hashCode, // Dùng hash code của OSM ID
+      name: name,
+      latitude: lat,
+      longitude: lon,
+      type: type,
+      isFromDatabase: false,
     );
   }
 
@@ -94,6 +109,7 @@ class Destination {
       'available': available,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'isFromDatabase': isFromDatabase,
     };
   }
 
@@ -119,6 +135,7 @@ class Destination {
     bool? available,
     String? createdAt,
     String? updatedAt,
+    bool? isFromDatabase,
   }) {
     return Destination(
       id: id ?? this.id,
@@ -142,6 +159,7 @@ class Destination {
       available: available ?? this.available,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      isFromDatabase: isFromDatabase ?? this.isFromDatabase,
     );
   }
 }

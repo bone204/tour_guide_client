@@ -1,5 +1,6 @@
 library map_page;
 
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,6 +13,8 @@ import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
+import 'package:tour_guide_app/features/map/services/osm_service.dart';
+import 'package:tour_guide_app/features/map/services/osrm_service.dart';
 
 part 'widgets/search_results_list.dart';
 part 'widgets/destination_marker.dart';
@@ -46,6 +49,13 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   double? _pendingZoom;
   AnimationController? _cameraAnimationController;
   bool _isSearchOverlayVisible = false;
+  OSRMRoute? _currentRoute;
+  bool _isRouteEnabled = false; // Trạng thái bật/tắt route
+  Destination? _selectedDestination; // Lưu destination đã chọn
+  bool _isRouteLoading = false; // Trạng thái đang tính toán route
+  
+  final OSMService _osmService = OSMService();
+  final OSRMService _osrmService = OSRMService();
 
   static const double _defaultZoom = 15;
   static const double _destinationZoom = 17.5;
@@ -159,25 +169,190 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     });
   }
 
-  void _onSearchChanged(String value) {
-    final query = value.trim().toLowerCase();
-    List<Destination> results;
-
+  void _onSearchChanged(String value) async {
+    final query = value.trim();
+    final queryLower = query.toLowerCase();
+    final tokens = queryLower
+        .split(RegExp(r'\s+'))
+        .where((token) => token.isNotEmpty)
+        .toList();
+    
     if (query.isEmpty) {
-      results = _destinations.take(10).toList();
-    } else {
-      results =
-          _destinations
-              .where(
-                (destination) => destination.name.toLowerCase().contains(query),
-              )
-              .take(10)
-              .toList();
+      setState(() {
+        _filteredDestinations = _destinations.take(10).toList();
+        _isFetchingDestinations = false;
+      });
+      return;
     }
 
     setState(() {
-      _filteredDestinations = results;
+      _isFetchingDestinations = true;
     });
+
+    // Tìm kiếm trong database destinations
+    final dbResults = _destinations
+        .where((destination) {
+          final nameLower = destination.name.toLowerCase();
+          if (tokens.isEmpty) {
+            return nameLower.contains(queryLower);
+          }
+          return _matchesTokens(nameLower, tokens);
+        })
+        .toList();
+
+    // Tìm kiếm trong OSM nếu query đủ dài (>= 3 ký tự để có kết quả tốt hơn)
+    List<Destination> osmResults = [];
+    if (query.length >= 3) {
+      try {
+        // Tìm kiếm với limit hợp lý
+        final osmPOIs = await _osmService.searchPlaces(query, limit: 10);
+        osmResults = osmPOIs
+            .where((poi) => 
+                poi.position != null && 
+                poi.name != null && 
+                poi.name!.isNotEmpty &&
+                poi.name != 'Unnamed Place' &&
+                poi.name!.length >= 2)
+            .map((poi) => Destination.fromOSMPOI(
+                  poi.id ?? '',
+                  poi.name!,
+                  poi.latitude!,
+                  poi.longitude!,
+                  poi.type,
+                ))
+            .where((destination) {
+              final nameLower = destination.name.toLowerCase();
+              if (tokens.isEmpty) {
+                return nameLower.contains(queryLower);
+              }
+              return _matchesTokens(nameLower, tokens);
+            })
+            .toList();
+      } catch (e) {
+        print('Error searching OSM: $e');
+      }
+    }
+
+    // Kết hợp kết quả: DB destinations trước, sau đó OSM
+    final combinedResults = <Destination>[];
+    combinedResults.addAll(dbResults);
+    
+    // Thêm OSM results nhưng loại bỏ trùng lặp và lọc kỹ hơn
+    for (final osmDest in osmResults) {
+      // Kiểm tra tên hợp lệ
+      if (osmDest.name.isEmpty || 
+          osmDest.name.length < 2 ||
+          osmDest.name == 'Unnamed Place') {
+        continue;
+      }
+      
+      // Loại bỏ các tên không phù hợp
+      final nameLower = osmDest.name.toLowerCase();
+      if (RegExp(r'^\d+$').hasMatch(osmDest.name) ||
+          nameLower.contains('km') ||
+          nameLower.startsWith('đường') ||
+          nameLower.startsWith('phố') ||
+          nameLower.startsWith('ngõ') ||
+          nameLower.startsWith('hẻm') ||
+          nameLower.contains('số nhà') ||
+          nameLower.contains('house number')) {
+        continue;
+      }
+      
+      // Kiểm tra trùng lặp với DB destinations
+      final isDuplicate = combinedResults.any((dbDest) {
+        final dbNameLower = dbDest.name.toLowerCase();
+        final osmNameLower = osmDest.name.toLowerCase();
+        
+        // So sánh tên (tương đối)
+        if (dbNameLower == osmNameLower ||
+            dbNameLower.contains(osmNameLower) ||
+            osmNameLower.contains(dbNameLower)) {
+          // Kiểm tra nếu vị trí gần nhau (trong vòng 200m)
+          if (dbDest.latitude != null && dbDest.longitude != null &&
+              osmDest.latitude != null && osmDest.longitude != null) {
+            final distance = _calculateDistance(
+              dbDest.latitude!,
+              dbDest.longitude!,
+              osmDest.latitude!,
+              osmDest.longitude!,
+            );
+            return distance < 0.2; // ~200m
+          }
+        }
+        return false;
+      });
+      
+      if (!isDuplicate) {
+        combinedResults.add(osmDest);
+      }
+    }
+
+    // Loại bỏ trùng lặp dựa trên khóa tên + tọa độ
+    final uniqueResults = <String, Destination>{};
+    for (final destination in combinedResults) {
+      final key = '${destination.name.toLowerCase()}_${destination.latitude}_${destination.longitude}';
+      uniqueResults.putIfAbsent(key, () => destination);
+    }
+    var mergedList = uniqueResults.values.toList();
+
+    // Ưu tiên các kết quả khớp chính xác hoặc khớp toàn bộ tokens
+    final exactMatches = mergedList
+        .where((dest) => dest.name.toLowerCase() == queryLower)
+        .toList();
+    final strictMatches = mergedList
+        .where((dest) => _matchesTokens(dest.name.toLowerCase(), tokens))
+        .toList();
+
+    List<Destination> prioritizedResults;
+    if (exactMatches.isNotEmpty) {
+      final remaining = mergedList
+          .where((dest) => dest.name.toLowerCase() != queryLower)
+          .toList();
+      remaining.sort((a, b) =>
+          _compareDestinationsByRelevance(a, b, queryLower, tokens));
+      prioritizedResults = [...exactMatches, ...remaining];
+    } else if (strictMatches.isNotEmpty) {
+      strictMatches.sort((a, b) =>
+          _compareDestinationsByRelevance(a, b, queryLower, tokens));
+      final remaining = mergedList
+          .where((dest) => !strictMatches.contains(dest))
+          .toList()
+        ..sort((a, b) =>
+            _compareDestinationsByRelevance(a, b, queryLower, tokens));
+      prioritizedResults = [...strictMatches, ...remaining];
+    } else {
+      mergedList.sort((a, b) =>
+          _compareDestinationsByRelevance(a, b, queryLower, tokens));
+      prioritizedResults = mergedList;
+    }
+
+    if (mounted) {
+      setState(() {
+        _filteredDestinations = prioritizedResults.take(20).toList();
+        _isFetchingDestinations = false;
+      });
+    }
+  }
+
+  // Tính khoảng cách giữa 2 điểm (đơn vị: km)
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double earthRadius = 6371; // km
+    final dLat = _toRadians(lat2 - lat1);
+    final dLon = _toRadians(lon2 - lon1);
+    
+    final a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.cos(_toRadians(lat1)) *
+            math.cos(_toRadians(lat2)) *
+            math.sin(dLon / 2) *
+            math.sin(dLon / 2);
+    final c = 2 * math.asin(math.sqrt(a));
+    
+    return earthRadius * c;
+  }
+
+  double _toRadians(double degrees) {
+    return degrees * (math.pi / 180);
   }
 
   void _clearSearch() {
@@ -225,6 +400,10 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     setState(() {
       _selectedDestinationPosition = target;
       _selectedDestinationId = destination.id;
+      _selectedDestination = destination;
+      _isRouteEnabled = false; // Không tự động bật route
+      _currentRoute = null; // Xóa route cũ khi chọn địa điểm mới
+      _isRouteLoading = false;
       if (!_isMapReady) {
         _pendingMove = target;
         _pendingZoom = _destinationZoom;
@@ -240,7 +419,121 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       await _animateTo(target, zoom: _destinationZoom);
     }
   }
-
+  
+  Future<void> _showRoute() async {
+    if (_selectedDestination == null || _currentPosition == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Vui lòng chọn một địa điểm và đảm bảo đã bật vị trí.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+      return;
+    }
+    
+    if (_isRouteLoading) {
+      return;
+    }
+    
+    final destination = _selectedDestination!;
+    final latitude = destination.latitude;
+    final longitude = destination.longitude;
+    
+    if (latitude == null || longitude == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Địa điểm chưa có dữ liệu vị trí.')),
+        );
+      }
+      return;
+    }
+    
+    final target = LatLng(latitude, longitude);
+    
+    setState(() {
+      _isRouteLoading = true;
+      _isRouteEnabled = false;
+      _currentRoute = null;
+    });
+    
+    await _calculateRoute(_currentPosition!, target);
+    
+    if (mounted) {
+      setState(() {
+        _isRouteLoading = false;
+      });
+    }
+  }
+  
+  void _clearRoute({bool resetLoading = true}) {
+    if (!_isRouteEnabled && _currentRoute == null && !_isRouteLoading) {
+      return;
+    }
+    setState(() {
+      _isRouteEnabled = false;
+      if (resetLoading) {
+        _isRouteLoading = false;
+      }
+      _currentRoute = null;
+    });
+  }
+  
+  void _clearSelectedDestination({bool clearRoute = true, bool resetSearchField = false}) {
+    if (_selectedDestination == null &&
+        _selectedDestinationId == null &&
+        _selectedDestinationPosition == null) {
+      return;
+    }
+    if (clearRoute) {
+      _clearRoute();
+    }
+    setState(() {
+      _selectedDestination = null;
+      _selectedDestinationId = null;
+      _selectedDestinationPosition = null;
+    });
+    if (resetSearchField) {
+      _searchController.clear();
+    }
+  }
+  
+  Future<void> _calculateRoute(LatLng start, LatLng end) async {
+    try {
+      final route = await _osrmService.getRoute(start: start, end: end);
+      if (mounted) {
+        if (route != null && route.geometry.isNotEmpty) {
+          setState(() {
+            _currentRoute = route;
+            _isRouteEnabled = true;
+          });
+        } else {
+          setState(() {
+            _currentRoute = null;
+            _isRouteEnabled = false;
+          });
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Không tìm thấy tuyến đường phù hợp.')),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      print('Error calculating route: $e');
+      if (mounted) {
+        setState(() {
+          _isRouteEnabled = false;
+          _currentRoute = null;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Không thể tính toán tuyến đường. Vui lòng thử lại.')),
+        );
+      }
+    }
+  }
+  
   Future<void> _recenterOnUser() async {
     if (_currentPosition == null) {
       await _initLocation();
@@ -270,9 +563,68 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       floatingActionButton:
           hasError || _isLoading
               ? null
-              : FloatingActionButton(
-                onPressed: _recenterOnUser,
-                child: const Icon(Icons.my_location),
+              : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  // Nút tìm đường đi - hiện ngay khi đã chọn địa điểm
+                  if (_selectedDestination != null)
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      child: FloatingActionButton.extended(
+                        heroTag: 'route_button',
+                        onPressed: (_isRouteLoading || _currentPosition == null)
+                            ? null
+                            : () {
+                                if (_isRouteEnabled && _currentRoute != null) {
+                                  _clearRoute();
+                                } else {
+                                  _showRoute();
+                                }
+                              },
+                        backgroundColor: _isRouteEnabled && _currentRoute != null
+                            ? Colors.redAccent
+                            : (_currentPosition == null 
+                                ? Colors.grey 
+                                : Colors.green),
+                        icon: _isRouteLoading
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.2,
+                                  valueColor:
+                                      AlwaysStoppedAnimation<Color>(Colors.white),
+                                ),
+                              )
+                            : Icon(
+                                _isRouteEnabled && _currentRoute != null
+                                    ? Icons.close_rounded
+                                    : Icons.directions,
+                                color: Colors.white,
+                              ),
+                        label: Text(
+                          _isRouteLoading
+                              ? 'Đang tính đường...'
+                              : _currentPosition == null
+                                  ? 'Cần vị trí GPS'
+                                  : _isRouteEnabled && _currentRoute != null
+                                      ? 'Hủy tuyến'
+                                      : 'Tìm đường',
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge
+                              ?.copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  // Nút vị trí hiện tại
+                  FloatingActionButton(
+                    heroTag: 'my_location',
+                    onPressed: _recenterOnUser,
+                    child: const Icon(Icons.my_location),
+                  ),
+                ],
               ),
     );
   }
@@ -330,18 +682,70 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
                   setState(() {
                     _currentMapZoom = zoom;
                   });
+                  // Không load OSM POIs tự động, chỉ hiển thị khi được search và chọn
+                  // _loadOSMPOIs(position.center);
                 }
               },
-              onTap: (_, __) => _dismissSearchOverlay(),
+              onTap: (_, __) {
+                _clearSelectedDestination();
+                _dismissSearchOverlay();
+              },
             ),
             children: [
               TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 userAgentPackageName: 'tour_guide_app',
               ),
+              // Routing layer - chỉ hiển thị khi route được bật
+              if (_isRouteEnabled && 
+                  _currentRoute != null && 
+                  _currentRoute!.geometry.isNotEmpty)
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: _currentRoute!.geometry,
+                      strokeWidth: 4.0,
+                      color: Colors.blue,
+                    ),
+                  ],
+                ),
               MarkerLayer(
                 markers: [
                   ..._buildDestinationMarkers(),
+                  // Không hiển thị OSM POIs tự động, chỉ hiển thị khi được search và chọn
+                  // Marker cho địa điểm đã chọn từ OSM (không có trong DB)
+                  if (_selectedDestination != null &&
+                      !_selectedDestination!.isFromDatabase &&
+                      _selectedDestination!.latitude != null &&
+                      _selectedDestination!.longitude != null)
+                    Marker(
+                      width: 48,
+                      height: 48,
+                      point: LatLng(
+                        _selectedDestination!.latitude!,
+                        _selectedDestination!.longitude!,
+                      ),
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: Icon(
+                          Icons.location_on_rounded,
+                          color: Colors.green,
+                          size: 32,
+                        ),
+                      ),
+                    ),
                   if (_currentPosition != null)
                     Marker(
                       width: 32,
@@ -603,7 +1007,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     );
   }
 
-  void _handleMapReady() {
+  void _handleMapReady() async {
     _isMapReady = true;
     _currentMapZoom = _mapController.camera.zoom;
     if (_pendingMove != null) {
@@ -611,11 +1015,79 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
       final zoom = _pendingZoom ?? _defaultZoom;
       _pendingMove = null;
       _pendingZoom = null;
-      _animateTo(target, zoom: zoom);
+      await _animateTo(target, zoom: zoom);
     } else if (_selectedDestinationPosition != null) {
-      _animateTo(_selectedDestinationPosition!, zoom: _destinationZoom);
+      await _animateTo(_selectedDestinationPosition!, zoom: _destinationZoom);
     } else if (_currentPosition != null) {
-      _animateTo(_currentPosition!, zoom: _defaultZoom);
+      await _animateTo(_currentPosition!, zoom: _defaultZoom);
     }
+  }
+
+  bool _matchesTokens(String nameLower, List<String> tokens) {
+    if (tokens.isEmpty) {
+      return nameLower.isNotEmpty;
+    }
+
+    final matches = tokens.where((token) => nameLower.contains(token)).length;
+
+    if (tokens.length == 1 && tokens.first.length < 3) {
+      return matches > 0;
+    }
+
+    return matches == tokens.length;
+  }
+
+  int _compareDestinationsByRelevance(
+    Destination a,
+    Destination b,
+    String queryLower,
+    List<String> tokens,
+  ) {
+    final scoreA = _calculateRelevanceScore(a.name, queryLower, tokens);
+    final scoreB = _calculateRelevanceScore(b.name, queryLower, tokens);
+
+    if (scoreA != scoreB) {
+      return scoreA.compareTo(scoreB);
+    }
+
+    // Ưu tiên tên ngắn hơn và theo thứ tự alphabet nếu điểm bằng nhau
+    if (a.name.length != b.name.length) {
+      return a.name.length.compareTo(b.name.length);
+    }
+    return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+  }
+
+  int _calculateRelevanceScore(
+    String name,
+    String queryLower,
+    List<String> tokens,
+  ) {
+    final nameLower = name.toLowerCase();
+    int score = 1000;
+
+    if (nameLower == queryLower) {
+      return 0;
+    }
+
+    if (nameLower.startsWith(queryLower)) {
+      score -= 200;
+    } else if (nameLower.contains(queryLower)) {
+      score -= 100;
+    }
+
+    for (final token in tokens) {
+      if (nameLower.startsWith(token)) {
+        score -= 60;
+      } else if (nameLower.contains(' $token')) {
+        score -= 40;
+      } else if (nameLower.contains(token)) {
+        score -= 30;
+      } else {
+        score += 25;
+      }
+    }
+
+    score += nameLower.length;
+    return score;
   }
 }
