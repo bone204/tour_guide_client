@@ -61,6 +61,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   Destination? _selectedDestination; // Lưu destination đã chọn
   bool _isRouteLoading = false; // Trạng thái đang tính toán route
   bool _isNavigating = false; // Trạng thái đang điều hướng
+  bool _isNavigationOverlayVisible = false; // Hiển thị summary navigation
   String _transportMode = 'car'; // Phương tiện di chuyển (car, foot, bike)
   Timer? _transportModeDebounceTimer; // Debounce timer cho transport mode change
   Timer? _searchDebounceTimer; // Debounce timer cho search
@@ -102,24 +103,23 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     final hasError = _errorMessage != null;
     final center = _currentPosition ?? _fallbackCenter;
 
+    final showFab = !hasError && !_isLoading && !_isNavigating;
+
     return Scaffold(
       body: _buildBody(hasError, center),
-      floatingActionButton:
-          hasError || _isLoading
-              ? null
-              : Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  // Bỏ nút kết thúc navigation, sẽ dùng nút trong bottom sheet
-                  // Nút vị trí hiện tại
-                  FloatingActionButton(
-                    heroTag: 'my_location',
-                    onPressed: _recenterOnUser,
-                    child: const Icon(Icons.my_location),
-                  ),
-                ],
-              ),
+      floatingActionButton: showFab
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  heroTag: 'my_location',
+                  onPressed: _recenterOnUser,
+                  child: const Icon(Icons.my_location),
+                ),
+              ],
+            )
+          : null,
     );
   }
 }

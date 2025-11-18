@@ -63,9 +63,6 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
     final theme = Theme.of(context);
     final route = widget.route;
     final destination = widget.destination;
-    final address = destination.specificAddress ??
-        destination.province ??
-        'Unknown location';
     
     // Debug: in ra để kiểm tra route hiện tại
     print('RouteTrackingSheet build - Mode: ${widget.transportMode}, Route: ${route?.duration}s, ${route?.distance}m');
@@ -96,61 +93,35 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Drag handle - ẩn khi đang navigating
-                  if (!widget.isNavigating)
-                    Container(
-                      margin: EdgeInsets.only(top: 8.h, bottom: 12.h),
-                      alignment: Alignment.center,
-                      child: Container(
-                        width: 40.w,
-                        height: 5.h,
-                        decoration: BoxDecoration(
-                          color: AppColors.textSubtitle.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
+                  // Drag handle - luôn hiển thị
+                  Container(
+                    margin: EdgeInsets.only(top: 8.h, bottom: 12.h),
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 40.w,
+                      height: 5.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.textSubtitle.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
-                    )
-                  else
-                    SizedBox(height: 12.h),
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Chỉ hiển thị tên và địa chỉ khi chưa navigating
-                        if (!widget.isNavigating) ...[
-                          // Destination name
-                          Text(
-                            destination.name,
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              color: AppColors.textPrimary,
-                            ),
+                        // Destination name
+                        Text(
+                          destination.name,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            color: AppColors.textPrimary,
                           ),
-                          SizedBox(height: 8.h),
-                          // Address
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_on_rounded,
-                                size: 16.sp,
-                                color: AppColors.textSubtitle,
-                              ),
-                              SizedBox(width: 8.w),
-                              Expanded(
-                                child: Text(
-                                  address,
-                                  style: theme.textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.textSubtitle,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20.h),
-                          // Transport mode selector - chỉ hiển thị khi chưa navigating
-                          _buildTransportSelector(theme),
-                          SizedBox(height: 20.h),
-                        ],
+                        ),
+                        SizedBox(height: 20.h),
+                        // Transport mode selector
+                        _buildTransportSelector(theme),
+                        SizedBox(height: 20.h),
                         // Route info - luôn hiển thị
                         // Sử dụng AnimatedSwitcher để cập nhật mượt mà khi route thay đổi
                         if (route != null) 
@@ -166,7 +137,7 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
                   ),
                 ],
               ),
-              if (!widget.isNavigating && widget.onClose != null)
+              if (widget.onClose != null)
                 Positioned(
                   top: 8.h,
                   right: 12.w,
@@ -387,6 +358,124 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
+      ),
+    );
+  }
+}
+
+class _NavigationSummarySheet extends StatelessWidget {
+  const _NavigationSummarySheet({
+    required this.route,
+    required this.onStopNavigation,
+  });
+
+  final OSRMRoute? route;
+  final VoidCallback onStopNavigation;
+
+  String _formatDuration(OSRMRoute? route) {
+    if (route == null) return 'Đang cập nhật thời gian...';
+    final minutes = (route.duration / 60).ceil();
+    final hours = minutes ~/ 60;
+    final remainingMinutes = minutes % 60;
+    if (hours > 0) {
+      return '${hours} giờ ${remainingMinutes} phút';
+    }
+    return '$minutes phút';
+  }
+
+  String _formatDistance(OSRMRoute? route) {
+    if (route == null) return 'Đang cập nhật quãng đường...';
+    final distanceKm = route.distance / 1000;
+    if (distanceKm >= 1) {
+      return '${distanceKm.toStringAsFixed(1)} km';
+    }
+    return '${route.distance.toInt()} m';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SafeArea(
+      top: false,
+      child: Material(
+        color: Colors.transparent,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: AppColors.primaryWhite,
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(28.r), topRight: Radius.circular(28.r)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 12,
+                offset: const Offset(0, -2),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryBlue.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.navigation_rounded,
+                    color: AppColors.primaryBlue,
+                    size: 20.sp,
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _formatDuration(route),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+                      Text(
+                        _formatDistance(route),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSubtitle,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                ElevatedButton(
+                  onPressed: onStopNavigation,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.redAccent,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.w,
+                      vertical: 10.h,
+                    ),
+                    minimumSize: Size(0, 0),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                  child: Text(
+                    'Kết thúc',
+                    style: theme.textTheme.displayLarge?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -283,6 +283,7 @@ extension MapUIExtension on _MapPageState {
                 ),
               ),
             ),
+          _buildNavigationSummaryOverlay(),
         ],
       ),
     );
@@ -336,6 +337,29 @@ extension MapUIExtension on _MapPageState {
           );
         })
         .toList();
+  }
+
+  Widget _buildNavigationSummaryOverlay() {
+    final isVisible = _isNavigationOverlayVisible;
+    return IgnorePointer(
+      ignoring: !isVisible,
+      child: AnimatedSlide(
+        offset: isVisible ? Offset.zero : const Offset(0, 1),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutCubic,
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 200),
+          opacity: isVisible ? 1 : 0,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: _NavigationSummarySheet(
+              route: _currentRoute ?? _routesByMode[_transportMode],
+              onStopNavigation: _stopNavigation,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

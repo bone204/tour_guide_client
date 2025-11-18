@@ -4,6 +4,14 @@ part of map_page;
 extension MapDestinationExtension on _MapPageState {
   /// Xử lý khi tap vào marker
   Future<void> _handleMarkerTap(Destination destination) async {
+    if (_isNavigating) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Đang điều hướng, không thể chọn điểm đến khác.')),
+        );
+      }
+      return;
+    }
     _searchFocusNode.unfocus();
     await _selectDestination(destination);
     if (!mounted) {
@@ -86,6 +94,9 @@ extension MapDestinationExtension on _MapPageState {
 
   /// Mở destination bottom sheet
   void _openDestinationBottomSheet(Destination destination) {
+    if (_isNavigating) {
+      return;
+    }
     _searchFocusNode.unfocus();
     showModalBottomSheet<void>(
       context: context,

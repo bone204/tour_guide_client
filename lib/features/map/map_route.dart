@@ -37,6 +37,24 @@ extension MapRouteExtension on _MapPageState {
     }
   }
 
+  void _stopNavigation() {
+    if (!_isNavigating) return;
+    setState(() {
+      _isNavigating = false;
+      _isRouteEnabled = false;
+      _isNavigationOverlayVisible = false;
+    });
+  }
+
+  void _scheduleNavigationOverlayReveal() {
+    Future.delayed(const Duration(milliseconds: 150), () {
+      if (!mounted || !_isNavigating) return;
+      setState(() {
+        _isNavigationOverlayVisible = true;
+      });
+    });
+  }
+
   /// Xóa route
   void _clearRoute({bool resetLoading = true}) {
     if (!_isRouteEnabled && _currentRoute == null && !_isRouteLoading) {
@@ -56,6 +74,9 @@ extension MapRouteExtension on _MapPageState {
   /// Mở route tracking sheet
   Future<void> _openRouteTrackingSheet({bool skipRouteCalculation = false}) async {
     _searchFocusNode.unfocus();
+    if (_isNavigating) {
+      return;
+    }
     if (_selectedDestination == null || _currentPosition == null) {
       return;
     }
@@ -123,9 +144,9 @@ extension MapRouteExtension on _MapPageState {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.transparent, // Bỏ overlay
-      isDismissible: !_isNavigating, // Cho phép đóng khi chưa navigating
-      enableDrag: !_isNavigating, // Cho phép kéo khi chưa navigating
+      barrierColor: Colors.transparent,
+      isDismissible: true,
+      enableDrag: true,
       builder: (context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setSheetState) {
@@ -153,97 +174,89 @@ extension MapRouteExtension on _MapPageState {
               Navigator.of(context).pop();
             }
 
-            return PopScope(
-              canPop: !_isNavigating, // Chặn back button khi đang navigating
-              child: FractionallySizedBox(
-                heightFactor: 0.5,
-                child: _RouteTrackingSheet(
-                  destination: _selectedDestination!,
-                  currentPosition: _currentPosition,
-                  route: routeForDisplay,
-                  onStartNavigation: () async {
-                    // Khi bấm "Bắt đầu", đợi route load xong rồi mới hiển thị trên map
-                    if (_routesByMode[_transportMode] == null && !_loadingModes.contains(_transportMode)) {
-                      setState(() {
-                        _isRouteLoading = true;
-                        _loadingModes.add(_transportMode);
-                      });
+            return FractionallySizedBox(
+              heightFactor: 0.46,
+              child: _RouteTrackingSheet(
+                destination: _selectedDestination!,
+                currentPosition: _currentPosition,
+                route: routeForDisplay,
+                onStartNavigation: () async {
+                  final navigator = Navigator.of(context);
+                  // Khi bấm "Bắt đầu", đợi route load xong rồi mới hiển thị trên map
+                  if (_routesByMode[_transportMode] == null && !_loadingModes.contains(_transportMode)) {
+                    setState(() {
+                      _isRouteLoading = true;
+                      _loadingModes.add(_transportMode);
+                    });
 
-                      await _calculateRouteForMode(_currentPosition!, target, _transportMode);
+                    await _calculateRouteForMode(_currentPosition!, target, _transportMode);
 
-                      if (mounted) {
-                        setState(() {
-                          _isRouteLoading = false;
-                          _loadingModes.remove(_transportMode);
-                          _currentRoute = _routesByMode[_transportMode];
-                          _isNavigating = true;
-                          _isRouteEnabled = true; // Hiển thị route trên map
-                        });
-                      }
-                    } else {
+                    if (mounted) {
                       setState(() {
+                        _isRouteLoading = false;
+                        _loadingModes.remove(_transportMode);
+                        _currentRoute = _routesByMode[_transportMode];
                         _isNavigating = true;
                         _isRouteEnabled = true; // Hiển thị route trên map
-                        _currentRoute = _routesByMode[_transportMode];
+                        _isNavigationOverlayVisible = false;
                       });
                     }
-                    // Đóng bottom sheet cũ và mở lại với isDismissible: false và enableDrag: false
-                    Navigator.of(context).pop();
-                    // Mở lại bottom sheet ngay lập tức với cài đặt mới (không cho đóng/kéo)
-                    Future.microtask(() {
-                      if (mounted && _isNavigating) {
-                        _openRouteTrackingSheet(skipRouteCalculation: true);
-                      }
+                  } else {
+                    setState(() {
+                      _isNavigating = true;
+                      _isRouteEnabled = true; // Hiển thị route trên map
+                      _currentRoute = _routesByMode[_transportMode];
+                      _isNavigationOverlayVisible = false;
                     });
-                  },
-                  onStopNavigation: () {
-                      setState(() {
-                        _isNavigating = false;
-                        _isRouteEnabled = false; // Tắt route trên map
-                      });
-                      Navigator.of(context).pop();
-                    },
-                    isNavigating: _isNavigating,
-                    isRouteLoading: false, // Không loading nữa vì đã load xong
-                    onCalculateRoute: () async {
-                      // Không cần nữa vì đã pre-load
-                    },
-                    onTransportChanged: (String mode) {
-                      // Chỉ switch giữa các routes đã load, không tính toán lại
-                      final newRoute = _routesByMode[mode];
-                      
-                      // Debug
-                      print('Transport changed to: $mode');
-                      print('Route for $mode: ${newRoute?.duration}s, ${newRoute?.distance}m');
-                      print('All available routes:');
-                      _routesByMode.forEach((key, value) {
-                        print('  $key: ${value?.duration}s, ${value?.distance}m');
-                      });
-                      
-                      // Update state trước
-                      setState(() {
-                        _transportMode = mode;
-                        _currentRoute = newRoute;
-                        // Đảm bảo không hiển thị route trên map khi đổi tab (trừ khi đang navigating)
-                        if (!_isNavigating) {
-                          _isRouteEnabled = false;
-                        } else {
-                          // Nếu đang navigating, cập nhật route ngay lập tức
-                          _isRouteEnabled = true;
-                        }
-                      });
-                      
-                      // Rebuild bottom sheet ngay lập tức để hiển thị route mới cho mode đã chọn
-                      // setSheetState sẽ trigger builder rebuild, và routeForDisplay sẽ được lấy lại từ _routesByMode với mode mới
-                      setSheetState(() {
-                        // Builder sẽ được gọi lại và lấy route mới từ _routesByMode[_transportMode]
-                      });
-                    },
-                    transportMode: _transportMode,
-                    onClose: closeSheet,
-                  ),
-                ),
-              );
+                  }
+                  navigator.pop();
+                  await _recenterOnUser();
+                  _scheduleNavigationOverlayReveal();
+                },
+                onStopNavigation: () {
+                  _stopNavigation();
+                  Navigator.of(context).pop();
+                },
+                isNavigating: _isNavigating,
+                isRouteLoading: false, // Không loading nữa vì đã load xong
+                onCalculateRoute: () async {
+                  // Không cần nữa vì đã pre-load
+                },
+                onTransportChanged: (String mode) {
+                  // Chỉ switch giữa các routes đã load, không tính toán lại
+                  final newRoute = _routesByMode[mode];
+
+                  // Debug
+                  print('Transport changed to: $mode');
+                  print('Route for $mode: ${newRoute?.duration}s, ${newRoute?.distance}m');
+                  print('All available routes:');
+                  _routesByMode.forEach((key, value) {
+                    print('  $key: ${value?.duration}s, ${value?.distance}m');
+                  });
+
+                  // Update state trước
+                  setState(() {
+                    _transportMode = mode;
+                    _currentRoute = newRoute;
+                    // Đảm bảo không hiển thị route trên map khi đổi tab (trừ khi đang navigating)
+                    if (!_isNavigating) {
+                      _isRouteEnabled = false;
+                    } else {
+                      // Nếu đang navigating, cập nhật route ngay lập tức
+                      _isRouteEnabled = true;
+                    }
+                  });
+
+                  // Rebuild bottom sheet ngay lập tức để hiển thị route mới cho mode đã chọn
+                  // setSheetState sẽ trigger builder rebuild, và routeForDisplay sẽ được lấy lại từ _routesByMode với mode mới
+                  setSheetState(() {
+                    // Builder sẽ được gọi lại và lấy route mới từ _routesByMode[_transportMode]
+                  });
+                },
+                transportMode: _transportMode,
+                onClose: closeSheet,
+              ),
+            );
           },
         );
       },
