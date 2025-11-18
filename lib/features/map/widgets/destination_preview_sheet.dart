@@ -1,9 +1,13 @@
 part of map_page;
 
 class _DestinationPreviewSheet extends StatelessWidget {
-  const _DestinationPreviewSheet({required this.destination});
+  const _DestinationPreviewSheet({
+    required this.destination,
+    this.onNavigate,
+  });
 
   final Destination destination;
+  final VoidCallback? onNavigate;
 
   @override
   Widget build(BuildContext context) {
@@ -237,6 +241,31 @@ class _DestinationPreviewSheet extends StatelessWidget {
                 ),
               ],
             ],
+          ),
+        ],
+        // Nút Tìm đường đi (chỉ hiện cho địa điểm có trong DB)
+        if (destination.isFromDatabase && onNavigate != null) ...[
+          SizedBox(height: 20.h),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: onNavigate,
+              icon: Icon(Icons.directions, color: Colors.white),
+              label: Text(
+                'Tìm đường đi',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryBlue,
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+              ),
+            ),
           ),
         ],
       ],

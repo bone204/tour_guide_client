@@ -4,7 +4,7 @@ import 'package:latlong2/latlong.dart';
 class OSRMService {
   final Dio _dio = Dio();
   // Sử dụng public OSRM server hoặc tự host
-  static const String _osrmUrl = 'https://router.project-osrm.org/route/v1/driving';
+  static const String _osrmBaseUrl = 'https://router.project-osrm.org/route/v1';
 
   /// Lấy route giữa 2 điểm
   Future<OSRMRoute?> getRoute({
@@ -27,9 +27,12 @@ class OSRMService {
       coordinates.add('${end.longitude},${end.latitude}');
       
       final coordinatesString = coordinates.join(';');
+      
+      // Sử dụng profile trong URL để có route khác nhau cho mỗi transport mode
+      final url = '$_osrmBaseUrl/$profile/$coordinatesString';
 
       final response = await _dio.get(
-        '$_osrmUrl/$coordinatesString',
+        url,
         queryParameters: {
           'overview': 'full',
           'geometries': 'geojson',
