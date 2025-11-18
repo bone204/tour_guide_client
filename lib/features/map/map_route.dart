@@ -66,7 +66,14 @@ extension MapRouteExtension on _MapPageState {
     }
     
     final target = LatLng(destination.latitude!, destination.longitude!);
-    const transportModes = ['driving', 'walking', 'cycling'];
+    // OSRM sử dụng profile names: car, foot, bike (không phải driving, walking, cycling)
+    const transportModes = ['car', 'foot', 'bike'];
+    
+    // Debug: in ra thông tin tính toán route
+    print('Opening route tracking sheet for: ${destination.name}');
+    print('From: ${_currentPosition!.latitude}, ${_currentPosition!.longitude}');
+    print('To: ${target.latitude}, ${target.longitude}');
+    print('Current routes count: ${_routesByMode.length}');
     
     // Chỉ tính toán routes nếu chưa có hoặc không skip
     if (!skipRouteCalculation) {
@@ -77,11 +84,10 @@ extension MapRouteExtension on _MapPageState {
       });
       
       // Tính toán routes cho tất cả modes song song
+      // Luôn tính toán lại để đảm bảo route đúng với địa điểm hiện tại
+      print('Calculating routes for all modes...');
       await Future.wait(transportModes.map((mode) async {
-        // Chỉ tính toán nếu chưa có route cho mode này
-        if (!_routesByMode.containsKey(mode) || _routesByMode[mode] == null) {
-          await _calculateRouteForMode(_currentPosition!, target, mode);
-        }
+        await _calculateRouteForMode(_currentPosition!, target, mode);
       }));
       
       // Debug: in ra tất cả routes đã tính toán
@@ -124,7 +130,17 @@ extension MapRouteExtension on _MapPageState {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setSheetState) {
             // Lấy route mới nhất từ state - đảm bảo lấy đúng route cho transport mode hiện tại
-            final routeForDisplay = _routesByMode[_transportMode];
+            // Luôn lấy từ _routesByMode để đảm bảo route đúng với mode hiện tại
+            // Lấy lại mỗi lần builder rebuild để đảm bảo route luôn mới nhất
+            final currentMode = _transportMode;
+            final routeForDisplay = _routesByMode[currentMode];
+            
+            // Debug: in ra để kiểm tra
+            print('RouteTrackingSheet builder - Mode: $currentMode, Route: ${routeForDisplay?.duration}s, ${routeForDisplay?.distance}m');
+            if (routeForDisplay == null) {
+              print('WARNING: Route is null for mode $currentMode');
+              print('Available routes: ${_routesByMode.keys.toList()}');
+            }
             
             void closeSheet() {
               if (_isNavigating) {
@@ -194,16 +210,34 @@ extension MapRouteExtension on _MapPageState {
                     },
                     onTransportChanged: (String mode) {
                       // Chỉ switch giữa các routes đã load, không tính toán lại
+                      final newRoute = _routesByMode[mode];
+                      
+                      // Debug
+                      print('Transport changed to: $mode');
+                      print('Route for $mode: ${newRoute?.duration}s, ${newRoute?.distance}m');
+                      print('All available routes:');
+                      _routesByMode.forEach((key, value) {
+                        print('  $key: ${value?.duration}s, ${value?.distance}m');
+                      });
+                      
+                      // Update state trước
                       setState(() {
                         _transportMode = mode;
-                        _currentRoute = _routesByMode[mode];
-                        // Đảm bảo không hiển thị route trên map khi đổi tab
+                        _currentRoute = newRoute;
+                        // Đảm bảo không hiển thị route trên map khi đổi tab (trừ khi đang navigating)
                         if (!_isNavigating) {
                           _isRouteEnabled = false;
+                        } else {
+                          // Nếu đang navigating, cập nhật route ngay lập tức
+                          _isRouteEnabled = true;
                         }
                       });
+                      
                       // Rebuild bottom sheet ngay lập tức để hiển thị route mới cho mode đã chọn
-                      setSheetState(() {});
+                      // setSheetState sẽ trigger builder rebuild, và routeForDisplay sẽ được lấy lại từ _routesByMode với mode mới
+                      setSheetState(() {
+                        // Builder sẽ được gọi lại và lấy route mới từ _routesByMode[_transportMode]
+                      });
                     },
                     transportMode: _transportMode,
                     onClose: closeSheet,

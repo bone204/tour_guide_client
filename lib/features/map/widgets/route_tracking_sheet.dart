@@ -35,9 +35,26 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
   @override
   void didUpdateWidget(_RouteTrackingSheet oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Rebuild khi route thay đổi
-    if (oldWidget.route != widget.route || oldWidget.transportMode != widget.transportMode) {
-      setState(() {});
+    // Rebuild khi route hoặc transport mode thay đổi
+    final routeChanged = oldWidget.route != widget.route;
+    final modeChanged = oldWidget.transportMode != widget.transportMode;
+    final loadingChanged = oldWidget.isRouteLoading != widget.isRouteLoading;
+    
+    // So sánh route chi tiết hơn để đảm bảo phát hiện thay đổi
+    final routeDurationChanged = oldWidget.route?.duration != widget.route?.duration;
+    final routeDistanceChanged = oldWidget.route?.distance != widget.route?.distance;
+    
+    if (routeChanged || modeChanged || loadingChanged || routeDurationChanged || routeDistanceChanged) {
+      // Debug
+      if (routeChanged || modeChanged || routeDurationChanged || routeDistanceChanged) {
+        print('RouteTrackingSheet didUpdateWidget - Mode: ${widget.transportMode}');
+        print('  Old route: ${oldWidget.route?.duration}s, ${oldWidget.route?.distance}m');
+        print('  New route: ${widget.route?.duration}s, ${widget.route?.distance}m');
+      }
+      // Luôn rebuild khi có thay đổi để đảm bảo UI được cập nhật
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 
@@ -51,7 +68,7 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
         'Unknown location';
     
     // Debug: in ra để kiểm tra route hiện tại
-    print('RouteTrackingSheet build - Mode: ${widget.transportMode}, Route duration: ${route?.duration} seconds');
+    print('RouteTrackingSheet build - Mode: ${widget.transportMode}, Route: ${route?.duration}s, ${route?.distance}m');
 
     return SafeArea(
       top: false,
@@ -135,8 +152,10 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
                           SizedBox(height: 20.h),
                         ],
                         // Route info - luôn hiển thị
-                        if (route != null) _buildRouteInfo(theme, route),
-                        if (route == null && (widget.isRouteLoading || widget.isNavigating))
+                        // Sử dụng AnimatedSwitcher để cập nhật mượt mà khi route thay đổi
+                        if (route != null) 
+                          _buildRouteInfo(theme, route)
+                        else if (widget.isRouteLoading || widget.isNavigating)
                           _buildLoadingRoute(theme),
                         SizedBox(height: 20.h),
                         // Action button
@@ -170,10 +189,11 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
   }
 
   Widget _buildTransportSelector(ThemeData theme) {
+    // OSRM sử dụng profile: car, foot, bike
     final modes = [
-      {'value': 'driving', 'label': 'Lái xe', 'icon': Icons.directions_car},
-      {'value': 'walking', 'label': 'Đi bộ', 'icon': Icons.directions_walk},
-      {'value': 'cycling', 'label': 'Xe đạp', 'icon': Icons.directions_bike},
+      {'value': 'car', 'label': 'Lái xe', 'icon': Icons.directions_car},
+      {'value': 'foot', 'label': 'Đi bộ', 'icon': Icons.directions_walk},
+      {'value': 'bike', 'label': 'Xe máy', 'icon': Icons.two_wheeler},
     ];
 
     return Container(
@@ -185,9 +205,15 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
         children: modes.map((mode) {
           final isSelected = widget.transportMode == mode['value'];
           return Expanded(
-            child: GestureDetector(
-              onTap: () => widget.onTransportChanged(mode['value'] as String),
-              child: Container(
+            child: InkWell(
+              onTap: () {
+                // Gọi callback ngay lập tức để update route
+                widget.onTransportChanged(mode['value'] as String);
+              },
+              borderRadius: BorderRadius.circular(12.r),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
                 padding: EdgeInsets.symmetric(vertical: 12.h),
                 decoration: BoxDecoration(
                   color: isSelected
@@ -229,51 +255,63 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
 
   Widget _buildRouteInfo(ThemeData theme, OSRMRoute route) {
     final minutes = (route.duration / 60).ceil();
+    final hours = minutes ~/ 60;
+    final remainingMinutes = minutes % 60;
+    
+    // Format thời gian: hiển thị giờ nếu > 60 phút
+    final timeText = hours > 0 
+        ? '${hours} giờ ${remainingMinutes} phút'
+        : '$minutes phút';
+    
     final distanceKm = route.distance / 1000;
     final distanceText = distanceKm >= 1
         ? '${distanceKm.toStringAsFixed(1)} km'
         : '${route.distance.toInt()} m';
 
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: AppColors.primaryBlue.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: AppColors.primaryBlue.withOpacity(0.2),
-          width: 1,
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 200),
+      child: Container(
+        key: ValueKey('${widget.transportMode}_${route.distance}_${route.duration}'),
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: AppColors.primaryBlue.withOpacity(0.08),
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(
+            color: AppColors.primaryBlue.withOpacity(0.2),
+            width: 1,
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.route,
-            color: AppColors.primaryBlue,
-            size: 24.sp,
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '$minutes phút',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  distanceText,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSubtitle,
-                  ),
-                ),
-              ],
+        child: Row(
+          children: [
+            Icon(
+              Icons.route,
+              color: AppColors.primaryBlue,
+              size: 24.sp,
             ),
-          ),
-        ],
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    timeText,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    distanceText,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSubtitle,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

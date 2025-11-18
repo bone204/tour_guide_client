@@ -61,7 +61,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   Destination? _selectedDestination; // Lưu destination đã chọn
   bool _isRouteLoading = false; // Trạng thái đang tính toán route
   bool _isNavigating = false; // Trạng thái đang điều hướng
-  String _transportMode = 'driving'; // Phương tiện di chuyển
+  String _transportMode = 'car'; // Phương tiện di chuyển (car, foot, bike)
   Timer? _transportModeDebounceTimer; // Debounce timer cho transport mode change
   Timer? _searchDebounceTimer; // Debounce timer cho search
   Map<String, OSRMRoute?> _routesByMode = {}; // Lưu routes cho từng transport mode

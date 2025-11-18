@@ -88,8 +88,11 @@ extension MapSearchExtension on _MapPageState {
       List<Destination> osmResults = [];
       if (query.length >= 2) {
         try {
-          // Tìm kiếm với limit hợp lý
-          final osmPOIs = await _osmService.searchPlaces(query, limit: 15);
+          // Tìm kiếm với limit lớn hơn để có nhiều kết quả
+          final osmPOIs = await _osmService.searchPlaces(query, limit: 25);
+          print('OSM search returned ${osmPOIs.length} results for query: $query');
+          
+          // Chuyển đổi tất cả POIs thành Destinations, không filter ngay
           osmResults = osmPOIs
               .where((poi) => 
                   poi.position != null && 
@@ -104,11 +107,27 @@ extension MapSearchExtension on _MapPageState {
                     poi.longitude!,
                     poi.type,
                   ))
-              .where((destination) {
-                final nameLower = destination.name.toLowerCase();
-                return _matchesSearchQuery(nameLower, queryLower, tokens);
-              })
               .toList();
+          
+          print('OSM results after basic filtering: ${osmResults.length}');
+          
+          // Chỉ filter bằng matching query nếu có nhiều kết quả (>10)
+          // Nếu ít kết quả, hiển thị tất cả để user có thể chọn
+          if (osmResults.length > 10) {
+            osmResults = osmResults
+                .where((destination) {
+                  final nameLower = destination.name.toLowerCase();
+                  // Nới lỏng matching - chỉ cần chứa ít nhất một token
+                  if (tokens.isEmpty) {
+                    return nameLower.contains(queryLower);
+                  }
+                  // Nếu có tokens, chỉ cần một token khớp
+                  return tokens.any((token) => nameLower.contains(token)) ||
+                         _matchesSearchQuery(nameLower, queryLower, tokens);
+                })
+                .toList();
+            print('OSM results after query matching: ${osmResults.length}');
+          }
         } catch (e) {
           // Log lỗi nhưng không chặn việc hiển thị kết quả từ DB
           print('Error searching OSM: $e');
@@ -125,38 +144,34 @@ extension MapSearchExtension on _MapPageState {
       final combinedResults = <Destination>[];
       combinedResults.addAll(dbResults);
       
-      // Thêm OSM results nhưng loại bỏ trùng lặp và lọc kỹ hơn
+      // Thêm OSM results nhưng loại bỏ trùng lặp (nới lỏng filter)
       for (final osmDest in osmResults) {
-        // Kiểm tra tên hợp lệ
+        // Kiểm tra tên hợp lệ (đã được filter ở trên)
         if (osmDest.name.isEmpty || 
             osmDest.name.length < 2 ||
             osmDest.name == 'Unnamed Place') {
           continue;
         }
         
-        // Loại bỏ các tên không phù hợp
+        // Chỉ loại bỏ các tên rõ ràng không phù hợp
         final nameLower = osmDest.name.toLowerCase();
         if (RegExp(r'^\d+$').hasMatch(osmDest.name) ||
-            nameLower.contains('km') ||
-            nameLower.startsWith('đường') ||
-            nameLower.startsWith('phố') ||
-            nameLower.startsWith('ngõ') ||
-            nameLower.startsWith('hẻm') ||
-            nameLower.contains('số nhà') ||
-            nameLower.contains('house number')) {
+            (nameLower.contains('km') && nameLower.length < 10) ||
+            (nameLower.startsWith('số nhà') && nameLower.length < 15) ||
+            (nameLower.contains('house number') && nameLower.length < 20)) {
           continue;
         }
         
-        // Kiểm tra trùng lặp với DB destinations
+        // Kiểm tra trùng lặp với DB destinations (nới lỏng hơn)
         final isDuplicate = combinedResults.any((dbDest) {
           final dbNameLower = dbDest.name.toLowerCase();
           final osmNameLower = osmDest.name.toLowerCase();
           
-          // So sánh tên (tương đối)
+          // So sánh tên (tương đối) - nới lỏng hơn
           if (dbNameLower == osmNameLower ||
-              dbNameLower.contains(osmNameLower) ||
-              osmNameLower.contains(dbNameLower)) {
-            // Kiểm tra nếu vị trí gần nhau (trong vòng 200m)
+              (dbNameLower.contains(osmNameLower) && osmNameLower.length > 5) ||
+              (osmNameLower.contains(dbNameLower) && dbNameLower.length > 5)) {
+            // Kiểm tra nếu vị trí gần nhau (trong vòng 500m - nới lỏng hơn)
             if (dbDest.latitude != null && dbDest.longitude != null &&
                 osmDest.latitude != null && osmDest.longitude != null) {
               final distance = _calculateDistance(
@@ -165,7 +180,7 @@ extension MapSearchExtension on _MapPageState {
                 osmDest.latitude!,
                 osmDest.longitude!,
               );
-              return distance < 0.2; // ~200m
+              return distance < 0.5; // ~500m (nới lỏng từ 200m)
             }
           }
           return false;

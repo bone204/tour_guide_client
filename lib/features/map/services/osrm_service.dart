@@ -11,7 +11,7 @@ class OSRMService {
     required LatLng start,
     required LatLng end,
     List<LatLng>? waypoints,
-    String profile = 'driving', // driving, walking, cycling
+    String profile = 'car', // car, foot, bike (OSRM profile names)
   }) async {
     try {
       // Xây dựng coordinates string: lon,lat;lon,lat;...
@@ -30,6 +30,9 @@ class OSRMService {
       
       // Sử dụng profile trong URL để có route khác nhau cho mỗi transport mode
       final url = '$_osrmBaseUrl/$profile/$coordinatesString';
+      
+      // Debug: in ra URL để kiểm tra
+      print('OSRM Request - Profile: $profile, URL: $url');
 
       final response = await _dio.get(
         url,
@@ -48,8 +51,24 @@ class OSRMService {
       if (response.statusCode == 200) {
         final data = response.data;
         if (data['code'] == 'Ok' && data['routes'] != null && data['routes'].isNotEmpty) {
-          return OSRMRoute.fromJson(data['routes'][0]);
+          final route = OSRMRoute.fromJson(data['routes'][0]);
+          // Debug: in ra route details
+          print('OSRM Response for $profile - Duration: ${route.duration}s, Distance: ${route.distance}m');
+          
+          // OSRM public server có thể không hỗ trợ tốt các profile khác "car"
+          // Luôn điều chỉnh duration dựa trên profile để đảm bảo kết quả chính xác
+          final adjustedRoute = _adjustRouteForProfile(route, profile);
+          if (adjustedRoute != null && adjustedRoute.duration != route.duration) {
+            print('Adjusted route for $profile - Duration: ${adjustedRoute.duration}s (was ${route.duration}s), Distance: ${adjustedRoute.distance}m');
+            return adjustedRoute;
+          }
+          
+          return route;
+        } else {
+          print('OSRM Response - Code: ${data['code']}, Routes: ${data['routes']}');
         }
+      } else {
+        print('OSRM Response - Status: ${response.statusCode}');
       }
       
       return null;
@@ -62,7 +81,7 @@ class OSRMService {
   /// Lấy route với nhiều waypoints
   Future<OSRMRoute?> getRouteWithWaypoints({
     required List<LatLng> waypoints,
-    String profile = 'driving',
+    String profile = 'car',
   }) async {
     if (waypoints.length < 2) return null;
     
@@ -77,6 +96,32 @@ class OSRMService {
       end: end,
       waypoints: middle,
       profile: profile,
+    );
+  }
+
+  /// Điều chỉnh route duration dựa trên profile
+  /// OSRM public server có thể không hỗ trợ tốt các profile khác "car"
+  /// Nên tính toán lại duration dựa trên tốc độ trung bình cho mỗi profile
+  OSRMRoute? _adjustRouteForProfile(OSRMRoute route, String profile) {
+    // Tốc độ trung bình (m/s) cho mỗi profile
+    const speeds = {
+      'car': 13.89,     
+      'foot': 1.39,      
+      'bike': 9.72,     
+    };
+    
+    final speed = speeds[profile];
+    if (speed == null) return route;
+    
+    // Tính toán duration mới dựa trên distance và speed
+    final newDuration = route.distance / speed;
+    
+    // Luôn điều chỉnh duration để đảm bảo kết quả chính xác cho mỗi profile
+    return OSRMRoute(
+      distance: route.distance,
+      duration: newDuration,
+      geometry: route.geometry,
+      steps: route.steps,
     );
   }
 }

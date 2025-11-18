@@ -89,7 +89,7 @@ out center meta;
   }
 
   /// Tìm kiếm địa điểm bằng Nominatim (giới hạn ở Việt Nam)
-  Future<List<OSMPOI>> searchPlaces(String query, {int limit = 10}) async {
+  Future<List<OSMPOI>> searchPlaces(String query, {int limit = 20}) async {
     try {
       // Bounding box của Việt Nam (lat, lon)
       // Tây Nam: 8.5, 102.0
@@ -99,11 +99,11 @@ out center meta;
         queryParameters: {
           'q': query,
           'format': 'json',
-          'limit': limit * 2, // Lấy nhiều hơn để lọc sau
+          'limit': limit * 3, // Lấy nhiều hơn để lọc sau
           'addressdetails': 1,
           'countrycodes': 'vn', // Giới hạn chỉ ở Việt Nam
           'viewbox': '102.0,23.5,110.0,8.5', // viewbox format: minlon,maxlat,maxlon,minlat
-          'bounded': '1', // Chỉ tìm trong viewbox
+          'bounded': '0', // Không giới hạn chặt trong viewbox, chỉ ưu tiên
           'extratags': '1', // Lấy thêm tags để lọc tốt hơn
         },
         options: Options(
@@ -115,31 +115,22 @@ out center meta;
 
       if (response.statusCode == 200) {
         final data = response.data as List;
-        // Giới hạn phạm vi Việt Nam
-        const vietnamMinLat = 8.5;
-        const vietnamMaxLat = 23.5;
-        const vietnamMinLon = 102.0;
-        const vietnamMaxLon = 110.0;
+        // Giới hạn phạm vi Việt Nam (nới lỏng hơn)
+        const vietnamMinLat = 8.0;
+        const vietnamMaxLat = 24.0;
+        const vietnamMinLon = 101.0;
+        const vietnamMaxLon = 111.0;
         
-        // Danh sách các loại địa điểm quan trọng cho tour guide
-        const importantTypes = [
-          'tourism', 'amenity', 'historic', 'leisure', 'shop',
-          'restaurant', 'hotel', 'attraction', 'museum', 'temple',
-          'park', 'beach', 'monument', 'castle', 'ruins'
-        ];
-        
-        // Loại bỏ các loại không phù hợp
+        // Loại bỏ các loại không phù hợp (chỉ những loại rõ ràng không phù hợp)
         const excludedTypes = [
-          'post_box', 'post_office', 'telephone', 'atm', 'bank',
-          'pharmacy', 'hospital', 'clinic', 'school', 'university',
-          'parking', 'fuel', 'toilets', 'bench', 'waste_basket',
-          'street_lamp', 'traffic_signals', 'crossing', 'bus_stop'
+          'post_box', 'telephone', 'waste_basket',
+          'street_lamp', 'traffic_signals', 'crossing'
         ];
         
         return data
             .map((item) => OSMPOI.fromNominatimResult(item))
             .where((poi) {
-              // Kiểm tra tọa độ hợp lệ và trong phạm vi Việt Nam
+              // Kiểm tra tọa độ hợp lệ và trong phạm vi Việt Nam (nới lỏng)
               if (poi.latitude == null || 
                   poi.longitude == null ||
                   poi.latitude! < vietnamMinLat ||
@@ -149,7 +140,7 @@ out center meta;
                 return false;
               }
               
-              // Kiểm tra tên hợp lệ
+              // Kiểm tra tên hợp lệ - nới lỏng hơn
               if (poi.name == null || 
                   poi.name!.isEmpty || 
                   poi.name == 'Unnamed Place' ||
@@ -157,32 +148,27 @@ out center meta;
                 return false;
               }
               
-              // Loại bỏ các tên chỉ là số hoặc địa chỉ
+              // Chỉ loại bỏ các tên rõ ràng không phù hợp
+              final nameLower = poi.name!.toLowerCase();
               if (RegExp(r'^\d+$').hasMatch(poi.name!) ||
-                  poi.name!.contains('km') ||
-                  poi.name!.startsWith('Đường') ||
-                  poi.name!.startsWith('Phố') ||
-                  poi.name!.startsWith('Ngõ') ||
-                  poi.name!.startsWith('Hẻm')) {
+                  (nameLower.contains('km') && nameLower.length < 10) ||
+                  (nameLower.startsWith('đường') && nameLower.length < 15) ||
+                  (nameLower.startsWith('phố') && nameLower.length < 15) ||
+                  (nameLower.startsWith('ngõ') && nameLower.length < 15) ||
+                  (nameLower.startsWith('hẻm') && nameLower.length < 15)) {
                 return false;
               }
               
-              // Kiểm tra type
+              // Kiểm tra type - nới lỏng hơn, chỉ loại bỏ những loại rõ ràng không phù hợp
               final type = poi.type?.toLowerCase() ?? '';
-              if (type.isEmpty) return false;
               
-              // Loại bỏ các loại không phù hợp
-              if (excludedTypes.any((excluded) => type.contains(excluded))) {
+              // Chỉ loại bỏ các loại rõ ràng không phù hợp
+              if (type.isNotEmpty && excludedTypes.any((excluded) => type.contains(excluded))) {
                 return false;
               }
               
-              // Ưu tiên các loại quan trọng
-              final isImportant = importantTypes.any((important) => 
-                type.contains(important) || 
-                poi.tags?.keys.any((key) => key.contains(important)) == true
-              );
-              
-              return isImportant || type == 'place';
+              // Chấp nhận tất cả các kết quả có tên hợp lệ và tọa độ trong Việt Nam
+              return true;
             })
             .take(limit) // Giới hạn số lượng kết quả
             .toList();
@@ -229,52 +215,59 @@ class OSMPOI {
   }
 
   factory OSMPOI.fromNominatimResult(Map<String, dynamic> result) {
-    // Ưu tiên lấy tên từ các field khác nhau
+    // Ưu tiên lấy tên từ các field khác nhau - nới lỏng hơn
     String? name;
     
     // Thử lấy từ name field trước (tên chính thức)
     if (result['name'] != null && result['name'].toString().isNotEmpty) {
       final candidateName = result['name'].toString().trim();
-      // Chỉ lấy nếu không phải là số hoặc địa chỉ
+      // Chỉ loại bỏ nếu rõ ràng không phù hợp
       if (candidateName.length >= 2 && 
           !RegExp(r'^\d+$').hasMatch(candidateName) &&
-          !candidateName.contains('km')) {
+          !(candidateName.toLowerCase().contains('km') && candidateName.length < 10)) {
         name = candidateName;
       }
     }
     
-    // Nếu không có, thử lấy từ display_name nhưng lọc kỹ hơn
+    // Nếu không có, thử lấy từ display_name - lấy phần đầu tiên
     if ((name == null || name.isEmpty) && result['display_name'] != null) {
       final displayName = result['display_name'].toString();
       final parts = displayName.split(',');
       
-      // Thử lấy phần đầu tiên
+      // Thử lấy phần đầu tiên (thường là tên địa điểm)
       if (parts.isNotEmpty) {
         final firstPart = parts.first.trim();
-        // Chỉ lấy nếu có vẻ là tên địa điểm (không phải số, không quá dài)
+        // Nới lỏng hơn - chỉ loại bỏ nếu rõ ràng không phù hợp
         if (firstPart.length >= 2 && 
-            firstPart.length <= 50 &&
+            firstPart.length <= 100 && // Cho phép tên dài hơn
             !RegExp(r'^\d+$').hasMatch(firstPart) &&
-            !firstPart.startsWith('Đường') &&
-            !firstPart.startsWith('Phố') &&
-            !firstPart.startsWith('Ngõ') &&
-            !firstPart.startsWith('Hẻm') &&
-            !firstPart.contains('km')) {
+            !(firstPart.toLowerCase().startsWith('đường') && firstPart.length < 15) &&
+            !(firstPart.toLowerCase().startsWith('phố') && firstPart.length < 15) &&
+            !(firstPart.toLowerCase().startsWith('ngõ') && firstPart.length < 15) &&
+            !(firstPart.toLowerCase().startsWith('hẻm') && firstPart.length < 15) &&
+            !(firstPart.toLowerCase().contains('km') && firstPart.length < 10)) {
           name = firstPart;
         }
       }
     }
     
-    // Nếu vẫn không có, thử lấy từ address nhưng chỉ các field quan trọng
+    // Nếu vẫn không có, thử lấy từ address - ưu tiên các field quan trọng
     if ((name == null || name.isEmpty) && result['address'] != null) {
       final address = result['address'] as Map<String, dynamic>?;
       if (address != null) {
-        // Ưu tiên: tourism, amenity name, poi name
-        name = address['tourism']?.toString() ??
+        // Ưu tiên: tourism, amenity, shop, leisure, historic
+        final candidateName = address['tourism']?.toString() ??
                address['amenity']?.toString() ??
+               address['shop']?.toString() ??
+               address['leisure']?.toString() ??
+               address['historic']?.toString() ??
                address['name']?.toString();
         
-        // Nếu vẫn không có, bỏ qua (không lấy house_number hay road)
+        if (candidateName != null && 
+            candidateName.trim().isNotEmpty && 
+            candidateName.trim().length >= 2) {
+          name = candidateName.trim();
+        }
       }
     }
     
@@ -289,6 +282,7 @@ class OSMPOI {
                address['amenity']?.toString() ??
                address['leisure']?.toString() ??
                address['historic']?.toString() ??
+               address['shop']?.toString() ??
                'place';
       }
     }

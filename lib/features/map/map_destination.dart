@@ -31,6 +31,12 @@ extension MapDestinationExtension on _MapPageState {
     // Unfocus trước để tránh trigger _handleSearchFocusChange
     _searchFocusNode.unfocus();
     
+    // Debug: in ra thông tin địa điểm mới
+    print('Selecting new destination: ${destination.name} at ${target.latitude}, ${target.longitude}');
+    if (_selectedDestination != null) {
+      print('Previous destination: ${_selectedDestination!.name}');
+    }
+    
     setState(() {
       _selectedDestinationPosition = target;
       _selectedDestinationId = destination.id;
@@ -38,6 +44,8 @@ extension MapDestinationExtension on _MapPageState {
       _isRouteEnabled = false; // Không tự động bật route
       _currentRoute = null; // Xóa route cũ khi chọn địa điểm mới
       _isRouteLoading = false;
+      _routesByMode.clear(); // Clear tất cả routes cũ khi chọn địa điểm mới
+      _loadingModes.clear(); // Clear loading modes
       if (!_isMapReady) {
         _pendingMove = target;
         _pendingZoom = _MapPageState._destinationZoom;
@@ -45,6 +53,8 @@ extension MapDestinationExtension on _MapPageState {
       // Ẩn search overlay khi chọn destination
       _isSearchOverlayVisible = false;
     });
+    
+    print('Routes cleared. _routesByMode is now empty: ${_routesByMode.isEmpty}');
 
     _searchController.text = destination.name;
 
