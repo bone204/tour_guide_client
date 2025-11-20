@@ -2,6 +2,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
@@ -9,10 +10,12 @@ import 'package:tour_guide_app/features/home/presentation/widgets/destination_ca
 
 class SliverPopularDestinationList extends StatefulWidget {
   @override
-  State<SliverPopularDestinationList> createState() => _SliverPopularDestinationListState();
+  State<SliverPopularDestinationList> createState() =>
+      _SliverPopularDestinationListState();
 }
 
-class _SliverPopularDestinationListState extends State<SliverPopularDestinationList> {
+class _SliverPopularDestinationListState
+    extends State<SliverPopularDestinationList> {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -52,23 +55,23 @@ class _SliverPopularDestinationListState extends State<SliverPopularDestinationL
                   children: [
                     // Title
                     Padding(
-                      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                        bottom: 20.h,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             AppLocalizations.of(context)!.popular,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
+                            style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(color: AppColors.textSecondary),
                           ),
                           SizedBox(height: 4.h),
                           Text(
                             AppLocalizations.of(context)!.popularDes,
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium
+                            style: Theme.of(context).textTheme.displayMedium
                                 ?.copyWith(color: AppColors.textSecondary),
                           ),
                         ],
@@ -111,11 +114,17 @@ class _SliverPopularDestinationListState extends State<SliverPopularDestinationL
                               child: Center(
                                 child: Text(
                                   'No destinations found',
-                                  style: TextStyle(color: AppColors.primaryWhite),
+                                  style: TextStyle(
+                                    color: AppColors.primaryWhite,
+                                  ),
                                 ),
                               ),
                             );
                           }
+
+                          final favoriteState =
+                              context.watch<FavoriteDestinationsCubit>().state;
+                          final favoriteIds = favoriteState.favoriteIds;
 
                           return Padding(
                             padding: EdgeInsets.only(left: 16.w),
@@ -123,29 +132,46 @@ class _SliverPopularDestinationListState extends State<SliverPopularDestinationL
                               itemCount: destinations.length,
                               itemBuilder: (context, index, realIndex) {
                                 final destination = destinations[index];
+                                final favoriteCubit =
+                                    context.read<FavoriteDestinationsCubit>();
 
                                 return DestinationCard(
-                                  imageUrl: destination.photos?.isNotEmpty == true
-                                      ? destination.photos!.first
-                                      : AppImage.defaultDestination,
+                                  imageUrl:
+                                      destination.photos?.isNotEmpty == true
+                                          ? destination.photos!.first
+                                          : AppImage.defaultDestination,
                                   name: destination.name,
-                                  rating: destination.rating?.toString() ?? "0.0",
-                                  location:  destination.province ?? "Unknown",
-                                  category: destination.type ?? 
-                                      (destination.categories?.isNotEmpty == true 
-                                          ? destination.categories!.first 
+                                  rating:
+                                      destination.rating?.toString() ?? "0.0",
+                                  location: destination.province ?? "Unknown",
+                                  category:
+                                      destination.type ??
+                                      (destination.categories?.isNotEmpty ==
+                                              true
+                                          ? destination.categories!.first
                                           : "Destination"),
                                   onTap: () {
-                                    Navigator.of(context, rootNavigator: true).push(
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,
+                                    ).push(
                                       MaterialPageRoute(
-                                        builder: (context) => DestinationDetailPage.withProvider(
-                                          destinationId: destination.id,
-                                        ),
+                                        builder:
+                                            (context) =>
+                                                DestinationDetailPage.withProvider(
+                                                  destinationId: destination.id,
+                                                  favoriteCubit: favoriteCubit,
+                                                ),
                                       ),
                                     );
                                   },
-                                  onFavorite: () {
-                                    // TODO: add/remove from favorites
+                                  isFavorite: favoriteIds.contains(
+                                    destination.id,
+                                  ),
+                                  onFavoriteTap: (_) async {
+                                    return await favoriteCubit.toggleFavorite(
+                                      destination.id,
+                                    );
                                   },
                                 );
                               },

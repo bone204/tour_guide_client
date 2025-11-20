@@ -11,7 +11,7 @@ class DestinationCard extends StatelessWidget {
   final String location;
   final String? category;
   final VoidCallback? onTap;
-  final VoidCallback? onFavorite;
+  final LikeButtonTapCallback? onFavoriteTap;
   final bool isFavorite;
 
   const DestinationCard({
@@ -22,7 +22,7 @@ class DestinationCard extends StatelessWidget {
     required this.location,
     this.category,
     this.onTap,
-    this.onFavorite,
+    this.onFavoriteTap,
     this.isFavorite = false,
   });
 
@@ -59,7 +59,9 @@ class DestinationCard extends StatelessWidget {
               children: [
                 // Image with gradient overlay
                 ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20.r),
+                  ),
                   child: Stack(
                     children: [
                       Image.network(
@@ -86,7 +88,7 @@ class DestinationCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 // Favorite Button
                 Positioned(
                   top: 12.h,
@@ -109,10 +111,11 @@ class DestinationCard extends StatelessWidget {
                       isLiked: isFavorite,
                       likedColor: AppColors.primaryRed,
                       unlikedColor: AppColors.textSubtitle.withOpacity(0.6),
-                      onTap: (bool liked) async {
-                        onFavorite?.call();
-                        return !liked;
-                      },
+                      onTap:
+                          onFavoriteTap ??
+                          (bool liked) async {
+                            return !liked;
+                          },
                     ),
                   ),
                 ),
@@ -130,7 +133,10 @@ class DestinationCard extends StatelessWidget {
                     children: [
                       // Rating Badge
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 6.h,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.primaryYellow.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(10.r),
@@ -147,28 +153,29 @@ class DestinationCard extends StatelessWidget {
                             SizedBox(width: 4.w),
                             Text(
                               rating,
-                              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                color: AppColors.textPrimary,
-                              ),
+                              style: Theme.of(context).textTheme.displayMedium
+                                  ?.copyWith(color: AppColors.textPrimary),
                             ),
                           ],
                         ),
                       ),
-                      
+
                       // Category Badge
                       if (category != null) ...[
                         SizedBox(width: 8.w),
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 6.h,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.primaryBlue.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Text(
                             category!,
-                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                              color: AppColors.textPrimary,
-                            ),
+                            style: Theme.of(context).textTheme.displayMedium
+                                ?.copyWith(color: AppColors.textPrimary),
                           ),
                         ),
                       ],
@@ -178,15 +185,15 @@ class DestinationCard extends StatelessWidget {
                   // Name
                   Text(
                     name,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      letterSpacing: -0.3,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleMedium?.copyWith(letterSpacing: -0.3),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
-                  
+
                   SizedBox(height: 10.h),
-                  
+
                   // Location
                   Row(
                     children: [
@@ -207,16 +214,14 @@ class DestinationCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           location,
-                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: AppColors.textPrimary,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge
+                              ?.copyWith(color: AppColors.textPrimary),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
                       ),
                     ],
                   ),
-                  
                 ],
               ),
             ),

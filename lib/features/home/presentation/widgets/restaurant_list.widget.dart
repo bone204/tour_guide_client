@@ -56,7 +56,7 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
                 ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                stops: [0.6,1.0]
+                stops: [0.6, 1.0],
               ),
             ),
             margin: EdgeInsets.only(bottom: 8.h),
@@ -67,21 +67,13 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
                 Positioned(
                   top: -12,
                   right: 56,
-                  child: Image.asset(
-                    AppImage.food,
-                    width: 60.w,
-                    height: 60.h,
-                  ),
+                  child: Image.asset(AppImage.food, width: 60.w, height: 60.h),
                 ),
 
                 Positioned(
                   top: -8,
                   right: 8,
-                  child: Image.asset(
-                    AppImage.drink,
-                    width: 60.w,
-                    height: 60.h,
-                  ),
+                  child: Image.asset(AppImage.drink, width: 60.w, height: 60.h),
                 ),
 
                 Column(
@@ -89,23 +81,23 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
                   children: [
                     // Title
                     Padding(
-                      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                        bottom: 20.h,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             AppLocalizations.of(context)!.restaurantNearby,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
+                            style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(color: AppColors.textSecondary),
                           ),
                           SizedBox(height: 4.h),
                           Text(
                             AppLocalizations.of(context)!.restaurantNearbyDes,
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium
+                            style: Theme.of(context).textTheme.displayMedium
                                 ?.copyWith(color: AppColors.textSecondary),
                           ),
                         ],
@@ -129,14 +121,15 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
                               // TODO: Replace with real destination ID from API when integrated
                               Navigator.of(context, rootNavigator: true).push(
                                 MaterialPageRoute(
-                                  builder: (context) => DestinationDetailPage.withProvider(
-                                    destinationId: index + 1, // Temporary: use index as ID
-                                  ),
+                                  builder:
+                                      (context) =>
+                                          DestinationDetailPage.withProvider(
+                                            destinationId:
+                                                index +
+                                                1, // Temporary: use index as ID
+                                          ),
                                 ),
                               );
-                            },
-                            onFavorite: () {
-                              // TODO: add/remove from favorites
                             },
                           );
                         },

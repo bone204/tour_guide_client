@@ -2,6 +2,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
@@ -13,27 +14,23 @@ class SliverRestaurantNearbyAttractionList extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppColors.primaryWhite,
-        ),
+        decoration: BoxDecoration(color: AppColors.primaryWhite),
         padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               AppLocalizations.of(context)!.attraction,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(color: AppColors.textPrimary),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
             ),
             SizedBox(height: 4.h),
             Text(
               AppLocalizations.of(context)!.attractionDes,
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium
-                  ?.copyWith(color: AppColors.textPrimary),
+              style: Theme.of(
+                context,
+              ).textTheme.displayMedium?.copyWith(color: AppColors.textPrimary),
             ),
             SizedBox(height: 20.h),
 
@@ -90,21 +87,28 @@ class SliverRestaurantNearbyAttractionList extends StatelessWidget {
                         itemCount: destinations.length,
                         itemBuilder: (context, index) {
                           final destination = destinations[index];
-                          
+
+                          final favoriteCubit =
+                              context.read<FavoriteDestinationsCubit>();
+
                           return GestureDetector(
                             onTap: () {
                               Navigator.of(context, rootNavigator: true).push(
                                 MaterialPageRoute(
-                                  builder: (context) => DestinationDetailPage.withProvider(
-                                    destinationId: destination.id,
-                                  ),
+                                  builder:
+                                      (context) =>
+                                          DestinationDetailPage.withProvider(
+                                            destinationId: destination.id,
+                                            favoriteCubit: favoriteCubit,
+                                          ),
                                 ),
                               );
                             },
                             child: AttractionCard(
-                              imageUrl: destination.photos?.isNotEmpty == true
-                                  ? destination.photos!.first
-                                  : AppImage.defaultDestination,
+                              imageUrl:
+                                  destination.photos?.isNotEmpty == true
+                                      ? destination.photos!.first
+                                      : AppImage.defaultDestination,
                               title: destination.name,
                               location: destination.province ?? "Unknown",
                               rating: destination.rating ?? 0.0,
@@ -113,7 +117,7 @@ class SliverRestaurantNearbyAttractionList extends StatelessWidget {
                           );
                         },
                       ),
-                      
+
                       // Loading more indicator
                       if (state.isLoadingMore)
                         Padding(
@@ -124,7 +128,7 @@ class SliverRestaurantNearbyAttractionList extends StatelessWidget {
                             ),
                           ),
                         ),
-                      
+
                       // End of list message
                       if (state.hasReachedEnd && destinations.isNotEmpty)
                         Padding(
@@ -132,9 +136,8 @@ class SliverRestaurantNearbyAttractionList extends StatelessWidget {
                           child: Center(
                             child: Text(
                               'You have seen all attractions',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: AppColors.textSubtitle,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(color: AppColors.textSubtitle),
                             ),
                           ),
                         ),

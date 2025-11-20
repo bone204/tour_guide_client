@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/chat_bot/presentation/pages/chat_bot.page.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_list.widget.dart';
@@ -18,8 +19,15 @@ class HomePage extends StatefulWidget {
 
   // Static method to create page with BlocProvider
   static Widget withProvider() {
-    return BlocProvider(
-      create: (context) => GetDestinationCubit()..getDestinations(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => GetDestinationCubit()..getDestinations(),
+        ),
+        BlocProvider(
+          create: (context) => FavoriteDestinationsCubit()..loadFavorites(),
+        ),
+      ],
       child: const HomePage(),
     );
   }
@@ -29,7 +37,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final ScrollController _scrollController = ScrollController();
   DateTime? _lastLoadMoreTime;
 
@@ -42,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   void _setupScrollListener() {
     _scrollController.addListener(() {
       // Khi scroll gần cuối (còn 500 pixels)
-      if (_scrollController.position.pixels >= 
+      if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 500) {
         _loadMoreIfNeeded();
       }
@@ -52,14 +59,14 @@ class _HomePageState extends State<HomePage> {
   void _loadMoreIfNeeded() {
     // Debounce: Chỉ load more sau 1 giây từ lần load trước
     final now = DateTime.now();
-    if (_lastLoadMoreTime != null && 
+    if (_lastLoadMoreTime != null &&
         now.difference(_lastLoadMoreTime!).inSeconds < 1) {
       return;
     }
 
     final cubit = context.read<GetDestinationCubit>();
     final state = cubit.state;
-    
+
     if (state is GetDestinationLoaded) {
       if (!state.hasReachedEnd && !state.isLoadingMore) {
         _lastLoadMoreTime = now;
@@ -93,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                     subtitle: AppLocalizations.of(context)!.discoverSub,
                     hintText: AppLocalizations.of(context)!.search,
                   ),
-                  pinned: true, 
+                  pinned: true,
                 ),
                 SliverHeader(),
                 SliverVoucherCarousel(),
@@ -113,9 +120,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 // Mở trang Chat Bot với root navigator (fullscreen)
                 Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (_) => ChatBotPage.withProvider(),
-                  ),
+                  MaterialPageRoute(builder: (_) => ChatBotPage.withProvider()),
                 );
               },
               child: Lottie.asset(

@@ -5,21 +5,31 @@ import 'package:tour_guide_app/common/widgets/button/like_button.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_cubit.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_state.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/get_destination_by_id_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/get_destination_by_id_state.dart';
 
 class DestinationDetailPage extends StatefulWidget {
   final int destinationId;
 
-  const DestinationDetailPage({
-    super.key,
-    required this.destinationId,
-  });
+  const DestinationDetailPage({super.key, required this.destinationId});
 
   // Static method to create route with BlocProvider
-  static Widget withProvider({required int destinationId}) {
-    return BlocProvider(
-      create: (context) => GetDestinationByIdCubit(),
+  static Widget withProvider({
+    required int destinationId,
+    FavoriteDestinationsCubit? favoriteCubit,
+  }) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => GetDestinationByIdCubit()),
+        if (favoriteCubit != null)
+          BlocProvider.value(value: favoriteCubit)
+        else
+          BlocProvider(
+            create: (_) => FavoriteDestinationsCubit()..loadFavorites(),
+          ),
+      ],
       child: DestinationDetailPage(destinationId: destinationId),
     );
   }
@@ -33,14 +43,22 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
   late TabController _tabController;
   final DraggableScrollableController _sheetController =
       DraggableScrollableController();
-  bool _isFavorite = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     // Load destination data when page opens
-    context.read<GetDestinationByIdCubit>().getDestinationById(widget.destinationId);
+    context.read<GetDestinationByIdCubit>().getDestinationById(
+      widget.destinationId,
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final favoritesCubit = context.read<FavoriteDestinationsCubit>();
+      if (!favoritesCubit.state.hasLoaded && !favoritesCubit.state.isLoading) {
+        favoritesCubit.loadFavorites();
+      }
+    });
   }
 
   @override
@@ -68,9 +86,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
           return Scaffold(
             backgroundColor: AppColors.backgroundColor,
             body: Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primaryBlue,
-              ),
+              child: CircularProgressIndicator(color: AppColors.primaryBlue),
             ),
           );
         }
@@ -103,7 +119,8 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
                   SizedBox(height: 24.h),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<GetDestinationByIdCubit>()
+                      context
+                          .read<GetDestinationByIdCubit>()
                           .getDestinationById(widget.destinationId);
                     },
                     child: Text('Retry'),
@@ -142,26 +159,24 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
 
   Widget _buildHeaderImage(List<String>? photos) {
     final bool hasPhotos = photos != null && photos.isNotEmpty;
-    
+
     return Positioned.fill(
       child: Hero(
         tag: 'destination_${widget.destinationId}',
-        child: hasPhotos
-            ? Image.network(
-                photos.first,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  // Nếu network image lỗi, fallback sang asset image
-                  return Image.asset(
-                    AppImage.defaultDestination,
-                    fit: BoxFit.cover,
-                  );
-                },
-              )
-            : Image.asset(
-                AppImage.defaultDestination,
-                fit: BoxFit.cover,
-              ),
+        child:
+            hasPhotos
+                ? Image.network(
+                  photos.first,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    // Nếu network image lỗi, fallback sang asset image
+                    return Image.asset(
+                      AppImage.defaultDestination,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                )
+                : Image.asset(AppImage.defaultDestination, fit: BoxFit.cover),
       ),
     );
   }
@@ -214,17 +229,24 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
                     ),
                   ],
                 ),
-                child: CustomLikeButton(
-                  size: 22.r,
-                  isLiked: _isFavorite,
-                  likedColor: AppColors.primaryRed,
-                  unlikedColor: AppColors.textSubtitle.withOpacity(0.6),
-                  onTap: (bool liked) async {
-                    final nextState = !liked;
-                    setState(() {
-                      _isFavorite = nextState;
-                    });
-                    return nextState;
+                child: BlocBuilder<
+                  FavoriteDestinationsCubit,
+                  FavoriteDestinationsState
+                >(
+                  builder: (context, favoriteState) {
+                    final isFavorite = favoriteState.favoriteIds.contains(
+                      widget.destinationId,
+                    );
+                    return CustomLikeButton(
+                      size: 22.r,
+                      isLiked: isFavorite,
+                      likedColor: AppColors.primaryRed,
+                      unlikedColor: AppColors.textSubtitle.withOpacity(0.6),
+                      onTap: (bool liked) async {
+                        final cubit = context.read<FavoriteDestinationsCubit>();
+                        return await cubit.toggleFavorite(widget.destinationId);
+                      },
+                    );
                   },
                 ),
               ),
@@ -237,20 +259,18 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
 
   Widget _buildDraggableBottomSheet(destination) {
     return DraggableScrollableSheet(
-        controller: _sheetController,
-        initialChildSize: 0.5,
-        minChildSize: 0.5,
-        maxChildSize: 0.95,
-        snap: true,
-        snapSizes: [0.5, 0.7, 0.95],
-        snapAnimationDuration: Duration(milliseconds: 300),
-        builder: (context, scrollController) {
-          return Container(
+      controller: _sheetController,
+      initialChildSize: 0.5,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
+      snap: true,
+      snapSizes: [0.5, 0.7, 0.95],
+      snapAnimationDuration: Duration(milliseconds: 300),
+      builder: (context, scrollController) {
+        return Container(
           decoration: BoxDecoration(
             color: AppColors.primaryWhite,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(32.r),
-            ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(32.r)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.15),
@@ -322,9 +342,9 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
         // Title
         Text(
           destination.name,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(color: AppColors.textPrimary),
         ),
 
         SizedBox(height: 12.h),
@@ -348,31 +368,29 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
             SizedBox(width: 8.w),
             Expanded(
               child: Text(
-                destination.specificAddress ?? destination.province ?? 'Unknown location',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+                destination.specificAddress ??
+                    destination.province ??
+                    'Unknown location',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(color: AppColors.textSubtitle),
               ),
             ),
           ],
         ),
-        
+
         // Rating (if available)
         if (destination.rating != null) ...[
           SizedBox(height: 12.h),
           Row(
             children: [
-              Icon(
-                Icons.star_rounded,
-                color: Colors.amber,
-                size: 20.r,
-              ),
+              Icon(Icons.star_rounded, color: Colors.amber, size: 20.r),
               SizedBox(width: 4.w),
               Text(
                 destination.rating!.toStringAsFixed(1),
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
               ),
               if (destination.userRatingsTotal != null) ...[
                 SizedBox(width: 4.w),
@@ -410,11 +428,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
         unselectedLabelStyle: Theme.of(context).textTheme.displayMedium,
         indicatorSize: TabBarIndicatorSize.tab,
         dividerColor: Colors.transparent,
-        tabs: [
-          Tab(text: 'About'),
-          Tab(text: 'Reviews'),
-          Tab(text: 'Photos'),
-        ],
+        tabs: [Tab(text: 'About'), Tab(text: 'Reviews'), Tab(text: 'Photos')],
       ),
     );
   }
@@ -439,6 +453,4 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
       },
     );
   }
-
 }
-

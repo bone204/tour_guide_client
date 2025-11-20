@@ -79,23 +79,23 @@ class SliverHotelNearbyDestinationList extends StatelessWidget {
                   children: [
                     // Title
                     Padding(
-                      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                        bottom: 20.h,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             AppLocalizations.of(context)!.hotelNearby,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
+                            style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(color: AppColors.textSecondary),
                           ),
                           SizedBox(height: 4.h),
                           Text(
                             AppLocalizations.of(context)!.hotelNearbyDes,
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium
+                            style: Theme.of(context).textTheme.displayMedium
                                 ?.copyWith(color: AppColors.textSecondary),
                           ),
                         ],
@@ -119,14 +119,15 @@ class SliverHotelNearbyDestinationList extends StatelessWidget {
                               // TODO: Replace with real destination ID from API when integrated
                               Navigator.of(context, rootNavigator: true).push(
                                 MaterialPageRoute(
-                                  builder: (context) => DestinationDetailPage.withProvider(
-                                    destinationId: index + 1, // Temporary: use index as ID
-                                  ),
+                                  builder:
+                                      (context) =>
+                                          DestinationDetailPage.withProvider(
+                                            destinationId:
+                                                index +
+                                                1, // Temporary: use index as ID
+                                          ),
                                 ),
                               );
-                            },
-                            onFavorite: () {
-                              // TODO: add/remove from favorites
                             },
                           );
                         },
