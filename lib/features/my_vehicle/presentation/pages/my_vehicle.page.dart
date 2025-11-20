@@ -202,9 +202,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                 .map(
                   (vehicle) => VehicleCard(
                     vehicle: vehicle,
-                    onTap: () {
-                      // TODO: Navigate to vehicle detail
-                    },
+                    onTap: () => _openVehicleDetail(vehicle.licensePlate),
                   ),
                 )
                 .toList(),
@@ -405,12 +403,30 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
         itemBuilder: (context, index) {
           return ContractCard(
             contract: contracts[index],
-            onTap: () {
-              // TODO: Navigate to contract detail
-            },
+            onTap: () => _openContractDetail(contracts[index].id),
           );
         },
       ),
+    );
+  }
+
+  Future<void> _openContractDetail(int contractId) async {
+    await Navigator.of(
+      context,
+      rootNavigator: true,
+    ).pushNamed(
+      AppRouteConstant.contractDetail,
+      arguments: contractId,
+    );
+  }
+
+  Future<void> _openVehicleDetail(String licensePlate) async {
+    await Navigator.of(
+      context,
+      rootNavigator: true,
+    ).pushNamed(
+      AppRouteConstant.vehicleDetail,
+      arguments: licensePlate,
     );
   }
 

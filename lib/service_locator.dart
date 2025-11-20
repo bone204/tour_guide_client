@@ -27,6 +27,10 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contrac
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/add_vehicle.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_contract_detail.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_detail.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_cubit.dart';
 import 'package:tour_guide_app/features/settings/data/data_source/local/settings_local_service.dart';
 import 'package:tour_guide_app/features/settings/data/repository/settings_repository_impl.dart';
 import 'package:tour_guide_app/features/settings/domain/repository/settings_repository.dart';
@@ -66,12 +70,16 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<FavoriteDestinationUseCase>(FavoriteDestinationUseCase());
   sl.registerSingleton<RegisterRentalVehicleUseCase>(RegisterRentalVehicleUseCase());
   sl.registerSingleton<GetContractsUseCase>(GetContractsUseCase());
+  sl.registerSingleton<GetContractDetailUseCase>(GetContractDetailUseCase());
+  sl.registerSingleton<GetVehicleDetailUseCase>(GetVehicleDetailUseCase());
   sl.registerSingleton<AddVehicleUseCase>(AddVehicleUseCase());
   sl.registerSingleton<SendChatMessageUseCase>(SendChatMessageUseCase());
 
   // Cubits
   sl.registerFactory<RegisterRentalVehicleCubit>(() => RegisterRentalVehicleCubit());
   sl.registerFactory<GetContractsCubit>(() => GetContractsCubit());
+  sl.registerFactory<ContractDetailCubit>(() => ContractDetailCubit());
+  sl.registerFactory<VehicleDetailCubit>(() => VehicleDetailCubit());
   sl.registerFactory<AddVehicleCubit>(() => AddVehicleCubit());
   sl.registerFactory<GetVehiclesCubit>(() => GetVehiclesCubit());
   sl.registerFactory<GetDestinationCubit>(() => GetDestinationCubit());

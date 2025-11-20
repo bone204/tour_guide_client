@@ -15,6 +15,7 @@ abstract class MyVehicleRepository {
   Future<Either<Failure, ContractResponse>> getContracts({
     RentalContractStatus? status,
   });
+  Future<Either<Failure, Contract>> getContractById(int id);
   Future<Either<Failure, SuccessResponse>> addVehicle(
     VehicleRentalParams vehicle,
   );
@@ -23,4 +24,5 @@ abstract class MyVehicleRepository {
     RentalVehicleApprovalStatus? status,
     RentalVehicleAvailabilityStatus? availability,
   });
+  Future<Either<Failure, Vehicle>> getVehicleByLicensePlate(String licensePlate);
 }

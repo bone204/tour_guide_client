@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -11,7 +12,8 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
-  final int? maxLines; 
+  final int? maxLines;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextField({
     super.key,
@@ -25,7 +27,8 @@ class CustomTextField extends StatelessWidget {
     this.prefixIconData,
     this.keyboardType,
     this.onChanged,
-    this.maxLines, 
+    this.maxLines,
+    this.inputFormatters,
   });
 
   @override
@@ -68,6 +71,7 @@ class CustomTextField extends StatelessWidget {
           keyboardType: keyboardType,
           onChanged: onChanged,
           validator: validator,
+          inputFormatters: inputFormatters,
           style: Theme.of(context).textTheme.bodyMedium,
           maxLines: maxLines ?? 1,
           decoration: InputDecoration(

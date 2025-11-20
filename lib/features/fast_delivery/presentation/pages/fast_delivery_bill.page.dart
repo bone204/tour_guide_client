@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/fast_delivery/data/models/delivery_order.dart';
@@ -31,55 +32,50 @@ class _FastDeliveryBillPageState extends State<FastDeliveryBillPage> {
 
   void _confirmPayment() {
     // Show success dialog
-    showDialog(
+    showAppDialog<void>(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.r),
+      useRootNavigator: true,
+      contentPadding: EdgeInsets.all(24.w),
+      iconWidget: Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: AppColors.primaryGreen.withOpacity(0.1),
+          shape: BoxShape.circle,
         ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.check_circle,
-                color: AppColors.primaryGreen,
-                size: 64.sp,
-              ),
-            ),
-            SizedBox(height: 16.h),
-            Text(
-              'Đặt đơn thành công!',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              'Đơn hàng của bạn đã được xác nhận',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSubtitle,
-              ),
-            ),
-          ],
+        child: Icon(
+          Icons.check_circle,
+          color: AppColors.primaryGreen,
+          size: 64.sp,
         ),
-        actions: [
-          PrimaryButton(
+      ),
+      titleWidget: Text(
+        'Đặt đơn thành công!',
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+        textAlign: TextAlign.center,
+      ),
+      contentWidget: Text(
+        'Đơn hàng của bạn đã được xác nhận',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSubtitle,
+            ),
+      ),
+      actions: [
+        SizedBox(
+          width: double.infinity,
+          child: PrimaryButton(
             title: 'Về trang chủ',
             onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
             backgroundColor: AppColors.primaryBlue,
             textColor: AppColors.textSecondary,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

@@ -29,6 +29,11 @@ class MyVehicleRepositoryImpl extends MyVehicleRepository {
   }
 
   @override
+  Future<Either<Failure, Contract>> getContractById(int id) {
+    return _apiService.getContractById(id);
+  }
+
+  @override
   Future<Either<Failure, SuccessResponse>> addVehicle(
     VehicleRentalParams vehicle,
   ) async {
@@ -46,5 +51,10 @@ class MyVehicleRepositoryImpl extends MyVehicleRepository {
       status: status,
       availability: availability,
     );
+  }
+
+  @override
+  Future<Either<Failure, Vehicle>> getVehicleByLicensePlate(String licensePlate) {
+    return _apiService.getVehicleByLicensePlate(licensePlate);
   }
 }

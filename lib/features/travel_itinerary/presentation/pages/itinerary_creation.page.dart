@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/travel_itinerary.dart';
 
@@ -586,59 +587,46 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
     }
 
     // Show success dialog
-    showDialog(
+    showAppDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.check_circle_rounded,
-                size: 64.sp,
-                color: AppColors.primaryGreen,
-              ),
-              SizedBox(height: 16.h),
-              Text(
-                'Tạo lộ trình thành công!',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                'Lộ trình của bạn đã được tạo. Bạn có thể xem và chỉnh sửa sau.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Close dialog and navigate back to home
-                Navigator.of(dialogContext).pop();
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
-              child: Text(
-                'Đóng',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+      useRootNavigator: true,
+      iconWidget: Icon(
+        Icons.check_circle_rounded,
+        size: 64.sp,
+        color: AppColors.primaryGreen,
+      ),
+      titleWidget: Text(
+        'Tạo lộ trình thành công!',
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
+        textAlign: TextAlign.center,
+      ),
+      contentWidget: Text(
+        'Lộ trình của bạn đã được tạo. Bạn có thể xem và chỉnh sửa sau.',
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSubtitle,
+            ),
+        textAlign: TextAlign.center,
+      ),
+      actionsAlignment: CrossAxisAlignment.end,
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop();
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+          child: Text(
+            'Đóng',
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: AppColors.primaryBlue,
                   fontWeight: FontWeight.w600,
                 ),
-              ),
-            ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -798,180 +786,175 @@ class _DayPlanningCard extends StatelessWidget {
       return;
     }
 
-    showDialog(
+    showAppDialog<void>(
       context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+      useRootNavigator: true,
+      titleWidget: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryBlue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.add_location_rounded,
-                      color: AppColors.primaryBlue,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Thêm địa điểm',
-                          style: Theme.of(dialogContext).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Text(
-                          'Ngày $dayNumber',
-                          style: Theme.of(dialogContext).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: AppColors.primaryBlue.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                child: const Icon(
+                  Icons.add_location_rounded,
+                  color: AppColors.primaryBlue,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(
-                      Icons.info_outline,
-                      size: 16,
-                      color: AppColors.primaryBlue,
-                    ),
-                    const SizedBox(width: 6),
                     Text(
-                      '${availableDestinations.length} địa điểm chưa thêm',
-                      style: Theme.of(dialogContext).textTheme.bodySmall?.copyWith(
-                        color: AppColors.primaryBlue,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      'Thêm địa điểm',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    Text(
+                      'Ngày $dayNumber',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSubtitle,
+                          ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemCount: availableDestinations.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 8),
-              itemBuilder: (_, index) {
-                final dest = availableDestinations[index];
-                return Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(dialogContext).pop();
-                      final newList = List<Destination>.from(destinations);
-                      newList.add(dest);
-                      onDestinationsChanged(newList);
-                    },
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.backgroundColor,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColors.secondaryGrey.withOpacity(0.3),
-                        ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppColors.primaryBlue.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.info_outline,
+                  size: 16,
+                  color: AppColors.primaryBlue,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  '${availableDestinations.length} địa điểm chưa thêm',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.primaryBlue,
+                        fontWeight: FontWeight.w600,
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryBlue.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(
-                              Icons.place,
-                              color: AppColors.primaryBlue,
-                              size: 20,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  dest.name,
-                                  style: Theme.of(dialogContext).textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                if (dest.specificAddress != null && dest.specificAddress!.isNotEmpty) ...[
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    dest.specificAddress!,
-                                    style: Theme.of(dialogContext).textTheme.bodySmall?.copyWith(
-                                      color: AppColors.textSubtitle,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                          const Icon(
-                            Icons.add_circle_outline,
-                            color: AppColors.primaryBlue,
-                            size: 20,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
+                ),
+              ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        ],
+      ),
+      contentWidget: SizedBox(
+        width: double.maxFinite,
+        child: ListView.separated(
+          shrinkWrap: true,
+          itemCount: availableDestinations.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 8),
+          itemBuilder: (_, index) {
+            final dest = availableDestinations[index];
+            return Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  final newList = List<Destination>.from(destinations);
+                  newList.add(dest);
+                  onDestinationsChanged(newList);
+                },
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundColor,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppColors.secondaryGrey.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryBlue.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.place,
+                          color: AppColors.primaryBlue,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              dest.name,
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            if (dest.specificAddress != null && dest.specificAddress!.isNotEmpty) ...[
+                              const SizedBox(height: 2),
+                              Text(
+                                dest.specificAddress!,
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: AppColors.textSubtitle,
+                                    ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                      const Icon(
+                        Icons.add_circle_outline,
+                        color: AppColors.primaryBlue,
+                        size: 20,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              child: Text(
-                'Đóng',
-                style: Theme.of(dialogContext).textTheme.titleSmall?.copyWith(
+            );
+          },
+        ),
+      ),
+      actionsAlignment: CrossAxisAlignment.end,
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          ),
+          child: Text(
+            'Đóng',
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: AppColors.textSubtitle,
                   fontWeight: FontWeight.w600,
                 ),
-              ),
-            ),
-          ],
-        );
-      },
+          ),
+        ),
+      ],
     );
   }
 }

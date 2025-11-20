@@ -33,11 +33,15 @@ import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_b
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/my_vehicle.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/vehicle_rental_register.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/contract_detail.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/vehicle_detail.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/add_vehicle.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/register_rental_vehicle/register_rental_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/pages/province_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/pages/destination_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/pages/itinerary_creation.page.dart';
@@ -304,6 +308,26 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (_) => sl<AddVehicleCubit>(),
             child: AddVehiclePage(contractId: contractId),
+          ),
+        );
+
+      case AppRouteConstant.contractDetail:
+        final contractId = settings.arguments as int;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => sl<ContractDetailCubit>(),
+            child: ContractDetailPage(contractId: contractId),
+          ),
+        );
+
+      case AppRouteConstant.vehicleDetail:
+        final licensePlate = settings.arguments as String;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => sl<VehicleDetailCubit>(),
+            child: VehicleDetailPage(licensePlate: licensePlate),
           ),
         );
 

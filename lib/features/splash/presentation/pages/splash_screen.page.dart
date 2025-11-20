@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
 import 'package:tour_guide_app/common/bloc/auth/auth_state_cubit.dart';
 import 'package:tour_guide_app/common/bloc/auth/auth_state.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -112,62 +113,57 @@ class _SplashScreenPageState extends State<SplashScreenPage>
   }
 
   void _showRetryDialog() {
-    showDialog(
+    showAppDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.r),
+      useRootNavigator: true,
+      titleWidget: Row(
+        children: [
+          Icon(Icons.wifi_off, color: AppColors.primaryBlue, size: 28.sp),
+          SizedBox(width: 12.w),
+          Text(
+            'Không có kết nối',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w700,
+              color: AppColors.primaryBlack,
+            ),
           ),
-          title: Row(
-            children: [
-              Icon(Icons.wifi_off, color: AppColors.primaryBlue, size: 28.sp),
-              SizedBox(width: 12.w),
-              Text(
-                'Không có kết nối',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primaryBlack,
-                ),
-              ),
-            ],
+        ],
+      ),
+      contentWidget: Text(
+        'Vui lòng kiểm tra kết nối mạng của bạn và thử lại.',
+        style: TextStyle(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w400,
+          color: const Color(0xFF6B7280),
+          height: 1.5,
+        ),
+      ),
+      actionsAlignment: CrossAxisAlignment.end,
+      actions: [
+        TextButton(
+          onPressed: () async {
+            Navigator.of(context, rootNavigator: true).pop();
+            await _retryConnection();
+          },
+          style: TextButton.styleFrom(
+            backgroundColor: AppColors.primaryBlue,
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.r),
+            ),
           ),
-          content: Text(
-            'Vui lòng kiểm tra kết nối mạng của bạn và thử lại.',
+          child: Text(
+            'Thử lại',
             style: TextStyle(
               fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-              color: const Color(0xFF6B7280),
-              height: 1.5,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                await _retryConnection();
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: AppColors.primaryBlue,
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-              ),
-              child: Text(
-                'Thử lại',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+        ),
+      ],
     );
   }
 

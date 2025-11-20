@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
+import 'package:tour_guide_app/common/widgets/loading/dialog_loading.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_rental_params.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle.dart';
@@ -61,11 +63,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
     return BlocListener<AddVehicleCubit, AddVehicleState>(
       listener: (context, state) {
         if (state is AddVehicleLoading) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (_) => const Center(child: CircularProgressIndicator()),
-          );
+          LoadingDialog.show(context);
         } else if (state is AddVehicleSuccess) {
           // Đóng loading dialog trước
           Navigator.of(context, rootNavigator: true).pop();
@@ -214,156 +212,128 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   }
 
   void _showSuccessDialog() {
-    showDialog(
+    showAppDialog<void>(
       context: context,
       barrierDismissible: false,
       useRootNavigator: true,
-      builder: (BuildContext dialogContext) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(24.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 64.w,
-                  height: 64.w,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryBlue.withOpacity(0.1),
-                    shape: BoxShape.circle,
+      iconWidget: _buildDialogIcon(
+        backgroundColor: AppColors.primaryBlue.withOpacity(0.1),
+        iconColor: AppColors.primaryBlue,
+        icon: Icons.check_circle,
+      ),
+      titleWidget: Text(
+        'Vehicle Added Successfully!',
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge
+            ?.copyWith(fontWeight: FontWeight.w700),
+        textAlign: TextAlign.center,
+      ),
+      contentWidget: Text(
+        'Your vehicle has been added successfully and is now available for rental.',
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSubtitle,
+            ),
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+              if (mounted) {
+                Navigator.of(context, rootNavigator: true).pop(true);
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryBlue,
+              padding: EdgeInsets.symmetric(vertical: 14.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            child: Text(
+              'Done',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppColors.primaryWhite,
+                    fontWeight: FontWeight.w700,
                   ),
-                  child: Icon(
-                    Icons.check_circle,
-                    size: 48.sp,
-                    color: AppColors.primaryBlue,
-                  ),
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  'Vehicle Added Successfully!',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  'Your vehicle has been added successfully and is now available for rental.',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSubtitle,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 24.h),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Đóng success dialog
-                      Navigator.of(dialogContext, rootNavigator: true).pop();
-                      // Đóng Add Vehicle page và return true
-                      if (mounted) {
-                        Navigator.of(context, rootNavigator: true).pop(true);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryBlue,
-                      padding: EdgeInsets.symmetric(vertical: 14.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                    ),
-                    child: Text(
-                      'Done',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.primaryWhite,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 
   void _showErrorDialog(String message) {
-    showDialog(
+    showAppDialog<void>(
       context: context,
       useRootNavigator: true,
-      builder: (BuildContext dialogContext) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(24.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 64.w,
-                  height: 64.w,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryRed.withOpacity(0.1),
-                    shape: BoxShape.circle,
+      iconWidget: _buildDialogIcon(
+        backgroundColor: AppColors.primaryRed.withOpacity(0.1),
+        iconColor: AppColors.primaryRed,
+        icon: Icons.error_outline,
+      ),
+      titleWidget: Text(
+        'Failed to Add Vehicle',
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge
+            ?.copyWith(fontWeight: FontWeight.w700),
+        textAlign: TextAlign.center,
+      ),
+      contentWidget: Text(
+        message,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSubtitle,
+            ),
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryRed,
+              padding: EdgeInsets.symmetric(vertical: 14.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            child: Text(
+              'Try Again',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppColors.primaryWhite,
+                    fontWeight: FontWeight.w700,
                   ),
-                  child: Icon(
-                    Icons.error_outline,
-                    size: 48.sp,
-                    color: AppColors.primaryRed,
-                  ),
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  'Failed to Add Vehicle',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  message,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSubtitle,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 24.h),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(dialogContext, rootNavigator: true).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryRed,
-                      padding: EdgeInsets.symmetric(vertical: 14.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                    ),
-                    child: Text(
-                      'Try Again',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.primaryWhite,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
-        );
-      },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDialogIcon({
+    required Color backgroundColor,
+    required IconData icon,
+    required Color iconColor,
+  }) {
+    return Container(
+      width: 64.w,
+      height: 64.w,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        shape: BoxShape.circle,
+      ),
+      child: Icon(
+        icon,
+        size: 48.sp,
+        color: iconColor,
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
 import 'package:tour_guide_app/common/constants/app_icon.constant.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/features/home/presentation/pages/home.page.dart';
 import 'package:tour_guide_app/features/map/map.page.dart';
@@ -157,29 +158,30 @@ class _MainScreenState extends State<MainScreen> {
   ];
 
   Future<bool> _showExitConfirmDialog(BuildContext context) async {
-    return await showDialog<bool>(
+    final shouldExit = await showAppDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Thoát ứng dụng?'),
-        content: const Text('Bạn có chắc chắn muốn thoát ứng dụng?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(
-              'Hủy',
-              style: TextStyle(color: AppColors.primaryGrey),
-            ),
+      title: 'Thoát ứng dụng?',
+      content: 'Bạn có chắc chắn muốn thoát ứng dụng?',
+      actionsAlignment: CrossAxisAlignment.end,
+      actionsSpacing: 8,
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context, rootNavigator: true).pop(false),
+          child: Text(
+            'Hủy',
+            style: TextStyle(color: AppColors.primaryGrey),
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(
-              'Thoát',
-              style: TextStyle(color: AppColors.primaryRed),
-            ),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(context, rootNavigator: true).pop(true),
+          child: Text(
+            'Thoát',
+            style: TextStyle(color: AppColors.primaryRed),
           ),
-        ],
-      ),
-    ) ?? false;
+        ),
+      ],
+    );
+    return shouldExit ?? false;
   }
 
   @override

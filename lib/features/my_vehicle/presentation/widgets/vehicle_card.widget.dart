@@ -1,236 +1,255 @@
+import 'package:intl/intl.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle.dart';
 
 class VehicleCard extends StatelessWidget {
+  VehicleCard({super.key, required this.vehicle, this.onTap});
+
   final Vehicle vehicle;
   final VoidCallback? onTap;
 
-  const VehicleCard({super.key, required this.vehicle, this.onTap});
+  final NumberFormat _priceFormatter = NumberFormat('#,###', 'vi_VN');
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: Container(
-        margin: EdgeInsets.only(bottom: 12.h),
-        padding: EdgeInsets.all(16.w),
+        margin: EdgeInsets.only(bottom: 16.h),
+        padding: EdgeInsets.all(18.w),
         decoration: BoxDecoration(
-          color: AppColors.primaryWhite,
-          borderRadius: BorderRadius.circular(12.r),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryBlack.withOpacity(0.2),
-              blurRadius: 6,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
+        borderRadius: BorderRadius.circular(16.r),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF000000).withOpacity(0.15),
+            blurRadius: 8.r,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header with license plate and status
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      vehicle.vehicleCatalog?.type == 'car'
-                          ? Icons.directions_car
-                          : Icons.two_wheeler,
-                      color: AppColors.primaryBlue,
-                      size: 24.sp,
-                    ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      vehicle.licensePlate,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-                _buildStatusChip(context, vehicle.status),
-              ],
-            ),
-            SizedBox(height: 12.h),
-
-            // Vehicle info
-            _buildInfoRow(
-              context,
-              label: 'Brand & Model',
-              value: (() {
-                final parts = [
-                  vehicle.vehicleCatalog?.brand,
-                  vehicle.vehicleCatalog?.model,
-                ]
-                    .whereType<String>()
-                    .map((value) => value.trim())
-                    .where((value) => value.isNotEmpty)
-                    .toList();
-                final composed = parts.join(' ').trim();
-                return composed.isEmpty ? 'N/A' : composed;
-              })(),
-            ),
-            SizedBox(height: 6.h),
-            _buildInfoRow(
-              context,
-              label: 'Color',
-              value: vehicle.vehicleCatalog?.color ?? 'N/A',
-            ),
-
-            // Price info
-            SizedBox(height: 12.h),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryBlue.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Per Hour',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSubtitle,
-                            fontSize: 11.sp,
-                          ),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          '${_formatPrice(vehicle.pricePerHour)} VND',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryBlue,
-                          ),
-                        ),
-                      ],
-                    ),
+                Container(
+                  width: 52.w,
+                  height: 52.w,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryBlue.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(14.r),
+                  ),
+                  child: Icon(
+                    vehicle.vehicleCatalog?.type == 'car'
+                        ? Icons.directions_car_filled
+                        : Icons.two_wheeler,
+                    color: AppColors.primaryBlue,
                   ),
                 ),
                 SizedBox(width: 12.w),
                 Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryBlue.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(8.r),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        vehicle.licensePlate,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        _vehicleName,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSubtitle,
+                            ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _StatusChip(
+                      label: _statusLabel(vehicle.status),
+                      background: _statusColor(vehicle.status),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Per Day',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSubtitle,
-                            fontSize: 11.sp,
-                          ),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          '${_formatPrice(vehicle.pricePerDay)} VND',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryBlue,
-                          ),
-                        ),
-                      ],
+                    SizedBox(height: 6.h),
+                    _StatusChip(
+                      label: _availabilityLabel(vehicle.availability),
+                      background: _availabilityColor(vehicle.availability),
                     ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            Row(
+              children: [
+                Expanded(
+                  child: _PriceTile(
+                    label: 'Giá theo giờ',
+                    value: _formatPrice(vehicle.pricePerHour),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: _PriceTile(
+                    label: 'Giá theo ngày',
+                    value: _formatPrice(vehicle.pricePerDay),
                   ),
                 ),
               ],
             ),
+            if (vehicle.requirements?.isNotEmpty ?? false) ...[
+              SizedBox(height: 14.h),
+              Text(
+                'Yêu cầu: ${vehicle.requirements}',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSubtitle,
+                    ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoRow(
-    BuildContext context, {
-    required String label,
-    required String value,
-  }) {
-    return Row(
-      children: [
-        Text(
-          '$label: ',
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
-        ),
-        Expanded(
-          child: Text(
-            value,
-            style: Theme.of(context).textTheme.bodyMedium,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
-    );
+  String get _vehicleName {
+    final parts = [
+      vehicle.vehicleCatalog?.brand,
+      vehicle.vehicleCatalog?.model,
+    ]
+        .whereType<String>()
+        .map((value) => value.trim())
+        .where((value) => value.isNotEmpty)
+        .toList();
+    final composed = parts.join(' ').trim();
+    return composed.isEmpty ? 'Rental Vehicle' : composed;
   }
 
-  Widget _buildStatusChip(
-    BuildContext context,
-    RentalVehicleApprovalStatus status,
-  ) {
-    Color backgroundColor;
-    Color textColor;
-    String displayText;
+  String _formatPrice(double price) {
+    if (price <= 0) return '—';
+    return '${_priceFormatter.format(price)} đ';
+  }
 
+  String _statusLabel(RentalVehicleApprovalStatus status) {
     switch (status) {
       case RentalVehicleApprovalStatus.approved:
-        backgroundColor = AppColors.primaryGreen;
-        textColor = AppColors.textSecondary;
-        displayText = 'Active';
-        break;
-      case RentalVehicleApprovalStatus.rejected:
-        backgroundColor = AppColors.primaryRed;
-        textColor = AppColors.textSecondary;
-        displayText = 'Rejected';
-        break;
-      case RentalVehicleApprovalStatus.inactive:
-        backgroundColor = AppColors.secondaryGrey;
-        textColor = AppColors.textSecondary;
-        displayText = 'Inactive';
-        break;
+        return 'Đã duyệt';
       case RentalVehicleApprovalStatus.pending:
-        backgroundColor = AppColors.primaryOrange;
-        textColor = AppColors.textSecondary;
-        displayText = 'Pending';
-        break;
+        return 'Đang duyệt';
+      case RentalVehicleApprovalStatus.rejected:
+        return 'Bị từ chối';
+      case RentalVehicleApprovalStatus.inactive:
+        return 'Ngưng';
     }
+  }
 
+  Color _statusColor(RentalVehicleApprovalStatus status) {
+    switch (status) {
+      case RentalVehicleApprovalStatus.approved:
+        return AppColors.primaryGreen;
+      case RentalVehicleApprovalStatus.pending:
+        return AppColors.primaryOrange;
+      case RentalVehicleApprovalStatus.rejected:
+        return AppColors.primaryRed;
+      case RentalVehicleApprovalStatus.inactive:
+        return AppColors.primaryGrey;
+    }
+  }
+
+  String _availabilityLabel(RentalVehicleAvailabilityStatus status) {
+    switch (status) {
+      case RentalVehicleAvailabilityStatus.available:
+        return 'Sẵn sàng';
+      case RentalVehicleAvailabilityStatus.rented:
+        return 'Đang thuê';
+      case RentalVehicleAvailabilityStatus.maintenance:
+        return 'Bảo trì';
+    }
+  }
+
+  Color _availabilityColor(RentalVehicleAvailabilityStatus status) {
+    switch (status) {
+      case RentalVehicleAvailabilityStatus.available:
+        return AppColors.primaryBlue;
+      case RentalVehicleAvailabilityStatus.rented:
+        return AppColors.primaryOrange;
+      case RentalVehicleAvailabilityStatus.maintenance:
+        return AppColors.primaryGrey;
+    }
+  }
+}
+
+class _StatusChip extends StatelessWidget {
+  const _StatusChip({required this.label, required this.background});
+
+  final String label;
+  final Color background;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(20.r),
+        color: background,
+        borderRadius: BorderRadius.circular(30.r),
       ),
       child: Text(
-        displayText,
+        label,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: textColor,
-          fontWeight: FontWeight.w600,
-          fontSize: 11.sp,
-        ),
+              color: AppColors.primaryWhite,
+              fontWeight: FontWeight.w600,
+            ),
       ),
     );
   }
+}
 
-  String _formatPrice(double price) =>
-      price == 0 ? '0' : price.toStringAsFixed(0);
+class _PriceTile extends StatelessWidget {
+  const _PriceTile({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: AppColors.primaryWhite,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: AppColors.primaryBlue.withOpacity(0.1)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSubtitle,
+                ),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primaryBlue,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
 }

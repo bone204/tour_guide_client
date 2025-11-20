@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
+import 'package:tour_guide_app/common/widgets/loading/dialog_loading.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/register_rental_vehicle/register_rental_vehicle_cubit.dart';
@@ -62,11 +64,7 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
     return BlocListener<RegisterRentalVehicleCubit, RegisterRentalVehicleState>(
       listener: (context, state) {
         if (state is RegisterRentalVehicleLoading) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (_) => const Center(child: CircularProgressIndicator()),
-          );
+          LoadingDialog.show(context);
         } else if (state is RegisterRentalVehicleSuccess) {
           if (mounted) {
             Navigator.of(context).pop(); // Close loading dialog
@@ -215,153 +213,126 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
   }
 
   void _showSuccessDialog() {
-    showDialog(
+    showAppDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(24.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 64.w,
-                  height: 64.w,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryBlue.withOpacity(0.1),
-                    shape: BoxShape.circle,
+      iconWidget: _buildDialogIcon(
+        backgroundColor: AppColors.primaryBlue.withOpacity(0.1),
+        iconColor: AppColors.primaryBlue,
+        icon: Icons.check_circle,
+      ),
+      titleWidget: Text(
+        'Registration Successful!',
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge
+            ?.copyWith(fontWeight: FontWeight.w700),
+        textAlign: TextAlign.center,
+      ),
+      contentWidget: Text(
+        'Your vehicle rental registration has been submitted successfully. We will review your information and contact you soon.',
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSubtitle,
+            ),
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+              if (mounted) {
+                Navigator.of(context, rootNavigator: true).pop(true);
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryBlue,
+              padding: EdgeInsets.symmetric(vertical: 14.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            child: Text(
+              'Done',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppColors.primaryWhite,
+                    fontWeight: FontWeight.w700,
                   ),
-                  child: Icon(
-                    Icons.check_circle,
-                    size: 48.sp,
-                    color: AppColors.primaryBlue,
-                  ),
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  'Registration Successful!',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  'Your vehicle rental registration has been submitted successfully. We will review your information and contact you soon.',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSubtitle,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 24.h),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(dialogContext).pop();
-                      if (mounted) {
-                        // ✅ Return true để báo success
-                        Navigator.of(context, rootNavigator: true).pop(true);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryBlue,
-                      padding: EdgeInsets.symmetric(vertical: 14.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                    ),
-                    child: Text(
-                      'Done',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.primaryWhite,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 
   void _showErrorDialog(String message) {
-    showDialog(
+    showAppDialog<void>(
       context: context,
-      builder: (BuildContext dialogContext) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(24.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 64.w,
-                  height: 64.w,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryRed.withOpacity(0.1),
-                    shape: BoxShape.circle,
+      iconWidget: _buildDialogIcon(
+        backgroundColor: AppColors.primaryRed.withOpacity(0.1),
+        iconColor: AppColors.primaryRed,
+        icon: Icons.error_outline,
+      ),
+      titleWidget: Text(
+        'Registration Failed',
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge
+            ?.copyWith(fontWeight: FontWeight.w700),
+        textAlign: TextAlign.center,
+      ),
+      contentWidget: Text(
+        message,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSubtitle,
+            ),
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryRed,
+              padding: EdgeInsets.symmetric(vertical: 14.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+            child: Text(
+              'Try Again',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: AppColors.primaryWhite,
+                    fontWeight: FontWeight.w700,
                   ),
-                  child: Icon(
-                    Icons.error_outline,
-                    size: 48.sp,
-                    color: AppColors.primaryRed,
-                  ),
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  'Registration Failed',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  message,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSubtitle,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 24.h),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(dialogContext).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryRed,
-                      padding: EdgeInsets.symmetric(vertical: 14.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                    ),
-                    child: Text(
-                      'Try Again',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.primaryWhite,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
-        );
-      },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDialogIcon({
+    required Color backgroundColor,
+    required IconData icon,
+    required Color iconColor,
+  }) {
+    return Container(
+      width: 64.w,
+      height: 64.w,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        shape: BoxShape.circle,
+      ),
+      child: Icon(
+        icon,
+        size: 48.sp,
+        color: iconColor,
+      ),
     );
   }
 }

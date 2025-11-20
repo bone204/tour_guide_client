@@ -32,6 +32,8 @@ class AppRouteConstant {
   static const String trainBooking = '/train_booking';
   static const String myVehicle = '/my_vehicle';
   static const String vehicleRentalRegister = '/vehicle_rental_register';
+  static const String contractDetail = '/contract_detail';
+  static const String vehicleDetail = '/vehicle_detail';
   static const String addVehicle = '/add_vehicle';
   static const String itineraryProvinceSelection = '/itinerary_province_selection';
   static const String itineraryDestinationSelection = '/itinerary_destination_selection';
