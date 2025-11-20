@@ -5,11 +5,7 @@ class VehicleCard extends StatelessWidget {
   final Vehicle vehicle;
   final VoidCallback? onTap;
 
-  const VehicleCard({
-    super.key,
-    required this.vehicle,
-    this.onTap,
-  });
+  const VehicleCard({super.key, required this.vehicle, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +35,8 @@ class VehicleCard extends StatelessWidget {
                 Row(
                   children: [
                     Icon(
-                      vehicle.vehicleType == 'car' 
-                          ? Icons.directions_car 
+                      vehicle.vehicleCatalog?.type == 'car'
+                          ? Icons.directions_car
                           : Icons.two_wheeler,
                       color: AppColors.primaryBlue,
                       size: 24.sp,
@@ -49,29 +45,40 @@ class VehicleCard extends StatelessWidget {
                     Text(
                       vehicle.licensePlate,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ],
                 ),
-                _buildStatusChip(context, vehicle.status ?? 'draft'),
+                _buildStatusChip(context, vehicle.status),
               ],
             ),
             SizedBox(height: 12.h),
-            
+
             // Vehicle info
             _buildInfoRow(
               context,
               label: 'Brand & Model',
-              value: '${vehicle.vehicleBrand ?? 'N/A'} ${vehicle.vehicleModel ?? ''}',
+              value: (() {
+                final parts = [
+                  vehicle.vehicleCatalog?.brand,
+                  vehicle.vehicleCatalog?.model,
+                ]
+                    .whereType<String>()
+                    .map((value) => value.trim())
+                    .where((value) => value.isNotEmpty)
+                    .toList();
+                final composed = parts.join(' ').trim();
+                return composed.isEmpty ? 'N/A' : composed;
+              })(),
             ),
             SizedBox(height: 6.h),
             _buildInfoRow(
               context,
               label: 'Color',
-              value: vehicle.vehicleColor ?? 'N/A',
+              value: vehicle.vehicleCatalog?.color ?? 'N/A',
             ),
-            
+
             // Price info
             SizedBox(height: 12.h),
             Row(
@@ -88,18 +95,22 @@ class VehicleCard extends StatelessWidget {
                       children: [
                         Text(
                           'Per Hour',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: AppColors.textSubtitle,
-                                fontSize: 11.sp,
-                              ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSubtitle,
+                            fontSize: 11.sp,
+                          ),
                         ),
                         SizedBox(height: 4.h),
                         Text(
                           '${_formatPrice(vehicle.pricePerHour)} VND',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primaryBlue,
-                              ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryBlue,
+                          ),
                         ),
                       ],
                     ),
@@ -118,18 +129,22 @@ class VehicleCard extends StatelessWidget {
                       children: [
                         Text(
                           'Per Day',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: AppColors.textSubtitle,
-                                fontSize: 11.sp,
-                              ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSubtitle,
+                            fontSize: 11.sp,
+                          ),
                         ),
                         SizedBox(height: 4.h),
                         Text(
                           '${_formatPrice(vehicle.pricePerDay)} VND',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primaryBlue,
-                              ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryBlue,
+                          ),
                         ),
                       ],
                     ),
@@ -143,7 +158,8 @@ class VehicleCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(BuildContext context, {
+  Widget _buildInfoRow(
+    BuildContext context, {
     required String label,
     required String value,
   }) {
@@ -151,9 +167,9 @@ class VehicleCard extends StatelessWidget {
       children: [
         Text(
           '$label: ',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSubtitle,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
         ),
         Expanded(
           child: Text(
@@ -167,28 +183,34 @@ class VehicleCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusChip(BuildContext context, String status) {
+  Widget _buildStatusChip(
+    BuildContext context,
+    RentalVehicleApprovalStatus status,
+  ) {
     Color backgroundColor;
     Color textColor;
     String displayText;
 
-    switch (status.toLowerCase()) {
-      case 'approved':
-      case 'active':
+    switch (status) {
+      case RentalVehicleApprovalStatus.approved:
         backgroundColor = AppColors.primaryGreen;
         textColor = AppColors.textSecondary;
         displayText = 'Active';
         break;
-      case 'rejected':
+      case RentalVehicleApprovalStatus.rejected:
         backgroundColor = AppColors.primaryRed;
         textColor = AppColors.textSecondary;
         displayText = 'Rejected';
         break;
-      case 'draft':
-      default:
+      case RentalVehicleApprovalStatus.inactive:
+        backgroundColor = AppColors.secondaryGrey;
+        textColor = AppColors.textSecondary;
+        displayText = 'Inactive';
+        break;
+      case RentalVehicleApprovalStatus.pending:
         backgroundColor = AppColors.primaryOrange;
         textColor = AppColors.textSecondary;
-        displayText = 'Draft';
+        displayText = 'Pending';
         break;
     }
 
@@ -201,19 +223,14 @@ class VehicleCard extends StatelessWidget {
       child: Text(
         displayText,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 11.sp,
-            ),
+          color: textColor,
+          fontWeight: FontWeight.w600,
+          fontSize: 11.sp,
+        ),
       ),
     );
   }
 
-  String _formatPrice(String? price) {
-    if (price == null || price.isEmpty) return '0';
-    final parsed = double.tryParse(price);
-    if (parsed == null) return price;
-    return parsed.toStringAsFixed(0);
-  }
+  String _formatPrice(double price) =>
+      price == 0 ? '0' : price.toStringAsFixed(0);
 }
-

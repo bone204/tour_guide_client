@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/repository/my_vehicle_repository.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/models/contract.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -8,10 +9,10 @@ class GetContractsCubit extends Cubit<GetContractsState> {
 
   GetContractsCubit() : super(GetContractsInitial());
 
-  Future<void> getContracts(int userId) async {
+  Future<void> getContracts({RentalContractStatus? status}) async {
     emit(GetContractsLoading());
 
-    final result = await _repository.getContracts(userId);
+    final result = await _repository.getContracts(status: status);
 
     result.fold(
       (failure) => emit(GetContractsFailure(errorMessage: failure.message)),
@@ -29,4 +30,3 @@ class GetContractsCubit extends Cubit<GetContractsState> {
     emit(GetContractsInitial());
   }
 }
-

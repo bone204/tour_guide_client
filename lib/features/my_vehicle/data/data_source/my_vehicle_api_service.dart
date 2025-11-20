@@ -13,21 +13,33 @@ import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_response.
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class MyVehicleApiService {
-  Future<Either<Failure, SuccessResponse>> registerRentalVehicle(ContractParams contractParams);
-  Future<Either<Failure, ContractResponse>> getContracts(int userId);
-  Future<Either<Failure, SuccessResponse>> addVehicle(VehicleRentalParams vehicle);
-  Future<Either<Failure, VehicleResponse>> getVehicles(int contractId);
+  Future<Either<Failure, SuccessResponse>> registerRentalVehicle(
+    ContractParams contractParams,
+  );
+  Future<Either<Failure, ContractResponse>> getContracts({
+    RentalContractStatus? status,
+  });
+  Future<Either<Failure, SuccessResponse>> addVehicle(
+    VehicleRentalParams vehicle,
+  );
+  Future<Either<Failure, VehicleResponse>> getVehicles({
+    int? contractId,
+    RentalVehicleApprovalStatus? status,
+    RentalVehicleAvailabilityStatus? availability,
+  });
 }
 
 class MyVehicleApiServiceImpl extends MyVehicleApiService {
   @override
-  Future<Either<Failure, SuccessResponse>> registerRentalVehicle(ContractParams contractParams) async {
+  Future<Either<Failure, SuccessResponse>> registerRentalVehicle(
+    ContractParams contractParams,
+  ) async {
     try {
       await sl<DioClient>().post(
         ApiUrls.rentalContracts,
         data: contractParams.toJson(),
       );
-      
+
       final successResponse = SuccessResponse(
         message: 'Contract registered successfully',
       );
@@ -45,28 +57,29 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
   }
 
   @override
-  Future<Either<Failure, ContractResponse>> getContracts(int userId) async {
+  Future<Either<Failure, ContractResponse>> getContracts({
+    RentalContractStatus? status,
+  }) async {
     try {
       final response = await sl<DioClient>().get(
         ApiUrls.rentalContracts,
-        queryParameters: {
-          'userId': userId,
-        },
+        queryParameters: {if (status != null) 'status': status.value},
       );
 
-      // API trả về array trực tiếp: [{...}, {...}]
-      final List<dynamic> dataList = response.data as List<dynamic>;
-      
-      final contracts = dataList
-          .map((item) {
-            if (item is Map<String, dynamic>) {
-              return Contract.fromJson(item);
-            }
-            return null;
-          })
-          .whereType<Contract>()
-          .toList();
-      
+      final data = response.data;
+      final List<dynamic> dataList =
+          data is List
+              ? data
+              : (data['items'] as List<dynamic>? ??
+                  data['data'] as List<dynamic>? ??
+                  <dynamic>[]);
+
+      final contracts =
+          dataList
+              .whereType<Map<String, dynamic>>()
+              .map(Contract.fromJson)
+              .toList();
+
       return Right(ContractResponse(items: contracts));
     } on DioException catch (e) {
       return Left(
@@ -76,18 +89,22 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
         ),
       );
     } catch (e) {
-      return Left(ServerFailure(message: 'Error parsing contracts: ${e.toString()}'));
+      return Left(
+        ServerFailure(message: 'Error parsing contracts: ${e.toString()}'),
+      );
     }
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> addVehicle(VehicleRentalParams vehicle) async {
+  Future<Either<Failure, SuccessResponse>> addVehicle(
+    VehicleRentalParams vehicle,
+  ) async {
     try {
       await sl<DioClient>().post(
         ApiUrls.rentalVehicles,
         data: vehicle.toJson(),
       );
-      
+
       final successResponse = SuccessResponse(
         message: 'Vehicle added successfully',
       );
@@ -105,28 +122,35 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
   }
 
   @override
-  Future<Either<Failure, VehicleResponse>> getVehicles(int contractId) async {
+  Future<Either<Failure, VehicleResponse>> getVehicles({
+    int? contractId,
+    RentalVehicleApprovalStatus? status,
+    RentalVehicleAvailabilityStatus? availability,
+  }) async {
     try {
       final response = await sl<DioClient>().get(
         ApiUrls.rentalVehicles,
         queryParameters: {
-          'contractId': contractId,
+          if (contractId != null) 'contractId': contractId,
+          if (status != null) 'status': status.value,
+          if (availability != null) 'availability': availability.value,
         },
       );
 
-      // API trả về array trực tiếp
-      final List<dynamic> dataList = response.data as List<dynamic>;
-      
-      final vehicles = dataList
-          .map((item) {
-            if (item is Map<String, dynamic>) {
-              return Vehicle.fromJson(item);
-            }
-            return null;
-          })
-          .whereType<Vehicle>()
-          .toList();
-      
+      final data = response.data;
+      final List<dynamic> dataList =
+          data is List
+              ? data
+              : (data['items'] as List<dynamic>? ??
+                  data['data'] as List<dynamic>? ??
+                  <dynamic>[]);
+
+      final vehicles =
+          dataList
+              .whereType<Map<String, dynamic>>()
+              .map(Vehicle.fromJson)
+              .toList();
+
       return Right(VehicleResponse(items: vehicles));
     } on DioException catch (e) {
       return Left(
@@ -136,8 +160,9 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
         ),
       );
     } catch (e) {
-      return Left(ServerFailure(message: 'Error parsing vehicles: ${e.toString()}'));
+      return Left(
+        ServerFailure(message: 'Error parsing vehicles: ${e.toString()}'),
+      );
     }
   }
 }
-

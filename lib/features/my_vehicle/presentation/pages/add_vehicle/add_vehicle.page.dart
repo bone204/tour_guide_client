@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_rental_params.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_state.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/step_indicator.widget.dart';
@@ -12,11 +13,8 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicl
 
 class AddVehiclePage extends StatefulWidget {
   final int contractId;
-  
-  const AddVehiclePage({
-    super.key,
-    required this.contractId,
-  });
+
+  const AddVehiclePage({super.key, required this.contractId});
 
   @override
   State<AddVehiclePage> createState() => _AddVehiclePageState();
@@ -24,7 +22,7 @@ class AddVehiclePage extends StatefulWidget {
 
 class _AddVehiclePageState extends State<AddVehiclePage> {
   int _currentStep = 0;
-  
+
   // Step 1 data - Vehicle Information
   String _licensePlate = '';
   String _vehicleRegistration = '';
@@ -32,11 +30,11 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   String _vehicleBrand = '';
   String _vehicleModel = '';
   String _vehicleColor = '';
-  
+
   // Step 2 data - Documentation
   String? _registrationFrontPhoto;
   String? _registrationBackPhoto;
-  
+
   // Step 3 data - Rental Information
   String? _pricePerHour;
   String? _pricePerDay;
@@ -66,9 +64,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
           showDialog(
             context: context,
             barrierDismissible: false,
-            builder: (_) => const Center(
-              child: CircularProgressIndicator(),
-            ),
+            builder: (_) => const Center(child: CircularProgressIndicator()),
           );
         } else if (state is AddVehicleSuccess) {
           // Đóng loading dialog trước
@@ -100,25 +96,23 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
           },
         ),
         body: Column(
-        children: [
-          // Step Indicator
-          Container(
-            color: AppColors.primaryWhite,
-            child: StepIndicator(
-              currentStep: _currentStep,
-              totalSteps: 3,
-              stepTitles: const [
-                'Vehicle Information',
-                'Documentation\n',
-                'Rental Information',
-              ],
+          children: [
+            // Step Indicator
+            Container(
+              color: AppColors.primaryWhite,
+              child: StepIndicator(
+                currentStep: _currentStep,
+                totalSteps: 3,
+                stepTitles: const [
+                  'Vehicle Information',
+                  'Documentation\n',
+                  'Rental Information',
+                ],
+              ),
             ),
-          ),
-          // Step Content
-          Expanded(
-            child: _buildStepContent(),
-          ),
-        ],
+            // Step Content
+            Expanded(child: _buildStepContent()),
+          ],
         ),
       ),
     );
@@ -194,24 +188,26 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   }
 
   void _handleSubmit() {
+    final pricePerHourValue = double.tryParse(_pricePerHour ?? '') ?? 0;
+    final pricePerDayValue = double.tryParse(_pricePerDay ?? '') ?? 0;
+
+    final description = [
+      if (_vehicleBrand.isNotEmpty) _vehicleBrand,
+      if (_vehicleModel.isNotEmpty) _vehicleModel,
+      if (_vehicleColor.isNotEmpty) 'Color: $_vehicleColor',
+      if (_vehicleRegistration.isNotEmpty)
+        'Registration: $_vehicleRegistration',
+    ].where((value) => value.trim().isNotEmpty).join(' • ');
+
     final vehicle = VehicleRentalParams(
       licensePlate: _licensePlate,
-      contractId: widget.contractId, 
-      vehicleType: _vehicleType,
-      vehicleBrand: _vehicleBrand,
-      vehicleModel: _vehicleModel,
-      vehicleColor: _vehicleColor,
-      manufactureYear: null,
-      pricePerHour: _pricePerHour != null ? double.tryParse(_pricePerHour!) : null,
-      pricePerDay: _pricePerDay != null ? double.tryParse(_pricePerDay!) : null,
+      contractId: widget.contractId,
+      pricePerHour: pricePerHourValue,
+      pricePerDay: pricePerDayValue,
       requirements: _requirements,
-      vehicleRegistrationFront: _registrationFrontPhoto,
-      vehicleRegistrationBack: _registrationBackPhoto,
-      photoUrls: null,
-      description: null,
-      status: 'Pending',
-      availability: 'available',
-      externalId: null,
+      description: description.isNotEmpty ? description : null,
+      status: RentalVehicleApprovalStatus.pending,
+      availability: RentalVehicleAvailabilityStatus.available,
     );
 
     context.read<AddVehicleCubit>().addVehicle(vehicle);
@@ -248,17 +244,17 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                 SizedBox(height: 16.h),
                 Text(
                   'Vehicle Added Successfully!',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   'Your vehicle has been added successfully and is now available for rental.',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSubtitle,
-                      ),
+                    color: AppColors.textSubtitle,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 24.h),
@@ -283,9 +279,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                     child: Text(
                       'Done',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.primaryWhite,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: AppColors.primaryWhite,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -327,17 +323,17 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                 SizedBox(height: 16.h),
                 Text(
                   'Failed to Add Vehicle',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   message,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSubtitle,
-                      ),
+                    color: AppColors.textSubtitle,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 24.h),
@@ -357,9 +353,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                     child: Text(
                       'Try Again',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.primaryWhite,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: AppColors.primaryWhite,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -371,4 +367,3 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
     );
   }
 }
-

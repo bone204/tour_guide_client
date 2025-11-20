@@ -1,61 +1,49 @@
+import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle.dart';
+
 class VehicleRentalParams {
   final String licensePlate;
   final int contractId;
-  final String? vehicleType;
-  final String? vehicleBrand;
-  final String? vehicleModel;
-  final String? vehicleColor;
-  final String? manufactureYear;
-  final double? pricePerHour;
-  final double? pricePerDay;
+  final int? vehicleCatalogId;
+  final double pricePerHour;
+  final double pricePerDay;
   final String? requirements;
-  final String? vehicleRegistrationFront;
-  final String? vehicleRegistrationBack;
-  final List<String>? photoUrls;
   final String? description;
-  final String status;
-  final String availability; 
-  final String? externalId;
+  final RentalVehicleApprovalStatus? status;
+  final RentalVehicleAvailabilityStatus? availability;
 
   const VehicleRentalParams({
     required this.licensePlate,
     required this.contractId,
-    this.vehicleType,
-    this.vehicleBrand,
-    this.vehicleModel,
-    this.vehicleColor,
-    this.manufactureYear,
-    this.pricePerHour,
-    this.pricePerDay,
+    required this.pricePerHour,
+    required this.pricePerDay,
+    this.vehicleCatalogId,
     this.requirements,
-    this.vehicleRegistrationFront,
-    this.vehicleRegistrationBack,
-    this.photoUrls,
     this.description,
-    required this.status,
-    required this.availability,
-    this.externalId,
+    this.status,
+    this.availability,
   });
 
   factory VehicleRentalParams.fromJson(Map<String, dynamic> json) {
     return VehicleRentalParams(
-      licensePlate: json['licensePlate'] ?? '',
-      contractId: json['contractId'] ?? 0,
-      vehicleType: json['vehicleType'],
-      vehicleBrand: json['vehicleBrand'],
-      vehicleModel: json['vehicleModel'],
-      vehicleColor: json['vehicleColor'],
-      manufactureYear: json['manufactureYear'],
-      pricePerHour: (json['pricePerHour'] as num?)?.toDouble(),
-      pricePerDay: (json['pricePerDay'] as num?)?.toDouble(),
-      requirements: json['requirements'],
-      vehicleRegistrationFront: json['vehicleRegistrationFront'],
-      vehicleRegistrationBack: json['vehicleRegistrationBack'],
-      photoUrls: (json['photoUrls'] as List?)?.map((e) => e.toString()).toList(),
-      description: json['description'],
-      status: json['status'] ?? 'draft',
-      availability: json['availability'] ?? 'available',
-      externalId: json['externalId'],
+      licensePlate: json['licensePlate'] as String? ?? '',
+      contractId: json['contractId'] as int? ?? 0,
+      vehicleCatalogId: json['vehicleCatalogId'] as int?,
+      pricePerHour: (json['pricePerHour'] as num?)?.toDouble() ?? 0,
+      pricePerDay: (json['pricePerDay'] as num?)?.toDouble() ?? 0,
+      requirements: json['requirements'] as String?,
+      description: json['description'] as String?,
+      status:
+          json['status'] != null
+              ? RentalVehicleApprovalStatus.fromString(
+                json['status'] as String?,
+              )
+              : null,
+      availability:
+          json['availability'] != null
+              ? RentalVehicleAvailabilityStatus.fromString(
+                json['availability'] as String?,
+              )
+              : null,
     );
   }
 
@@ -63,63 +51,37 @@ class VehicleRentalParams {
     return {
       'licensePlate': licensePlate,
       'contractId': contractId,
-      'vehicleType': vehicleType,
-      'vehicleBrand': vehicleBrand,
-      'vehicleModel': vehicleModel,
-      'vehicleColor': vehicleColor,
-      'manufactureYear': manufactureYear,
+      'vehicleCatalogId': vehicleCatalogId,
       'pricePerHour': pricePerHour,
       'pricePerDay': pricePerDay,
       'requirements': requirements,
-      'vehicleRegistrationFront': vehicleRegistrationFront,
-      'vehicleRegistrationBack': vehicleRegistrationBack,
-      'photoUrls': photoUrls,
       'description': description,
-      'status': status,
-      'availability': availability,
-      'externalId': externalId,
+      if (status != null) 'status': status!.value,
+      if (availability != null) 'availability': availability!.value,
     };
   }
 
   VehicleRentalParams copyWith({
     String? licensePlate,
     int? contractId,
-    String? vehicleType,
-    String? vehicleBrand,
-    String? vehicleModel,
-    String? vehicleColor,
-    String? manufactureYear,
+    int? vehicleCatalogId,
     double? pricePerHour,
     double? pricePerDay,
     String? requirements,
-    String? vehicleRegistrationFront,
-    String? vehicleRegistrationBack,
-    List<String>? photoUrls,
     String? description,
-    String? status,
-    String? availability,
-    String? externalId,
+    RentalVehicleApprovalStatus? status,
+    RentalVehicleAvailabilityStatus? availability,
   }) {
-    return VehicleRentalParams  (
+    return VehicleRentalParams(
       licensePlate: licensePlate ?? this.licensePlate,
       contractId: contractId ?? this.contractId,
-      vehicleType: vehicleType ?? this.vehicleType,
-      vehicleBrand: vehicleBrand ?? this.vehicleBrand,
-      vehicleModel: vehicleModel ?? this.vehicleModel,
-      vehicleColor: vehicleColor ?? this.vehicleColor,
-      manufactureYear: manufactureYear ?? this.manufactureYear,
+      vehicleCatalogId: vehicleCatalogId ?? this.vehicleCatalogId,
       pricePerHour: pricePerHour ?? this.pricePerHour,
       pricePerDay: pricePerDay ?? this.pricePerDay,
       requirements: requirements ?? this.requirements,
-      vehicleRegistrationFront:
-          vehicleRegistrationFront ?? this.vehicleRegistrationFront,
-      vehicleRegistrationBack:
-          vehicleRegistrationBack ?? this.vehicleRegistrationBack,
-      photoUrls: photoUrls ?? this.photoUrls,
       description: description ?? this.description,
       status: status ?? this.status,
       availability: availability ?? this.availability,
-      externalId: externalId ?? this.externalId,
     );
   }
 }

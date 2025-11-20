@@ -1,15 +1,12 @@
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.dart';
 
 class ContractCard extends StatelessWidget {
   final Contract contract;
   final VoidCallback? onTap;
 
-  const ContractCard({
-    super.key,
-    required this.contract,
-    this.onTap,
-  });
+  const ContractCard({super.key, required this.contract, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -38,36 +35,38 @@ class ContractCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    contract.fullName,
+                    contract.user?.fullName ??
+                        contract.user?.email ??
+                        'Rental Contract #${contract.id}',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+                      fontWeight: FontWeight.w700,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(width: 8.w),
-                _buildStatusChip(context, contract.status ?? 'pending'),
+                _buildStatusChip(context, contract.status),
               ],
             ),
             SizedBox(height: 12.h),
-            
+
             // Contract info
-            if (contract.email != null) ...[
+            if (contract.user?.email != null) ...[
               _buildInfoRow(
                 context,
                 icon: Icons.email_outlined,
                 label: 'Email',
-                value: contract.email!,
+                value: contract.user!.email!,
               ),
               SizedBox(height: 8.h),
             ],
-            if (contract.phone != null) ...[
+            if (contract.user?.phone != null) ...[
               _buildInfoRow(
                 context,
                 icon: Icons.phone_outlined,
                 label: 'Phone',
-                value: contract.phone!,
+                value: contract.user!.phone!,
               ),
               SizedBox(height: 8.h),
             ],
@@ -75,9 +74,12 @@ class ContractCard extends StatelessWidget {
               context,
               icon: Icons.business_outlined,
               label: 'Business Type',
-              value: contract.businessType == 'personal' ? 'Personal' : 'Company',
+              value:
+                  contract.businessType == BusinessType.personal
+                      ? 'Personal'
+                      : 'Company',
             ),
-            
+
             if (contract.bankName != null) ...[
               SizedBox(height: 8.h),
               _buildInfoRow(
@@ -87,7 +89,7 @@ class ContractCard extends StatelessWidget {
                 value: contract.bankName!.split(' - ').first,
               ),
             ],
-            
+
             // Date info
             if (contract.createdAt != null) ...[
               SizedBox(height: 12.h),
@@ -100,10 +102,10 @@ class ContractCard extends StatelessWidget {
                   ),
                   SizedBox(width: 4.w),
                   Text(
-                    'Created: ${_formatDate(DateTime.parse(contract.createdAt!))}',
+                    'Created: ${_formatDate(contract.createdAt!)}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtitle,
-                        ),
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
                 ],
               ),
@@ -123,11 +125,7 @@ class ContractCard extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          size: 16.sp,
-          color: AppColors.primaryBlue,
-        ),
+        Icon(icon, size: 16.sp, color: AppColors.primaryBlue),
         SizedBox(width: 8.w),
         Expanded(
           child: Column(
@@ -136,9 +134,9 @@ class ContractCard extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSubtitle,
-                      fontSize: 11.sp,
-                    ),
+                  color: AppColors.textSubtitle,
+                  fontSize: 11.sp,
+                ),
               ),
               SizedBox(height: 2.h),
               Text(
@@ -154,27 +152,28 @@ class ContractCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusChip(BuildContext context, String status) {
+  Widget _buildStatusChip(BuildContext context, RentalContractStatus status) {
     Color backgroundColor;
     Color textColor;
     String displayText;
 
-    switch (status.toLowerCase()) {
-      case 'approved':
+    switch (status) {
+      case RentalContractStatus.approved:
         backgroundColor = AppColors.primaryGreen;
         textColor = AppColors.textSecondary;
         displayText = 'Approved';
         break;
-      case 'rejected':
+      case RentalContractStatus.rejected:
         backgroundColor = AppColors.primaryRed;
         textColor = AppColors.textSecondary;
         displayText = 'Rejected';
         break;
-      case 'pending':
-      default:
+      case RentalContractStatus.pending:
+      case RentalContractStatus.suspended:
         backgroundColor = AppColors.primaryOrange;
         textColor = AppColors.textSecondary;
-        displayText = 'Pending';
+        displayText =
+            status == RentalContractStatus.suspended ? 'Suspended' : 'Pending';
         break;
     }
 
@@ -187,16 +186,13 @@ class ContractCard extends StatelessWidget {
       child: Text(
         displayText,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 11.sp,
-            ),
+          color: textColor,
+          fontWeight: FontWeight.w600,
+          fontSize: 11.sp,
+        ),
       ),
     );
   }
 
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
-  }
+  String _formatDate(DateTime date) => '${date.day}/${date.month}/${date.year}';
 }
-

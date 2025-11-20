@@ -1,15 +1,23 @@
+enum BusinessType {
+  personal,
+  company;
+
+  String get value => name;
+
+  static BusinessType fromString(String? value) {
+    if (value == null) return BusinessType.personal;
+    return BusinessType.values.firstWhere(
+      (type) => type.value == value.toLowerCase(),
+      orElse: () => BusinessType.personal,
+    );
+  }
+}
+
 class ContractParams {
-  final int userId;
-  final String? externalId;
-  final String fullName;
-  final String email;
-  final String phone;
-  final String identificationNumber;
-  final String? identificationPhoto;
-  final String businessType; // 'personal' | 'company'
+  final String? citizenId;
+  final BusinessType businessType;
   final String? businessName;
   final String? businessProvince;
-  final String? businessCity;
   final String? businessAddress;
   final String? taxCode;
   final String? businessRegisterPhoto;
@@ -23,17 +31,10 @@ class ContractParams {
   final bool termsAccepted;
 
   const ContractParams({
-    required this.userId,
-    required this.externalId,
-    required this.fullName,
-    required this.email,
-    required this.phone,
-    required this.identificationNumber,
-    this.identificationPhoto,
-    required this.businessType,
+    this.citizenId,
+    this.businessType = BusinessType.personal,
     this.businessName,
     this.businessProvince,
-    this.businessCity,
     this.businessAddress,
     this.taxCode,
     this.businessRegisterPhoto,
@@ -49,44 +50,30 @@ class ContractParams {
 
   factory ContractParams.fromJson(Map<String, dynamic> json) {
     return ContractParams(
-      userId: json['userId'] ?? 0,
-      externalId: json['externalId'] ?? '',
-      fullName: json['fullName'] ?? '',
-      email: json['email'] ?? '',
-      phone: json['phone'] ?? '',
-      identificationNumber: json['identificationNumber'] ?? '',
-      identificationPhoto: json['identificationPhoto'],
-      businessType: json['businessType'] ?? 'personal',
-      businessName: json['businessName'],
-      businessProvince: json['businessProvince'],
-      businessCity: json['businessCity'],
-      businessAddress: json['businessAddress'],
-      taxCode: json['taxCode'],
-      businessRegisterPhoto: json['businessRegisterPhoto'],
-      citizenFrontPhoto: json['citizenFrontPhoto'],
-      citizenBackPhoto: json['citizenBackPhoto'],
-      contractTerm: json['contractTerm'],
-      notes: json['notes'],
-      bankName: json['bankName'],
-      bankAccountNumber: json['bankAccountNumber'],
-      bankAccountName: json['bankAccountName'],
-      termsAccepted: json['termsAccepted'] ?? false,
+      citizenId: json['citizenId'] as String?,
+      businessType: BusinessType.fromString(json['businessType'] as String?),
+      businessName: json['businessName'] as String?,
+      businessProvince: json['businessProvince'] as String?,
+      businessAddress: json['businessAddress'] as String?,
+      taxCode: json['taxCode'] as String?,
+      businessRegisterPhoto: json['businessRegisterPhoto'] as String?,
+      citizenFrontPhoto: json['citizenFrontPhoto'] as String?,
+      citizenBackPhoto: json['citizenBackPhoto'] as String?,
+      contractTerm: json['contractTerm'] as String?,
+      notes: json['notes'] as String?,
+      bankName: json['bankName'] as String?,
+      bankAccountNumber: json['bankAccountNumber'] as String?,
+      bankAccountName: json['bankAccountName'] as String?,
+      termsAccepted: json['termsAccepted'] == true,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
-      'externalId': externalId,
-      'fullName': fullName,
-      'email': email,
-      'phone': phone,
-      'identificationNumber': identificationNumber,
-      'identificationPhoto': identificationPhoto,
-      'businessType': businessType,
+      'citizenId': citizenId,
+      'businessType': businessType.value,
       'businessName': businessName,
       'businessProvince': businessProvince,
-      'businessCity': businessCity,
       'businessAddress': businessAddress,
       'taxCode': taxCode,
       'businessRegisterPhoto': businessRegisterPhoto,
@@ -102,17 +89,10 @@ class ContractParams {
   }
 
   ContractParams copyWith({
-    int? userId,
-    String? externalId,
-    String? fullName,
-    String? email,
-    String? phone,
-    String? identificationNumber,
-    String? identificationPhoto,
-    String? businessType,
+    String? citizenId,
+    BusinessType? businessType,
     String? businessName,
     String? businessProvince,
-    String? businessCity,
     String? businessAddress,
     String? taxCode,
     String? businessRegisterPhoto,
@@ -126,20 +106,14 @@ class ContractParams {
     bool? termsAccepted,
   }) {
     return ContractParams(
-      userId: userId ?? this.userId,
-      externalId: externalId ?? this.externalId,
-      fullName: fullName ?? this.fullName,
-      email: email ?? this.email,
-      phone: phone ?? this.phone,
-      identificationNumber: identificationNumber ?? this.identificationNumber,
-      identificationPhoto: identificationPhoto ?? this.identificationPhoto,
+      citizenId: citizenId ?? this.citizenId,
       businessType: businessType ?? this.businessType,
       businessName: businessName ?? this.businessName,
       businessProvince: businessProvince ?? this.businessProvince,
-      businessCity: businessCity ?? this.businessCity,
       businessAddress: businessAddress ?? this.businessAddress,
       taxCode: taxCode ?? this.taxCode,
-      businessRegisterPhoto: businessRegisterPhoto ?? this.businessRegisterPhoto,
+      businessRegisterPhoto:
+          businessRegisterPhoto ?? this.businessRegisterPhoto,
       citizenFrontPhoto: citizenFrontPhoto ?? this.citizenFrontPhoto,
       citizenBackPhoto: citizenBackPhoto ?? this.citizenBackPhoto,
       contractTerm: contractTerm ?? this.contractTerm,

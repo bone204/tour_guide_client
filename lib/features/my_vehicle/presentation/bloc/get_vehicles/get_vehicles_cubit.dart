@@ -11,7 +11,7 @@ class GetVehiclesCubit extends Cubit<GetVehiclesState> {
   Future<void> getVehicles(int contractId) async {
     emit(GetVehiclesLoading());
 
-    final result = await _repository.getVehicles(contractId);
+    final result = await _repository.getVehicles(contractId: contractId);
 
     result.fold(
       (failure) => emit(GetVehiclesFailure(errorMessage: failure.message)),
@@ -29,4 +29,3 @@ class GetVehiclesCubit extends Cubit<GetVehiclesState> {
     emit(GetVehiclesInitial());
   }
 }
-

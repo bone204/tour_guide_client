@@ -5,6 +5,7 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/models/contract.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_state.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
@@ -27,24 +28,28 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
   @override
   void initState() {
     super.initState();
-    
+
     // Lắng nghe event contract registered
-    _contractEventSubscription = eventBus.on<ContractRegisteredEvent>().listen((event) {
+    _contractEventSubscription = eventBus.on<ContractRegisteredEvent>().listen((
+      event,
+    ) {
       if (mounted) {
         // Reset contractId để force reload vehicles với contract mới
         _currentContractId = null;
         // Refresh contracts khi có contract mới
-        context.read<GetContractsCubit>().getContracts(1);
+        context.read<GetContractsCubit>().getContracts();
       }
     });
-    
+
     // Lắng nghe event vehicle added
-    _vehicleEventSubscription = eventBus.on<VehicleAddedEvent>().listen((event) {
+    _vehicleEventSubscription = eventBus.on<VehicleAddedEvent>().listen((
+      event,
+    ) {
       if (mounted) {
         // Reset GetVehiclesCubit về initial để trigger reload
         context.read<GetVehiclesCubit>().reset();
         // Refresh contracts để lấy contractId và totalVehicles mới nhất
-        context.read<GetContractsCubit>().getContracts(1);
+        context.read<GetContractsCubit>().getContracts();
       }
     });
   }
@@ -60,35 +65,30 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: CustomAppBar(
-        title: 'My Vehicle',
-        showBackButton: false,
-      ),
+      appBar: CustomAppBar(title: 'My Vehicle', showBackButton: false),
       body: BlocBuilder<GetContractsCubit, GetContractsState>(
         builder: (context, state) {
           // Auto load data khi state còn là Initial
           if (state is GetContractsInitial) {
             // TODO: Get real userId from auth
-            context.read<GetContractsCubit>().getContracts(1);
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            context.read<GetContractsCubit>().getContracts();
+            return const Center(child: CircularProgressIndicator());
           } else if (state is GetContractsLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           } else if (state is GetContractsSuccess) {
             // Kiểm tra có contract approved không
             final approvedContract = state.contracts.firstWhere(
-              (contract) => contract.status?.toLowerCase() == 'approved',
+              (contract) => contract.status == RentalContractStatus.approved,
               orElse: () => state.contracts.first,
             );
-            
-            final hasApprovedContract = approvedContract.status?.toLowerCase() == 'approved';
-            
+
+            final hasApprovedContract =
+                approvedContract.status == RentalContractStatus.approved;
+
             if (hasApprovedContract) {
               // Kiểm tra nếu contractId thay đổi thì reset vehicles
-              if (_currentContractId != null && _currentContractId != approvedContract.id) {
+              if (_currentContractId != null &&
+                  _currentContractId != approvedContract.id) {
                 // ContractId đã thay đổi, cần reload vehicles
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (mounted) {
@@ -98,18 +98,23 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
               }
               // Cập nhật contractId hiện tại
               _currentContractId = approvedContract.id;
-              
+
               // Load vehicles nếu có approved contract
               return BlocBuilder<GetVehiclesCubit, GetVehiclesState>(
                 builder: (context, vehicleState) {
                   if (vehicleState is GetVehiclesInitial) {
                     // ✅ Load với contractId mới nhất từ API get contracts
-                    context.read<GetVehiclesCubit>().getVehicles(approvedContract.id);
+                    context.read<GetVehiclesCubit>().getVehicles(
+                      approvedContract.id,
+                    );
                     return const Center(child: CircularProgressIndicator());
                   } else if (vehicleState is GetVehiclesLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (vehicleState is GetVehiclesSuccess) {
-                    return _buildVehiclesList(vehicleState.vehicles, approvedContract.id);
+                    return _buildVehiclesList(
+                      vehicleState.vehicles,
+                      approvedContract.id,
+                    );
                   } else if (vehicleState is GetVehiclesEmpty) {
                     return _buildApprovedView(approvedContract.id);
                   } else {
@@ -145,7 +150,10 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
             ElevatedButton(
               onPressed: () async {
                 // ✅ Dùng root navigator để mở fullscreen (lên cả bottom bar)
-                final result = await Navigator.of(context, rootNavigator: true).pushNamed(
+                final result = await Navigator.of(
+                  context,
+                  rootNavigator: true,
+                ).pushNamed(
                   AppRouteConstant.addVehicle,
                   arguments: contractId, // ✅ Truyền contractId thật
                 );
@@ -173,10 +181,10 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                   Text(
                     'Add Vehicle',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppColors.primaryWhite,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16.sp,
-                        ),
+                      color: AppColors.primaryWhite,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16.sp,
+                    ),
                   ),
                 ],
               ),
@@ -185,17 +193,21 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
             // Vehicles list
             Text(
               'Your Vehicles',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 12.h),
-            ...vehicles.map((vehicle) => VehicleCard(
-              vehicle: vehicle,
-              onTap: () {
-                // TODO: Navigate to vehicle detail
-              },
-            )).toList(),
+            ...vehicles
+                .map(
+                  (vehicle) => VehicleCard(
+                    vehicle: vehicle,
+                    onTap: () {
+                      // TODO: Navigate to vehicle detail
+                    },
+                  ),
+                )
+                .toList(),
           ],
         ),
       ),
@@ -232,16 +244,16 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
               Text(
                 'Ready to Add Vehicles',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               SizedBox(height: 12.h),
               // Description
               Text(
                 'Your contract has been approved! Start adding your vehicles to earn money from rentals.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSubtitle,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 40.h),
@@ -251,7 +263,10 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     // ✅ Dùng root navigator để mở fullscreen (lên cả bottom bar)
-                    final result = await Navigator.of(context, rootNavigator: true).pushNamed(
+                    final result = await Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).pushNamed(
                       AppRouteConstant.addVehicle,
                       arguments: contractId, // ✅ Truyền contractId thật
                     );
@@ -280,10 +295,10 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                       Text(
                         'Add Vehicle',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: AppColors.primaryWhite,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16.sp,
-                            ),
+                          color: AppColors.primaryWhite,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16.sp,
+                        ),
                       ),
                     ],
                   ),
@@ -322,10 +337,12 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                         Expanded(
                           child: Text(
                             'Contract Approved!',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.primaryGreen,
-                                ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primaryGreen,
+                            ),
                           ),
                         ),
                       ],
@@ -334,8 +351,8 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                     Text(
                       'What you can do now:',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     SizedBox(height: 12.h),
                     _buildBenefitItem(
@@ -380,7 +397,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
   Widget _buildContractsList(contracts) {
     return RefreshIndicator(
       onRefresh: () async {
-        context.read<GetContractsCubit>().getContracts(1);
+        context.read<GetContractsCubit>().getContracts();
       },
       child: ListView.builder(
         padding: EdgeInsets.all(20.w),
@@ -413,7 +430,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                Icons.directions_car_outlined,
+                Icons.assignment_outlined,
                 size: 64.sp,
                 color: AppColors.primaryBlue,
               ),
@@ -421,35 +438,34 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
             SizedBox(height: 24.h),
             // Title
             Text(
-              'No Vehicles Yet',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+              'No Rental Contract Yet',
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 12.h),
             // Description
             Text(
-              'Start earning by registering your vehicle for rental services',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSubtitle,
-                  ),
+              'Register a rental contract before listing your vehicles for rent.',
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 40.h),
             // Register Button
             SizedBox(
               width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    // ✅ Dùng root navigator để mở fullscreen (lên cả bottom bar)
-                    final result = await Navigator.of(context, rootNavigator: true).pushNamed(
-                      AppRouteConstant.vehicleRentalRegister,
-                    );
-                    // Refresh contracts nếu register thành công (event sẽ handle)
-                    if (mounted && result == true) {
-                      // Event bus đã handle rồi, không cần reload thủ công
-                    }
-                  },
+              child: ElevatedButton(
+                onPressed: () async {
+                  final result = await Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).pushNamed(AppRouteConstant.vehicleRentalRegister);
+                  if (mounted && result == true) {
+                    // Event bus già xử lý refresh
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryBlue,
                   padding: EdgeInsets.symmetric(vertical: 16.h),
@@ -462,18 +478,18 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.add_circle_outline,
+                      Icons.description_outlined,
                       color: AppColors.primaryWhite,
                       size: 24.sp,
                     ),
                     SizedBox(width: 8.w),
                     Text(
-                      'Register Vehicle',
+                      'Register Rental Contract',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.primaryWhite,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16.sp,
-                          ),
+                        color: AppColors.primaryWhite,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16.sp,
+                      ),
                     ),
                   ],
                 ),
@@ -486,43 +502,40 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
               decoration: BoxDecoration(
                 color: AppColors.primaryWhite,
                 borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(
-                  color: AppColors.secondaryGrey,
-                  width: 1.w,
-                ),
+                border: Border.all(color: AppColors.secondaryGrey, width: 1.w),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Benefits of registering your vehicle:',
+                    'Why register a rental contract first?',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   SizedBox(height: 12.h),
                   _buildBenefitItem(
                     context,
-                    icon: Icons.attach_money,
-                    text: 'Earn extra income from your vehicle',
+                    icon: Icons.edit_document,
+                    text: 'Provide owner information once and reuse it later',
                   ),
                   SizedBox(height: 8.h),
                   _buildBenefitItem(
                     context,
-                    icon: Icons.verified_user,
-                    text: 'Insurance coverage for all rentals',
+                    icon: Icons.security,
+                    text: 'Enable Traveline to verify payouts and legal docs',
+                  ),
+                  SizedBox(height: 8.h),
+                  _buildBenefitItem(
+                    context,
+                    icon: Icons.garage_outlined,
+                    text: 'Unlock the ability to list unlimited vehicles',
                   ),
                   SizedBox(height: 8.h),
                   _buildBenefitItem(
                     context,
                     icon: Icons.support_agent,
-                    text: '24/7 customer support',
-                  ),
-                  SizedBox(height: 8.h),
-                  _buildBenefitItem(
-                    context,
-                    icon: Icons.schedule,
-                    text: 'Flexible rental schedule',
+                    text: 'Get dedicated support for future rentals',
                   ),
                 ],
               ),
@@ -540,30 +553,26 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 64.sp,
-              color: AppColors.primaryRed,
-            ),
+            Icon(Icons.error_outline, size: 64.sp, color: AppColors.primaryRed),
             SizedBox(height: 16.h),
             Text(
               'Error',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 8.h),
             Text(
               errorMessage,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSubtitle,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.h),
             ElevatedButton(
               onPressed: () {
-                context.read<GetContractsCubit>().getContracts(1);
+                context.read<GetContractsCubit>().getContracts();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue,
@@ -575,9 +584,9 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
               child: Text(
                 'Retry',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.primaryWhite,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: AppColors.primaryWhite,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ],
@@ -586,24 +595,21 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
     );
   }
 
-  Widget _buildBenefitItem(BuildContext context, {
+  Widget _buildBenefitItem(
+    BuildContext context, {
     required IconData icon,
     required String text,
   }) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 20.sp,
-          color: AppColors.primaryBlue,
-        ),
+        Icon(icon, size: 20.sp, color: AppColors.primaryBlue),
         SizedBox(width: 12.w),
         Expanded(
           child: Text(
             text,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
           ),
         ),
       ],

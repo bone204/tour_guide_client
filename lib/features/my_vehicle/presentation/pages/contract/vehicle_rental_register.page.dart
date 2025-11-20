@@ -14,26 +14,27 @@ class VehicleRentalRegisterPage extends StatefulWidget {
   const VehicleRentalRegisterPage({super.key});
 
   @override
-  State<VehicleRentalRegisterPage> createState() => _VehicleRentalRegisterPageState();
+  State<VehicleRentalRegisterPage> createState() =>
+      _VehicleRentalRegisterPageState();
 }
 
 class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
   int _currentStep = 0;
-  
+
   // Step 1 data
   String _fullName = '';
   String _email = '';
   String _phone = '';
   String _identificationNumber = '';
   String? _identificationPhoto;
-  
+
   // Step 2 data
   String _businessType = 'personal';
   String? _businessName;
   String? _businessAddress;
   String? _taxCode;
   String? _businessRegisterPhoto;
-  
+
   // Step 3 data
   String? _bankName;
   String? _bankAccountNumber;
@@ -64,9 +65,7 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
           showDialog(
             context: context,
             barrierDismissible: false,
-            builder: (_) => const Center(
-              child: CircularProgressIndicator(),
-            ),
+            builder: (_) => const Center(child: CircularProgressIndicator()),
           );
         } else if (state is RegisterRentalVehicleSuccess) {
           if (mounted) {
@@ -105,9 +104,7 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
               ),
             ),
             // Step Content
-            Expanded(
-              child: _buildStepContent(),
-            ),
+            Expanded(child: _buildStepContent()),
           ],
         ),
       ),
@@ -194,31 +191,27 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
 
   void _handleSubmit() {
     final contractParams = ContractParams(
-      userId: 1,
-      externalId: null,
-      fullName: _fullName,
-      email: _email,
-      phone: _phone,
-      identificationNumber: _identificationNumber,
-      identificationPhoto: _identificationPhoto,
-      businessType: _businessType,
+      citizenId: _identificationNumber,
+      businessType: BusinessType.fromString(_businessType),
       businessName: _businessName,
-      businessProvince: null,
-      businessCity: null,
       businessAddress: _businessAddress,
       taxCode: _taxCode,
       businessRegisterPhoto: _businessRegisterPhoto,
-      citizenFrontPhoto: null,
-      citizenBackPhoto: null,
-      contractTerm: null,
-      notes: null,
+      citizenFrontPhoto: _identificationPhoto,
       bankName: _bankName,
       bankAccountNumber: _bankAccountNumber,
       bankAccountName: _bankAccountName,
       termsAccepted: _termsAccepted,
+      notes: [
+        if (_fullName.isNotEmpty) 'Owner: $_fullName',
+        if (_email.isNotEmpty) 'Email: $_email',
+        if (_phone.isNotEmpty) 'Phone: $_phone',
+      ].where((value) => value.isNotEmpty).join(' • '),
     );
 
-    context.read<RegisterRentalVehicleCubit>().registerRentalVehicle(contractParams);
+    context.read<RegisterRentalVehicleCubit>().registerRentalVehicle(
+      contractParams,
+    );
   }
 
   void _showSuccessDialog() {
@@ -251,17 +244,17 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
                 SizedBox(height: 16.h),
                 Text(
                   'Registration Successful!',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   'Your vehicle rental registration has been submitted successfully. We will review your information and contact you soon.',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSubtitle,
-                      ),
+                    color: AppColors.textSubtitle,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 24.h),
@@ -285,9 +278,9 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
                     child: Text(
                       'Done',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.primaryWhite,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: AppColors.primaryWhite,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -328,17 +321,17 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
                 SizedBox(height: 16.h),
                 Text(
                   'Registration Failed',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   message,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSubtitle,
-                      ),
+                    color: AppColors.textSubtitle,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 24.h),
@@ -358,9 +351,9 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
                     child: Text(
                       'Try Again',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.primaryWhite,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: AppColors.primaryWhite,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
