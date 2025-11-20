@@ -1,6 +1,6 @@
   class ApiUrls {
     // static const baseURL = "https://traveline-server.onrender.com";
-    static const baseURL = "http://192.168.1.28:3000";
+    static const baseURL = "http://192.168.1.94:3000";
     //Authentication URLs
     static const signup = "$baseURL/auth/signup";
     static const login = "$baseURL/auth/login";
@@ -8,6 +8,8 @@
 
     //Destination URLs
     static const getDestinations = "$baseURL/destinations";
+    static const getFavoriteDestinations = "$baseURL/destinations/favorites";
+    static String favoriteDestination(int id) => "$baseURL/destinations/$id/favorite";
     
     //Rental Contracts URLs
     static const rentalContracts = "$baseURL/rental-contracts";

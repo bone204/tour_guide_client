@@ -35,10 +35,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: backgroundColor ?? AppColors.primaryWhite,
       scrolledUnderElevation: 0,
       elevation: elevation,
-      leading: leading ?? (showBackButton ? _buildBackButton() : null),
+      leading: leading ?? (showBackButton ? _buildBackButton(titleColor) : null),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleMedium,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: titleColor ?? AppColors.primaryBlack,
+        ),
       ),
       centerTitle: centerTitle,
       actions: actions,
@@ -46,13 +48,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget _buildBackButton() {
+  Widget _buildBackButton(Color? titleColor) {
     return IconButton(
       icon: SvgPicture.asset(
         AppIcons.arrowLeft,
         width: 16.w,
         height: 16.h,
-        color: AppColors.primaryBlack,
+        colorFilter: ColorFilter.mode(
+          titleColor ?? AppColors.primaryBlack,
+          BlendMode.srcIn,
+        ),
       ),
       onPressed: onBackPressed,
       splashRadius: 24,

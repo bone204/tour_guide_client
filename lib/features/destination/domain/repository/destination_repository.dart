@@ -7,4 +7,6 @@ import 'package:tour_guide_app/features/destination/data/models/destination_resp
 abstract class DestinationRepository {
   Future<Either<Failure, DestinationResponse>> getDestinations(DestinationQuery destinationQuery);
   Future<Either<Failure, Destination>> getDestinationById(int id);
+  Future<Either<Failure, DestinationResponse>> getFavorites();
+  Future<Either<Failure, Destination>> favoriteDestination(int id);
 }

@@ -1,4 +1,5 @@
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/profile/presentation/pages/favourite_destinations.page.dart';
 import 'package:tour_guide_app/features/profile/presentation/widgets/profile_feature_tile.widget.dart';
 import 'package:tour_guide_app/features/profile/presentation/widgets/profile_header_card.widget.dart';
 import 'package:tour_guide_app/features/profile/presentation/widgets/profile_stats_row.widget.dart';
@@ -88,7 +89,16 @@ class ProfilePage extends StatelessWidget {
                             iconAsset: item.iconAsset,
                             iconColor: item.iconColor,
                             title: item.title,
-                            onTap: () {},
+                            onTap: () {
+                              if (index == 0) {
+                                // Navigate to favourite destinations
+                                Navigator.of(context, rootNavigator: true).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => FavouriteDestinationsPage.withProvider(),
+                                  ),
+                                );
+                              }
+                            },
                           );
                         },
                         separatorBuilder: (_, __) => SizedBox(height: 16.h),

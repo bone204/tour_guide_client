@@ -19,4 +19,14 @@ class DestinationRepositoryImpl extends DestinationRepository {
   Future<Either<Failure, Destination>> getDestinationById(int id) async {
     return await _apiService.getDestinationById(id);
   }
+
+  @override
+  Future<Either<Failure, DestinationResponse>> getFavorites() async {
+    return await _apiService.getFavorites();
+  }
+
+  @override
+  Future<Either<Failure, Destination>> favoriteDestination(int id) async {
+    return await _apiService.favoriteDestination(id);
+  }
 }

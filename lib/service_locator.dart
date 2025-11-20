@@ -13,6 +13,8 @@ import 'package:tour_guide_app/features/destination/data/data_source/destination
 import 'package:tour_guide_app/features/destination/data/repository/destination_repository_impl.dart';
 import 'package:tour_guide_app/features/destination/domain/repository/destination_repository.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_destination_by_id.dart';
+import 'package:tour_guide_app/features/destination/domain/usecases/get_favorites.dart';
+import 'package:tour_guide_app/features/destination/domain/usecases/favorite_destination.dart';
 import 'package:tour_guide_app/features/home/domain/usecases/get_destinations.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/data_source/my_vehicle_api_service.dart';
@@ -60,6 +62,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<LogOutUseCase>(LogOutUseCase());
   sl.registerSingleton<GetDestinationByIdUseCase>(GetDestinationByIdUseCase());
   sl.registerSingleton<GetDestinationUseCase>(GetDestinationUseCase());
+  sl.registerSingleton<GetFavoritesUseCase>(GetFavoritesUseCase());
+  sl.registerSingleton<FavoriteDestinationUseCase>(FavoriteDestinationUseCase());
   sl.registerSingleton<RegisterRentalVehicleUseCase>(RegisterRentalVehicleUseCase());
   sl.registerSingleton<GetContractsUseCase>(GetContractsUseCase());
   sl.registerSingleton<AddVehicleUseCase>(AddVehicleUseCase());
