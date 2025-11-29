@@ -25,6 +25,16 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
   StreamSubscription? _vehicleEventSubscription;
   int? _currentContractId; // Track contractId hiện tại
 
+  // Custom AppBar widget that uses BlocBuilder
+  PreferredSizeWidget _buildDynamicAppBar() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(kToolbarHeight + 1),
+      child: BlocBuilder<GetContractsCubit, GetContractsState>(
+        builder: (context, state) => _buildAppBar(context, state),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -61,11 +71,43 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
     super.dispose();
   }
 
+  PreferredSizeWidget _buildAppBar(BuildContext context, GetContractsState state) {
+    // Tìm contract approved để hiển thị nút xem chi tiết
+    int? approvedContractId;
+    if (state is GetContractsSuccess && state.contracts.isNotEmpty) {
+      final approvedContract = state.contracts.firstWhere(
+        (contract) => contract.status == RentalContractStatus.approved,
+        orElse: () => state.contracts.first,
+      );
+      if (approvedContract.status == RentalContractStatus.approved) {
+        approvedContractId = approvedContract.id;
+      }
+    }
+
+    return CustomAppBar(
+      title: 'My Vehicle',
+      showBackButton: false,
+      actions: approvedContractId != null
+          ? [
+              IconButton(
+                icon: Icon(
+                  Icons.description_outlined,
+                  color: AppColors.primaryBlue,
+                  size: 24.sp,
+                ),
+                tooltip: 'Xem chi tiết hợp đồng',
+                onPressed: () => _openContractDetail(approvedContractId!),
+              ),
+            ]
+          : null,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: CustomAppBar(title: 'My Vehicle', showBackButton: false),
+      appBar: _buildDynamicAppBar(),
       body: BlocBuilder<GetContractsCubit, GetContractsState>(
         builder: (context, state) {
           // Auto load data khi state còn là Initial
