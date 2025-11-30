@@ -56,14 +56,14 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
 
   String? _validateRequired(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
-      return '$fieldName is required';
+      return AppLocalizations.of(context)!.fieldRequired(fieldName);
     }
     return null;
   }
 
   String? _validateBankSelection() {
     if (_selectedBank == null || _selectedBank!.isEmpty) {
-      return 'Please select a bank';
+      return AppLocalizations.of(context)!.pleaseSelectBank;
     }
     return null;
   }
@@ -86,8 +86,8 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
 
     if (!_validateAllConfirmations()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please confirm all policies'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.pleaseConfirmPolicies),
           backgroundColor: AppColors.primaryRed,
         ),
       );
@@ -112,7 +112,7 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             BankDropdown(
-              label: 'Bank Name',
+              label: AppLocalizations.of(context)!.bankName,
               selectedBank: _selectedBank,
               onChanged: (value) {
                 setState(() {
@@ -122,16 +122,16 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Bank Account Number',
-              placeholder: 'Enter account number',
+              label: AppLocalizations.of(context)!.bankAccountNumber,
+              placeholder: AppLocalizations.of(context)!.enterAccountNumber,
               controller: _accountNumberController,
               keyboardType: TextInputType.number,
               validator: (value) => _validateRequired(value, 'Account number'),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Bank Account Name',
-              placeholder: 'Enter account holder name',
+              label: AppLocalizations.of(context)!.bankAccountName,
+              placeholder: AppLocalizations.of(context)!.enterAccountHolderName,
               controller: _accountNameController,
               validator: (value) => _validateRequired(value, 'Account name'),
             ),
@@ -143,7 +143,7 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
                   _confirmPolicy1 = value ?? false;
                 });
               },
-              label: 'I confirm that all information provided is accurate and complete',
+              label: AppLocalizations.of(context)!.confirmInfoAccurate,
             ),
             SizedBox(height: 12.h),
             _buildCheckbox(
@@ -153,7 +153,7 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
                   _confirmPolicy2 = value ?? false;
                 });
               },
-              label: 'I agree to the terms and conditions of vehicle rental services',
+              label: AppLocalizations.of(context)!.agreeToTerms,
             ),
             SizedBox(height: 12.h),
             _buildCheckbox(
@@ -163,7 +163,7 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
                   _confirmPolicy3 = value ?? false;
                 });
               },
-              label: 'I authorize the platform to use my banking information for payment processing',
+              label: AppLocalizations.of(context)!.authorizeBankingInfo,
             ),
             SizedBox(height: 32.h),
             Row(
@@ -179,7 +179,7 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
                       ),
                     ),
                     child: Text(
-                      'Back',
+                      AppLocalizations.of(context)!.back,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: AppColors.textPrimary,
                             fontWeight: FontWeight.w700,
@@ -200,7 +200,7 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
                       ),
                     ),
                     child: Text(
-                      'Submit',
+                      AppLocalizations.of(context)!.submit,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: AppColors.primaryWhite,
                             fontWeight: FontWeight.w700,

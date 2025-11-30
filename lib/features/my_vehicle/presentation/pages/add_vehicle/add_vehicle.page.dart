@@ -87,7 +87,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: CustomAppBar(
-          title: "Add Vehicle",
+          title: AppLocalizations.of(context)!.addVehicle,
           showBackButton: true,
           onBackPressed: () {
             Navigator.of(context, rootNavigator: true).pop();

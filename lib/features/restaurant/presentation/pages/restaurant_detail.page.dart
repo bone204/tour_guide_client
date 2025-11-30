@@ -195,7 +195,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
                           _buildTabContent(name, imageUrl),
                           SizedBox(height: 20.h),
                           PrimaryButton(
-                            title: 'Đặt bàn',
+                            title: AppLocalizations.of(context)!.bookTable,
                             onPressed: () => _navigateToTableList(context),
                             backgroundColor: AppColors.primaryBlue,
                             textColor: AppColors.textSecondary,

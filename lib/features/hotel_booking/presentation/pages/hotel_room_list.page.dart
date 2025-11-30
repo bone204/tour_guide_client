@@ -27,7 +27,7 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
 
     if (selectedRoomBookings.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Vui lòng chọn ít nhất 1 phòng')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectAtLeastOneRoom)),
       );
       return;
     }
@@ -71,7 +71,7 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Chọn phòng',
+        title: AppLocalizations.of(context)!.selectRoom,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),

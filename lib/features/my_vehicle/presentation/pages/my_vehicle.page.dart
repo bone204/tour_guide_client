@@ -85,7 +85,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
     }
 
     return CustomAppBar(
-      title: 'My Vehicle',
+      title: AppLocalizations.of(context)!.myVehicle,
       showBackButton: false,
       actions: approvedContractId != null
           ? [

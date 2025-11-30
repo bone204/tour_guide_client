@@ -7,7 +7,7 @@ extension MapDestinationExtension on _MapPageState {
     if (_isNavigating) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Đang điều hướng, không thể chọn điểm đến khác.')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.navigatingCannotSelect)),
         );
       }
       return;
@@ -28,7 +28,7 @@ extension MapDestinationExtension on _MapPageState {
     if (latitude == null || longitude == null) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Địa điểm chưa có dữ liệu vị trí.')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.locationNoData)),
         );
       }
       return;

@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
       SliverPersistentHeader(
         delegate: AnimatedSliverAppBar(
           statusBarHeight: MediaQuery.of(context).padding.top,
-          title: 'Traveline - Vietnam in your mind',
+          title: AppLocalizations.of(context)!.appTitle,
           subtitle: AppLocalizations.of(context)!.discoverSub,
           hintText: AppLocalizations.of(context)!.search,
         ),

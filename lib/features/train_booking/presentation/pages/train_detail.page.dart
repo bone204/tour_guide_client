@@ -58,7 +58,7 @@ class _TrainDetailPageState extends State<TrainDetailPage>
     if (selectedSeats.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Vui lòng chọn chỗ'),
+          content: Text(AppLocalizations.of(context)!.pleaseSelectSeatTrain),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
@@ -71,7 +71,7 @@ class _TrainDetailPageState extends State<TrainDetailPage>
     if (selectedSeatClass == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Vui lòng chọn hạng chỗ'),
+          content: Text(AppLocalizations.of(context)!.pleaseSelectSeatClassTrain),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
@@ -100,7 +100,7 @@ class _TrainDetailPageState extends State<TrainDetailPage>
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Chi tiết chuyến tàu',
+        title: AppLocalizations.of(context)!.trainTripDetails,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -528,7 +528,7 @@ class _TrainDetailPageState extends State<TrainDetailPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildInfoCard(
-            title: 'Thông tin chuyến tàu',
+            title: AppLocalizations.of(context)!.trainTripInfo,
             items: [
               {'icon': Icons.train_rounded, 'label': 'Số hiệu', 'value': widget.trainData['trainNumber']},
               {'icon': Icons.category_rounded, 'label': 'Loại tàu', 'value': widget.trainData['trainType']},
@@ -540,7 +540,7 @@ class _TrainDetailPageState extends State<TrainDetailPage>
           SizedBox(height: 16.h),
 
           _buildInfoCard(
-            title: 'Tiện nghi trên tàu',
+            title: AppLocalizations.of(context)!.trainAmenities,
             items: [
               {'icon': Icons.restaurant_rounded, 'label': 'Toa ăn uống', 'value': '✓'},
               {'icon': Icons.local_drink_outlined, 'label': 'Nước miễn phí', 'value': '✓'},
@@ -553,7 +553,7 @@ class _TrainDetailPageState extends State<TrainDetailPage>
           SizedBox(height: 16.h),
 
           _buildInfoCard(
-            title: 'Chính sách',
+            title: AppLocalizations.of(context)!.policy,
             items: [
               {'icon': Icons.cancel_outlined, 'label': 'Hủy vé', 'value': 'Trước 24h: 80%'},
               {'icon': Icons.swap_horiz_rounded, 'label': 'Đổi vé', 'value': 'Phí 50.000đ'},
@@ -643,7 +643,7 @@ class _TrainDetailPageState extends State<TrainDetailPage>
           top: false,
           child: PrimaryButton(
             onPressed: () {},
-            title: 'Chọn chỗ để tiếp tục',
+            title: AppLocalizations.of(context)!.selectSeatToContinue,
             backgroundColor: AppColors.textSubtitle.withOpacity(0.3),
           ),
         ),
@@ -696,7 +696,7 @@ class _TrainDetailPageState extends State<TrainDetailPage>
             Expanded(
               child: PrimaryButton(
                 onPressed: _navigateToConfirmation,
-                title: 'Tiếp tục',
+                title: AppLocalizations.of(context)!.continueButton,
               ),
             ),
           ],

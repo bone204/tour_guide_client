@@ -45,6 +45,8 @@
 
    "search": "Tìm kiếm...",
 
+  "searchButton": "Tìm kiếm",
+
    "accountAndSecurity": "Tài khoản & Bảo mật",
 
    "personalInfo": "Thông tin cá nhân",
@@ -175,5 +177,580 @@
 
   "flight": "Đặt Chuyến bay",
 
-  "train": "Đặt vé Tàu"
+  "train": "Đặt vé Tàu",
+
+  "error": "Lỗi",
+
+  "retry": "Thử lại",
+
+  "close": "Đóng",
+
+  "exitApp": "Thoát ứng dụng?",
+
+  "exitAppConfirm": "Bạn có chắc chắn muốn thoát ứng dụng?",
+
+  "cancel": "Hủy",
+
+  "exit": "Thoát",
+
+  "newsPage": "Trang Tin tức",
+
+  "errorPrefix": "Lỗi: ",
+
+  "pleaseSelectLocation": "Vui lòng chọn một địa điểm và đảm bảo đã bật vị trí.",
+
+  "navigatingCannotSelect": "Đang điều hướng, không thể chọn điểm đến khác.",
+
+  "locationNoData": "Địa điểm chưa có dữ liệu vị trí.",
+
+  "pleaseSelectSeat": "Vui lòng chọn ghế",
+
+  "pleaseSelectSeatClass": "Vui lòng chọn hạng ghế",
+
+  "maxSeatsSelected": "Chỉ được chọn tối đa {maxSeats} ghế",
+
+  "@maxSeatsSelected": {
+    "placeholders": {
+      "maxSeats": {
+        "type": "int"
+      }
+    }
+  },
+
+  "departureTrip": "Chuyến đi",
+
+  "returnTrip": "Chuyến về",
+
+  "bothTripsSelected": "Đã chọn cả 2 chuyến. Chức năng đặt vé khứ hồi đầy đủ sẽ hoàn thiện sau.",
+
+  "downloadingTicket": "Đang tải vé xuống máy...",
+
+  "sharingTicket": "Chia sẻ vé...",
+
+  "pleaseSelectAtLeastOneRoom": "Vui lòng chọn ít nhất 1 phòng",
+
+  "pleaseSelectDeliveryCompany": "Vui lòng chọn hãng giao hàng",
+
+  "pleaseSelectVehicleType": "Vui lòng chọn loại xe",
+
+  "pleaseSelectPickupPoint": "Vui lòng chọn điểm lấy hàng",
+
+  "pleaseSelectDeliveryPoint": "Vui lòng chọn điểm nhận hàng",
+
+  "errorSelectingImage": "Lỗi khi chọn ảnh: {error}",
+
+  "@errorSelectingImage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "takePhoto": "Chụp ảnh",
+
+  "selectFromGallery": "Chọn từ thư viện",
+
+  "selectPackageImage": "Chọn ảnh kiện hàng",
+
+  "packageImages": "Hình ảnh kiện hàng",
+
+  "addImage": "Thêm ảnh",
+
+  "bookingSuccess": "Đặt phòng thành công!",
+
+  "tableBookingSuccess": "Đặt bàn thành công!",
+
+  "pleaseConfirmPolicies": "Vui lòng xác nhận tất cả các chính sách",
+
+  "addLocation": "Thêm địa điểm",
+
+  "allLocationsAdded": "Đã thêm tất cả địa điểm vào ngày này",
+
+  "pleaseSelectSeatTrain": "Vui lòng chọn chỗ",
+
+  "pleaseSelectSeatClassTrain": "Vui lòng chọn hạng chỗ",
+
+  "maxSeatsSelectedTrain": "Chỉ được chọn tối đa {maxSeats} chỗ",
+
+  "@maxSeatsSelectedTrain": {
+    "placeholders": {
+      "maxSeats": {
+        "type": "int"
+      }
+    }
+  },
+
+  "pleaseSelectSeatBus": "Vui lòng chọn ghế",
+
+  "maxSeatsSelectedBus": "Chỉ được chọn tối đa {maxSeats} ghế",
+
+  "@maxSeatsSelectedBus": {
+    "placeholders": {
+      "maxSeats": {
+        "type": "int"
+      }
+    }
+  },
+
+  "somethingWentWrong": "Đã xảy ra lỗi",
+
+  "noRouteDefined": "Không có route được định nghĩa cho {routeName}",
+
+  "@noRouteDefined": {
+    "placeholders": {
+      "routeName": {
+        "type": "String"
+      }
+    }
+  },
+
+  "appTitle": "Traveline - Vietnam in your mind",
+
+  "bookingInfo": "Thông tin đặt phòng",
+
+  "confirmBooking": "Xác nhận đặt phòng",
+
+  "orderDetails": "Chi tiết đơn hàng",
+
+  "confirm": "Xác nhận",
+
+  "tableBookingInfo": "Thông tin đặt bàn",
+
+  "confirmTableBooking": "Xác nhận đặt bàn",
+
+  "fastDeliveryTitle": "Giao hàng nhanh",
+
+  "continueButton": "Tiếp tục",
+
+  "selectRoom": "Chọn phòng",
+
+  "busTicket": "Vé xe khách",
+
+  "backToHome": "Về trang chủ",
+
+  "downloadTicket": "Tải vé về máy",
+
+  "shareTicket": "Chia sẻ vé",
+
+  "selectBusTrip": "Chọn chuyến xe",
+
+  "selectRoundTrip": "Chọn vé khứ hồi",
+
+  "busTripDetails": "Chi tiết chuyến xe",
+
+  "busTripInfo": "Thông tin chuyến xe",
+
+  "amenities": "Tiện nghi",
+
+  "trainTicket": "Vé tàu hỏa",
+
+  "trainTripDetails": "Chi tiết chuyến tàu",
+
+  "trainTripInfo": "Thông tin chuyến tàu",
+
+  "trainAmenities": "Tiện nghi trên tàu",
+
+  "selectSeatToContinue": "Chọn chỗ để tiếp tục",
+
+  "flightTicket": "Vé máy bay",
+
+  "flightTripDetails": "Chi tiết chuyến bay",
+
+  "flightTripInfo": "Thông tin chuyến bay",
+
+  "flightAmenities": "Tiện nghi trên chuyến bay",
+
+  "selectSeatToContinueFlight": "Chọn ghế để tiếp tục",
+
+  "selectFlightTrip": "Chọn chuyến bay",
+
+  "selectTrainTrip": "Chọn chuyến tàu",
+
+  "selectProvince": "Chọn tỉnh/thành phố",
+
+  "createItinerary": "Tạo lộ trình",
+
+  "myVehicle": "Xe của tôi",
+
+  "vehicleRentalRegister": "Đăng ký thuê xe",
+
+  "addVehicle": "Thêm xe",
+
+  "businessRegisterPhoto": "Ảnh đăng ký kinh doanh",
+
+  "identificationPhoto": "Ảnh giấy tờ tùy thân",
+
+  "vehicleRegistrationFrontPhoto": "Ảnh mặt trước đăng ký xe",
+
+  "vehicleRegistrationBackPhoto": "Ảnh mặt sau đăng ký xe",
+
+  "travelAssistant": "Trợ lý du lịch Traveline",
+
+  "bookTable": "Đặt bàn",
+
+  "bookRoom": "Đặt phòng",
+
+  "confirmBookingTicket": "Xác nhận đặt vé",
+
+  "bookFlight": "Đặt vé máy bay",
+
+  "findFlight": "Tìm chuyến bay",
+
+  "bookTrain": "Đặt vé tàu hỏa",
+
+  "findTrain": "Tìm chuyến tàu",
+
+  "hotelList": "Danh sách khách sạn",
+
+  "findHotel": "Tìm khách sạn",
+
+  "selectTable": "Chọn bàn",
+
+  "restaurantList": "Danh sách nhà hàng",
+
+  "findRestaurant": "Tìm nhà hàng",
+
+  "confirmOrder": "Xác nhận đơn hàng",
+
+  "payment": "Thanh toán",
+
+  "bookBus": "Đặt vé xe khách",
+
+  "findBus": "Tìm chuyến xe",
+
+  "customer": "Khách hàng",
+
+  "phoneNumber": "Số điện thoại",
+
+  "table": "Bàn",
+
+  "numberOfPeople": "Số người",
+
+  "location": "Vị trí",
+
+  "time": "Thời gian",
+
+  "deposit": "Tiền đặt cọc",
+
+  "totalPayment": "Tổng thanh toán",
+
+  "pickupPoint": "Điểm lấy hàng",
+
+  "deliveryPoint": "Điểm nhận hàng",
+
+  "recipientName": "Tên người nhận",
+
+  "recipientPhone": "Số điện thoại người nhận",
+
+  "checkIn": "Nhận phòng",
+
+  "checkOut": "Trả phòng",
+
+  "numberOfNights": "Số đêm",
+
+  "totalRoomPrice": "Tổng tiền phòng",
+
+  "username": "Tên đăng nhập",
+
+  "password": "Mật khẩu",
+
+  "businessType": "Loại hình",
+
+  "businessName": "Tên doanh nghiệp",
+
+  "businessAddress": "Địa chỉ",
+
+  "taxCode": "Mã số thuế",
+
+  "fullName": "Họ và tên",
+
+  "identificationNumber": "CMND/CCCD",
+
+  "departurePoint": "Điểm đi",
+
+  "arrivalPoint": "Điểm đến",
+
+  "departureDate": "Ngày đi",
+
+  "returnDate": "Ngày về",
+
+  "numberOfPassengers": "Số hành khách",
+
+  "bookingTime": "Thời gian đặt bàn",
+
+  "foodType": "Loại đồ ăn",
+
+  "checkInDate": "Ngày nhận phòng",
+
+  "checkOutDate": "Ngày trả phòng",
+
+  "departureStation": "Ga đi",
+
+  "arrivalStation": "Ga đến",
+
+  "departureAirport": "Sân bay đi",
+
+  "arrivalAirport": "Sân bay đến",
+
+  "startDate": "Ngày bắt đầu",
+
+  "endDate": "Ngày kết thúc",
+
+  "deliveryRequirements": "Yêu cầu khi gửi",
+
+  "bankName": "Ngân hàng",
+
+  "bankAccountNumber": "Số tài khoản",
+
+  "bankAccountName": "Chủ tài khoản",
+
+  "confirmInfoAccurate": "Tôi xác nhận tất cả thông tin đã cung cấp là chính xác và đầy đủ",
+
+  "agreeToTerms": "Tôi đồng ý với các điều khoản và điều kiện của dịch vụ thuê xe",
+
+  "authorizeBankingInfo": "Tôi ủy quyền cho nền tảng sử dụng thông tin ngân hàng của tôi để xử lý thanh toán",
+
+  "fullNameLabel": "Họ và tên",
+
+  "cmndCccd": "CMND/CCCD",
+
+  "businessTypeLabel": "Loại hình",
+
+  "companyName": "Tên doanh nghiệp",
+
+  "address": "Địa chỉ",
+
+  "bank": "Ngân hàng",
+
+  "accountHolder": "Chủ tài khoản",
+
+  "accountNumber": "Số tài khoản",
+
+  "note": "Ghi chú",
+
+  "rejectionReason": "Lý do từ chối",
+
+  "lastUpdated": "Cập nhật lần cuối",
+
+  "vehicleType": "Loại xe",
+
+  "brandAndModel": "Thương hiệu & dòng xe",
+
+  "color": "Màu sắc",
+
+  "numberOfSeats": "Số chỗ ngồi",
+
+  "pricePerHour": "Giá theo giờ",
+
+  "pricePerDay": "Giá theo ngày",
+
+  "totalRentals": "Tổng lượt thuê",
+
+  "averageRating": "Đánh giá trung bình",
+
+  "approvalStatus": "Trạng thái duyệt",
+
+  "available": "Khả dụng",
+
+  "requirements": "Yêu cầu",
+
+  "rejectionReasonLabel": "Lý do bị từ chối",
+
+  "selectPickupPoint": "Chọn điểm lấy hàng",
+
+  "selectDeliveryPoint": "Chọn điểm nhận hàng",
+
+  "enterRecipientName": "Nhập tên người nhận",
+
+  "enterRecipientPhone": "Nhập số điện thoại",
+
+  "enterUsername": "Nhập tên đăng nhập",
+
+  "enterPassword": "Nhập mật khẩu",
+
+  "enterBusinessName": "Nhập tên doanh nghiệp",
+
+  "enterBusinessAddress": "Nhập địa chỉ",
+
+  "enterTaxCode": "Nhập mã số thuế",
+
+  "enterFullName": "Nhập họ và tên",
+
+  "enterEmail": "Nhập email",
+
+  "enterPhoneNumber": "Nhập số điện thoại",
+
+  "enterIdNumber": "Nhập số CMND/CCCD",
+
+  "selectDeparturePoint": "Chọn điểm đi",
+
+  "selectArrivalPoint": "Chọn điểm đến",
+
+  "selectDepartureDate": "Chọn ngày đi",
+
+  "selectReturnDate": "Chọn ngày về",
+
+  "selectDateAndTime": "Chọn ngày và giờ",
+
+  "selectLocation": "Chọn vị trí",
+
+  "selectCheckInDate": "Chọn ngày nhận phòng",
+
+  "selectCheckOutDate": "Chọn ngày trả phòng",
+
+  "selectPlace": "Chọn địa điểm",
+
+  "selectDepartureStation": "Chọn ga đi",
+
+  "selectArrivalStation": "Chọn ga đến",
+
+  "selectDepartureAirport": "Chọn sân bay đi",
+
+  "selectArrivalAirport": "Chọn sân bay đến",
+
+  "enterAccountNumber": "Nhập số tài khoản",
+
+  "enterAccountHolderName": "Nhập tên chủ tài khoản",
+
+  "enterPricePerHour": "Nhập giá theo giờ",
+
+  "enterPricePerDay": "Nhập giá theo ngày",
+
+  "enterRegistrationNumber": "Nhập số đăng ký",
+
+  "exampleBrand": "VD: Honda, Toyota",
+
+  "exampleModel": "VD: City, Wave",
+
+  "exampleColor": "VD: Đen, Trắng",
+
+  "itineraryHint": "VD: Khám phá Đà Nẵng 3 ngày",
+
+  "enterFullNameHint": "Nhập họ và tên",
+
+  "enterPhoneNumberHint": "Nhập số điện thoại",
+
+  "car": "Xe hơi",
+
+  "motorbike": "Xe máy",
+
+  "personal": "Cá nhân",
+
+  "company": "Công ty",
+
+  "vehicleRegistrationNumber": "Số đăng ký xe",
+
+  "vehicleBrand": "Thương hiệu xe",
+
+  "vehicleModel": "Dòng xe",
+
+  "vehicleColor": "Màu xe",
+
+  "contractOwnerInfo": "Thông tin chủ hợp đồng",
+
+  "businessInfo": "Thông tin kinh doanh",
+
+  "bankingInfo": "Thông tin ngân hàng",
+
+  "notesAndStatus": "Ghi chú & Trạng thái",
+
+  "vehicleInfo": "Thông tin xe",
+
+  "priceAndPerformance": "Giá & hiệu suất",
+
+  "statusAndRequirements": "Tình trạng & yêu cầu",
+
+  "personal": "Cá nhân",
+
+  "business": "Doanh nghiệp",
+
+  "numberOfRooms": "Số phòng",
+
+  "numberOfGuests": "Số khách",
+
+  "licensePlate": "Biển số xe",
+
+  "pricePerHourVnd": "Giá theo giờ (VND)",
+
+  "pricePerDayVnd": "Giá theo ngày (VND)",
+
+  "fieldRequired": "{fieldName} là bắt buộc",
+  "@fieldRequired": {
+    "placeholders": {
+      "fieldName": {}
+    }
+  },
+
+  "pleaseEnterValidPrice": "Vui lòng nhập giá hợp lệ",
+
+  "emailRequired": "Email là bắt buộc",
+
+  "pleaseEnterValidEmail": "Vui lòng nhập email hợp lệ",
+
+  "phoneRequired": "Số điện thoại là bắt buộc",
+
+  "pleaseEnterValidPhone": "Vui lòng nhập số điện thoại 10 chữ số hợp lệ",
+
+  "pleaseSelectBank": "Vui lòng chọn ngân hàng",
+
+  "pleaseEnterUsername": "Vui lòng nhập tên đăng nhập",
+
+  "usernameMinLength": "Tên đăng nhập phải có ít nhất 3 ký tự",
+
+  "usernameMaxLength": "Tên đăng nhập không được vượt quá 20 ký tự",
+
+  "usernameInvalid": "Tên đăng nhập chỉ gồm chữ, số và gạch dưới",
+
+  "pleaseEnterPassword": "Vui lòng nhập mật khẩu",
+
+  "pleaseConfirmPassword": "Vui lòng xác nhận mật khẩu",
+
+  "passwordMismatch": "Mật khẩu không khớp",
+
+  "pleaseEnterEmailOrUsername": "Vui lòng nhập email hoặc tên đăng nhập",
+
+  "pleaseEnterValidEmailOrUsername": "Vui lòng nhập email hoặc tên đăng nhập hợp lệ",
+
+  "pleaseEnterRecipientName": "Vui lòng nhập tên người nhận",
+
+  "pleaseEnterPhoneNumber": "Vui lòng nhập số điện thoại",
+
+  "phoneNumberInvalid": "Số điện thoại không hợp lệ",
+
+  "approved": "Đã duyệt",
+
+  "pending": "Đang duyệt",
+
+  "rejected": "Bị từ chối",
+
+  "inactive": "Ngưng",
+
+  "available": "Sẵn sàng",
+
+  "rented": "Đang thuê",
+
+  "maintenance": "Bảo trì",
+
+  "locked": "Tạm khóa",
+
+  "rentalVehicle": "Xe cho thuê",
+
+  "rentalVehicleDefault": "Xe cho thuê",
+
+  "next": "Tiếp theo",
+
+  "back": "Quay lại",
+
+  "submit": "Gửi",
+
+  "start": "Bắt đầu",
+
+  "end": "Kết thúc",
+
+  "finish": "Hoàn tất",
+
+  "itinerary": "Lộ trình",
+
+  "hotel": "Khách sạn"
 }

@@ -60,29 +60,29 @@ class _IdentifyInfoStepState extends State<IdentifyInfoStep> {
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email is required';
+      return AppLocalizations.of(context)!.emailRequired;
     }
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(value)) {
-      return 'Please enter a valid email';
+      return AppLocalizations.of(context)!.pleaseEnterValidEmail;
     }
     return null;
   }
 
   String? _validatePhone(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Phone number is required';
+      return AppLocalizations.of(context)!.phoneRequired;
     }
     final phoneRegex = RegExp(r'^[0-9]{10}$');
     if (!phoneRegex.hasMatch(value)) {
-      return 'Please enter a valid 10-digit phone number';
+      return AppLocalizations.of(context)!.pleaseEnterValidPhone;
     }
     return null;
   }
 
   String? _validateRequired(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
-      return '$fieldName is required';
+      return AppLocalizations.of(context)!.fieldRequired(fieldName);
     }
     return null;
   }
@@ -109,37 +109,37 @@ class _IdentifyInfoStepState extends State<IdentifyInfoStep> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             CustomTextField(
-              label: 'Full Name',
-              placeholder: 'Enter your full name',
+              label: AppLocalizations.of(context)!.fullName,
+              placeholder: AppLocalizations.of(context)!.enterFullName,
               controller: _fullNameController,
               validator: (value) => _validateRequired(value, 'Full name'),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Email',
-              placeholder: 'Enter your email',
+              label: AppLocalizations.of(context)!.email,
+              placeholder: AppLocalizations.of(context)!.enterEmail,
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               validator: _validateEmail,
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Phone Number',
-              placeholder: 'Enter your phone number',
+              label: AppLocalizations.of(context)!.phoneNumber,
+              placeholder: AppLocalizations.of(context)!.enterPhoneNumber,
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               validator: _validatePhone,
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Identification Number',
-              placeholder: 'Enter your ID number',
+              label: AppLocalizations.of(context)!.identificationNumber,
+              placeholder: AppLocalizations.of(context)!.enterIdNumber,
               controller: _idNumberController,
               validator: (value) => _validateRequired(value, 'Identification number'),
             ),
             SizedBox(height: 20.h),
             ImagePickerField(
-              title: 'Identification Photo',
+              title: AppLocalizations.of(context)!.identificationPhoto,
               imagePath: _idPhotoPath,
               onImageSelected: (path) {
                 setState(() {
@@ -158,7 +158,7 @@ class _IdentifyInfoStepState extends State<IdentifyInfoStep> {
                 ),
               ),
               child: Text(
-                'Next',
+                AppLocalizations.of(context)!.next,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.primaryWhite,
                       fontWeight: FontWeight.w700,

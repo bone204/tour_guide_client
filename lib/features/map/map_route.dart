@@ -269,8 +269,8 @@ extension MapRouteExtension on _MapPageState {
     if (_selectedDestination == null || _currentPosition == null) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Vui lòng chọn một địa điểm và đảm bảo đã bật vị trí.'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.pleaseSelectLocation),
             duration: Duration(seconds: 2),
           ),
         );

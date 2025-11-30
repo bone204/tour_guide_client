@@ -86,7 +86,7 @@ class _TrainSeatLayoutWidgetState extends State<TrainSeatLayoutWidget> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Chỉ được chọn tối đa ${widget.maxSeats} chỗ'),
+            content: Text(AppLocalizations.of(context)!.maxSeatsSelectedTrain(widget.maxSeats)),
             behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 2),
           ),

@@ -34,13 +34,13 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
     if (_formKey.currentState?.validate() ?? false) {
       if (_pickupLocation == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Vui lòng chọn điểm lấy hàng')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectPickupPoint)),
         );
         return;
       }
       if (_deliveryLocation == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Vui lòng chọn điểm nhận hàng')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectDeliveryPoint)),
         );
         return;
       }
@@ -65,7 +65,7 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Giao hàng nhanh',
+        title: AppLocalizations.of(context)!.fastDeliveryTitle,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -81,8 +81,8 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
                 
                 // Pickup location
                 LocationField(
-                  label: 'Điểm lấy hàng',
-                  placeholder: 'Chọn điểm lấy hàng',
+                  label: AppLocalizations.of(context)!.pickupPoint,
+                  placeholder: AppLocalizations.of(context)!.selectPickupPoint,
                   locationText: _pickupLocation,
                   onTap: () {
                     // TODO: Implement location picker
@@ -101,8 +101,8 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
                 
                 // Delivery location
                 LocationField(
-                  label: 'Điểm nhận hàng',
-                  placeholder: 'Chọn điểm nhận hàng',
+                  label: AppLocalizations.of(context)!.deliveryPoint,
+                  placeholder: AppLocalizations.of(context)!.selectDeliveryPoint,
                   locationText: _deliveryLocation,
                   onTap: () {
                     // TODO: Implement location picker
@@ -121,13 +121,13 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
                 
                 // Receiver name
                 CustomTextField(
-                  label: 'Tên người nhận',
-                  placeholder: 'Nhập tên người nhận',
+                  label: AppLocalizations.of(context)!.recipientName,
+                  placeholder: AppLocalizations.of(context)!.enterRecipientName,
                   controller: _receiverNameController,
                   prefixIconData: Icons.person_outline,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Vui lòng nhập tên người nhận';
+                      return AppLocalizations.of(context)!.pleaseEnterRecipientName;
                     }
                     return null;
                   },
@@ -137,17 +137,17 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
                 
                 // Receiver phone
                 CustomTextField(
-                  label: 'Số điện thoại người nhận',
-                  placeholder: 'Nhập số điện thoại',
+                  label: AppLocalizations.of(context)!.recipientPhone,
+                  placeholder: AppLocalizations.of(context)!.enterRecipientPhone,
                   controller: _receiverPhoneController,
                   keyboardType: TextInputType.phone,
                   prefixIconData: Icons.phone_outlined,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Vui lòng nhập số điện thoại';
+                      return AppLocalizations.of(context)!.pleaseEnterPhoneNumber;
                     }
                     if (value.length < 10) {
-                      return 'Số điện thoại không hợp lệ';
+                      return AppLocalizations.of(context)!.phoneNumberInvalid;
                     }
                     return null;
                   },
@@ -157,7 +157,7 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
                 
                 // Continue button
                 PrimaryButton(
-                  title: 'Tiếp tục',
+                  title: AppLocalizations.of(context)!.continueButton,
                   onPressed: _navigateToDetailPage,
                   backgroundColor: AppColors.primaryBlue,
                   textColor: AppColors.textSecondary,

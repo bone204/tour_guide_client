@@ -80,7 +80,7 @@ class _FlightBookingConfirmationPageState extends State<FlightBookingConfirmatio
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Xác nhận đặt vé',
+        title: AppLocalizations.of(context)!.confirmBookingTicket,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -739,7 +739,7 @@ class _FlightBookingConfirmationPageState extends State<FlightBookingConfirmatio
             Expanded(
               child: PrimaryButton(
                 onPressed: _confirmBooking,
-                title: 'Xác nhận đặt vé',
+                title: AppLocalizations.of(context)!.confirmBookingTicket,
               ),
             ),
           ],

@@ -30,7 +30,7 @@ class VehicleTypeSelector extends StatelessWidget {
               child: _buildTypeOption(
                 context: context,
                 type: 'car',
-                label: 'Car',
+                label: AppLocalizations.of(context)!.car,
                 icon: Icons.directions_car,
                 isSelected: selectedType == 'car',
               ),
@@ -40,7 +40,7 @@ class VehicleTypeSelector extends StatelessWidget {
               child: _buildTypeOption(
                 context: context,
                 type: 'motorbike',
-                label: 'Motorbike',
+                label: AppLocalizations.of(context)!.motorbike,
                 icon: Icons.two_wheeler,
                 isSelected: selectedType == 'motorbike',
               ),

@@ -118,7 +118,7 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Tìm khách sạn',
+        title: AppLocalizations.of(context)!.findHotel,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -142,8 +142,8 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
             
             // Check-in date
             DatePickerField(
-              label: 'Ngày nhận phòng',
-              placeholder: 'Chọn ngày nhận phòng',
+              label: AppLocalizations.of(context)!.checkInDate,
+              placeholder: AppLocalizations.of(context)!.selectCheckInDate,
               initialDate: checkInDate,
               onChanged: (date) {
                 setState(() => checkInDate = date);
@@ -163,8 +163,8 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
             
             // Check-out date
             DatePickerField(
-              label: 'Ngày trả phòng',
-              placeholder: 'Chọn ngày trả phòng',
+              label: AppLocalizations.of(context)!.checkOutDate,
+              placeholder: AppLocalizations.of(context)!.selectCheckOutDate,
               initialDate: checkOutDate,
               onChanged: (date) {
                 setState(() => checkOutDate = date);
@@ -184,7 +184,7 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
             
             // Number of rooms
             _buildCounterField(
-              'Số phòng',
+              AppLocalizations.of(context)!.numberOfRooms,
               numberOfRooms,
               () => setState(() => numberOfRooms++),
               () => setState(() {
@@ -196,7 +196,7 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
             
             // Number of guests
             _buildCounterField(
-              'Số khách',
+              AppLocalizations.of(context)!.numberOfGuests,
               numberOfGuests,
               () => setState(() => numberOfGuests++),
               () => setState(() {
@@ -208,8 +208,8 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
             
             // Location
             LocationField(
-              label: 'Địa điểm',
-              placeholder: 'Chọn địa điểm',
+              label: AppLocalizations.of(context)!.location,
+              placeholder: AppLocalizations.of(context)!.selectPlace,
               locationText: selectedLocation,
               onTap: _showLocationPicker,
               prefixIcon: SvgPicture.asset(
@@ -227,7 +227,7 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
             
             // Search button
             PrimaryButton(
-              title: 'Tìm kiếm',
+              title: AppLocalizations.of(context)!.searchButton,
               onPressed: () => _navigateToHotelList(context),
               backgroundColor: AppColors.primaryBlue,
               textColor: AppColors.textSecondary,

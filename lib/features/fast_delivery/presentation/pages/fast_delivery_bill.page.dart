@@ -66,7 +66,7 @@ class _FastDeliveryBillPageState extends State<FastDeliveryBillPage> {
         SizedBox(
           width: double.infinity,
           child: PrimaryButton(
-            title: 'Về trang chủ',
+            title: AppLocalizations.of(context)!.backToHome,
             onPressed: () {
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).popUntil((route) => route.isFirst);
@@ -86,7 +86,7 @@ class _FastDeliveryBillPageState extends State<FastDeliveryBillPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Xác nhận đơn hàng',
+        title: AppLocalizations.of(context)!.confirmOrder,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -585,7 +585,7 @@ class _FastDeliveryBillPageState extends State<FastDeliveryBillPage> {
             Expanded(
               child: PrimaryButton(
                 onPressed: _confirmPayment,
-                title: 'Thanh toán',
+                title: AppLocalizations.of(context)!.payment,
               ),
             ),
           ],

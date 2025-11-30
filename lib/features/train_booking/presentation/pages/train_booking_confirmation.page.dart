@@ -80,7 +80,7 @@ class _TrainBookingConfirmationPageState extends State<TrainBookingConfirmationP
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Xác nhận đặt vé',
+        title: AppLocalizations.of(context)!.confirmBookingTicket,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -737,7 +737,7 @@ class _TrainBookingConfirmationPageState extends State<TrainBookingConfirmationP
             Expanded(
               child: PrimaryButton(
                 onPressed: _confirmBooking,
-                title: 'Xác nhận đặt vé',
+                title: AppLocalizations.of(context)!.confirmBookingTicket,
               ),
             ),
           ],

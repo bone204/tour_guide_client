@@ -123,7 +123,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
                           .read<GetDestinationByIdCubit>()
                           .getDestinationById(widget.destinationId);
                     },
-                    child: Text('Retry'),
+                    child: Text(AppLocalizations.of(context)!.retry),
                   ),
                 ],
               ),
@@ -151,7 +151,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
 
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
-          body: Center(child: Text('Something went wrong')),
+          body: Center(child: Text(AppLocalizations.of(context)!.somethingWentWrong)),
         );
       },
     );

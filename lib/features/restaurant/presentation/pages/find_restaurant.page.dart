@@ -117,7 +117,7 @@ class _FindRestaurantPageState extends State<FindRestaurantPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Tìm nhà hàng',
+        title: AppLocalizations.of(context)!.findRestaurant,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -138,8 +138,8 @@ class _FindRestaurantPageState extends State<FindRestaurantPage> {
             ),
             SizedBox(height: 24.h),
             DateHourPickerField(
-              label: 'Thời gian đặt bàn',
-              placeholder: 'Chọn ngày và giờ',
+              label: AppLocalizations.of(context)!.bookingTime,
+              placeholder: AppLocalizations.of(context)!.selectDateAndTime,
               initialDateTime: checkInDateTime,
               onChanged: (dateTime) {
                 setState(() => checkInDateTime = dateTime);
@@ -154,7 +154,7 @@ class _FindRestaurantPageState extends State<FindRestaurantPage> {
             ),
             SizedBox(height: 16.h),
             FoodTypeDropdown(
-              label: 'Loại đồ ăn',
+              label: AppLocalizations.of(context)!.foodType,
               selectedType: selectedFoodType,
               onChanged: (type) {
                 setState(() => selectedFoodType = type);
@@ -169,8 +169,8 @@ class _FindRestaurantPageState extends State<FindRestaurantPage> {
             ),
             SizedBox(height: 16.h),
             LocationField(
-              label: 'Vị trí',
-              placeholder: 'Chọn vị trí',
+              label: AppLocalizations.of(context)!.location,
+              placeholder: AppLocalizations.of(context)!.selectLocation,
               locationText: selectedLocation,
               onTap: _showLocationPicker,
               prefixIcon: SvgPicture.asset(
@@ -182,7 +182,7 @@ class _FindRestaurantPageState extends State<FindRestaurantPage> {
             ),
             SizedBox(height: 32.h),
             PrimaryButton(
-              title: 'Tìm kiếm',
+              title: AppLocalizations.of(context)!.searchButton,
               onPressed: () => _navigateToRestaurantList(context),
               backgroundColor: AppColors.primaryBlue,
               textColor: AppColors.textSecondary,

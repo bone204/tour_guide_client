@@ -174,7 +174,7 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Đặt vé tàu hỏa',
+        title: AppLocalizations.of(context)!.bookTrain,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -200,8 +200,8 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
 
             // From Station
             LocationField(
-              label: 'Ga đi',
-              placeholder: 'Chọn ga đi',
+              label: AppLocalizations.of(context)!.departureStation,
+              placeholder: AppLocalizations.of(context)!.selectDepartureStation,
               locationText: fromStation,
               onTap: () => _showStationPicker(true),
               prefixIcon: SvgPicture.asset(
@@ -216,8 +216,8 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
 
             // To Station
             LocationField(
-              label: 'Ga đến',
-              placeholder: 'Chọn ga đến',
+              label: AppLocalizations.of(context)!.arrivalStation,
+              placeholder: AppLocalizations.of(context)!.selectArrivalStation,
               locationText: toStation,
               onTap: () => _showStationPicker(false),
               prefixIcon: SvgPicture.asset(
@@ -232,8 +232,8 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
 
             // Departure Date Picker
             DatePickerField(
-              label: 'Ngày đi',
-              placeholder: 'Chọn ngày đi',
+              label: AppLocalizations.of(context)!.departureDate,
+              placeholder: AppLocalizations.of(context)!.selectDepartureDate,
               initialDate: selectedDate,
               onChanged: (date) {
                 setState(() => selectedDate = date);
@@ -250,8 +250,8 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
             if (selectedTripType == TripType.roundTrip) ...[
               SizedBox(height: 16.h),
               DatePickerField(
-                label: 'Ngày về',
-                placeholder: 'Chọn ngày về',
+                label: AppLocalizations.of(context)!.returnDate,
+                placeholder: AppLocalizations.of(context)!.selectReturnDate,
                 initialDate: returnDate,
                 onChanged: (date) {
                   setState(() => returnDate = date);
@@ -269,7 +269,7 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
 
             // Passenger Count
             PassengerCounter(
-              label: 'Số hành khách',
+              label: AppLocalizations.of(context)!.numberOfPassengers,
               count: passengerCount,
               min: 1,
               max: 10,
@@ -282,7 +282,7 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
 
             // Search Button
             PrimaryButton(
-              title: 'Tìm chuyến tàu',
+              title: AppLocalizations.of(context)!.findTrain,
               onPressed: _navigateToTrainList,
               backgroundColor: AppColors.primaryBlue,
               textColor: AppColors.textSecondary,

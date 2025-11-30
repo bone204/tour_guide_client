@@ -49,7 +49,7 @@ class _DocumentationStepState extends State<DocumentationStep> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ImagePickerField(
-            title: 'Vehicle Registration Front Photo',
+            title: AppLocalizations.of(context)!.vehicleRegistrationFrontPhoto,
             imagePath: _frontPhotoPath,
             onImageSelected: (path) {
               setState(() {
@@ -59,7 +59,7 @@ class _DocumentationStepState extends State<DocumentationStep> {
           ),
           SizedBox(height: 20.h),
           ImagePickerField(
-            title: 'Vehicle Registration Back Photo',
+            title: AppLocalizations.of(context)!.vehicleRegistrationBackPhoto,
             imagePath: _backPhotoPath,
             onImageSelected: (path) {
               setState(() {

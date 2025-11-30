@@ -70,7 +70,7 @@ class _TrainTicketPageState extends State<TrainTicketPage> with SingleTickerProv
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Vé tàu hỏa',
+        title: AppLocalizations.of(context)!.trainTicket,
         showBackButton: true,
         onBackPressed: () {
           Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
@@ -104,7 +104,7 @@ class _TrainTicketPageState extends State<TrainTicketPage> with SingleTickerProv
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
                   },
-                  title: 'Về trang chủ',
+                  title: AppLocalizations.of(context)!.backToHome,
                 ),
                 SizedBox(height: 16.h),
               ],
@@ -616,7 +616,7 @@ class _TrainTicketPageState extends State<TrainTicketPage> with SingleTickerProv
                     children: [
                       const Icon(Icons.download_done_rounded, color: Colors.white),
                       SizedBox(width: 8.w),
-                      const Text('Đang tải vé xuống máy...'),
+                      Text(AppLocalizations.of(context)!.downloadingTicket),
                     ],
                   ),
                   behavior: SnackBarBehavior.floating,
@@ -627,7 +627,7 @@ class _TrainTicketPageState extends State<TrainTicketPage> with SingleTickerProv
                 ),
               );
             },
-            title: 'Tải vé về máy',
+            title: AppLocalizations.of(context)!.downloadTicket,
           ),
         ),
         SizedBox(width: 12.w),
@@ -641,7 +641,7 @@ class _TrainTicketPageState extends State<TrainTicketPage> with SingleTickerProv
                     children: [
                       const Icon(Icons.share_rounded, color: Colors.white),
                       SizedBox(width: 8.w),
-                      const Text('Chia sẻ vé...'),
+                      Text(AppLocalizations.of(context)!.sharingTicket),
                     ],
                   ),
                   behavior: SnackBarBehavior.floating,
@@ -652,7 +652,7 @@ class _TrainTicketPageState extends State<TrainTicketPage> with SingleTickerProv
                 ),
               );
             },
-            title: 'Chia sẻ vé',
+            title: AppLocalizations.of(context)!.shareTicket,
           ),
         ),
       ],

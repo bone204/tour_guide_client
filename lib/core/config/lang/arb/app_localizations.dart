@@ -128,7 +128,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterPassword.
   ///
   /// In en, this message translates to:
-  /// **'Enter password'**
+  /// **'Enter Password'**
   String get enterPassword;
 
   /// No description provided for @forgotPassword.
@@ -176,7 +176,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterUsername.
   ///
   /// In en, this message translates to:
-  /// **'Enter username'**
+  /// **'Enter Username'**
   String get enterUsername;
 
   /// No description provided for @email.
@@ -188,7 +188,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterEmail.
   ///
   /// In en, this message translates to:
-  /// **'Enter email'**
+  /// **'Enter Your Email'**
   String get enterEmail;
 
   /// No description provided for @confirmPassword.
@@ -232,6 +232,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search...'**
   String get search;
+
+  /// No description provided for @searchButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchButton;
 
   /// No description provided for @accountAndSecurity.
   ///
@@ -422,13 +428,13 @@ abstract class AppLocalizations {
   /// No description provided for @startDate.
   ///
   /// In en, this message translates to:
-  /// **'Start date'**
+  /// **'Start Date'**
   String get startDate;
 
   /// No description provided for @endDate.
   ///
   /// In en, this message translates to:
-  /// **'End date'**
+  /// **'End Date'**
   String get endDate;
 
   /// No description provided for @selectDateAndHour.
@@ -578,7 +584,7 @@ abstract class AppLocalizations {
   /// No description provided for @totalPayment.
   ///
   /// In en, this message translates to:
-  /// **'Total payment'**
+  /// **'Total Payment'**
   String get totalPayment;
 
   /// No description provided for @choosePayment.
@@ -628,6 +634,1524 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Train Booking'**
   String get train;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @exitApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit app?'**
+  String get exitApp;
+
+  /// No description provided for @exitAppConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to exit the app?'**
+  String get exitAppConfirm;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @exit.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get exit;
+
+  /// No description provided for @newsPage.
+  ///
+  /// In en, this message translates to:
+  /// **'News Page'**
+  String get newsPage;
+
+  /// No description provided for @errorPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: '**
+  String get errorPrefix;
+
+  /// No description provided for @pleaseSelectLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a location and make sure location is enabled.'**
+  String get pleaseSelectLocation;
+
+  /// No description provided for @navigatingCannotSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Currently navigating, cannot select another destination.'**
+  String get navigatingCannotSelect;
+
+  /// No description provided for @locationNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'Location does not have position data.'**
+  String get locationNoData;
+
+  /// No description provided for @pleaseSelectSeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a seat'**
+  String get pleaseSelectSeat;
+
+  /// No description provided for @pleaseSelectSeatClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a seat class'**
+  String get pleaseSelectSeatClass;
+
+  /// No description provided for @maxSeatsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum {maxSeats} seats can be selected'**
+  String maxSeatsSelected(int maxSeats);
+
+  /// No description provided for @departureTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure'**
+  String get departureTrip;
+
+  /// No description provided for @returnTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Return'**
+  String get returnTrip;
+
+  /// No description provided for @bothTripsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Both trips selected. Full round-trip booking feature will be completed later.'**
+  String get bothTripsSelected;
+
+  /// No description provided for @downloadingTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloading ticket...'**
+  String get downloadingTicket;
+
+  /// No description provided for @sharingTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing ticket...'**
+  String get sharingTicket;
+
+  /// No description provided for @pleaseSelectAtLeastOneRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least 1 room'**
+  String get pleaseSelectAtLeastOneRoom;
+
+  /// No description provided for @pleaseSelectDeliveryCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a delivery company'**
+  String get pleaseSelectDeliveryCompany;
+
+  /// No description provided for @pleaseSelectVehicleType.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a vehicle type'**
+  String get pleaseSelectVehicleType;
+
+  /// No description provided for @pleaseSelectPickupPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a pickup point'**
+  String get pleaseSelectPickupPoint;
+
+  /// No description provided for @pleaseSelectDeliveryPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a delivery point'**
+  String get pleaseSelectDeliveryPoint;
+
+  /// No description provided for @errorSelectingImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Error selecting image: {error}'**
+  String errorSelectingImage(String error);
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get takePhoto;
+
+  /// No description provided for @selectFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Select from gallery'**
+  String get selectFromGallery;
+
+  /// No description provided for @selectPackageImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select package image'**
+  String get selectPackageImage;
+
+  /// No description provided for @packageImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Package images'**
+  String get packageImages;
+
+  /// No description provided for @addImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add image'**
+  String get addImage;
+
+  /// No description provided for @bookingSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking successful!'**
+  String get bookingSuccess;
+
+  /// No description provided for @tableBookingSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Table booking successful!'**
+  String get tableBookingSuccess;
+
+  /// No description provided for @pleaseConfirmPolicies.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm all policies'**
+  String get pleaseConfirmPolicies;
+
+  /// No description provided for @addLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add location'**
+  String get addLocation;
+
+  /// No description provided for @allLocationsAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'All locations have been added to this day'**
+  String get allLocationsAdded;
+
+  /// No description provided for @pleaseSelectSeatTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a seat'**
+  String get pleaseSelectSeatTrain;
+
+  /// No description provided for @pleaseSelectSeatClassTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a seat class'**
+  String get pleaseSelectSeatClassTrain;
+
+  /// No description provided for @maxSeatsSelectedTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum {maxSeats} seats can be selected'**
+  String maxSeatsSelectedTrain(int maxSeats);
+
+  /// No description provided for @pleaseSelectSeatBus.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a seat'**
+  String get pleaseSelectSeatBus;
+
+  /// No description provided for @maxSeatsSelectedBus.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum {maxSeats} seats can be selected'**
+  String maxSeatsSelectedBus(int maxSeats);
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get somethingWentWrong;
+
+  /// No description provided for @noRouteDefined.
+  ///
+  /// In en, this message translates to:
+  /// **'No route defined for {routeName}'**
+  String noRouteDefined(String routeName);
+
+  /// No description provided for @appTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Traveline - Vietnam in your mind'**
+  String get appTitle;
+
+  /// No description provided for @bookingInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Information'**
+  String get bookingInfo;
+
+  /// No description provided for @confirmBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Booking'**
+  String get confirmBooking;
+
+  /// No description provided for @orderDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Details'**
+  String get orderDetails;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @tableBookingInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Table Booking Information'**
+  String get tableBookingInfo;
+
+  /// No description provided for @confirmTableBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Table Booking'**
+  String get confirmTableBooking;
+
+  /// No description provided for @fastDeliveryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast Delivery'**
+  String get fastDeliveryTitle;
+
+  /// No description provided for @continueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueButton;
+
+  /// No description provided for @selectRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Room'**
+  String get selectRoom;
+
+  /// No description provided for @busTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus Ticket'**
+  String get busTicket;
+
+  /// No description provided for @backToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get backToHome;
+
+  /// No description provided for @downloadTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Ticket'**
+  String get downloadTicket;
+
+  /// No description provided for @shareTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Ticket'**
+  String get shareTicket;
+
+  /// No description provided for @selectBusTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Bus Trip'**
+  String get selectBusTrip;
+
+  /// No description provided for @selectRoundTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Round Trip'**
+  String get selectRoundTrip;
+
+  /// No description provided for @busTripDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus Trip Details'**
+  String get busTripDetails;
+
+  /// No description provided for @busTripInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus Trip Information'**
+  String get busTripInfo;
+
+  /// No description provided for @amenities.
+  ///
+  /// In en, this message translates to:
+  /// **'Amenities'**
+  String get amenities;
+
+  /// No description provided for @trainTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Train Ticket'**
+  String get trainTicket;
+
+  /// No description provided for @trainTripDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Train Trip Details'**
+  String get trainTripDetails;
+
+  /// No description provided for @trainTripInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Train Trip Information'**
+  String get trainTripInfo;
+
+  /// No description provided for @trainAmenities.
+  ///
+  /// In en, this message translates to:
+  /// **'Train Amenities'**
+  String get trainAmenities;
+
+  /// No description provided for @selectSeatToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Select seat to continue'**
+  String get selectSeatToContinue;
+
+  /// No description provided for @flightTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight Ticket'**
+  String get flightTicket;
+
+  /// No description provided for @flightTripDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight Trip Details'**
+  String get flightTripDetails;
+
+  /// No description provided for @flightTripInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight Trip Information'**
+  String get flightTripInfo;
+
+  /// No description provided for @flightAmenities.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight Amenities'**
+  String get flightAmenities;
+
+  /// No description provided for @selectSeatToContinueFlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Select seat to continue'**
+  String get selectSeatToContinueFlight;
+
+  /// No description provided for @selectFlightTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Flight Trip'**
+  String get selectFlightTrip;
+
+  /// No description provided for @selectTrainTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Train Trip'**
+  String get selectTrainTrip;
+
+  /// No description provided for @selectProvince.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Province/City'**
+  String get selectProvince;
+
+  /// No description provided for @createItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Itinerary'**
+  String get createItinerary;
+
+  /// No description provided for @myVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Vehicle'**
+  String get myVehicle;
+
+  /// No description provided for @vehicleRentalRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Rental Register'**
+  String get vehicleRentalRegister;
+
+  /// No description provided for @addVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Vehicle'**
+  String get addVehicle;
+
+  /// No description provided for @businessRegisterPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Register Photo'**
+  String get businessRegisterPhoto;
+
+  /// No description provided for @identificationPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Identification Photo'**
+  String get identificationPhoto;
+
+  /// No description provided for @vehicleRegistrationFrontPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Registration Front Photo'**
+  String get vehicleRegistrationFrontPhoto;
+
+  /// No description provided for @vehicleRegistrationBackPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Registration Back Photo'**
+  String get vehicleRegistrationBackPhoto;
+
+  /// No description provided for @travelAssistant.
+  ///
+  /// In en, this message translates to:
+  /// **'Traveline Travel Assistant'**
+  String get travelAssistant;
+
+  /// No description provided for @bookTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Table'**
+  String get bookTable;
+
+  /// No description provided for @bookRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Room'**
+  String get bookRoom;
+
+  /// No description provided for @confirmBookingTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Booking'**
+  String get confirmBookingTicket;
+
+  /// No description provided for @bookFlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Flight'**
+  String get bookFlight;
+
+  /// No description provided for @findFlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Flight'**
+  String get findFlight;
+
+  /// No description provided for @bookTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Train'**
+  String get bookTrain;
+
+  /// No description provided for @findTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Train'**
+  String get findTrain;
+
+  /// No description provided for @hotelList.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel List'**
+  String get hotelList;
+
+  /// No description provided for @selectTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Table'**
+  String get selectTable;
+
+  /// No description provided for @restaurantList.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant List'**
+  String get restaurantList;
+
+  /// No description provided for @findRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Restaurant'**
+  String get findRestaurant;
+
+  /// No description provided for @confirmOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Order'**
+  String get confirmOrder;
+
+  /// No description provided for @payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get payment;
+
+  /// No description provided for @bookBus.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Bus'**
+  String get bookBus;
+
+  /// No description provided for @findBus.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Bus Trip'**
+  String get findBus;
+
+  /// No description provided for @customer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get customer;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneNumber;
+
+  /// No description provided for @table.
+  ///
+  /// In en, this message translates to:
+  /// **'Table'**
+  String get table;
+
+  /// No description provided for @numberOfPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of People'**
+  String get numberOfPeople;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time;
+
+  /// No description provided for @deposit.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit'**
+  String get deposit;
+
+  /// No description provided for @pickupPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup Point'**
+  String get pickupPoint;
+
+  /// No description provided for @deliveryPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Point'**
+  String get deliveryPoint;
+
+  /// No description provided for @recipientName.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient Name'**
+  String get recipientName;
+
+  /// No description provided for @recipientPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient Phone'**
+  String get recipientPhone;
+
+  /// No description provided for @checkIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check In'**
+  String get checkIn;
+
+  /// No description provided for @checkOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Out'**
+  String get checkOut;
+
+  /// No description provided for @numberOfNights.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Nights'**
+  String get numberOfNights;
+
+  /// No description provided for @totalRoomPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Room Price'**
+  String get totalRoomPrice;
+
+  /// No description provided for @businessType.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Type'**
+  String get businessType;
+
+  /// No description provided for @businessName.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Name'**
+  String get businessName;
+
+  /// No description provided for @businessAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Address'**
+  String get businessAddress;
+
+  /// No description provided for @taxCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax Code'**
+  String get taxCode;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// No description provided for @identificationNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Identification Number'**
+  String get identificationNumber;
+
+  /// No description provided for @departurePoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure Point'**
+  String get departurePoint;
+
+  /// No description provided for @arrivalPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival Point'**
+  String get arrivalPoint;
+
+  /// No description provided for @departureDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure Date'**
+  String get departureDate;
+
+  /// No description provided for @returnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Date'**
+  String get returnDate;
+
+  /// No description provided for @numberOfPassengers.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Passengers'**
+  String get numberOfPassengers;
+
+  /// No description provided for @bookingTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Time'**
+  String get bookingTime;
+
+  /// No description provided for @foodType.
+  ///
+  /// In en, this message translates to:
+  /// **'Food Type'**
+  String get foodType;
+
+  /// No description provided for @checkInDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Check In Date'**
+  String get checkInDate;
+
+  /// No description provided for @checkOutDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Out Date'**
+  String get checkOutDate;
+
+  /// No description provided for @departureStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure Station'**
+  String get departureStation;
+
+  /// No description provided for @arrivalStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival Station'**
+  String get arrivalStation;
+
+  /// No description provided for @departureAirport.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure Airport'**
+  String get departureAirport;
+
+  /// No description provided for @arrivalAirport.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival Airport'**
+  String get arrivalAirport;
+
+  /// No description provided for @deliveryRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Requirements'**
+  String get deliveryRequirements;
+
+  /// No description provided for @bankName.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Name'**
+  String get bankName;
+
+  /// No description provided for @bankAccountNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Account Number'**
+  String get bankAccountNumber;
+
+  /// No description provided for @bankAccountName.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Account Name'**
+  String get bankAccountName;
+
+  /// No description provided for @confirmInfoAccurate.
+  ///
+  /// In en, this message translates to:
+  /// **'I confirm that all information provided is accurate and complete'**
+  String get confirmInfoAccurate;
+
+  /// No description provided for @agreeToTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the terms and conditions of vehicle rental services'**
+  String get agreeToTerms;
+
+  /// No description provided for @authorizeBankingInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'I authorize the platform to use my banking information for payment processing'**
+  String get authorizeBankingInfo;
+
+  /// No description provided for @fullNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullNameLabel;
+
+  /// No description provided for @cmndCccd.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Card/CCCD'**
+  String get cmndCccd;
+
+  /// No description provided for @businessTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Type'**
+  String get businessTypeLabel;
+
+  /// No description provided for @companyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Name'**
+  String get companyName;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// No description provided for @bank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get bank;
+
+  /// No description provided for @accountHolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Holder'**
+  String get accountHolder;
+
+  /// No description provided for @accountNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Number'**
+  String get accountNumber;
+
+  /// No description provided for @note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get note;
+
+  /// No description provided for @rejectionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejection Reason'**
+  String get rejectionReason;
+
+  /// No description provided for @lastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Updated'**
+  String get lastUpdated;
+
+  /// No description provided for @vehicleType.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Type'**
+  String get vehicleType;
+
+  /// No description provided for @brandAndModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand & Model'**
+  String get brandAndModel;
+
+  /// No description provided for @color.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get color;
+
+  /// No description provided for @numberOfSeats.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Seats'**
+  String get numberOfSeats;
+
+  /// No description provided for @pricePerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Per Hour'**
+  String get pricePerHour;
+
+  /// No description provided for @totalRentals.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Rentals'**
+  String get totalRentals;
+
+  /// No description provided for @averageRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Average Rating'**
+  String get averageRating;
+
+  /// No description provided for @approvalStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval Status'**
+  String get approvalStatus;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @requirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Requirements'**
+  String get requirements;
+
+  /// No description provided for @rejectionReasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejection Reason'**
+  String get rejectionReasonLabel;
+
+  /// No description provided for @selectPickupPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Pickup Point'**
+  String get selectPickupPoint;
+
+  /// No description provided for @selectDeliveryPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Delivery Point'**
+  String get selectDeliveryPoint;
+
+  /// No description provided for @enterRecipientName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Recipient Name'**
+  String get enterRecipientName;
+
+  /// No description provided for @enterRecipientPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Recipient Phone'**
+  String get enterRecipientPhone;
+
+  /// No description provided for @enterBusinessName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Business Name'**
+  String get enterBusinessName;
+
+  /// No description provided for @enterBusinessAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Business Address'**
+  String get enterBusinessAddress;
+
+  /// No description provided for @enterTaxCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Tax Code'**
+  String get enterTaxCode;
+
+  /// No description provided for @enterFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Your Full Name'**
+  String get enterFullName;
+
+  /// No description provided for @enterPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Your Phone Number'**
+  String get enterPhoneNumber;
+
+  /// No description provided for @enterIdNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Your ID Number'**
+  String get enterIdNumber;
+
+  /// No description provided for @selectDeparturePoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Departure Point'**
+  String get selectDeparturePoint;
+
+  /// No description provided for @selectArrivalPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Arrival Point'**
+  String get selectArrivalPoint;
+
+  /// No description provided for @selectDepartureDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Departure Date'**
+  String get selectDepartureDate;
+
+  /// No description provided for @selectReturnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Return Date'**
+  String get selectReturnDate;
+
+  /// No description provided for @selectDateAndTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Date and Time'**
+  String get selectDateAndTime;
+
+  /// No description provided for @selectLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Location'**
+  String get selectLocation;
+
+  /// No description provided for @selectCheckInDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Check In Date'**
+  String get selectCheckInDate;
+
+  /// No description provided for @selectCheckOutDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Check Out Date'**
+  String get selectCheckOutDate;
+
+  /// No description provided for @selectPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Place'**
+  String get selectPlace;
+
+  /// No description provided for @selectDepartureStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Departure Station'**
+  String get selectDepartureStation;
+
+  /// No description provided for @selectArrivalStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Arrival Station'**
+  String get selectArrivalStation;
+
+  /// No description provided for @selectDepartureAirport.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Departure Airport'**
+  String get selectDepartureAirport;
+
+  /// No description provided for @selectArrivalAirport.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Arrival Airport'**
+  String get selectArrivalAirport;
+
+  /// No description provided for @enterAccountNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Account Number'**
+  String get enterAccountNumber;
+
+  /// No description provided for @enterAccountHolderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Account Holder Name'**
+  String get enterAccountHolderName;
+
+  /// No description provided for @enterPricePerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Price Per Hour'**
+  String get enterPricePerHour;
+
+  /// No description provided for @enterPricePerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Price Per Day'**
+  String get enterPricePerDay;
+
+  /// No description provided for @enterRegistrationNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Registration Number'**
+  String get enterRegistrationNumber;
+
+  /// No description provided for @exampleBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Honda, Toyota'**
+  String get exampleBrand;
+
+  /// No description provided for @exampleModel.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. City, Wave'**
+  String get exampleModel;
+
+  /// No description provided for @exampleColor.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Black, White'**
+  String get exampleColor;
+
+  /// No description provided for @itineraryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Explore Da Nang 3 days'**
+  String get itineraryHint;
+
+  /// No description provided for @enterFullNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Full Name'**
+  String get enterFullNameHint;
+
+  /// No description provided for @enterPhoneNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Phone Number'**
+  String get enterPhoneNumberHint;
+
+  /// No description provided for @car.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get car;
+
+  /// No description provided for @motorbike.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorbike'**
+  String get motorbike;
+
+  /// No description provided for @personal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get personal;
+
+  /// No description provided for @company.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get company;
+
+  /// No description provided for @vehicleRegistrationNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Registration Number'**
+  String get vehicleRegistrationNumber;
+
+  /// No description provided for @vehicleBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Brand'**
+  String get vehicleBrand;
+
+  /// No description provided for @vehicleModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Model'**
+  String get vehicleModel;
+
+  /// No description provided for @vehicleColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Color'**
+  String get vehicleColor;
+
+  /// No description provided for @contractOwnerInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Owner Information'**
+  String get contractOwnerInfo;
+
+  /// No description provided for @businessInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Information'**
+  String get businessInfo;
+
+  /// No description provided for @bankingInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Banking Information'**
+  String get bankingInfo;
+
+  /// No description provided for @notesAndStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes & Status'**
+  String get notesAndStatus;
+
+  /// No description provided for @vehicleInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Information'**
+  String get vehicleInfo;
+
+  /// No description provided for @priceAndPerformance.
+  ///
+  /// In en, this message translates to:
+  /// **'Price & Performance'**
+  String get priceAndPerformance;
+
+  /// No description provided for @statusAndRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Status & Requirements'**
+  String get statusAndRequirements;
+
+  /// No description provided for @business.
+  ///
+  /// In en, this message translates to:
+  /// **'Business'**
+  String get business;
+
+  /// No description provided for @numberOfRooms.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Rooms'**
+  String get numberOfRooms;
+
+  /// No description provided for @numberOfGuests.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Guests'**
+  String get numberOfGuests;
+
+  /// No description provided for @licensePlate.
+  ///
+  /// In en, this message translates to:
+  /// **'License Plate'**
+  String get licensePlate;
+
+  /// No description provided for @pricePerHourVnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Per Hour (VND)'**
+  String get pricePerHourVnd;
+
+  /// No description provided for @pricePerDayVnd.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Per Day (VND)'**
+  String get pricePerDayVnd;
+
+  /// No description provided for @fieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'{fieldName} is required'**
+  String fieldRequired(Object fieldName);
+
+  /// No description provided for @pleaseEnterValidPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid price'**
+  String get pleaseEnterValidPrice;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// No description provided for @pleaseEnterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get pleaseEnterValidEmail;
+
+  /// No description provided for @phoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get phoneRequired;
+
+  /// No description provided for @pleaseEnterValidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid 10-digit phone number'**
+  String get pleaseEnterValidPhone;
+
+  /// No description provided for @pleaseSelectBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a bank'**
+  String get pleaseSelectBank;
+
+  /// No description provided for @pleaseEnterUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter username'**
+  String get pleaseEnterUsername;
+
+  /// No description provided for @usernameMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must be at least 3 characters'**
+  String get usernameMinLength;
+
+  /// No description provided for @usernameMaxLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Username must not exceed 20 characters'**
+  String get usernameMaxLength;
+
+  /// No description provided for @usernameInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Username can only contain letters, numbers and underscores'**
+  String get usernameInvalid;
+
+  /// No description provided for @pleaseEnterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter password'**
+  String get pleaseEnterPassword;
+
+  /// No description provided for @pleaseConfirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm password'**
+  String get pleaseConfirmPassword;
+
+  /// No description provided for @passwordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordMismatch;
+
+  /// No description provided for @pleaseEnterEmailOrUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter email or username'**
+  String get pleaseEnterEmailOrUsername;
+
+  /// No description provided for @pleaseEnterValidEmailOrUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email or username'**
+  String get pleaseEnterValidEmailOrUsername;
+
+  /// No description provided for @pleaseEnterRecipientName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter recipient name'**
+  String get pleaseEnterRecipientName;
+
+  /// No description provided for @pleaseEnterPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter phone number'**
+  String get pleaseEnterPhoneNumber;
+
+  /// No description provided for @phoneNumberInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid phone number'**
+  String get phoneNumberInvalid;
+
+  /// No description provided for @approved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get approved;
+
+  /// No description provided for @pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
+
+  /// No description provided for @rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get rejected;
+
+  /// No description provided for @inactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get inactive;
+
+  /// No description provided for @rented.
+  ///
+  /// In en, this message translates to:
+  /// **'Rented'**
+  String get rented;
+
+  /// No description provided for @maintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get maintenance;
+
+  /// No description provided for @locked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get locked;
+
+  /// No description provided for @rentalVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Vehicle'**
+  String get rentalVehicle;
+
+  /// No description provided for @rentalVehicleDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental vehicle'**
+  String get rentalVehicleDefault;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
+
+  /// No description provided for @start.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get start;
+
+  /// No description provided for @end.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get end;
+
+  /// No description provided for @finish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get finish;
+
+  /// No description provided for @itinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary'**
+  String get itinerary;
+
+  /// No description provided for @hotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel'**
+  String get hotel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

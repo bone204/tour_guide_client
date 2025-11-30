@@ -61,7 +61,7 @@ class _BusListPageState extends State<BusListPage>
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Chọn chuyến xe',
+        title: AppLocalizations.of(context)!.selectBusTrip,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -103,7 +103,7 @@ class _BusListPageState extends State<BusListPage>
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Chọn vé khứ hồi',
+        title: AppLocalizations.of(context)!.selectRoundTrip,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -128,7 +128,7 @@ class _BusListPageState extends State<BusListPage>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Chuyến đi'),
+                      Text(AppLocalizations.of(context)!.departureTrip),
                       if (selectedDepartureBus != null)
                         Container(
                           margin: EdgeInsets.only(left: 12.w),
@@ -150,7 +150,7 @@ class _BusListPageState extends State<BusListPage>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Chuyến về'),
+                      Text(AppLocalizations.of(context)!.returnTrip),
                       if (selectedReturnBus != null)
                         Container(
                           margin: EdgeInsets.only(left: 12.w),
@@ -306,7 +306,7 @@ class _BusListPageState extends State<BusListPage>
     // Navigate to confirmation with both trips
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Đã chọn cả 2 chuyến. Chức năng đặt vé khứ hồi đầy đủ sẽ hoàn thiện sau.'),
+        content: Text(AppLocalizations.of(context)!.bothTripsSelected),
         behavior: SnackBarBehavior.floating,
       ),
     );

@@ -82,7 +82,7 @@ class _NavigationCardState extends State<NavigationCard> {
       },
       {
         'icon': Icons.map_rounded,
-        'title': 'Lộ trình',
+        'title': AppLocalizations.of(context)!.itinerary,
         'route': AppRouteConstant.itineraryProvinceSelection,
         'color': AppColors.primaryBlue,
         'isIconData': true,

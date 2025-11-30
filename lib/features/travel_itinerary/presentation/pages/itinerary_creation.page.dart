@@ -85,7 +85,7 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Tạo lộ trình',
+        title: AppLocalizations.of(context)!.createItinerary,
         showBackButton: true,
         onBackPressed: () {
           Navigator.of(context).pop();
@@ -247,7 +247,7 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
               fontWeight: FontWeight.w500,
             ),
             decoration: InputDecoration(
-              hintText: 'VD: Khám phá Đà Nẵng 3 ngày',
+              hintText: AppLocalizations.of(context)!.itineraryHint,
               hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSubtitle,
               ),
@@ -328,7 +328,7 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
             children: [
               Expanded(
                 child: _buildDatePicker(
-                  label: 'Ngày bắt đầu',
+                  label: AppLocalizations.of(context)!.startDate,
                   date: _startDate,
                   onTap: () async {
                     final picked = await showDatePicker(
@@ -352,7 +352,7 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
               SizedBox(width: 12.w),
               Expanded(
                 child: _buildDatePicker(
-                  label: 'Ngày kết thúc',
+                  label: AppLocalizations.of(context)!.endDate,
                   date: _endDate,
                   onTap: () async {
                     final picked = await showDatePicker(
@@ -743,7 +743,7 @@ class _DayPlanningCard extends StatelessWidget {
             OutlinedButton.icon(
               onPressed: () => _showAddDestinationDialog(context),
               icon: const Icon(Icons.add_rounded),
-              label: const Text('Thêm địa điểm'),
+              label: Text(AppLocalizations.of(context)!.addLocation),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.primaryBlue,
                 side: const BorderSide(color: AppColors.primaryBlue),
@@ -771,8 +771,8 @@ class _DayPlanningCard extends StatelessWidget {
             children: [
               const Icon(Icons.info_outline, color: Colors.white),
               const SizedBox(width: 8),
-              const Expanded(
-                child: Text('Đã thêm tất cả địa điểm vào ngày này'),
+              Expanded(
+                child: Text(AppLocalizations.of(context)!.allLocationsAdded),
               ),
             ],
           ),

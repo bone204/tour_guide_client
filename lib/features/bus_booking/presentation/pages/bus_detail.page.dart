@@ -46,7 +46,7 @@ class _BusDetailPageState extends State<BusDetailPage>
     if (selectedSeats.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Vui lòng chọn ghế'),
+          content: Text(AppLocalizations.of(context)!.pleaseSelectSeatBus),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
@@ -74,7 +74,7 @@ class _BusDetailPageState extends State<BusDetailPage>
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Chi tiết chuyến xe',
+        title: AppLocalizations.of(context)!.busTripDetails,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -429,7 +429,7 @@ class _BusDetailPageState extends State<BusDetailPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildInfoCard(
-            title: 'Thông tin chuyến xe',
+            title: AppLocalizations.of(context)!.busTripInfo,
             items: [
               {'icon': Icons.location_on_outlined, 'label': 'Điểm đón', 'value': 'Bến xe Miền Đông'},
               {'icon': Icons.flag_outlined, 'label': 'Điểm trả', 'value': 'Bến xe Đà Lạt'},
@@ -441,7 +441,7 @@ class _BusDetailPageState extends State<BusDetailPage>
           SizedBox(height: 16.h),
 
           _buildInfoCard(
-            title: 'Tiện nghi',
+            title: AppLocalizations.of(context)!.amenities,
             items: (widget.busData['amenities'] as List).map((amenity) {
               return {
                 'icon': _getAmenityIcon(amenity),
@@ -454,7 +454,7 @@ class _BusDetailPageState extends State<BusDetailPage>
           SizedBox(height: 16.h),
 
           _buildInfoCard(
-            title: 'Chính sách',
+            title: AppLocalizations.of(context)!.policy,
             items: [
               {'icon': Icons.cancel_outlined, 'label': 'Hủy vé', 'value': 'Miễn phí trước 24h'},
               {'icon': Icons.swap_horiz_rounded, 'label': 'Đổi vé', 'value': 'Phí 20.000đ'},
@@ -590,7 +590,7 @@ class _BusDetailPageState extends State<BusDetailPage>
             Expanded(
               child: PrimaryButton(
                 onPressed: _navigateToConfirmation,
-                title: 'Tiếp tục',
+                title: AppLocalizations.of(context)!.continueButton,
               ),
             ),
           ],

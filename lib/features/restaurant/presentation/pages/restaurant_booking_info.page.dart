@@ -38,7 +38,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Thông tin đặt bàn',
+        title: AppLocalizations.of(context)!.tableBookingInfo,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -75,15 +75,15 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                   SizedBox(height: 8.h),
                   
                   BillInfo(
-                    label: 'Khách hàng',
+                    label: AppLocalizations.of(context)!.customer,
                     value: "Nguyễn Văn A"
                   ),
                   BillInfo(
-                    label: 'Số điện thoại',
+                    label: AppLocalizations.of(context)!.phoneNumber,
                     value: "0909123456"
                   ),
                   BillInfo(
-                    label: 'Email',
+                    label: AppLocalizations.of(context)!.email,
                     value: "nguyenvana@gmail.com"
                   ),
                   
@@ -92,19 +92,19 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                   SizedBox(height: 8.h),
                   
                   BillInfo(
-                    label: 'Bàn',
+                    label: AppLocalizations.of(context)!.table,
                     value: "Bàn 01"
                   ),
                   BillInfo(
-                    label: 'Số người',
+                    label: AppLocalizations.of(context)!.numberOfPeople,
                     value: "2 người"
                   ),
                   BillInfo(
-                    label: 'Vị trí',
+                    label: AppLocalizations.of(context)!.location,
                     value: "Tầng 1 - Gần cửa sổ"
                   ),
                   BillInfo(
-                    label: 'Thời gian',
+                    label: AppLocalizations.of(context)!.time,
                     value: "18:00 - 30/10/2025"
                   ),
                   
@@ -123,7 +123,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                   ],
 
                   BillInfo(
-                    label: 'Tiền đặt cọc',
+                    label: AppLocalizations.of(context)!.deposit,
                     value: Formatter.currency(depositAmount),
                   ),
                   if (travelPointToUse > 0)
@@ -135,14 +135,14 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 8.h),
                   BillInfo(
-                    label: 'Tổng thanh toán',
+                    label: AppLocalizations.of(context)!.totalPayment,
                     value: Formatter.currency(totalAfterPoint),
                   ),
 
                   SizedBox(height: 24.h),
 
                   Text(
-                    'Phương thức thanh toán',
+                    AppLocalizations.of(context)!.payment,
                     style: theme.titleMedium,
                   ),
                   SizedBox(height: 16.h),
@@ -153,11 +153,11 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                   ),
                   SizedBox(height: 24.h),
                   PrimaryButton(
-                    title: 'Xác nhận đặt bàn',
+                    title: AppLocalizations.of(context)!.confirmTableBooking,
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Đặt bàn thành công!'),
+                          content: Text(AppLocalizations.of(context)!.tableBookingSuccess),
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.r),

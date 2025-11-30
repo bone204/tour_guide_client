@@ -17,6 +17,7 @@ import 'package:tour_guide_app/features/profile/presentation/pages/profile.page.
 import 'package:tour_guide_app/features/settings/presentation/pages/settings.page.dart';
 import 'package:tour_guide_app/features/translate/translate.page.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common_libs.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -29,7 +30,7 @@ class NewsPage extends StatelessWidget {
   const NewsPage({super.key});
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('News Page'));
+    return Center(child: Text(AppLocalizations.of(context)!.newsPage));
   }
 }
 
@@ -160,22 +161,22 @@ class _MainScreenState extends State<MainScreen> {
   Future<bool> _showExitConfirmDialog(BuildContext context) async {
     final shouldExit = await showAppDialog<bool>(
       context: context,
-      title: 'Thoát ứng dụng?',
-      content: 'Bạn có chắc chắn muốn thoát ứng dụng?',
+      title: AppLocalizations.of(context)!.exitApp,
+      content: AppLocalizations.of(context)!.exitAppConfirm,
       actionsAlignment: CrossAxisAlignment.end,
       actionsSpacing: 8,
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context, rootNavigator: true).pop(false),
           child: Text(
-            'Hủy',
+            AppLocalizations.of(context)!.cancel,
             style: TextStyle(color: AppColors.primaryGrey),
           ),
         ),
         TextButton(
           onPressed: () => Navigator.of(context, rootNavigator: true).pop(true),
           child: Text(
-            'Thoát',
+            AppLocalizations.of(context)!.exit,
             style: TextStyle(color: AppColors.primaryRed),
           ),
         ),

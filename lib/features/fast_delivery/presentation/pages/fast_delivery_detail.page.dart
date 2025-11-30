@@ -59,14 +59,14 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
   void _confirmOrder() {
     if (_selectedProvider == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Vui lòng chọn hãng giao hàng')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectDeliveryCompany)),
       );
       return;
     }
     
     if (_selectedVehicle == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Vui lòng chọn loại xe')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectVehicleType)),
       );
       return;
     }
@@ -98,7 +98,7 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Chi tiết đơn hàng',
+        title: AppLocalizations.of(context)!.orderDetails,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -161,8 +161,8 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
                 
                 // Special requirements
                 CustomTextField(
-                  label: 'Yêu cầu khi gửi',
-                  placeholder: 'Nhập yêu cầu đặc biệt (nếu có)',
+                  label: AppLocalizations.of(context)!.deliveryRequirements,
+                  placeholder: AppLocalizations.of(context)!.deliveryRequirements,
                   controller: _requirementsController,
                   maxLines: 3,
                 ),
@@ -217,7 +217,7 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
                     SizedBox(width: 16.w),
                     Expanded(
                       child: PrimaryButton(
-                        title: 'Xác nhận',
+                        title: AppLocalizations.of(context)!.confirm,
                         onPressed: _confirmOrder,
                       ),
                     ),

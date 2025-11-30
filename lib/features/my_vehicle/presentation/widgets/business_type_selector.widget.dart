@@ -30,7 +30,7 @@ class BusinessTypeSelector extends StatelessWidget {
               child: _buildTypeOption(
                 context: context,
                 type: 'personal',
-                label: 'Personal',
+                label: AppLocalizations.of(context)!.personal,
                 isSelected: selectedType == 'personal',
               ),
             ),
@@ -39,7 +39,7 @@ class BusinessTypeSelector extends StatelessWidget {
               child: _buildTypeOption(
                 context: context,
                 type: 'company',
-                label: 'Company',
+                label: AppLocalizations.of(context)!.company,
                 isSelected: selectedType == 'company',
               ),
             ),

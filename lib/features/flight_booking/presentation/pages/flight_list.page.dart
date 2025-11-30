@@ -61,7 +61,7 @@ class _FlightListPageState extends State<FlightListPage>
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Chọn chuyến bay',
+        title: AppLocalizations.of(context)!.selectFlightTrip,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -104,7 +104,7 @@ class _FlightListPageState extends State<FlightListPage>
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Chọn vé khứ hồi',
+        title: AppLocalizations.of(context)!.selectRoundTrip,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -129,7 +129,7 @@ class _FlightListPageState extends State<FlightListPage>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Chuyến đi'),
+                      Text(AppLocalizations.of(context)!.departureTrip),
                       if (selectedDepartureFlight != null)
                         Container(
                           margin: EdgeInsets.only(left: 12.w),
@@ -151,7 +151,7 @@ class _FlightListPageState extends State<FlightListPage>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Chuyến về'),
+                      Text(AppLocalizations.of(context)!.returnTrip),
                       if (selectedReturnFlight != null)
                         Container(
                           margin: EdgeInsets.only(left: 12.w),
@@ -316,7 +316,7 @@ class _FlightListPageState extends State<FlightListPage>
   void _navigateToRoundTripDetail() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Đã chọn cả 2 chuyến. Chức năng đặt vé khứ hồi đầy đủ sẽ hoàn thiện sau.'),
+        content: Text(AppLocalizations.of(context)!.bothTripsSelected),
         behavior: SnackBarBehavior.floating,
       ),
     );

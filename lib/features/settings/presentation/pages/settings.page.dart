@@ -37,7 +37,7 @@ class SettingsPage extends StatelessWidget {
 
           if (state is ButtonFailureState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Lỗi: ${state.errorMessage}")),
+              SnackBar(content: Text("${AppLocalizations.of(context)!.errorPrefix}${state.errorMessage}")),
             );
           } else if (state is ButtonSuccessState) {
             Navigator.of(context, rootNavigator: true)

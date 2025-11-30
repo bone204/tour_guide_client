@@ -363,11 +363,11 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder:
-              (_) => PopScope(
+              (context) => PopScope(
                 canPop: false,
                 child: Scaffold(
                   body: Center(
-                    child: Text('No route defined for ${settings.name}'),
+                    child: Text(AppLocalizations.of(context)!.noRouteDefined(settings.name ?? 'unknown')),
                   ),
                 ),
               ),

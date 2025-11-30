@@ -57,8 +57,8 @@ class PassengerInfoForm extends StatelessWidget {
           // Name Field
           TextField(
             decoration: InputDecoration(
-              labelText: 'Họ và tên *',
-              hintText: 'Nhập họ và tên',
+              labelText: '${AppLocalizations.of(context)!.fullNameLabel} *',
+              hintText: AppLocalizations.of(context)!.enterFullNameHint,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
                 borderSide: BorderSide(color: AppColors.textSubtitle.withOpacity(0.3)),
@@ -84,8 +84,8 @@ class PassengerInfoForm extends StatelessWidget {
           TextField(
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
-              labelText: 'Số điện thoại *',
-              hintText: 'Nhập số điện thoại',
+              labelText: '${AppLocalizations.of(context)!.phoneNumber} *',
+              hintText: AppLocalizations.of(context)!.enterPhoneNumberHint,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
                 borderSide: BorderSide(color: AppColors.textSubtitle.withOpacity(0.3)),

@@ -117,25 +117,25 @@ class ContractCard extends StatelessWidget {
       if (contract.user?.phone != null)
         _InfoChip(
           icon: Icons.phone_outlined,
-          label: 'Số điện thoại',
+          label: AppLocalizations.of(context)!.phoneNumber,
           value: contract.user!.phone!,
         ),
       if (contract.bankName != null)
         _InfoChip(
           icon: Icons.account_balance_outlined,
-          label: 'Ngân hàng',
+          label: AppLocalizations.of(context)!.bank,
           value: contract.bankName!.split(' - ').first,
         ),
       _InfoChip(
         icon: Icons.business_center_outlined,
-        label: 'Loại hình',
+        label: AppLocalizations.of(context)!.businessTypeLabel,
         value:
-            contract.businessType == BusinessType.personal ? 'Cá nhân' : 'Doanh nghiệp',
+            contract.businessType == BusinessType.personal ? AppLocalizations.of(context)!.personal : AppLocalizations.of(context)!.company,
       ),
       if (contract.taxCode?.isNotEmpty ?? false)
         _InfoChip(
           icon: Icons.edit_note_outlined,
-          label: 'Mã số thuế',
+          label: AppLocalizations.of(context)!.taxCode,
           value: contract.taxCode!,
         ),
     ];

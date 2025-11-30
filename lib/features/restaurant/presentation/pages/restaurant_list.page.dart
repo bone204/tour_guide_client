@@ -45,7 +45,7 @@ class RestaurantListPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Danh sách nhà hàng',
+        title: AppLocalizations.of(context)!.restaurantList,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),

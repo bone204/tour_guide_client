@@ -78,7 +78,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
                 padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
               ),
-              child: const Text('Thử lại'),
+              child: Text(AppLocalizations.of(context)!.retry),
             ),
           ],
         ),
@@ -95,82 +95,82 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
           _buildHeader(vehicle),
           SizedBox(height: 20.h),
           _buildSection(
-            'Thông tin xe',
+            AppLocalizations.of(context)!.vehicleInfo,
             [
               _InfoTile(
-                label: 'Loại xe',
+                label: AppLocalizations.of(context)!.vehicleType,
                 value: _titleCase(vehicle.vehicleCatalog?.type ?? '—'),
                 icon: Icons.directions_car_filled_outlined,
               ),
               _InfoTile(
-                label: 'Thương hiệu & dòng xe',
+                label: AppLocalizations.of(context)!.brandAndModel,
                 value: _vehicleName(vehicle),
                 icon: Icons.badge_outlined,
               ),
               _InfoTile(
-                label: 'Màu sắc',
+                label: AppLocalizations.of(context)!.color,
                 value: vehicle.vehicleCatalog?.color ?? '—',
                 icon: Icons.palette_outlined,
               ),
               _InfoTile(
-                label: 'Số chỗ ngồi',
+                label: AppLocalizations.of(context)!.numberOfSeats,
                 value: vehicle.vehicleCatalog?.seatingCapacity?.toString() ?? '—',
                 icon: Icons.event_seat_outlined,
               ),
             ],
           ),
           _buildSection(
-            'Giá & hiệu suất',
+            AppLocalizations.of(context)!.priceAndPerformance,
             [
               _InfoTile(
-                label: 'Giá theo giờ',
+                label: AppLocalizations.of(context)!.pricePerHour,
                 value: _formatPrice(vehicle.pricePerHour),
                 icon: Icons.access_time,
               ),
               _InfoTile(
-                label: 'Giá theo ngày',
+                label: AppLocalizations.of(context)!.pricePerDay,
                 value: _formatPrice(vehicle.pricePerDay),
                 icon: Icons.calendar_month_outlined,
               ),
               _InfoTile(
-                label: 'Tổng lượt thuê',
+                label: AppLocalizations.of(context)!.totalRentals,
                 value: '${vehicle.totalRentals}',
                 icon: Icons.swap_horiz_rounded,
               ),
               _InfoTile(
-                label: 'Đánh giá trung bình',
+                label: AppLocalizations.of(context)!.averageRating,
                 value: vehicle.averageRating.toStringAsFixed(1),
                 icon: Icons.star_rate_rounded,
               ),
             ],
           ),
           _buildSection(
-            'Tình trạng & yêu cầu',
+            AppLocalizations.of(context)!.statusAndRequirements,
             [
               _InfoTile(
-                label: 'Trạng thái duyệt',
+                label: AppLocalizations.of(context)!.approvalStatus,
                 value: _statusLabel(vehicle.status),
                 icon: Icons.verified_outlined,
               ),
               _InfoTile(
-                label: 'Khả dụng',
+                label: AppLocalizations.of(context)!.available,
                 value: _availabilityLabel(vehicle.availability),
                 icon: Icons.shield_moon_outlined,
               ),
               if (vehicle.requirements?.isNotEmpty ?? false)
                 _InfoTile(
-                  label: 'Yêu cầu',
+                  label: AppLocalizations.of(context)!.requirements,
                   value: vehicle.requirements!,
                   icon: Icons.fact_check_outlined,
                 ),
               if (vehicle.rejectedReason?.isNotEmpty ?? false)
                 _InfoTile(
-                  label: 'Lý do bị từ chối',
+                  label: AppLocalizations.of(context)!.rejectionReasonLabel,
                   value: vehicle.rejectedReason!,
                   icon: Icons.report_problem_outlined,
                 ),
               _InfoTile(
-                label: 'Cập nhật lần cuối',
+                label: AppLocalizations.of(context)!.lastUpdated,
                 value: _formatDate(vehicle.updatedAt ?? vehicle.createdAt),
                 icon: Icons.schedule_outlined,
               ),
@@ -319,7 +319,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
         .where((value) => value.isNotEmpty)
         .toList();
     final composed = parts.join(' ').trim();
-    return composed.isEmpty ? 'Rental vehicle' : composed;
+    return composed.isEmpty ? AppLocalizations.of(context)!.rentalVehicleDefault : composed;
   }
 
   String _formatPrice(double price) {
@@ -340,13 +340,13 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
   String _statusLabel(RentalVehicleApprovalStatus status) {
     switch (status) {
       case RentalVehicleApprovalStatus.approved:
-        return 'Đã duyệt';
+        return AppLocalizations.of(context)!.approved;
       case RentalVehicleApprovalStatus.pending:
-        return 'Đang duyệt';
+        return AppLocalizations.of(context)!.pending;
       case RentalVehicleApprovalStatus.rejected:
-        return 'Bị từ chối';
+        return AppLocalizations.of(context)!.rejected;
       case RentalVehicleApprovalStatus.inactive:
-        return 'Tạm khóa';
+        return AppLocalizations.of(context)!.locked;
     }
   }
 
@@ -366,11 +366,11 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
   String _availabilityLabel(RentalVehicleAvailabilityStatus status) {
     switch (status) {
       case RentalVehicleAvailabilityStatus.available:
-        return 'Có sẵn';
+        return AppLocalizations.of(context)!.available;
       case RentalVehicleAvailabilityStatus.rented:
-        return 'Đang cho thuê';
+        return AppLocalizations.of(context)!.rented;
       case RentalVehicleAvailabilityStatus.maintenance:
-        return 'Bảo trì';
+        return AppLocalizations.of(context)!.maintenance;
     }
   }
 

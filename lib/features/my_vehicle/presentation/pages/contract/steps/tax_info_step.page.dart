@@ -62,7 +62,7 @@ class _TaxInfoStepState extends State<TaxInfoStep> {
 
   String? _validateRequired(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
-      return '$fieldName is required';
+      return AppLocalizations.of(context)!.fieldRequired(fieldName);
     }
     return null;
   }
@@ -89,7 +89,7 @@ class _TaxInfoStepState extends State<TaxInfoStep> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             BusinessTypeSelector(
-              label: 'Business Type',
+              label: AppLocalizations.of(context)!.businessType,
               selectedType: _businessType,
               onChanged: (type) {
                 setState(() {
@@ -99,29 +99,29 @@ class _TaxInfoStepState extends State<TaxInfoStep> {
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Business Name',
-              placeholder: 'Enter business name',
+              label: AppLocalizations.of(context)!.businessName,
+              placeholder: AppLocalizations.of(context)!.enterBusinessName,
               controller: _businessNameController,
               validator: (value) => _validateRequired(value, 'Business name'),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Business Address',
-              placeholder: 'Enter business address',
+              label: AppLocalizations.of(context)!.businessAddress,
+              placeholder: AppLocalizations.of(context)!.enterBusinessAddress,
               controller: _businessAddressController,
               validator: (value) => _validateRequired(value, 'Business address'),
               maxLines: 3,
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Tax Code',
-              placeholder: 'Enter tax code',
+              label: AppLocalizations.of(context)!.taxCode,
+              placeholder: AppLocalizations.of(context)!.enterTaxCode,
               controller: _taxCodeController,
               validator: (value) => _validateRequired(value, 'Tax code'),
             ),
             SizedBox(height: 20.h),
             ImagePickerField(
-              title: 'Business Register Photo',
+              title: AppLocalizations.of(context)!.businessRegisterPhoto,
               imagePath: _businessRegisterPhotoPath,
               onImageSelected: (path) {
                 setState(() {
@@ -143,7 +143,7 @@ class _TaxInfoStepState extends State<TaxInfoStep> {
                       ),
                     ),
                     child: Text(
-                      'Back',
+                      AppLocalizations.of(context)!.back,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: AppColors.textPrimary,
                             fontWeight: FontWeight.w700,
@@ -164,7 +164,7 @@ class _TaxInfoStepState extends State<TaxInfoStep> {
                       ),
                     ),
                     child: Text(
-                      'Next',
+                      AppLocalizations.of(context)!.next,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: AppColors.primaryWhite,
                             fontWeight: FontWeight.w700,

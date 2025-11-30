@@ -62,7 +62,7 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Vé xe khách',
+        title: AppLocalizations.of(context)!.busTicket,
         showBackButton: true,
         onBackPressed: () {
           Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
@@ -96,7 +96,7 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
                   },
-                  title: 'Về trang chủ',
+                  title: AppLocalizations.of(context)!.backToHome,
                 ),
                 SizedBox(height: 16.h),
               ],
@@ -600,7 +600,7 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                     children: [
                       const Icon(Icons.download_done_rounded, color: Colors.white),
                       SizedBox(width: 8.w),
-                      const Text('Đang tải vé xuống máy...'),
+                      Text(AppLocalizations.of(context)!.downloadingTicket),
                     ],
                   ),
                   behavior: SnackBarBehavior.floating,
@@ -611,7 +611,7 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                 ),
               );
             },
-            title: 'Tải vé về máy',
+            title: AppLocalizations.of(context)!.downloadTicket,
           ),
         ),
         SizedBox(width: 12.w),
@@ -625,7 +625,7 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                     children: [
                       const Icon(Icons.share_rounded, color: Colors.white),
                       SizedBox(width: 8.w),
-                      const Text('Chia sẻ vé...'),
+                      Text(AppLocalizations.of(context)!.sharingTicket),
                     ],
                   ),
                   behavior: SnackBarBehavior.floating,
@@ -636,7 +636,7 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                 ),
               );
             },
-            title: 'Chia sẻ vé',
+            title: AppLocalizations.of(context)!.shareTicket,
           ),
         ),
       ],

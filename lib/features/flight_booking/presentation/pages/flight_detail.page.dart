@@ -58,7 +58,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
     if (selectedSeats.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Vui lòng chọn ghế'),
+          content: Text(AppLocalizations.of(context)!.pleaseSelectSeat),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
@@ -71,7 +71,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
     if (selectedSeatClass == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Vui lòng chọn hạng ghế'),
+          content: Text(AppLocalizations.of(context)!.pleaseSelectSeatClass),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
@@ -100,7 +100,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Chi tiết chuyến bay',
+        title: AppLocalizations.of(context)!.flightTripDetails,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -522,7 +522,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildInfoCard(
-            title: 'Thông tin chuyến bay',
+            title: AppLocalizations.of(context)!.flightTripInfo,
             items: [
               {'icon': Icons.flight_rounded, 'label': 'Số hiệu', 'value': widget.flightData['flightNumber']},
               {'icon': Icons.business_rounded, 'label': 'Hãng bay', 'value': widget.flightData['airline']},
@@ -534,7 +534,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
           SizedBox(height: 16.h),
 
           _buildInfoCard(
-            title: 'Tiện nghi trên chuyến bay',
+            title: AppLocalizations.of(context)!.flightAmenities,
             items: [
               {'icon': Icons.restaurant_rounded, 'label': 'Suất ăn', 'value': '✓'},
               {'icon': Icons.local_drink_outlined, 'label': 'Đồ uống', 'value': '✓'},
@@ -547,7 +547,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
           SizedBox(height: 16.h),
 
           _buildInfoCard(
-            title: 'Chính sách',
+            title: AppLocalizations.of(context)!.policy,
             items: [
               {'icon': Icons.cancel_outlined, 'label': 'Hủy vé', 'value': 'Trước 24h: 70%'},
               {'icon': Icons.swap_horiz_rounded, 'label': 'Đổi vé', 'value': 'Phí 100.000đ'},
@@ -637,7 +637,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
           top: false,
           child: PrimaryButton(
             onPressed: () {},
-            title: 'Chọn ghế để tiếp tục',
+            title: AppLocalizations.of(context)!.selectSeatToContinueFlight,
             backgroundColor: AppColors.textSubtitle.withOpacity(0.3),
           ),
         ),
@@ -690,7 +690,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
             Expanded(
               child: PrimaryButton(
                 onPressed: _navigateToConfirmation,
-                title: 'Tiếp tục',
+                title: AppLocalizations.of(context)!.continueButton,
               ),
             ),
           ],

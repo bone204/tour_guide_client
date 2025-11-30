@@ -109,7 +109,7 @@ extension MapUIExtension on _MapPageState {
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _initLocation,
-                child: const Text('Thử lại'),
+                child: Text(AppLocalizations.of(context)!.retry),
               ),
             ],
           ),

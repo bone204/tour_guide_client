@@ -80,7 +80,7 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: CustomAppBar(
-          title: "Vehicle Rental Register",
+          title: AppLocalizations.of(context)!.vehicleRentalRegister,
           showBackButton: true,
           onBackPressed: () {
             Navigator.of(context, rootNavigator: true).pop();

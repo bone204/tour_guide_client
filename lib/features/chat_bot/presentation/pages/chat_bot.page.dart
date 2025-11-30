@@ -60,7 +60,7 @@ class _ChatBotPageState extends State<ChatBotPage> with TickerProviderStateMixin
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Trợ lý du lịch Traveline',
+        title: AppLocalizations.of(context)!.travelAssistant,
         showBackButton: true,
         onBackPressed: () => Navigator.of(context).pop(),
       ),

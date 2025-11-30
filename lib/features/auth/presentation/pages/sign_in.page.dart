@@ -29,12 +29,12 @@ class _SignInPageState extends State<SignInPage> {
   String? _validateIdentifier(String? value) {
     if (!_isFormSubmitted) return null;
     if (value == null || value.isEmpty) {
-      return 'Vui lòng nhập email hoặc tên đăng nhập';
+      return AppLocalizations.of(context)!.pleaseEnterEmailOrUsername;
     }
     final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     final usernameRegex = RegExp(r'^[a-zA-Z0-9._-]{3,}$');
     if (!emailRegex.hasMatch(value) && !usernameRegex.hasMatch(value)) {
-      return 'Vui lòng nhập email hoặc tên đăng nhập hợp lệ';
+      return AppLocalizations.of(context)!.pleaseEnterValidEmailOrUsername;
     }
     return null;
   }
@@ -42,7 +42,7 @@ class _SignInPageState extends State<SignInPage> {
   String? _validatePassword(String? value) {
     if (!_isFormSubmitted) return null;
     if (value == null || value.isEmpty) {
-      return 'Vui lòng nhập mật khẩu';
+      return AppLocalizations.of(context)!.pleaseEnterPassword;
     }
     // if (value.length < 8) {
     //   return 'Mật khẩu phải có ít nhất 8 ký tự';
@@ -92,14 +92,14 @@ class _SignInPageState extends State<SignInPage> {
                   if (state is ButtonFailureState) {
                     showAppDialog(
                       context: context,
-                      title: 'Lỗi',
+                      title: AppLocalizations.of(context)!.error,
                       content: state.errorMessage,
                       icon: Icons.error_outline,
                       iconColor: Colors.red,
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          child: const Text('Đóng'),
+                          child: Text(AppLocalizations.of(context)!.close),
                         ),
                       ],
                     );

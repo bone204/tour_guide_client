@@ -352,7 +352,7 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
                 ),
               )
             : Text(
-                isNavigating ? 'Kết thúc' : 'Bắt đầu',
+                isNavigating ? AppLocalizations.of(context)!.end : AppLocalizations.of(context)!.start,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
@@ -466,7 +466,7 @@ class _NavigationSummarySheet extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Kết thúc',
+                    AppLocalizations.of(context)!.end,
                     style: theme.textTheme.displayLarge?.copyWith(
                       color: Colors.white,
                     ),

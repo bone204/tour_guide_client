@@ -195,7 +195,7 @@ class _HotelDetailPageState extends State<HotelDetailPage>
                           _buildTabContent(name, imageUrl),
                           SizedBox(height: 20.h),
                           PrimaryButton(
-                            title: 'Đặt phòng',
+                            title: AppLocalizations.of(context)!.bookRoom,
                             onPressed: () => _navigateToRoomList(context),
                             backgroundColor: AppColors.primaryBlue,
                             textColor: AppColors.textSecondary,

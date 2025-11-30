@@ -27,17 +27,17 @@ class _SignUpPageState extends State<SignUpPage> {
   // ===== Validation =====
   String? _validateUsername(String? value) {
     if (!_isFormSubmitted) return null;
-    if (value == null || value.isEmpty) return 'Vui lòng nhập tên đăng nhập';
-    if (value.length < 3) return 'Tên đăng nhập phải có ít nhất 3 ký tự';
-    if (value.length > 20) return 'Tên đăng nhập không được vượt quá 20 ký tự';
+    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.pleaseEnterUsername;
+    if (value.length < 3) return AppLocalizations.of(context)!.usernameMinLength;
+    if (value.length > 20) return AppLocalizations.of(context)!.usernameMaxLength;
     final regex = RegExp(r'^[a-zA-Z0-9_]+$');
-    if (!regex.hasMatch(value)) return 'Tên đăng nhập chỉ gồm chữ, số và gạch dưới';
+    if (!regex.hasMatch(value)) return AppLocalizations.of(context)!.usernameInvalid;
     return null;
   }
 
   String? _validatePassword(String? value) {
     if (!_isFormSubmitted) return null;
-    if (value == null || value.isEmpty) return 'Vui lòng nhập mật khẩu';
+    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.pleaseEnterPassword;
     // if (value.length < 8) return 'Mật khẩu phải có ít nhất 8 ký tự';
     // if (value.length > 50) return 'Mật khẩu không được vượt quá 50 ký tự';
     // if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)').hasMatch(value)) {
@@ -48,8 +48,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   String? _validateConfirmedPassword(String? value) {
     if (!_isFormSubmitted) return null;
-    if (value == null || value.isEmpty) return 'Vui lòng xác nhận mật khẩu';
-    if (value != _passwordController.text) return 'Mật khẩu không khớp';
+    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.pleaseConfirmPassword;
+    if (value != _passwordController.text) return AppLocalizations.of(context)!.passwordMismatch;
     return null;
   }
 
@@ -95,14 +95,14 @@ class _SignUpPageState extends State<SignUpPage> {
             if (state is ButtonFailureState) {
               showAppDialog(
                 context: context,
-                title: 'Lỗi',
+                title: AppLocalizations.of(context)!.error,
                 content: state.errorMessage,
                 icon: Icons.error_outline,
                 iconColor: Colors.red,
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('Đóng'),
+                    child: Text(AppLocalizations.of(context)!.close),
                   ),
                 ],
               );
@@ -137,24 +137,24 @@ class _SignUpPageState extends State<SignUpPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               CustomTextField(
-                                label: 'Tên đăng nhập',
-                                placeholder: 'Nhập tên đăng nhập',
+                                label: AppLocalizations.of(context)!.username,
+                                placeholder: AppLocalizations.of(context)!.enterUsername,
                                 prefixIconData: Icons.person_outline,
                                 controller: _usernameController,
                                 validator: _validateUsername,
                               ),
                               SizedBox(height: 16.h),
                               CustomPasswordField(
-                                label: 'Mật khẩu',
-                                placeholder: 'Nhập mật khẩu',
+                                label: AppLocalizations.of(context)!.password,
+                                placeholder: AppLocalizations.of(context)!.enterPassword,
                                 prefixIcon: Icon(Icons.lock_outline),
                                 controller: _passwordController,
                                 validator: _validatePassword,
                               ),
                               SizedBox(height: 16.h),
                               CustomPasswordField(
-                                label: 'Mật khẩu',
-                                placeholder: 'Nhập mật khẩu',
+                                label: AppLocalizations.of(context)!.password,
+                                placeholder: AppLocalizations.of(context)!.enterPassword,
                                 prefixIcon: Icon(Icons.lock_outline),
                                 controller: _confirmedPasswordController,
                                 validator: _validateConfirmedPassword,

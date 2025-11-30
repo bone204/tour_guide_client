@@ -71,11 +71,11 @@ class _RentalInfoStepState extends State<RentalInfoStep> {
 
   String? _validatePrice(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
-      return '$fieldName is required';
+      return AppLocalizations.of(context)!.fieldRequired(fieldName);
     }
     final price = double.tryParse(_sanitizeNumber(value));
     if (price == null || price <= 0) {
-      return 'Please enter a valid price';
+      return AppLocalizations.of(context)!.pleaseEnterValidPrice;
     }
     return null;
   }
@@ -100,8 +100,8 @@ class _RentalInfoStepState extends State<RentalInfoStep> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             CustomTextField(
-              label: 'Price Per Hour (VND)',
-              placeholder: 'Enter price per hour',
+              label: AppLocalizations.of(context)!.pricePerHourVnd,
+              placeholder: AppLocalizations.of(context)!.enterPricePerHour,
               controller: _pricePerHourController,
               keyboardType: TextInputType.number,
               validator: (value) => _validatePrice(value, 'Price per hour'),
@@ -112,8 +112,8 @@ class _RentalInfoStepState extends State<RentalInfoStep> {
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Price Per Day (VND)',
-              placeholder: 'Enter price per day',
+              label: AppLocalizations.of(context)!.pricePerDayVnd,
+              placeholder: AppLocalizations.of(context)!.enterPricePerDay,
               controller: _pricePerDayController,
               keyboardType: TextInputType.number,
               validator: (value) => _validatePrice(value, 'Price per day'),
@@ -124,8 +124,8 @@ class _RentalInfoStepState extends State<RentalInfoStep> {
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Requirements',
-              placeholder: 'e.g. Valid driver license, deposit...',
+              label: AppLocalizations.of(context)!.requirements,
+              placeholder: AppLocalizations.of(context)!.requirements,
               controller: _requirementsController,
               maxLines: 5,
             ),
@@ -164,7 +164,7 @@ class _RentalInfoStepState extends State<RentalInfoStep> {
                       ),
                     ),
                     child: Text(
-                      'Submit',
+                      AppLocalizations.of(context)!.submit,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: AppColors.primaryWhite,
                             fontWeight: FontWeight.w700,

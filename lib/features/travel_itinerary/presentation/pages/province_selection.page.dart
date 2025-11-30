@@ -83,7 +83,7 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Chọn tỉnh/thành phố',
+        title: AppLocalizations.of(context)!.selectProvince,
         showBackButton: true,
         onBackPressed: () {
           Navigator.of(context).pop();
@@ -120,7 +120,7 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
                         query: DestinationQuery(offset: 0, limit: 200),
                       );
                     },
-                    child: const Text('Thử lại'),
+                    child: Text(AppLocalizations.of(context)!.retry),
                   ),
                 ],
               ),

@@ -66,7 +66,7 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
 
   String? _validateRequired(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
-      return '$fieldName is required';
+      return AppLocalizations.of(context)!.fieldRequired(fieldName);
     }
     return null;
   }
@@ -94,7 +94,7 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             VehicleTypeSelector(
-              label: 'Vehicle Type',
+              label: AppLocalizations.of(context)!.vehicleType,
               selectedType: _vehicleType,
               onChanged: (type) {
                 setState(() {
@@ -104,36 +104,36 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'License Plate',
+              label: AppLocalizations.of(context)!.licensePlate,
               placeholder: 'e.g. 51F-12345',
               controller: _licensePlateController,
               validator: (value) => _validateRequired(value, 'License plate'),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Vehicle Registration Number',
-              placeholder: 'Enter registration number',
+              label: AppLocalizations.of(context)!.vehicleRegistrationNumber,
+              placeholder: AppLocalizations.of(context)!.enterRegistrationNumber,
               controller: _vehicleRegistrationController,
               validator: (value) => _validateRequired(value, 'Registration number'),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Vehicle Brand',
-              placeholder: 'e.g. Honda, Toyota',
+              label: AppLocalizations.of(context)!.vehicleBrand,
+              placeholder: AppLocalizations.of(context)!.exampleBrand,
               controller: _vehicleBrandController,
               validator: (value) => _validateRequired(value, 'Vehicle brand'),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Vehicle Model',
-              placeholder: 'e.g. City, Wave',
+              label: AppLocalizations.of(context)!.vehicleModel,
+              placeholder: AppLocalizations.of(context)!.exampleModel,
               controller: _vehicleModelController,
               validator: (value) => _validateRequired(value, 'Vehicle model'),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
-              label: 'Vehicle Color',
-              placeholder: 'e.g. Black, White',
+              label: AppLocalizations.of(context)!.vehicleColor,
+              placeholder: AppLocalizations.of(context)!.exampleColor,
               controller: _vehicleColorController,
               validator: (value) => _validateRequired(value, 'Vehicle color'),
             ),
@@ -148,7 +148,7 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
                 ),
               ),
               child: Text(
-                'Next',
+                AppLocalizations.of(context)!.next,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.primaryWhite,
                       fontWeight: FontWeight.w700,

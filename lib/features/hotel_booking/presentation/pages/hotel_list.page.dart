@@ -45,7 +45,7 @@ class HotelListPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Danh sách khách sạn',
+        title: AppLocalizations.of(context)!.hotelList,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),

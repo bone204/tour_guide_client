@@ -62,7 +62,7 @@ class VehicleCard extends StatelessWidget {
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        _vehicleName,
+                        _vehicleName(context),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.textSubtitle,
                             ),
@@ -77,12 +77,12 @@ class VehicleCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     _StatusChip(
-                      label: _statusLabel(vehicle.status),
+                      label: _statusLabel(context, vehicle.status),
                       background: _statusColor(vehicle.status),
                     ),
                     SizedBox(height: 6.h),
                     _StatusChip(
-                      label: _availabilityLabel(vehicle.availability),
+                      label: _availabilityLabel(context, vehicle.availability),
                       background: _availabilityColor(vehicle.availability),
                     ),
                   ],
@@ -94,14 +94,14 @@ class VehicleCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: _PriceTile(
-                    label: 'Giá theo giờ',
+                    label: AppLocalizations.of(context)!.pricePerHour,
                     value: _formatPrice(vehicle.pricePerHour),
                   ),
                 ),
                 SizedBox(width: 12.w),
                 Expanded(
                   child: _PriceTile(
-                    label: 'Giá theo ngày',
+                    label: AppLocalizations.of(context)!.pricePerDay,
                     value: _formatPrice(vehicle.pricePerDay),
                   ),
                 ),
@@ -110,7 +110,7 @@ class VehicleCard extends StatelessWidget {
             if (vehicle.requirements?.isNotEmpty ?? false) ...[
               SizedBox(height: 14.h),
               Text(
-                'Yêu cầu: ${vehicle.requirements}',
+                '${AppLocalizations.of(context)!.requirements}: ${vehicle.requirements}',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSubtitle,
                     ),
@@ -124,7 +124,7 @@ class VehicleCard extends StatelessWidget {
     );
   }
 
-  String get _vehicleName {
+  String _vehicleName(BuildContext context) {
     final parts = [
       vehicle.vehicleCatalog?.brand,
       vehicle.vehicleCatalog?.model,
@@ -134,7 +134,7 @@ class VehicleCard extends StatelessWidget {
         .where((value) => value.isNotEmpty)
         .toList();
     final composed = parts.join(' ').trim();
-    return composed.isEmpty ? 'Rental Vehicle' : composed;
+    return composed.isEmpty ? AppLocalizations.of(context)!.rentalVehicle : composed;
   }
 
   String _formatPrice(double price) {
@@ -142,16 +142,16 @@ class VehicleCard extends StatelessWidget {
     return '${_priceFormatter.format(price)} đ';
   }
 
-  String _statusLabel(RentalVehicleApprovalStatus status) {
+  String _statusLabel(BuildContext context, RentalVehicleApprovalStatus status) {
     switch (status) {
       case RentalVehicleApprovalStatus.approved:
-        return 'Đã duyệt';
+        return AppLocalizations.of(context)!.approved;
       case RentalVehicleApprovalStatus.pending:
-        return 'Đang duyệt';
+        return AppLocalizations.of(context)!.pending;
       case RentalVehicleApprovalStatus.rejected:
-        return 'Bị từ chối';
+        return AppLocalizations.of(context)!.rejected;
       case RentalVehicleApprovalStatus.inactive:
-        return 'Ngưng';
+        return AppLocalizations.of(context)!.inactive;
     }
   }
 
@@ -168,14 +168,14 @@ class VehicleCard extends StatelessWidget {
     }
   }
 
-  String _availabilityLabel(RentalVehicleAvailabilityStatus status) {
+  String _availabilityLabel(BuildContext context, RentalVehicleAvailabilityStatus status) {
     switch (status) {
       case RentalVehicleAvailabilityStatus.available:
-        return 'Sẵn sàng';
+        return AppLocalizations.of(context)!.available;
       case RentalVehicleAvailabilityStatus.rented:
-        return 'Đang thuê';
+        return AppLocalizations.of(context)!.rented;
       case RentalVehicleAvailabilityStatus.maintenance:
-        return 'Bảo trì';
+        return AppLocalizations.of(context)!.maintenance;
     }
   }
 

@@ -44,7 +44,7 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Thông tin đặt phòng',
+        title: AppLocalizations.of(context)!.bookingInfo,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -70,7 +70,7 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                 children: [
                   // Hotel name
                   Text(
-                    booking.hotelName ?? 'Khách sạn',
+                    booking.hotelName ?? AppLocalizations.of(context)!.hotel,
                     style: theme.titleLarge,
                   ),
                   SizedBox(height: 4.h),
@@ -85,15 +85,15 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                   
                   // Guest info (mock data)
                   BillInfo(
-                    label: 'Khách hàng',
+                    label: AppLocalizations.of(context)!.customer,
                     value: "Nguyễn Văn A",
                   ),
                   BillInfo(
-                    label: 'Số điện thoại',
+                    label: AppLocalizations.of(context)!.phoneNumber,
                     value: "0909123456",
                   ),
                   BillInfo(
-                    label: 'Email',
+                    label: AppLocalizations.of(context)!.email,
                     value: "nguyenvana@gmail.com",
                   ),
                   
@@ -103,15 +103,15 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                   
                   // Booking details
                   BillInfo(
-                    label: 'Nhận phòng',
+                    label: AppLocalizations.of(context)!.checkIn,
                     value: "14:00 - 01/11/2025",
                   ),
                   BillInfo(
-                    label: 'Trả phòng',
+                    label: AppLocalizations.of(context)!.checkOut,
                     value: "12:00 - 03/11/2025",
                   ),
                   BillInfo(
-                    label: 'Số đêm',
+                    label: AppLocalizations.of(context)!.numberOfNights,
                     value: "${booking.numberOfNights ?? 2}",
                   ),
                   
@@ -165,7 +165,7 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
 
                   // Price summary
                   BillInfo(
-                    label: 'Tổng tiền phòng',
+                    label: AppLocalizations.of(context)!.totalRoomPrice,
                     value: Formatter.currency(totalAmount),
                   ),
                   if (travelPointToUse > 0)
@@ -177,7 +177,7 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 8.h),
                   BillInfo(
-                    label: 'Tổng thanh toán',
+                    label: AppLocalizations.of(context)!.totalPayment,
                     value: Formatter.currency(totalAfterPoint),
                   ),
 
@@ -185,7 +185,7 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
 
                   // Payment method
                   Text(
-                    'Phương thức thanh toán',
+                    AppLocalizations.of(context)!.payment,
                     style: theme.titleMedium,
                   ),
                   SizedBox(height: 16.h),
@@ -199,11 +199,11 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                   
                   // Confirm button
                   PrimaryButton(
-                    title: 'Xác nhận đặt phòng',
+                    title: AppLocalizations.of(context)!.confirmBooking,
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: const Text('Đặt phòng thành công!'),
+                          content: Text(AppLocalizations.of(context)!.bookingSuccess),
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.r),

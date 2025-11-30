@@ -188,7 +188,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Đặt vé máy bay',
+        title: AppLocalizations.of(context)!.bookFlight,
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
@@ -214,8 +214,8 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
 
             // From Airport
             LocationField(
-              label: 'Sân bay đi',
-              placeholder: 'Chọn sân bay đi',
+              label: AppLocalizations.of(context)!.departureAirport,
+              placeholder: AppLocalizations.of(context)!.selectDepartureAirport,
               locationText: fromAirport,
               onTap: () => _showAirportPicker(true),
               prefixIcon: SvgPicture.asset(
@@ -230,8 +230,8 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
 
             // To Airport
             LocationField(
-              label: 'Sân bay đến',
-              placeholder: 'Chọn sân bay đến',
+              label: AppLocalizations.of(context)!.arrivalAirport,
+              placeholder: AppLocalizations.of(context)!.selectArrivalAirport,
               locationText: toAirport,
               onTap: () => _showAirportPicker(false),
               prefixIcon: SvgPicture.asset(
@@ -246,8 +246,8 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
 
             // Departure Date Picker
             DatePickerField(
-              label: 'Ngày đi',
-              placeholder: 'Chọn ngày đi',
+              label: AppLocalizations.of(context)!.departureDate,
+              placeholder: AppLocalizations.of(context)!.selectDepartureDate,
               initialDate: selectedDate,
               onChanged: (date) {
                 setState(() => selectedDate = date);
@@ -264,8 +264,8 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
             if (selectedTripType == TripType.roundTrip) ...[
               SizedBox(height: 16.h),
               DatePickerField(
-                label: 'Ngày về',
-                placeholder: 'Chọn ngày về',
+                label: AppLocalizations.of(context)!.returnDate,
+                placeholder: AppLocalizations.of(context)!.selectReturnDate,
                 initialDate: returnDate,
                 onChanged: (date) {
                   setState(() => returnDate = date);
@@ -283,7 +283,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
 
             // Passenger Count
             PassengerCounter(
-              label: 'Số hành khách',
+              label: AppLocalizations.of(context)!.numberOfPassengers,
               count: passengerCount,
               min: 1,
               max: 9,
@@ -296,7 +296,7 @@ class _FlightSearchPageState extends State<FlightSearchPage> {
 
             // Search Button
             PrimaryButton(
-              title: 'Tìm chuyến bay',
+              title: AppLocalizations.of(context)!.findFlight,
               onPressed: _navigateToFlightList,
               backgroundColor: AppColors.primaryBlue,
               textColor: AppColors.textSecondary,

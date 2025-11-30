@@ -24,7 +24,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get password => 'Password';
 
   @override
-  String get enterPassword => 'Enter password';
+  String get enterPassword => 'Enter Password';
 
   @override
   String get forgotPassword => 'Forgot Password?';
@@ -48,13 +48,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get username => 'Username';
 
   @override
-  String get enterUsername => 'Enter username';
+  String get enterUsername => 'Enter Username';
 
   @override
   String get email => 'Email';
 
   @override
-  String get enterEmail => 'Enter email';
+  String get enterEmail => 'Enter Your Email';
 
   @override
   String get confirmPassword => 'Confirm Password';
@@ -76,6 +76,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get search => 'Search...';
+
+  @override
+  String get searchButton => 'Search';
 
   @override
   String get accountAndSecurity => 'Account & Security';
@@ -171,10 +174,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dailyRent => 'Daily Rent';
 
   @override
-  String get startDate => 'Start date';
+  String get startDate => 'Start Date';
 
   @override
-  String get endDate => 'End date';
+  String get endDate => 'End Date';
 
   @override
   String get selectDateAndHour => 'Select date and hour';
@@ -249,7 +252,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get discountPoint => 'Reward points discount';
 
   @override
-  String get totalPayment => 'Total payment';
+  String get totalPayment => 'Total Payment';
 
   @override
   String get choosePayment => 'Choose payment method';
@@ -274,4 +277,775 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get train => 'Train Booking';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get exitApp => 'Exit app?';
+
+  @override
+  String get exitAppConfirm => 'Are you sure you want to exit the app?';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get exit => 'Exit';
+
+  @override
+  String get newsPage => 'News Page';
+
+  @override
+  String get errorPrefix => 'Error: ';
+
+  @override
+  String get pleaseSelectLocation => 'Please select a location and make sure location is enabled.';
+
+  @override
+  String get navigatingCannotSelect => 'Currently navigating, cannot select another destination.';
+
+  @override
+  String get locationNoData => 'Location does not have position data.';
+
+  @override
+  String get pleaseSelectSeat => 'Please select a seat';
+
+  @override
+  String get pleaseSelectSeatClass => 'Please select a seat class';
+
+  @override
+  String maxSeatsSelected(int maxSeats) {
+    return 'Maximum $maxSeats seats can be selected';
+  }
+
+  @override
+  String get departureTrip => 'Departure';
+
+  @override
+  String get returnTrip => 'Return';
+
+  @override
+  String get bothTripsSelected => 'Both trips selected. Full round-trip booking feature will be completed later.';
+
+  @override
+  String get downloadingTicket => 'Downloading ticket...';
+
+  @override
+  String get sharingTicket => 'Sharing ticket...';
+
+  @override
+  String get pleaseSelectAtLeastOneRoom => 'Please select at least 1 room';
+
+  @override
+  String get pleaseSelectDeliveryCompany => 'Please select a delivery company';
+
+  @override
+  String get pleaseSelectVehicleType => 'Please select a vehicle type';
+
+  @override
+  String get pleaseSelectPickupPoint => 'Please select a pickup point';
+
+  @override
+  String get pleaseSelectDeliveryPoint => 'Please select a delivery point';
+
+  @override
+  String errorSelectingImage(String error) {
+    return 'Error selecting image: $error';
+  }
+
+  @override
+  String get takePhoto => 'Take photo';
+
+  @override
+  String get selectFromGallery => 'Select from gallery';
+
+  @override
+  String get selectPackageImage => 'Select package image';
+
+  @override
+  String get packageImages => 'Package images';
+
+  @override
+  String get addImage => 'Add image';
+
+  @override
+  String get bookingSuccess => 'Booking successful!';
+
+  @override
+  String get tableBookingSuccess => 'Table booking successful!';
+
+  @override
+  String get pleaseConfirmPolicies => 'Please confirm all policies';
+
+  @override
+  String get addLocation => 'Add location';
+
+  @override
+  String get allLocationsAdded => 'All locations have been added to this day';
+
+  @override
+  String get pleaseSelectSeatTrain => 'Please select a seat';
+
+  @override
+  String get pleaseSelectSeatClassTrain => 'Please select a seat class';
+
+  @override
+  String maxSeatsSelectedTrain(int maxSeats) {
+    return 'Maximum $maxSeats seats can be selected';
+  }
+
+  @override
+  String get pleaseSelectSeatBus => 'Please select a seat';
+
+  @override
+  String maxSeatsSelectedBus(int maxSeats) {
+    return 'Maximum $maxSeats seats can be selected';
+  }
+
+  @override
+  String get somethingWentWrong => 'Something went wrong';
+
+  @override
+  String noRouteDefined(String routeName) {
+    return 'No route defined for $routeName';
+  }
+
+  @override
+  String get appTitle => 'Traveline - Vietnam in your mind';
+
+  @override
+  String get bookingInfo => 'Booking Information';
+
+  @override
+  String get confirmBooking => 'Confirm Booking';
+
+  @override
+  String get orderDetails => 'Order Details';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get tableBookingInfo => 'Table Booking Information';
+
+  @override
+  String get confirmTableBooking => 'Confirm Table Booking';
+
+  @override
+  String get fastDeliveryTitle => 'Fast Delivery';
+
+  @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get selectRoom => 'Select Room';
+
+  @override
+  String get busTicket => 'Bus Ticket';
+
+  @override
+  String get backToHome => 'Back to Home';
+
+  @override
+  String get downloadTicket => 'Download Ticket';
+
+  @override
+  String get shareTicket => 'Share Ticket';
+
+  @override
+  String get selectBusTrip => 'Select Bus Trip';
+
+  @override
+  String get selectRoundTrip => 'Select Round Trip';
+
+  @override
+  String get busTripDetails => 'Bus Trip Details';
+
+  @override
+  String get busTripInfo => 'Bus Trip Information';
+
+  @override
+  String get amenities => 'Amenities';
+
+  @override
+  String get trainTicket => 'Train Ticket';
+
+  @override
+  String get trainTripDetails => 'Train Trip Details';
+
+  @override
+  String get trainTripInfo => 'Train Trip Information';
+
+  @override
+  String get trainAmenities => 'Train Amenities';
+
+  @override
+  String get selectSeatToContinue => 'Select seat to continue';
+
+  @override
+  String get flightTicket => 'Flight Ticket';
+
+  @override
+  String get flightTripDetails => 'Flight Trip Details';
+
+  @override
+  String get flightTripInfo => 'Flight Trip Information';
+
+  @override
+  String get flightAmenities => 'Flight Amenities';
+
+  @override
+  String get selectSeatToContinueFlight => 'Select seat to continue';
+
+  @override
+  String get selectFlightTrip => 'Select Flight Trip';
+
+  @override
+  String get selectTrainTrip => 'Select Train Trip';
+
+  @override
+  String get selectProvince => 'Select Province/City';
+
+  @override
+  String get createItinerary => 'Create Itinerary';
+
+  @override
+  String get myVehicle => 'My Vehicle';
+
+  @override
+  String get vehicleRentalRegister => 'Vehicle Rental Register';
+
+  @override
+  String get addVehicle => 'Add Vehicle';
+
+  @override
+  String get businessRegisterPhoto => 'Business Register Photo';
+
+  @override
+  String get identificationPhoto => 'Identification Photo';
+
+  @override
+  String get vehicleRegistrationFrontPhoto => 'Vehicle Registration Front Photo';
+
+  @override
+  String get vehicleRegistrationBackPhoto => 'Vehicle Registration Back Photo';
+
+  @override
+  String get travelAssistant => 'Traveline Travel Assistant';
+
+  @override
+  String get bookTable => 'Book Table';
+
+  @override
+  String get bookRoom => 'Book Room';
+
+  @override
+  String get confirmBookingTicket => 'Confirm Booking';
+
+  @override
+  String get bookFlight => 'Book Flight';
+
+  @override
+  String get findFlight => 'Find Flight';
+
+  @override
+  String get bookTrain => 'Book Train';
+
+  @override
+  String get findTrain => 'Find Train';
+
+  @override
+  String get hotelList => 'Hotel List';
+
+  @override
+  String get selectTable => 'Select Table';
+
+  @override
+  String get restaurantList => 'Restaurant List';
+
+  @override
+  String get findRestaurant => 'Find Restaurant';
+
+  @override
+  String get confirmOrder => 'Confirm Order';
+
+  @override
+  String get payment => 'Payment';
+
+  @override
+  String get bookBus => 'Book Bus';
+
+  @override
+  String get findBus => 'Find Bus Trip';
+
+  @override
+  String get customer => 'Customer';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get table => 'Table';
+
+  @override
+  String get numberOfPeople => 'Number of People';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get time => 'Time';
+
+  @override
+  String get deposit => 'Deposit';
+
+  @override
+  String get pickupPoint => 'Pickup Point';
+
+  @override
+  String get deliveryPoint => 'Delivery Point';
+
+  @override
+  String get recipientName => 'Recipient Name';
+
+  @override
+  String get recipientPhone => 'Recipient Phone';
+
+  @override
+  String get checkIn => 'Check In';
+
+  @override
+  String get checkOut => 'Check Out';
+
+  @override
+  String get numberOfNights => 'Number of Nights';
+
+  @override
+  String get totalRoomPrice => 'Total Room Price';
+
+  @override
+  String get businessType => 'Business Type';
+
+  @override
+  String get businessName => 'Business Name';
+
+  @override
+  String get businessAddress => 'Business Address';
+
+  @override
+  String get taxCode => 'Tax Code';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get identificationNumber => 'Identification Number';
+
+  @override
+  String get departurePoint => 'Departure Point';
+
+  @override
+  String get arrivalPoint => 'Arrival Point';
+
+  @override
+  String get departureDate => 'Departure Date';
+
+  @override
+  String get returnDate => 'Return Date';
+
+  @override
+  String get numberOfPassengers => 'Number of Passengers';
+
+  @override
+  String get bookingTime => 'Booking Time';
+
+  @override
+  String get foodType => 'Food Type';
+
+  @override
+  String get checkInDate => 'Check In Date';
+
+  @override
+  String get checkOutDate => 'Check Out Date';
+
+  @override
+  String get departureStation => 'Departure Station';
+
+  @override
+  String get arrivalStation => 'Arrival Station';
+
+  @override
+  String get departureAirport => 'Departure Airport';
+
+  @override
+  String get arrivalAirport => 'Arrival Airport';
+
+  @override
+  String get deliveryRequirements => 'Delivery Requirements';
+
+  @override
+  String get bankName => 'Bank Name';
+
+  @override
+  String get bankAccountNumber => 'Bank Account Number';
+
+  @override
+  String get bankAccountName => 'Bank Account Name';
+
+  @override
+  String get confirmInfoAccurate => 'I confirm that all information provided is accurate and complete';
+
+  @override
+  String get agreeToTerms => 'I agree to the terms and conditions of vehicle rental services';
+
+  @override
+  String get authorizeBankingInfo => 'I authorize the platform to use my banking information for payment processing';
+
+  @override
+  String get fullNameLabel => 'Full Name';
+
+  @override
+  String get cmndCccd => 'ID Card/CCCD';
+
+  @override
+  String get businessTypeLabel => 'Business Type';
+
+  @override
+  String get companyName => 'Company Name';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get bank => 'Bank';
+
+  @override
+  String get accountHolder => 'Account Holder';
+
+  @override
+  String get accountNumber => 'Account Number';
+
+  @override
+  String get note => 'Note';
+
+  @override
+  String get rejectionReason => 'Rejection Reason';
+
+  @override
+  String get lastUpdated => 'Last Updated';
+
+  @override
+  String get vehicleType => 'Vehicle Type';
+
+  @override
+  String get brandAndModel => 'Brand & Model';
+
+  @override
+  String get color => 'Color';
+
+  @override
+  String get numberOfSeats => 'Number of Seats';
+
+  @override
+  String get pricePerHour => 'Price Per Hour';
+
+  @override
+  String get totalRentals => 'Total Rentals';
+
+  @override
+  String get averageRating => 'Average Rating';
+
+  @override
+  String get approvalStatus => 'Approval Status';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get requirements => 'Requirements';
+
+  @override
+  String get rejectionReasonLabel => 'Rejection Reason';
+
+  @override
+  String get selectPickupPoint => 'Select Pickup Point';
+
+  @override
+  String get selectDeliveryPoint => 'Select Delivery Point';
+
+  @override
+  String get enterRecipientName => 'Enter Recipient Name';
+
+  @override
+  String get enterRecipientPhone => 'Enter Recipient Phone';
+
+  @override
+  String get enterBusinessName => 'Enter Business Name';
+
+  @override
+  String get enterBusinessAddress => 'Enter Business Address';
+
+  @override
+  String get enterTaxCode => 'Enter Tax Code';
+
+  @override
+  String get enterFullName => 'Enter Your Full Name';
+
+  @override
+  String get enterPhoneNumber => 'Enter Your Phone Number';
+
+  @override
+  String get enterIdNumber => 'Enter Your ID Number';
+
+  @override
+  String get selectDeparturePoint => 'Select Departure Point';
+
+  @override
+  String get selectArrivalPoint => 'Select Arrival Point';
+
+  @override
+  String get selectDepartureDate => 'Select Departure Date';
+
+  @override
+  String get selectReturnDate => 'Select Return Date';
+
+  @override
+  String get selectDateAndTime => 'Select Date and Time';
+
+  @override
+  String get selectLocation => 'Select Location';
+
+  @override
+  String get selectCheckInDate => 'Select Check In Date';
+
+  @override
+  String get selectCheckOutDate => 'Select Check Out Date';
+
+  @override
+  String get selectPlace => 'Select Place';
+
+  @override
+  String get selectDepartureStation => 'Select Departure Station';
+
+  @override
+  String get selectArrivalStation => 'Select Arrival Station';
+
+  @override
+  String get selectDepartureAirport => 'Select Departure Airport';
+
+  @override
+  String get selectArrivalAirport => 'Select Arrival Airport';
+
+  @override
+  String get enterAccountNumber => 'Enter Account Number';
+
+  @override
+  String get enterAccountHolderName => 'Enter Account Holder Name';
+
+  @override
+  String get enterPricePerHour => 'Enter Price Per Hour';
+
+  @override
+  String get enterPricePerDay => 'Enter Price Per Day';
+
+  @override
+  String get enterRegistrationNumber => 'Enter Registration Number';
+
+  @override
+  String get exampleBrand => 'e.g. Honda, Toyota';
+
+  @override
+  String get exampleModel => 'e.g. City, Wave';
+
+  @override
+  String get exampleColor => 'e.g. Black, White';
+
+  @override
+  String get itineraryHint => 'e.g. Explore Da Nang 3 days';
+
+  @override
+  String get enterFullNameHint => 'Enter Full Name';
+
+  @override
+  String get enterPhoneNumberHint => 'Enter Phone Number';
+
+  @override
+  String get car => 'Car';
+
+  @override
+  String get motorbike => 'Motorbike';
+
+  @override
+  String get personal => 'Personal';
+
+  @override
+  String get company => 'Company';
+
+  @override
+  String get vehicleRegistrationNumber => 'Vehicle Registration Number';
+
+  @override
+  String get vehicleBrand => 'Vehicle Brand';
+
+  @override
+  String get vehicleModel => 'Vehicle Model';
+
+  @override
+  String get vehicleColor => 'Vehicle Color';
+
+  @override
+  String get contractOwnerInfo => 'Contract Owner Information';
+
+  @override
+  String get businessInfo => 'Business Information';
+
+  @override
+  String get bankingInfo => 'Banking Information';
+
+  @override
+  String get notesAndStatus => 'Notes & Status';
+
+  @override
+  String get vehicleInfo => 'Vehicle Information';
+
+  @override
+  String get priceAndPerformance => 'Price & Performance';
+
+  @override
+  String get statusAndRequirements => 'Status & Requirements';
+
+  @override
+  String get business => 'Business';
+
+  @override
+  String get numberOfRooms => 'Number of Rooms';
+
+  @override
+  String get numberOfGuests => 'Number of Guests';
+
+  @override
+  String get licensePlate => 'License Plate';
+
+  @override
+  String get pricePerHourVnd => 'Price Per Hour (VND)';
+
+  @override
+  String get pricePerDayVnd => 'Price Per Day (VND)';
+
+  @override
+  String fieldRequired(Object fieldName) {
+    return '$fieldName is required';
+  }
+
+  @override
+  String get pleaseEnterValidPrice => 'Please enter a valid price';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get pleaseEnterValidEmail => 'Please enter a valid email';
+
+  @override
+  String get phoneRequired => 'Phone number is required';
+
+  @override
+  String get pleaseEnterValidPhone => 'Please enter a valid 10-digit phone number';
+
+  @override
+  String get pleaseSelectBank => 'Please select a bank';
+
+  @override
+  String get pleaseEnterUsername => 'Please enter username';
+
+  @override
+  String get usernameMinLength => 'Username must be at least 3 characters';
+
+  @override
+  String get usernameMaxLength => 'Username must not exceed 20 characters';
+
+  @override
+  String get usernameInvalid => 'Username can only contain letters, numbers and underscores';
+
+  @override
+  String get pleaseEnterPassword => 'Please enter password';
+
+  @override
+  String get pleaseConfirmPassword => 'Please confirm password';
+
+  @override
+  String get passwordMismatch => 'Passwords do not match';
+
+  @override
+  String get pleaseEnterEmailOrUsername => 'Please enter email or username';
+
+  @override
+  String get pleaseEnterValidEmailOrUsername => 'Please enter a valid email or username';
+
+  @override
+  String get pleaseEnterRecipientName => 'Please enter recipient name';
+
+  @override
+  String get pleaseEnterPhoneNumber => 'Please enter phone number';
+
+  @override
+  String get phoneNumberInvalid => 'Invalid phone number';
+
+  @override
+  String get approved => 'Approved';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
+  String get rejected => 'Rejected';
+
+  @override
+  String get inactive => 'Inactive';
+
+  @override
+  String get rented => 'Rented';
+
+  @override
+  String get maintenance => 'Maintenance';
+
+  @override
+  String get locked => 'Locked';
+
+  @override
+  String get rentalVehicle => 'Rental Vehicle';
+
+  @override
+  String get rentalVehicleDefault => 'Rental vehicle';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String get start => 'Start';
+
+  @override
+  String get end => 'End';
+
+  @override
+  String get finish => 'Finish';
+
+  @override
+  String get itinerary => 'Itinerary';
+
+  @override
+  String get hotel => 'Hotel';
 }

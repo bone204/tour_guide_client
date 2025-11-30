@@ -23,7 +23,7 @@ class ImagePickerWidget extends StatelessWidget {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi khi chọn ảnh: $e')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.errorSelectingImage(e.toString()))),
       );
     }
   }
@@ -58,13 +58,13 @@ class ImagePickerWidget extends StatelessWidget {
               ),
               SizedBox(height: 16.h),
               Text(
-                'Chọn ảnh kiện hàng',
+                AppLocalizations.of(context)!.selectPackageImage,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               SizedBox(height: 16.h),
               ListTile(
                 leading: Icon(Icons.camera_alt, color: AppColors.primaryBlue),
-                title: Text('Chụp ảnh'),
+                title: Text(AppLocalizations.of(context)!.takePhoto),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImage(context, ImageSource.camera);
@@ -72,7 +72,7 @@ class ImagePickerWidget extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(Icons.photo_library, color: AppColors.primaryBlue),
-                title: Text('Chọn từ thư viện'),
+                title: Text(AppLocalizations.of(context)!.selectFromGallery),
                 onTap: () {
                   Navigator.pop(context);
                   _pickImage(context, ImageSource.gallery);
@@ -93,7 +93,7 @@ class ImagePickerWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Hình ảnh kiện hàng',
+          AppLocalizations.of(context)!.packageImages,
           style: theme.displayLarge,
         ),
         SizedBox(height: 12.h),
@@ -170,7 +170,7 @@ class ImagePickerWidget extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      'Thêm ảnh',
+                      AppLocalizations.of(context)!.addImage,
                       style: theme.bodySmall?.copyWith(
                         color: AppColors.primaryBlue,
                         fontSize: 10.sp,

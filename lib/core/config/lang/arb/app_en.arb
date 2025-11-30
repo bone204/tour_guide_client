@@ -45,6 +45,8 @@
 
   "search": "Search...",
 
+  "searchButton": "Search",
+
   "accountAndSecurity": "Account & Security",
 
   "personalInfo": "Personal Information",
@@ -175,5 +177,580 @@
 
   "flight": "Flight Booking",
 
-  "train": "Train Booking"
+  "train": "Train Booking",
+
+  "error": "Error",
+
+  "retry": "Retry",
+
+  "close": "Close",
+
+  "exitApp": "Exit app?",
+
+  "exitAppConfirm": "Are you sure you want to exit the app?",
+
+  "cancel": "Cancel",
+
+  "exit": "Exit",
+
+  "newsPage": "News Page",
+
+  "errorPrefix": "Error: ",
+
+  "pleaseSelectLocation": "Please select a location and make sure location is enabled.",
+
+  "navigatingCannotSelect": "Currently navigating, cannot select another destination.",
+
+  "locationNoData": "Location does not have position data.",
+
+  "pleaseSelectSeat": "Please select a seat",
+
+  "pleaseSelectSeatClass": "Please select a seat class",
+
+  "maxSeatsSelected": "Maximum {maxSeats} seats can be selected",
+
+  "@maxSeatsSelected": {
+    "placeholders": {
+      "maxSeats": {
+        "type": "int"
+      }
+    }
+  },
+
+  "departureTrip": "Departure",
+
+  "returnTrip": "Return",
+
+  "bothTripsSelected": "Both trips selected. Full round-trip booking feature will be completed later.",
+
+  "downloadingTicket": "Downloading ticket...",
+
+  "sharingTicket": "Sharing ticket...",
+
+  "pleaseSelectAtLeastOneRoom": "Please select at least 1 room",
+
+  "pleaseSelectDeliveryCompany": "Please select a delivery company",
+
+  "pleaseSelectVehicleType": "Please select a vehicle type",
+
+  "pleaseSelectPickupPoint": "Please select a pickup point",
+
+  "pleaseSelectDeliveryPoint": "Please select a delivery point",
+
+  "errorSelectingImage": "Error selecting image: {error}",
+
+  "@errorSelectingImage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "takePhoto": "Take photo",
+
+  "selectFromGallery": "Select from gallery",
+
+  "selectPackageImage": "Select package image",
+
+  "packageImages": "Package images",
+
+  "addImage": "Add image",
+
+  "bookingSuccess": "Booking successful!",
+
+  "tableBookingSuccess": "Table booking successful!",
+
+  "pleaseConfirmPolicies": "Please confirm all policies",
+
+  "addLocation": "Add location",
+
+  "allLocationsAdded": "All locations have been added to this day",
+
+  "pleaseSelectSeatTrain": "Please select a seat",
+
+  "pleaseSelectSeatClassTrain": "Please select a seat class",
+
+  "maxSeatsSelectedTrain": "Maximum {maxSeats} seats can be selected",
+
+  "@maxSeatsSelectedTrain": {
+    "placeholders": {
+      "maxSeats": {
+        "type": "int"
+      }
+    }
+  },
+
+  "pleaseSelectSeatBus": "Please select a seat",
+
+  "maxSeatsSelectedBus": "Maximum {maxSeats} seats can be selected",
+
+  "@maxSeatsSelectedBus": {
+    "placeholders": {
+      "maxSeats": {
+        "type": "int"
+      }
+    }
+  },
+
+  "somethingWentWrong": "Something went wrong",
+
+  "noRouteDefined": "No route defined for {routeName}",
+
+  "@noRouteDefined": {
+    "placeholders": {
+      "routeName": {
+        "type": "String"
+      }
+    }
+  },
+
+  "appTitle": "Traveline - Vietnam in your mind",
+
+  "bookingInfo": "Booking Information",
+
+  "confirmBooking": "Confirm Booking",
+
+  "orderDetails": "Order Details",
+
+  "confirm": "Confirm",
+
+  "tableBookingInfo": "Table Booking Information",
+
+  "confirmTableBooking": "Confirm Table Booking",
+
+  "fastDeliveryTitle": "Fast Delivery",
+
+  "continueButton": "Continue",
+
+  "selectRoom": "Select Room",
+
+  "busTicket": "Bus Ticket",
+
+  "backToHome": "Back to Home",
+
+  "downloadTicket": "Download Ticket",
+
+  "shareTicket": "Share Ticket",
+
+  "selectBusTrip": "Select Bus Trip",
+
+  "selectRoundTrip": "Select Round Trip",
+
+  "busTripDetails": "Bus Trip Details",
+
+  "busTripInfo": "Bus Trip Information",
+
+  "amenities": "Amenities",
+
+  "trainTicket": "Train Ticket",
+
+  "trainTripDetails": "Train Trip Details",
+
+  "trainTripInfo": "Train Trip Information",
+
+  "trainAmenities": "Train Amenities",
+
+  "selectSeatToContinue": "Select seat to continue",
+
+  "flightTicket": "Flight Ticket",
+
+  "flightTripDetails": "Flight Trip Details",
+
+  "flightTripInfo": "Flight Trip Information",
+
+  "flightAmenities": "Flight Amenities",
+
+  "selectSeatToContinueFlight": "Select seat to continue",
+
+  "selectFlightTrip": "Select Flight Trip",
+
+  "selectTrainTrip": "Select Train Trip",
+
+  "selectProvince": "Select Province/City",
+
+  "createItinerary": "Create Itinerary",
+
+  "myVehicle": "My Vehicle",
+
+  "vehicleRentalRegister": "Vehicle Rental Register",
+
+  "addVehicle": "Add Vehicle",
+
+  "businessRegisterPhoto": "Business Register Photo",
+
+  "identificationPhoto": "Identification Photo",
+
+  "vehicleRegistrationFrontPhoto": "Vehicle Registration Front Photo",
+
+  "vehicleRegistrationBackPhoto": "Vehicle Registration Back Photo",
+
+  "travelAssistant": "Traveline Travel Assistant",
+
+  "bookTable": "Book Table",
+
+  "bookRoom": "Book Room",
+
+  "confirmBookingTicket": "Confirm Booking",
+
+  "bookFlight": "Book Flight",
+
+  "findFlight": "Find Flight",
+
+  "bookTrain": "Book Train",
+
+  "findTrain": "Find Train",
+
+  "hotelList": "Hotel List",
+
+  "findHotel": "Find Hotel",
+
+  "selectTable": "Select Table",
+
+  "restaurantList": "Restaurant List",
+
+  "findRestaurant": "Find Restaurant",
+
+  "confirmOrder": "Confirm Order",
+
+  "payment": "Payment",
+
+  "bookBus": "Book Bus",
+
+  "findBus": "Find Bus Trip",
+
+  "customer": "Customer",
+
+  "phoneNumber": "Phone Number",
+
+  "table": "Table",
+
+  "numberOfPeople": "Number of People",
+
+  "location": "Location",
+
+  "time": "Time",
+
+  "deposit": "Deposit",
+
+  "totalPayment": "Total Payment",
+
+  "pickupPoint": "Pickup Point",
+
+  "deliveryPoint": "Delivery Point",
+
+  "recipientName": "Recipient Name",
+
+  "recipientPhone": "Recipient Phone",
+
+  "checkIn": "Check In",
+
+  "checkOut": "Check Out",
+
+  "numberOfNights": "Number of Nights",
+
+  "totalRoomPrice": "Total Room Price",
+
+  "username": "Username",
+
+  "password": "Password",
+
+  "businessType": "Business Type",
+
+  "businessName": "Business Name",
+
+  "businessAddress": "Business Address",
+
+  "taxCode": "Tax Code",
+
+  "fullName": "Full Name",
+
+  "identificationNumber": "Identification Number",
+
+  "departurePoint": "Departure Point",
+
+  "arrivalPoint": "Arrival Point",
+
+  "departureDate": "Departure Date",
+
+  "returnDate": "Return Date",
+
+  "numberOfPassengers": "Number of Passengers",
+
+  "bookingTime": "Booking Time",
+
+  "foodType": "Food Type",
+
+  "checkInDate": "Check In Date",
+
+  "checkOutDate": "Check Out Date",
+
+  "departureStation": "Departure Station",
+
+  "arrivalStation": "Arrival Station",
+
+  "departureAirport": "Departure Airport",
+
+  "arrivalAirport": "Arrival Airport",
+
+  "startDate": "Start Date",
+
+  "endDate": "End Date",
+
+  "deliveryRequirements": "Delivery Requirements",
+
+  "bankName": "Bank Name",
+
+  "bankAccountNumber": "Bank Account Number",
+
+  "bankAccountName": "Bank Account Name",
+
+  "confirmInfoAccurate": "I confirm that all information provided is accurate and complete",
+
+  "agreeToTerms": "I agree to the terms and conditions of vehicle rental services",
+
+  "authorizeBankingInfo": "I authorize the platform to use my banking information for payment processing",
+
+  "fullNameLabel": "Full Name",
+
+  "cmndCccd": "ID Card/CCCD",
+
+  "businessTypeLabel": "Business Type",
+
+  "companyName": "Company Name",
+
+  "address": "Address",
+
+  "bank": "Bank",
+
+  "accountHolder": "Account Holder",
+
+  "accountNumber": "Account Number",
+
+  "note": "Note",
+
+  "rejectionReason": "Rejection Reason",
+
+  "lastUpdated": "Last Updated",
+
+  "vehicleType": "Vehicle Type",
+
+  "brandAndModel": "Brand & Model",
+
+  "color": "Color",
+
+  "numberOfSeats": "Number of Seats",
+
+  "pricePerHour": "Price Per Hour",
+
+  "pricePerDay": "Price Per Day",
+
+  "totalRentals": "Total Rentals",
+
+  "averageRating": "Average Rating",
+
+  "approvalStatus": "Approval Status",
+
+  "available": "Available",
+
+  "requirements": "Requirements",
+
+  "rejectionReasonLabel": "Rejection Reason",
+
+  "selectPickupPoint": "Select Pickup Point",
+
+  "selectDeliveryPoint": "Select Delivery Point",
+
+  "enterRecipientName": "Enter Recipient Name",
+
+  "enterRecipientPhone": "Enter Recipient Phone",
+
+  "enterUsername": "Enter Username",
+
+  "enterPassword": "Enter Password",
+
+  "enterBusinessName": "Enter Business Name",
+
+  "enterBusinessAddress": "Enter Business Address",
+
+  "enterTaxCode": "Enter Tax Code",
+
+  "enterFullName": "Enter Your Full Name",
+
+  "enterEmail": "Enter Your Email",
+
+  "enterPhoneNumber": "Enter Your Phone Number",
+
+  "enterIdNumber": "Enter Your ID Number",
+
+  "selectDeparturePoint": "Select Departure Point",
+
+  "selectArrivalPoint": "Select Arrival Point",
+
+  "selectDepartureDate": "Select Departure Date",
+
+  "selectReturnDate": "Select Return Date",
+
+  "selectDateAndTime": "Select Date and Time",
+
+  "selectLocation": "Select Location",
+
+  "selectCheckInDate": "Select Check In Date",
+
+  "selectCheckOutDate": "Select Check Out Date",
+
+  "selectPlace": "Select Place",
+
+  "selectDepartureStation": "Select Departure Station",
+
+  "selectArrivalStation": "Select Arrival Station",
+
+  "selectDepartureAirport": "Select Departure Airport",
+
+  "selectArrivalAirport": "Select Arrival Airport",
+
+  "enterAccountNumber": "Enter Account Number",
+
+  "enterAccountHolderName": "Enter Account Holder Name",
+
+  "enterPricePerHour": "Enter Price Per Hour",
+
+  "enterPricePerDay": "Enter Price Per Day",
+
+  "enterRegistrationNumber": "Enter Registration Number",
+
+  "exampleBrand": "e.g. Honda, Toyota",
+
+  "exampleModel": "e.g. City, Wave",
+
+  "exampleColor": "e.g. Black, White",
+
+  "itineraryHint": "e.g. Explore Da Nang 3 days",
+
+  "enterFullNameHint": "Enter Full Name",
+
+  "enterPhoneNumberHint": "Enter Phone Number",
+
+  "car": "Car",
+
+  "motorbike": "Motorbike",
+
+  "personal": "Personal",
+
+  "company": "Company",
+
+  "vehicleRegistrationNumber": "Vehicle Registration Number",
+
+  "vehicleBrand": "Vehicle Brand",
+
+  "vehicleModel": "Vehicle Model",
+
+  "vehicleColor": "Vehicle Color",
+
+  "contractOwnerInfo": "Contract Owner Information",
+
+  "businessInfo": "Business Information",
+
+  "bankingInfo": "Banking Information",
+
+  "notesAndStatus": "Notes & Status",
+
+  "vehicleInfo": "Vehicle Information",
+
+  "priceAndPerformance": "Price & Performance",
+
+  "statusAndRequirements": "Status & Requirements",
+
+  "personal": "Personal",
+
+  "business": "Business",
+
+  "numberOfRooms": "Number of Rooms",
+
+  "numberOfGuests": "Number of Guests",
+
+  "licensePlate": "License Plate",
+
+  "pricePerHourVnd": "Price Per Hour (VND)",
+
+  "pricePerDayVnd": "Price Per Day (VND)",
+
+  "fieldRequired": "{fieldName} is required",
+  "@fieldRequired": {
+    "placeholders": {
+      "fieldName": {}
+    }
+  },
+
+  "pleaseEnterValidPrice": "Please enter a valid price",
+
+  "emailRequired": "Email is required",
+
+  "pleaseEnterValidEmail": "Please enter a valid email",
+
+  "phoneRequired": "Phone number is required",
+
+  "pleaseEnterValidPhone": "Please enter a valid 10-digit phone number",
+
+  "pleaseSelectBank": "Please select a bank",
+
+  "pleaseEnterUsername": "Please enter username",
+
+  "usernameMinLength": "Username must be at least 3 characters",
+
+  "usernameMaxLength": "Username must not exceed 20 characters",
+
+  "usernameInvalid": "Username can only contain letters, numbers and underscores",
+
+  "pleaseEnterPassword": "Please enter password",
+
+  "pleaseConfirmPassword": "Please confirm password",
+
+  "passwordMismatch": "Passwords do not match",
+
+  "pleaseEnterEmailOrUsername": "Please enter email or username",
+
+  "pleaseEnterValidEmailOrUsername": "Please enter a valid email or username",
+
+  "pleaseEnterRecipientName": "Please enter recipient name",
+
+  "pleaseEnterPhoneNumber": "Please enter phone number",
+
+  "phoneNumberInvalid": "Invalid phone number",
+
+  "approved": "Approved",
+
+  "pending": "Pending",
+
+  "rejected": "Rejected",
+
+  "inactive": "Inactive",
+
+  "available": "Available",
+
+  "rented": "Rented",
+
+  "maintenance": "Maintenance",
+
+  "locked": "Locked",
+
+  "rentalVehicle": "Rental Vehicle",
+
+  "rentalVehicleDefault": "Rental vehicle",
+
+  "next": "Next",
+
+  "back": "Back",
+
+  "submit": "Submit",
+
+  "start": "Start",
+
+  "end": "End",
+
+  "finish": "Finish",
+
+  "itinerary": "Itinerary",
+
+  "hotel": "Hotel"
 }

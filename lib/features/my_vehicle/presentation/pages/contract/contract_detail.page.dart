@@ -85,7 +85,7 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
-              child: const Text('Thử lại'),
+              child: Text(AppLocalizations.of(context)!.retry),
             ),
           ],
         ),
@@ -102,74 +102,74 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
           _buildHeader(contract),
           SizedBox(height: 20.h),
           _buildSection(
-            'Thông tin chủ hợp đồng',
+            AppLocalizations.of(context)!.contractOwnerInfo,
             [
               _InfoTile(
-                label: 'Họ và tên',
+                label: AppLocalizations.of(context)!.fullNameLabel,
                 value: contract.user?.fullName ?? '—',
                 icon: Icons.person_outline,
               ),
               _InfoTile(
-                label: 'Email',
+                label: AppLocalizations.of(context)!.email,
                 value: contract.user?.email ?? '—',
                 icon: Icons.email_outlined,
               ),
               _InfoTile(
-                label: 'Số điện thoại',
+                label: AppLocalizations.of(context)!.phoneNumber,
                 value: contract.user?.phone ?? '—',
                 icon: Icons.phone_outlined,
               ),
               _InfoTile(
-                label: 'CMND/CCCD',
+                label: AppLocalizations.of(context)!.cmndCccd,
                 value: contract.citizenId ?? '—',
                 icon: Icons.badge_outlined,
               ),
             ],
           ),
           _buildSection(
-            'Thông tin kinh doanh',
+            AppLocalizations.of(context)!.businessInfo,
             [
               _InfoTile(
-                label: 'Loại hình',
+                label: AppLocalizations.of(context)!.businessTypeLabel,
                 value: contract.businessType == BusinessType.personal
-                    ? 'Cá nhân'
-                    : 'Doanh nghiệp',
+                    ? AppLocalizations.of(context)!.personal
+                    : AppLocalizations.of(context)!.company,
                 icon: Icons.store_mall_directory_outlined,
               ),
               _InfoTile(
-                label: 'Tên doanh nghiệp',
+                label: AppLocalizations.of(context)!.companyName,
                 value: contract.businessName ?? '—',
                 icon: Icons.corporate_fare_outlined,
               ),
               _InfoTile(
-                label: 'Địa chỉ',
+                label: AppLocalizations.of(context)!.address,
                 value: contract.businessAddress ??
                     contract.businessProvince ??
                     '—',
                 icon: Icons.location_on_outlined,
               ),
               _InfoTile(
-                label: 'Mã số thuế',
+                label: AppLocalizations.of(context)!.taxCode,
                 value: contract.taxCode ?? '—',
                 icon: Icons.confirmation_number_outlined,
               ),
             ],
           ),
           _buildSection(
-            'Thông tin ngân hàng',
+            AppLocalizations.of(context)!.bankingInfo,
             [
               _InfoTile(
-                label: 'Ngân hàng',
+                label: AppLocalizations.of(context)!.bank,
                 value: contract.bankName ?? '—',
                 icon: Icons.account_balance_outlined,
               ),
               _InfoTile(
-                label: 'Chủ tài khoản',
+                label: AppLocalizations.of(context)!.accountHolder,
                 value: contract.bankAccountName ?? '—',
                 icon: Icons.person_pin_circle_outlined,
               ),
               _InfoTile(
-                label: 'Số tài khoản',
+                label: AppLocalizations.of(context)!.accountNumber,
                 value: contract.bankAccountNumber ?? '—',
                 icon: Icons.numbers,
               ),
@@ -178,23 +178,23 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
           if ((contract.notes?.isNotEmpty ?? false) ||
               (contract.rejectedReason?.isNotEmpty ?? false))
             _buildSection(
-              'Ghi chú & Trạng thái',
+              AppLocalizations.of(context)!.notesAndStatus,
               [
                 if (contract.notes?.isNotEmpty ?? false)
                   _InfoTile(
-                    label: 'Ghi chú',
+                    label: AppLocalizations.of(context)!.note,
                     value: contract.notes!,
                     icon: Icons.note_outlined,
                   ),
                 if (contract.status == RentalContractStatus.rejected &&
                     (contract.rejectedReason?.isNotEmpty ?? false))
                   _InfoTile(
-                    label: 'Lý do từ chối',
+                    label: AppLocalizations.of(context)!.rejectionReason,
                     value: contract.rejectedReason!,
                     icon: Icons.report_gmailerrorred_outlined,
                   ),
                 _InfoTile(
-                  label: 'Cập nhật lần cuối',
+                  label: AppLocalizations.of(context)!.lastUpdated,
                   value: contract.updatedAt != null
                       ? _formatDate(contract.updatedAt!)
                       : '—',
