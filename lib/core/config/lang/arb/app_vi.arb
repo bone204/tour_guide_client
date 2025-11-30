@@ -752,5 +752,11 @@
 
   "itinerary": "Lộ trình",
 
-  "hotel": "Khách sạn"
+  "hotel": "Khách sạn",
+
+  "sessionExpired": "Phiên đăng nhập hết hạn",
+
+  "sessionExpiredMessage": "Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
+
+  "ok": "OK"
 }

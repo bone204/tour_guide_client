@@ -1048,4 +1048,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hotel => 'Hotel';
+
+  @override
+  String get sessionExpired => 'Session Expired';
+
+  @override
+  String get sessionExpiredMessage => 'Your login session has expired. Please sign in again.';
+
+  @override
+  String get ok => 'OK';
 }

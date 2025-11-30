@@ -1,7 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
+import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/core/network/logger_interceptor.dart';
+import 'package:tour_guide_app/main.dart';
 
 class DioClient {
   late final Dio dio;
@@ -61,6 +66,10 @@ class DioClient {
             print('❌ Refresh token failed. Clearing tokens.');
             await prefs.remove("accessToken");
             await prefs.remove("refreshToken");
+            
+            // Show session expired dialog and navigate to sign in
+            _showSessionExpiredDialog();
+            
             return handler.next(error);
           }
 
@@ -259,5 +268,37 @@ class DioClient {
     } on DioException {
       rethrow;
     }
+  }
+
+  void _showSessionExpiredDialog() {
+    final context = navigatorKey.currentContext;
+    if (context == null) return;
+
+    final localizations = AppLocalizations.of(context);
+    if (localizations == null) return;
+
+    showAppDialog<void>(
+      context: context,
+      title: localizations.sessionExpired,
+      content: localizations.sessionExpiredMessage,
+      icon: Icons.warning_amber_rounded,
+      iconColor: Colors.orange,
+      barrierDismissible: false,
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop();
+            Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
+              AppRouteConstant.signIn,
+              (route) => false,
+            );
+          },
+          child: Text(
+            localizations.ok,
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -752,5 +752,11 @@
 
   "itinerary": "Itinerary",
 
-  "hotel": "Hotel"
+  "hotel": "Hotel",
+
+  "sessionExpired": "Session Expired",
+
+  "sessionExpiredMessage": "Your login session has expired. Please sign in again.",
+
+  "ok": "OK"
 }

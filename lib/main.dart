@@ -11,6 +11,8 @@ import 'package:tour_guide_app/features/splash/presentation/pages/splash_screen.
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
   runZonedGuarded(
     () async {
@@ -70,6 +72,7 @@ class MyApp extends StatelessWidget {
               }
 
               return MaterialApp(
+                navigatorKey: navigatorKey,
                 theme: AppTheme.lightTheme,
                 onGenerateRoute: AppRouter.generateRoute,
                 debugShowCheckedModeBanner: false,

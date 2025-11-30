@@ -1048,4 +1048,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get hotel => 'Khách sạn';
+
+  @override
+  String get sessionExpired => 'Phiên đăng nhập hết hạn';
+
+  @override
+  String get sessionExpiredMessage => 'Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.';
+
+  @override
+  String get ok => 'OK';
 }
