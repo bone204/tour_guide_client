@@ -71,7 +71,10 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
     super.dispose();
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context, GetContractsState state) {
+  PreferredSizeWidget _buildAppBar(
+    BuildContext context,
+    GetContractsState state,
+  ) {
     // Tìm contract approved để hiển thị nút xem chi tiết
     int? approvedContractId;
     if (state is GetContractsSuccess && state.contracts.isNotEmpty) {
@@ -87,19 +90,20 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
     return CustomAppBar(
       title: AppLocalizations.of(context)!.myVehicle,
       showBackButton: false,
-      actions: approvedContractId != null
-          ? [
-              IconButton(
-                icon: Icon(
-                  Icons.description_outlined,
-                  color: AppColors.primaryBlue,
-                  size: 24.sp,
+      actions:
+          approvedContractId != null
+              ? [
+                IconButton(
+                  icon: Icon(
+                    Icons.description_outlined,
+                    color: AppColors.primaryBlue,
+                    size: 24.sp,
+                  ),
+                  tooltip: 'Xem chi tiết hợp đồng',
+                  onPressed: () => _openContractDetail(approvedContractId!),
                 ),
-                tooltip: 'Xem chi tiết hợp đồng',
-                onPressed: () => _openContractDetail(approvedContractId!),
-              ),
-            ]
-          : null,
+              ]
+              : null,
     );
   }
 
@@ -183,73 +187,88 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
       onRefresh: () async {
         context.read<GetVehiclesCubit>().getVehicles(contractId);
       },
-      child: SingleChildScrollView(
-        padding: EdgeInsets.all(20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Add Vehicle Button
-            ElevatedButton(
-              onPressed: () async {
-                // ✅ Dùng root navigator để mở fullscreen (lên cả bottom bar)
-                final result = await Navigator.of(
-                  context,
-                  rootNavigator: true,
-                ).pushNamed(
-                  AppRouteConstant.addVehicle,
-                  arguments: contractId, // ✅ Truyền contractId thật
-                );
-                if (mounted && result == true) {
-                  context.read<GetVehiclesCubit>().getVehicles(contractId);
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryBlue,
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                elevation: 2,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add_circle_outline,
-                    color: AppColors.primaryWhite,
-                    size: 24.sp,
-                  ),
-                  SizedBox(width: 8.w),
-                  Text(
-                    'Add Vehicle',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.primaryWhite,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16.sp,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Padding(
+                padding: EdgeInsets.all(20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Add Vehicle Button
+                    ElevatedButton(
+                      onPressed: () async {
+                        // ✅ Dùng root navigator để mở fullscreen (lên cả bottom bar)
+                        final result = await Navigator.of(
+                          context,
+                          rootNavigator: true,
+                        ).pushNamed(
+                          AppRouteConstant.addVehicle,
+                          arguments: contractId, // ✅ Truyền contractId thật
+                        );
+                        if (mounted && result == true) {
+                          context.read<GetVehiclesCubit>().getVehicles(
+                            contractId,
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryBlue,
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        elevation: 2,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.add_circle_outline,
+                            color: AppColors.primaryWhite,
+                            size: 24.sp,
+                          ),
+                          SizedBox(width: 8.w),
+                          Text(
+                            'Add Vehicle',
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyLarge?.copyWith(
+                              color: AppColors.primaryWhite,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 24.h),
+                    // Vehicles list
+                    Text(
+                      'Your Vehicles',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    ...vehicles
+                        .map(
+                          (vehicle) => VehicleCard(
+                            vehicle: vehicle,
+                            onTap:
+                                () => _openVehicleDetail(vehicle.licensePlate),
+                          ),
+                        )
+                        .toList(),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 24.h),
-            // Vehicles list
-            Text(
-              'Your Vehicles',
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-            ),
-            SizedBox(height: 12.h),
-            ...vehicles
-                .map(
-                  (vehicle) => VehicleCard(
-                    vehicle: vehicle,
-                    onTap: () => _openVehicleDetail(vehicle.licensePlate),
-                  ),
-                )
-                .toList(),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -456,199 +475,238 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
     await Navigator.of(
       context,
       rootNavigator: true,
-    ).pushNamed(
-      AppRouteConstant.contractDetail,
-      arguments: contractId,
-    );
+    ).pushNamed(AppRouteConstant.contractDetail, arguments: contractId);
   }
 
   Future<void> _openVehicleDetail(String licensePlate) async {
     await Navigator.of(
       context,
       rootNavigator: true,
-    ).pushNamed(
-      AppRouteConstant.vehicleDetail,
-      arguments: licensePlate,
-    );
+    ).pushNamed(AppRouteConstant.vehicleDetail, arguments: licensePlate);
   }
 
   Widget _buildEmptyView() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(20.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Icon
-            Container(
-              width: 120.w,
-              height: 120.w,
-              decoration: BoxDecoration(
-                color: AppColors.primaryBlue.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.assignment_outlined,
-                size: 64.sp,
-                color: AppColors.primaryBlue,
-              ),
-            ),
-            SizedBox(height: 24.h),
-            // Title
-            Text(
-              'No Rental Contract Yet',
-              style: Theme.of(
-                context,
-              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
-            ),
-            SizedBox(height: 12.h),
-            // Description
-            Text(
-              'Register a rental contract before listing your vehicles for rent.',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 40.h),
-            // Register Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  final result = await Navigator.of(
-                    context,
-                    rootNavigator: true,
-                  ).pushNamed(AppRouteConstant.vehicleRentalRegister);
-                  if (mounted && result == true) {
-                    // Event bus già xử lý refresh
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryBlue,
-                  padding: EdgeInsets.symmetric(vertical: 16.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  elevation: 2,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.description_outlined,
-                      color: AppColors.primaryWhite,
-                      size: 24.sp,
-                    ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      'Register Rental Contract',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.primaryWhite,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16.sp,
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<GetContractsCubit>().getContracts();
+      },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Padding(
+                  padding: EdgeInsets.all(20.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Icon
+                      Container(
+                        width: 120.w,
+                        height: 120.w,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryBlue.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.assignment_outlined,
+                          size: 64.sp,
+                          color: AppColors.primaryBlue,
+                        ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 24.h),
+                      // Title
+                      Text(
+                        'No Rental Contract Yet',
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                      SizedBox(height: 12.h),
+                      // Description
+                      Text(
+                        'Register a rental contract before listing your vehicles for rent.',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSubtitle,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 40.h),
+                      // Register Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            final result = await Navigator.of(
+                              context,
+                              rootNavigator: true,
+                            ).pushNamed(AppRouteConstant.vehicleRentalRegister);
+                            if (mounted && result == true) {
+                              // Event bus giải xử lý refresh
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryBlue,
+                            padding: EdgeInsets.symmetric(vertical: 16.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            elevation: 2,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.description_outlined,
+                                color: AppColors.primaryWhite,
+                                size: 24.sp,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                'Register Rental Contract',
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyLarge?.copyWith(
+                                  color: AppColors.primaryWhite,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+                      // Information card
+                      Container(
+                        padding: EdgeInsets.all(16.w),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhite,
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(
+                            color: AppColors.secondaryGrey,
+                            width: 1.w,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Why register a rental contract first?',
+                              style: Theme.of(context).textTheme.bodyLarge
+                                  ?.copyWith(fontWeight: FontWeight.w700),
+                            ),
+                            SizedBox(height: 12.h),
+                            _buildBenefitItem(
+                              context,
+                              icon: Icons.edit_document,
+                              text:
+                                  'Provide owner information once and reuse it later',
+                            ),
+                            SizedBox(height: 8.h),
+                            _buildBenefitItem(
+                              context,
+                              icon: Icons.security,
+                              text:
+                                  'Enable Traveline to verify payouts and legal docs',
+                            ),
+                            SizedBox(height: 8.h),
+                            _buildBenefitItem(
+                              context,
+                              icon: Icons.garage_outlined,
+                              text:
+                                  'Unlock the ability to list unlimited vehicles',
+                            ),
+                            SizedBox(height: 8.h),
+                            _buildBenefitItem(
+                              context,
+                              icon: Icons.support_agent,
+                              text: 'Get dedicated support for future rentals',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-            SizedBox(height: 16.h),
-            // Information card
-            Container(
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: AppColors.primaryWhite,
-                borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(color: AppColors.secondaryGrey, width: 1.w),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Why register a rental contract first?',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  _buildBenefitItem(
-                    context,
-                    icon: Icons.edit_document,
-                    text: 'Provide owner information once and reuse it later',
-                  ),
-                  SizedBox(height: 8.h),
-                  _buildBenefitItem(
-                    context,
-                    icon: Icons.security,
-                    text: 'Enable Traveline to verify payouts and legal docs',
-                  ),
-                  SizedBox(height: 8.h),
-                  _buildBenefitItem(
-                    context,
-                    icon: Icons.garage_outlined,
-                    text: 'Unlock the ability to list unlimited vehicles',
-                  ),
-                  SizedBox(height: 8.h),
-                  _buildBenefitItem(
-                    context,
-                    icon: Icons.support_agent,
-                    text: 'Get dedicated support for future rentals',
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildErrorView(String errorMessage) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(20.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error_outline, size: 64.sp, color: AppColors.primaryRed),
-            SizedBox(height: 16.h),
-            Text(
-              'Error',
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              errorMessage,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 24.h),
-            ElevatedButton(
-              onPressed: () {
-                context.read<GetContractsCubit>().getContracts();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryBlue,
-                padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 24.w),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<GetContractsCubit>().getContracts();
+      },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Padding(
+                  padding: EdgeInsets.all(20.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        size: 64.sp,
+                        color: AppColors.primaryRed,
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        'Error',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        errorMessage,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSubtitle,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 24.h),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<GetContractsCubit>().getContracts();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryBlue,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 14.h,
+                            horizontal: 24.w,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                        ),
+                        child: Text(
+                          'Retry',
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyLarge?.copyWith(
+                            color: AppColors.primaryWhite,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              child: Text(
-                'Retry',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: AppColors.primaryWhite,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

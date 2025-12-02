@@ -19,16 +19,16 @@ class VehicleCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 16.h),
         padding: EdgeInsets.all(18.w),
         decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.r),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF000000).withOpacity(0.15),
-            blurRadius: 8.r,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+          borderRadius: BorderRadius.circular(16.r),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF000000).withOpacity(0.15),
+              blurRadius: 8.r,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,16 +56,15 @@ class VehicleCard extends StatelessWidget {
                     children: [
                       Text(
                         vehicle.licensePlate,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w700),
                       ),
                       SizedBox(height: 4.h),
                       Text(
                         _vehicleName(context),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textSubtitle,
-                            ),
+                          color: AppColors.textSubtitle,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -76,15 +75,20 @@ class VehicleCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    _StatusChip(
-                      label: _statusLabel(context, vehicle.status),
-                      background: _statusColor(vehicle.status),
-                    ),
-                    SizedBox(height: 6.h),
-                    _StatusChip(
-                      label: _availabilityLabel(context, vehicle.availability),
-                      background: _availabilityColor(vehicle.availability),
-                    ),
+                    // Nếu đã approved thì chỉ hiện availability, không hiện status
+                    if (vehicle.status == RentalVehicleApprovalStatus.approved)
+                      _StatusChip(
+                        label: _availabilityLabel(
+                          context,
+                          vehicle.availability,
+                        ),
+                        background: _availabilityColor(vehicle.availability),
+                      )
+                    else
+                      _StatusChip(
+                        label: _statusLabel(context, vehicle.status),
+                        background: _statusColor(vehicle.status),
+                      ),
                   ],
                 ),
               ],
@@ -111,9 +115,9 @@ class VehicleCard extends StatelessWidget {
               SizedBox(height: 14.h),
               Text(
                 '${AppLocalizations.of(context)!.requirements}: ${vehicle.requirements}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSubtitle,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -125,16 +129,16 @@ class VehicleCard extends StatelessWidget {
   }
 
   String _vehicleName(BuildContext context) {
-    final parts = [
-      vehicle.vehicleCatalog?.brand,
-      vehicle.vehicleCatalog?.model,
-    ]
-        .whereType<String>()
-        .map((value) => value.trim())
-        .where((value) => value.isNotEmpty)
-        .toList();
+    final parts =
+        [vehicle.vehicleCatalog?.brand, vehicle.vehicleCatalog?.model]
+            .whereType<String>()
+            .map((value) => value.trim())
+            .where((value) => value.isNotEmpty)
+            .toList();
     final composed = parts.join(' ').trim();
-    return composed.isEmpty ? AppLocalizations.of(context)!.rentalVehicle : composed;
+    return composed.isEmpty
+        ? AppLocalizations.of(context)!.rentalVehicle
+        : composed;
   }
 
   String _formatPrice(double price) {
@@ -142,7 +146,10 @@ class VehicleCard extends StatelessWidget {
     return '${_priceFormatter.format(price)} đ';
   }
 
-  String _statusLabel(BuildContext context, RentalVehicleApprovalStatus status) {
+  String _statusLabel(
+    BuildContext context,
+    RentalVehicleApprovalStatus status,
+  ) {
     switch (status) {
       case RentalVehicleApprovalStatus.approved:
         return AppLocalizations.of(context)!.approved;
@@ -168,7 +175,10 @@ class VehicleCard extends StatelessWidget {
     }
   }
 
-  String _availabilityLabel(BuildContext context, RentalVehicleAvailabilityStatus status) {
+  String _availabilityLabel(
+    BuildContext context,
+    RentalVehicleAvailabilityStatus status,
+  ) {
     switch (status) {
       case RentalVehicleAvailabilityStatus.available:
         return AppLocalizations.of(context)!.available;
@@ -208,9 +218,9 @@ class _StatusChip extends StatelessWidget {
       child: Text(
         label,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.primaryWhite,
-              fontWeight: FontWeight.w600,
-            ),
+          color: AppColors.primaryWhite,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -236,17 +246,17 @@ class _PriceTile extends StatelessWidget {
         children: [
           Text(
             label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
           ),
           SizedBox(height: 4.h),
           Text(
             value,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primaryBlue,
-                ),
+              fontWeight: FontWeight.w700,
+              color: AppColors.primaryBlue,
+            ),
           ),
         ],
       ),
