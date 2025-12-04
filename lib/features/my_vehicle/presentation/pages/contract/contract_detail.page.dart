@@ -29,13 +29,14 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Contract #${widget.contractId}',
+        title: AppLocalizations.of(context)!.contractTitle(widget.contractId),
         showBackButton: true,
         onBackPressed: () => Navigator.pop(context),
       ),
       body: BlocBuilder<ContractDetailCubit, ContractDetailState>(
         builder: (context, state) {
-          if (state is ContractDetailLoading || state is ContractDetailInitial) {
+          if (state is ContractDetailLoading ||
+              state is ContractDetailInitial) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ContractDetailFailure) {
             return _buildErrorState(state.message);
@@ -60,21 +61,22 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
             SizedBox(height: 16.h),
             Text(
               'Không thể tải hợp đồng',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 8.h),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSubtitle,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
             ),
             SizedBox(height: 24.h),
             ElevatedButton(
-              onPressed: () => context.read<ContractDetailCubit>().fetchContract(
+              onPressed:
+                  () => context.read<ContractDetailCubit>().fetchContract(
                     widget.contractId,
                   ),
               style: ElevatedButton.styleFrom(
@@ -101,107 +103,96 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
         children: [
           _buildHeader(contract),
           SizedBox(height: 20.h),
-          _buildSection(
-            AppLocalizations.of(context)!.contractOwnerInfo,
-            [
-              _InfoTile(
-                label: AppLocalizations.of(context)!.fullNameLabel,
-                value: contract.user?.fullName ?? '—',
-                icon: Icons.person_outline,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.email,
-                value: contract.user?.email ?? '—',
-                icon: Icons.email_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.phoneNumber,
-                value: contract.user?.phone ?? '—',
-                icon: Icons.phone_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.cmndCccd,
-                value: contract.citizenId ?? '—',
-                icon: Icons.badge_outlined,
-              ),
-            ],
-          ),
-          _buildSection(
-            AppLocalizations.of(context)!.businessInfo,
-            [
-              _InfoTile(
-                label: AppLocalizations.of(context)!.businessTypeLabel,
-                value: contract.businessType == BusinessType.personal
-                    ? AppLocalizations.of(context)!.personal
-                    : AppLocalizations.of(context)!.company,
-                icon: Icons.store_mall_directory_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.companyName,
-                value: contract.businessName ?? '—',
-                icon: Icons.corporate_fare_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.address,
-                value: contract.businessAddress ??
-                    contract.businessProvince ??
-                    '—',
-                icon: Icons.location_on_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.taxCode,
-                value: contract.taxCode ?? '—',
-                icon: Icons.confirmation_number_outlined,
-              ),
-            ],
-          ),
-          _buildSection(
-            AppLocalizations.of(context)!.bankingInfo,
-            [
-              _InfoTile(
-                label: AppLocalizations.of(context)!.bank,
-                value: contract.bankName ?? '—',
-                icon: Icons.account_balance_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.accountHolder,
-                value: contract.bankAccountName ?? '—',
-                icon: Icons.person_pin_circle_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.accountNumber,
-                value: contract.bankAccountNumber ?? '—',
-                icon: Icons.numbers,
-              ),
-            ],
-          ),
+          _buildSection(AppLocalizations.of(context)!.contractOwnerInfo, [
+            _InfoTile(
+              label: AppLocalizations.of(context)!.fullNameLabel,
+              value: contract.user?.fullName ?? '—',
+              icon: Icons.person_outline,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.email,
+              value: contract.user?.email ?? '—',
+              icon: Icons.email_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.phoneNumber,
+              value: contract.user?.phone ?? '—',
+              icon: Icons.phone_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.cmndCccd,
+              value: contract.citizenId ?? '—',
+              icon: Icons.badge_outlined,
+            ),
+          ]),
+          _buildSection(AppLocalizations.of(context)!.businessInfo, [
+            _InfoTile(
+              label: AppLocalizations.of(context)!.businessTypeLabel,
+              value:
+                  contract.businessType == BusinessType.personal
+                      ? AppLocalizations.of(context)!.personal
+                      : AppLocalizations.of(context)!.company,
+              icon: Icons.store_mall_directory_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.companyName,
+              value: contract.businessName ?? '—',
+              icon: Icons.corporate_fare_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.address,
+              value:
+                  contract.businessAddress ?? contract.businessProvince ?? '—',
+              icon: Icons.location_on_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.taxCode,
+              value: contract.taxCode ?? '—',
+              icon: Icons.confirmation_number_outlined,
+            ),
+          ]),
+          _buildSection(AppLocalizations.of(context)!.bankingInfo, [
+            _InfoTile(
+              label: AppLocalizations.of(context)!.bank,
+              value: contract.bankName ?? '—',
+              icon: Icons.account_balance_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.accountHolder,
+              value: contract.bankAccountName ?? '—',
+              icon: Icons.person_pin_circle_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.accountNumber,
+              value: contract.bankAccountNumber ?? '—',
+              icon: Icons.numbers,
+            ),
+          ]),
           if ((contract.notes?.isNotEmpty ?? false) ||
               (contract.rejectedReason?.isNotEmpty ?? false))
-            _buildSection(
-              AppLocalizations.of(context)!.notesAndStatus,
-              [
-                if (contract.notes?.isNotEmpty ?? false)
-                  _InfoTile(
-                    label: AppLocalizations.of(context)!.note,
-                    value: contract.notes!,
-                    icon: Icons.note_outlined,
-                  ),
-                if (contract.status == RentalContractStatus.rejected &&
-                    (contract.rejectedReason?.isNotEmpty ?? false))
-                  _InfoTile(
-                    label: AppLocalizations.of(context)!.rejectionReason,
-                    value: contract.rejectedReason!,
-                    icon: Icons.report_gmailerrorred_outlined,
-                  ),
+            _buildSection(AppLocalizations.of(context)!.notesAndStatus, [
+              if (contract.notes?.isNotEmpty ?? false)
                 _InfoTile(
-                  label: AppLocalizations.of(context)!.lastUpdated,
-                  value: contract.updatedAt != null
-                      ? _formatDate(contract.updatedAt!)
-                      : '—',
-                  icon: Icons.schedule_outlined,
+                  label: AppLocalizations.of(context)!.note,
+                  value: contract.notes!,
+                  icon: Icons.note_outlined,
                 ),
-              ],
-            ),
+              if (contract.status == RentalContractStatus.rejected &&
+                  (contract.rejectedReason?.isNotEmpty ?? false))
+                _InfoTile(
+                  label: AppLocalizations.of(context)!.rejectionReason,
+                  value: contract.rejectedReason!,
+                  icon: Icons.report_gmailerrorred_outlined,
+                ),
+              _InfoTile(
+                label: AppLocalizations.of(context)!.lastUpdated,
+                value:
+                    contract.updatedAt != null
+                        ? _formatDate(contract.updatedAt!)
+                        : '—',
+                icon: Icons.schedule_outlined,
+              ),
+            ]),
         ],
       ),
     );
@@ -236,16 +227,16 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
                 contract.user?.email ??
                 'Rental Contract #${contract.id}',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           SizedBox(height: 8.h),
           Text(
             'Mã hợp đồng: ${contract.id}',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white70,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
           ),
           SizedBox(height: 16.h),
           Align(
@@ -280,14 +271,14 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           SizedBox(height: 16.h),
-          ...children.expand(
-            (widget) => [widget, SizedBox(height: 14.h)],
-          ).toList()
+          ...children
+              .expand((widget) => [widget, SizedBox(height: 14.h)])
+              .toList()
             ..removeLast(),
         ],
       ),
@@ -339,9 +330,9 @@ class _StatusChip extends StatelessWidget {
       child: Text(
         displayText,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.w600,
-            ),
+          color: textColor,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -370,11 +361,7 @@ class _InfoTile extends StatelessWidget {
             color: AppColors.primaryBlue.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12.r),
           ),
-          child: Icon(
-            icon,
-            color: AppColors.primaryBlue,
-            size: 20.sp,
-          ),
+          child: Icon(icon, color: AppColors.primaryBlue, size: 20.sp),
         ),
         SizedBox(width: 12.w),
         Expanded(
@@ -383,16 +370,16 @@ class _InfoTile extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSubtitle,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
               ),
               SizedBox(height: 4.h),
               Text(
                 value,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -401,4 +388,3 @@ class _InfoTile extends StatelessWidget {
     );
   }
 }
-

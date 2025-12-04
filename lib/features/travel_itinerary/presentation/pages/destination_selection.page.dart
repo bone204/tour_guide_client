@@ -9,10 +9,7 @@ import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_s
 class DestinationSelectionPage extends StatefulWidget {
   final String province;
 
-  const DestinationSelectionPage({
-    super.key,
-    required this.province,
-  });
+  const DestinationSelectionPage({super.key, required this.province});
 
   @override
   State<DestinationSelectionPage> createState() =>
@@ -47,14 +44,11 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
         children: [
           _buildHeader(),
           _buildSearchBar(),
-          Expanded(
-            child: _buildDestinationList(),
-          ),
+          Expanded(child: _buildDestinationList()),
         ],
       ),
-      bottomNavigationBar: _selectedDestinations.isNotEmpty
-          ? _buildBottomBar()
-          : null,
+      bottomNavigationBar:
+          _selectedDestinations.isNotEmpty ? _buildBottomBar() : null,
     );
   }
 
@@ -76,7 +70,7 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Chọn địa điểm cho lộ trình',
+            AppLocalizations.of(context)!.createItinerary,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: AppColors.primaryWhite,
               fontWeight: FontWeight.w700,
@@ -84,7 +78,7 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
           ),
           SizedBox(height: 4.h),
           Text(
-            'Chọn các địa điểm bạn muốn ghé thăm',
+            AppLocalizations.of(context)!.selectPlace,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppColors.primaryWhite.withOpacity(0.9),
             ),
@@ -100,14 +94,14 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
       color: AppColors.primaryWhite,
       child: TextField(
         onChanged: (value) => setState(() => _searchQuery = value),
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: AppColors.textPrimary,
-        ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: AppColors.textPrimary),
         decoration: InputDecoration(
-          hintText: 'Tìm kiếm địa điểm...',
-          hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSubtitle,
-          ),
+          hintText: AppLocalizations.of(context)!.searchDestinationHint,
+          hintStyle: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
           prefixIcon: Icon(
             Icons.search_rounded,
             color: AppColors.textSubtitle,
@@ -162,10 +156,10 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  'Không thể tải danh sách địa điểm',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
+                  AppLocalizations.of(context)!.somethingWentWrong,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(color: AppColors.textPrimary),
                 ),
               ],
             ),
@@ -174,12 +168,15 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
 
         if (state is GetDestinationLoaded) {
           // Filter by province and search query
-          final destinations = state.destinations.where((d) {
-            final matchesProvince = d.province?.contains(widget.province) ?? false;
-            final matchesSearch = _searchQuery.isEmpty ||
-                d.name.toLowerCase().contains(_searchQuery.toLowerCase());
-            return matchesProvince && matchesSearch;
-          }).toList();
+          final destinations =
+              state.destinations.where((d) {
+                final matchesProvince =
+                    d.province?.contains(widget.province) ?? false;
+                final matchesSearch =
+                    _searchQuery.isEmpty ||
+                    d.name.toLowerCase().contains(_searchQuery.toLowerCase());
+                return matchesProvince && matchesSearch;
+              }).toList();
 
           if (destinations.isEmpty) {
             return Center(
@@ -193,7 +190,7 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
                   ),
                   SizedBox(height: 16.h),
                   Text(
-                    'Không tìm thấy địa điểm',
+                    AppLocalizations.of(context)!.searchDestinationHint,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.textSubtitle,
                     ),
@@ -209,7 +206,9 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
             separatorBuilder: (_, __) => SizedBox(height: 12.h),
             itemBuilder: (context, index) {
               final destination = destinations[index];
-              final isSelected = _selectedDestinations.any((d) => d.id == destination.id);
+              final isSelected = _selectedDestinations.any(
+                (d) => d.id == destination.id,
+              );
 
               return _DestinationCard(
                 destination: destination,
@@ -217,7 +216,9 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
                 onTap: () {
                   setState(() {
                     if (isSelected) {
-                      _selectedDestinations.removeWhere((d) => d.id == destination.id);
+                      _selectedDestinations.removeWhere(
+                        (d) => d.id == destination.id,
+                      );
                     } else {
                       _selectedDestinations.add(destination);
                     }
@@ -283,16 +284,13 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 32.w,
-                  vertical: 16.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
               child: Text(
-                'Tạo lộ trình',
+                AppLocalizations.of(context)!.createItinerary,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: AppColors.primaryWhite,
                   fontWeight: FontWeight.w600,
@@ -329,9 +327,10 @@ class _DestinationCard extends StatelessWidget {
             color: AppColors.primaryWhite,
             borderRadius: BorderRadius.circular(16.r),
             border: Border.all(
-              color: isSelected
-                  ? AppColors.primaryBlue
-                  : AppColors.secondaryGrey.withOpacity(0.3),
+              color:
+                  isSelected
+                      ? AppColors.primaryBlue
+                      : AppColors.secondaryGrey.withOpacity(0.3),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -350,15 +349,16 @@ class _DestinationCard extends StatelessWidget {
                   topLeft: Radius.circular(16.r),
                   bottomLeft: Radius.circular(16.r),
                 ),
-                child: destination.photos != null && destination.photos!.isNotEmpty
-                    ? Image.network(
-                        destination.photos!.first,
-                        width: 100.w,
-                        height: 100.h,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => _buildPlaceholder(),
-                      )
-                    : _buildPlaceholder(),
+                child:
+                    destination.photos != null && destination.photos!.isNotEmpty
+                        ? Image.network(
+                          destination.photos!.first,
+                          width: 100.w,
+                          height: 100.h,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => _buildPlaceholder(),
+                        )
+                        : _buildPlaceholder(),
               ),
               // Content
               Expanded(
@@ -389,9 +389,8 @@ class _DestinationCard extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 destination.specificAddress!,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textSubtitle,
-                                ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: AppColors.textSubtitle),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -411,7 +410,9 @@ class _DestinationCard extends StatelessWidget {
                             SizedBox(width: 4.w),
                             Text(
                               destination.rating!.toStringAsFixed(1),
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.copyWith(
                                 color: AppColors.textPrimary,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -430,22 +431,25 @@ class _DestinationCard extends StatelessWidget {
                   width: 24.w,
                   height: 24.w,
                   decoration: BoxDecoration(
-                    color: isSelected ? AppColors.primaryBlue : Colors.transparent,
+                    color:
+                        isSelected ? AppColors.primaryBlue : Colors.transparent,
                     border: Border.all(
-                      color: isSelected
-                          ? AppColors.primaryBlue
-                          : AppColors.secondaryGrey,
+                      color:
+                          isSelected
+                              ? AppColors.primaryBlue
+                              : AppColors.secondaryGrey,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(6.r),
                   ),
-                  child: isSelected
-                      ? Icon(
-                          Icons.check,
-                          size: 16.sp,
-                          color: AppColors.primaryWhite,
-                        )
-                      : null,
+                  child:
+                      isSelected
+                          ? Icon(
+                            Icons.check,
+                            size: 16.sp,
+                            color: AppColors.primaryWhite,
+                          )
+                          : null,
                 ),
               ),
             ],
@@ -468,4 +472,3 @@ class _DestinationCard extends StatelessWidget {
     );
   }
 }
-

@@ -34,7 +34,11 @@ class LanguageDropdown extends StatelessWidget {
               ),
             ),
             iconStyleData: IconStyleData(
-              icon: Icon(Icons.arrow_drop_down, size: 18.sp, color: AppColors.primaryBlack),
+              icon: Icon(
+                Icons.arrow_drop_down,
+                size: 18.sp,
+                color: AppColors.primaryBlack,
+              ),
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight: 160.h,
@@ -47,9 +51,12 @@ class LanguageDropdown extends StatelessWidget {
                 value: "en",
                 child: Row(
                   children: [
-                    const Text("🇺🇸"),
+                    Text(AppLocalizations.of(context)!.flagUS),
                     SizedBox(width: 8.w),
-                    Text(AppLocalizations.of(context)!.english, style: Theme.of(context).textTheme.displayMedium),
+                    Text(
+                      AppLocalizations.of(context)!.english,
+                      style: Theme.of(context).textTheme.displayMedium,
+                    ),
                   ],
                 ),
               ),
@@ -57,9 +64,12 @@ class LanguageDropdown extends StatelessWidget {
                 value: "vi",
                 child: Row(
                   children: [
-                    const Text("🇻🇳"),
+                    Text(AppLocalizations.of(context)!.flagVN),
                     SizedBox(width: 8.w),
-                    Text(AppLocalizations.of(context)!.vietnamese, style: Theme.of(context).textTheme.displayMedium),
+                    Text(
+                      AppLocalizations.of(context)!.vietnamese,
+                      style: Theme.of(context).textTheme.displayMedium,
+                    ),
                   ],
                 ),
               ),

@@ -1057,4 +1057,72 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ok => 'OK';
+
+  @override
+  String get searchDestinationHint => 'Search for destination...';
+
+  @override
+  String get searchFavoritePlaceHint => 'Search favorite places...';
+
+  @override
+  String get searchProvinceHint => 'Search province/city...';
+
+  @override
+  String contractTitle(int id) {
+    return 'Contract #$id';
+  }
+
+  @override
+  String vehicleTitle(String licensePlate) {
+    return 'Vehicle #$licensePlate';
+  }
+
+  @override
+  String get flagUS => '🇺🇸';
+
+  @override
+  String get flagVN => '🇻🇳';
+
+  @override
+  String searchResultsCount(int count) {
+    return 'Found $count results';
+  }
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get drive => 'Drive';
+
+  @override
+  String get walk => 'Walk';
+
+  @override
+  String get calculatingRoute => 'Calculating route...';
+
+  @override
+  String get updatingTime => 'Updating time...';
+
+  @override
+  String get updatingDistance => 'Updating distance...';
+
+  @override
+  String hoursMinutes(int hours, int minutes) {
+    return '$hours hours $minutes minutes';
+  }
+
+  @override
+  String minutes(int minutes) {
+    return '$minutes minutes';
+  }
+
+  @override
+  String kilometers(String km) {
+    return '$km km';
+  }
+
+  @override
+  String meters(int m) {
+    return '$m m';
+  }
 }

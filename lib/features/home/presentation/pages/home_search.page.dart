@@ -42,12 +42,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
 
     // Call API with search query
     context.read<GetDestinationCubit>().getDestinations(
-      query: DestinationQuery(
-        q: query,
-        offset: 0,
-        limit: 20,
-        available: true,
-      ),
+      query: DestinationQuery(q: query, offset: 0, limit: 20, available: true),
     );
   }
 
@@ -63,7 +58,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomSearchAppBar(
-        hintText: "Tìm kiếm địa điểm...",
+        hintText: AppLocalizations.of(context)!.searchDestinationHint,
         controller: _controller,
         onBack: () => Navigator.of(context).pop(),
         onSearchChanged: _onSearchChanged,
@@ -72,9 +67,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
         builder: (context, state) {
           if (state is GetDestinationLoading) {
             return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primaryBlue,
-              ),
+              child: CircularProgressIndicator(color: AppColors.primaryBlue),
             );
           }
 
@@ -116,8 +109,8 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
                     SizedBox(height: 16.h),
                     Text(
                       _controller.text.isEmpty
-                          ? "Nhập từ khóa để tìm kiếm"
-                          : "Không tìm thấy kết quả",
+                          ? AppLocalizations.of(context)!.search
+                          : AppLocalizations.of(context)!.somethingWentWrong,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSubtitle,
                       ),
@@ -134,7 +127,9 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
                 children: [
                   // Search result header
                   Text(
-                    'Tìm thấy ${destinations.length} kết quả',
+                    AppLocalizations.of(
+                      context,
+                    )!.searchResultsCount(destinations.length),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: AppColors.textPrimary,
                     ),
@@ -156,18 +151,23 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
                         onTap: () {
                           Navigator.of(context, rootNavigator: true).push(
                             MaterialPageRoute(
-                              builder: (context) => DestinationDetailPage.withProvider(
-                                destinationId: destination.id,
-                              ),
+                              builder:
+                                  (context) =>
+                                      DestinationDetailPage.withProvider(
+                                        destinationId: destination.id,
+                                      ),
                             ),
                           );
                         },
                         child: AttractionCard(
-                          imageUrl: destination.photos?.isNotEmpty == true
-                              ? destination.photos!.first
-                              : AppImage.defaultDestination,
+                          imageUrl:
+                              destination.photos?.isNotEmpty == true
+                                  ? destination.photos!.first
+                                  : AppImage.defaultDestination,
                           title: destination.name,
-                          location: destination.province ?? "Unknown",
+                          location:
+                              destination.province ??
+                              AppLocalizations.of(context)!.unknown,
                           rating: destination.rating ?? 0.0,
                           reviews: destination.userRatingsTotal ?? 0,
                         ),
@@ -191,14 +191,14 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  "Tìm kiếm địa điểm du lịch",
+                  AppLocalizations.of(context)!.searchDestinationHint,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.textSubtitle,
                   ),
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  "Nhập tên địa điểm, tỉnh thành...",
+                  AppLocalizations.of(context)!.searchProvinceHint,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSubtitle.withOpacity(0.7),
                   ),

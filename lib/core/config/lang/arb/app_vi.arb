@@ -758,5 +758,56 @@
 
   "sessionExpiredMessage": "Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
 
-  "ok": "OK"
+  "ok": "OK",
+  "searchDestinationHint": "Tìm kiếm địa điểm...",
+  "searchFavoritePlaceHint": "Tìm kiếm địa điểm yêu thích...",
+  "searchProvinceHint": "Tìm kiếm tỉnh/thành phố...",
+  "contractTitle": "Hợp đồng #{id}",
+  "@contractTitle": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "vehicleTitle": "Xe #{licensePlate}",
+  "@vehicleTitle": {
+    "placeholders": {
+      "licensePlate": {
+        "type": "String"
+      }
+    }
+  },
+  "flagUS": "🇺🇸",
+  "flagVN": "🇻🇳"
+  ,
+  "searchResultsCount": "Tìm thấy {count} kết quả",
+  "@searchResultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unknown": "Không rõ"
+  ,
+  "drive": "Lái xe",
+  "walk": "Đi bộ",
+  "motorbike": "Xe máy",
+  "calculatingRoute": "Đang tính toán tuyến đường...",
+  "updatingTime": "Đang cập nhật thời gian...",
+  "updatingDistance": "Đang cập nhật quãng đường...",
+  "hoursMinutes": "{hours} giờ {minutes} phút",
+  "@hoursMinutes": {
+    "placeholders": {
+      "hours": {"type": "int"},
+      "minutes": {"type": "int"}
+    }
+  },
+  "minutes": "{minutes} phút",
+  "@minutes": {"placeholders": {"minutes": {"type": "int"}}},
+  "kilometers": "{km} km",
+  "@kilometers": {"placeholders": {"km": {"type": "String"}}},
+  "meters": "{m} m",
+  "@meters": {"placeholders": {"m": {"type": "int"}}}
 }

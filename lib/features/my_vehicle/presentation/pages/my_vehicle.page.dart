@@ -99,7 +99,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                     color: AppColors.primaryBlue,
                     size: 24.sp,
                   ),
-                  tooltip: 'Xem chi tiết hợp đồng',
+                  tooltip: AppLocalizations.of(context)!.details,
                   onPressed: () => _openContractDetail(approvedContractId!),
                 ),
               ]

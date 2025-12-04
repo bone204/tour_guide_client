@@ -1057,4 +1057,72 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get ok => 'OK';
+
+  @override
+  String get searchDestinationHint => 'Tìm kiếm địa điểm...';
+
+  @override
+  String get searchFavoritePlaceHint => 'Tìm kiếm địa điểm yêu thích...';
+
+  @override
+  String get searchProvinceHint => 'Tìm kiếm tỉnh/thành phố...';
+
+  @override
+  String contractTitle(int id) {
+    return 'Hợp đồng #$id';
+  }
+
+  @override
+  String vehicleTitle(String licensePlate) {
+    return 'Xe #$licensePlate';
+  }
+
+  @override
+  String get flagUS => '🇺🇸';
+
+  @override
+  String get flagVN => '🇻🇳';
+
+  @override
+  String searchResultsCount(int count) {
+    return 'Tìm thấy $count kết quả';
+  }
+
+  @override
+  String get unknown => 'Không rõ';
+
+  @override
+  String get drive => 'Lái xe';
+
+  @override
+  String get walk => 'Đi bộ';
+
+  @override
+  String get calculatingRoute => 'Đang tính toán tuyến đường...';
+
+  @override
+  String get updatingTime => 'Đang cập nhật thời gian...';
+
+  @override
+  String get updatingDistance => 'Đang cập nhật quãng đường...';
+
+  @override
+  String hoursMinutes(int hours, int minutes) {
+    return '$hours giờ $minutes phút';
+  }
+
+  @override
+  String minutes(int minutes) {
+    return '$minutes phút';
+  }
+
+  @override
+  String kilometers(String km) {
+    return '$km km';
+  }
+
+  @override
+  String meters(int m) {
+    return '$m m';
+  }
 }

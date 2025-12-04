@@ -45,7 +45,7 @@ extension MapUIExtension on _MapPageState {
               style: theme.textTheme.bodyMedium,
               decoration: InputDecoration(
                 isDense: true,
-                hintText: 'Tìm kiếm địa điểm yêu thích...',
+                hintText: AppLocalizations.of(context)!.searchFavoritePlaceHint,
                 hintStyle: theme.textTheme.bodyMedium?.copyWith(
                   color: Colors.grey.shade500,
                 ),
@@ -154,8 +154,8 @@ extension MapUIExtension on _MapPageState {
                 userAgentPackageName: 'tour_guide_app',
               ),
               // Routing layer - chỉ hiển thị khi route được bật
-              if (_isRouteEnabled && 
-                  _currentRoute != null && 
+              if (_isRouteEnabled &&
+                  _currentRoute != null &&
                   _currentRoute!.geometry.isNotEmpty)
                 PolylineLayer(
                   polylines: [
@@ -274,7 +274,7 @@ extension MapUIExtension on _MapPageState {
                         const CircularProgressIndicator(),
                         const SizedBox(height: 16),
                         Text(
-                          'Đang tính toán tuyến đường...',
+                          AppLocalizations.of(context)!.calculatingRoute,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
@@ -296,11 +296,10 @@ extension MapUIExtension on _MapPageState {
     // 2. Đang loading
     // 3. Có kết quả
     // 4. Có text trong search box
-    return _isSearchOverlayVisible && (
-      _isFetchingDestinations ||
-      _filteredDestinations.isNotEmpty ||
-      _searchController.text.isNotEmpty
-    );
+    return _isSearchOverlayVisible &&
+        (_isFetchingDestinations ||
+            _filteredDestinations.isNotEmpty ||
+            _searchController.text.isNotEmpty);
   }
 
   /// Build destination markers
@@ -362,4 +361,3 @@ extension MapUIExtension on _MapPageState {
     );
   }
 }
-

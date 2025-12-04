@@ -16,7 +16,8 @@ class ChatBotPage extends StatefulWidget {
   State<ChatBotPage> createState() => _ChatBotPageState();
 }
 
-class _ChatBotPageState extends State<ChatBotPage> with TickerProviderStateMixin {
+class _ChatBotPageState extends State<ChatBotPage>
+    with TickerProviderStateMixin {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
@@ -34,7 +35,7 @@ class _ChatBotPageState extends State<ChatBotPage> with TickerProviderStateMixin
     if (cubit.state.isTyping) return;
     final text = _controller.text.trim();
     if (text.isEmpty) return;
-    
+
     // Mặc định dùng tiếng Việt
     const lang = 'vi';
 
@@ -126,7 +127,6 @@ class _ChatBotPageState extends State<ChatBotPage> with TickerProviderStateMixin
     );
   }
 
-
   Widget _buildMessageWithAnimation(ChatUiMessage message, int index) {
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 400),
@@ -200,7 +200,7 @@ class _ChatComposer extends StatelessWidget {
                   height: 1.4,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Hỏi về điểm đến, nhà hàng...',
+                  hintText: AppLocalizations.of(context)!.searchDestinationHint,
                   hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSubtitle,
                   ),
@@ -223,22 +223,24 @@ class _ChatComposer extends StatelessWidget {
             height: 48.w,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: isBusy
-                    ? [AppColors.secondaryGrey, AppColors.secondaryGrey]
-                    : [AppColors.primaryBlue, AppColors.primaryLightBlue],
+                colors:
+                    isBusy
+                        ? [AppColors.secondaryGrey, AppColors.secondaryGrey]
+                        : [AppColors.primaryBlue, AppColors.primaryLightBlue],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               shape: BoxShape.circle,
-              boxShadow: isBusy
-                  ? []
-                  : [
-                      BoxShadow(
-                        color: AppColors.primaryBlue.withOpacity(0.3),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
+              boxShadow:
+                  isBusy
+                      ? []
+                      : [
+                        BoxShadow(
+                          color: AppColors.primaryBlue.withOpacity(0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
             ),
             child: Material(
               color: Colors.transparent,
@@ -268,13 +270,12 @@ class _ChatMessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final isUser = message.isUser;
     final alignment = isUser ? Alignment.centerRight : Alignment.centerLeft;
-    
+
     return Align(
       alignment: alignment,
       child: Column(
-        crossAxisAlignment: isUser
-            ? CrossAxisAlignment.end
-            : CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           if (message.content.trim().isNotEmpty)
             _buildMessageContent(context, isUser),
@@ -282,14 +283,15 @@ class _ChatMessageBubble extends StatelessWidget {
             if (message.content.trim().isNotEmpty) SizedBox(height: 12.h),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: message.suggestions
-                  .map(
-                    (item) => Padding(
-                      padding: EdgeInsets.only(bottom: 12.h),
-                      child: _ChatSuggestionCard(item: item),
-                    ),
-                  )
-                  .toList(),
+              children:
+                  message.suggestions
+                      .map(
+                        (item) => Padding(
+                          padding: EdgeInsets.only(bottom: 12.h),
+                          child: _ChatSuggestionCard(item: item),
+                        ),
+                      )
+                      .toList(),
             ),
           ],
         ],
@@ -298,14 +300,16 @@ class _ChatMessageBubble extends StatelessWidget {
   }
 
   Widget _buildMessageContent(BuildContext context, bool isUser) {
-    final backgroundColor = message.isError
-        ? AppColors.primaryRed.withOpacity(0.1)
-        : isUser
+    final backgroundColor =
+        message.isError
+            ? AppColors.primaryRed.withOpacity(0.1)
+            : isUser
             ? AppColors.primaryBlue
             : AppColors.primaryWhite;
-    final textColor = message.isError
-        ? AppColors.primaryRed
-        : isUser
+    final textColor =
+        message.isError
+            ? AppColors.primaryRed
+            : isUser
             ? AppColors.primaryWhite
             : AppColors.textPrimary;
     final borderRadius = BorderRadius.only(
@@ -320,15 +324,16 @@ class _ChatMessageBubble extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: borderRadius,
-        boxShadow: message.isError || isUser
-            ? []
-            : [
-                BoxShadow(
-                  color: AppColors.primaryBlack.withOpacity(0.06),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+        boxShadow:
+            message.isError || isUser
+                ? []
+                : [
+                  BoxShadow(
+                    color: AppColors.primaryBlack.withOpacity(0.06),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
       ),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: _FormattedMessageText(
@@ -538,12 +543,10 @@ class _TypingDotState extends State<_TypingDot>
       duration: const Duration(milliseconds: 800),
     );
 
-    _scaleAnimation = Tween<double>(begin: 0.6, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOut,
-      ),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 0.6,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
     Future.delayed(widget.delay, () {
       if (mounted) {
@@ -589,10 +592,7 @@ class _ChatWelcomeSection extends StatelessWidget {
           height: 64.w,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                AppColors.primaryBlue,
-                AppColors.primaryLightBlue,
-              ],
+              colors: [AppColors.primaryBlue, AppColors.primaryLightBlue],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -669,17 +669,18 @@ class _ChatWelcomeSection extends StatelessWidget {
     ];
 
     return Column(
-      children: suggestions.map((suggestion) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: 12.h),
-          child: _QuickSuggestionChip(
-            icon: suggestion['icon'] as IconData,
-            label: suggestion['text'] as String,
-            color: suggestion['color'] as Color,
-            onTap: () => onQuickSend(suggestion['text'] as String),
-          ),
-        );
-      }).toList(),
+      children:
+          suggestions.map((suggestion) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: 12.h),
+              child: _QuickSuggestionChip(
+                icon: suggestion['icon'] as IconData,
+                label: suggestion['text'] as String,
+                color: suggestion['color'] as Color,
+                onTap: () => onQuickSend(suggestion['text'] as String),
+              ),
+            );
+          }).toList(),
     );
   }
 }
@@ -710,10 +711,7 @@ class _QuickSuggestionChip extends StatelessWidget {
           decoration: BoxDecoration(
             color: color.withOpacity(0.08),
             borderRadius: BorderRadius.circular(16.r),
-            border: Border.all(
-              color: color.withOpacity(0.2),
-              width: 1,
-            ),
+            border: Border.all(color: color.withOpacity(0.2), width: 1),
           ),
           child: Row(
             children: [
@@ -724,11 +722,7 @@ class _QuickSuggestionChip extends StatelessWidget {
                   color: color.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
-                child: Icon(
-                  icon,
-                  color: color,
-                  size: 20.sp,
-                ),
+                child: Icon(icon, color: color, size: 20.sp),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -740,11 +734,7 @@ class _QuickSuggestionChip extends StatelessWidget {
                   ),
                 ),
               ),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: color,
-                size: 14.sp,
-              ),
+              Icon(Icons.arrow_forward_ios_rounded, color: color, size: 14.sp),
             ],
           ),
         ),
@@ -772,16 +762,17 @@ class _FormattedMessageText extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: lines.asMap().entries.map((entry) {
-        final index = entry.key;
-        final line = entry.value;
-        final isLast = index == lines.length - 1;
+      children:
+          lines.asMap().entries.map((entry) {
+            final index = entry.key;
+            final line = entry.value;
+            final isLast = index == lines.length - 1;
 
-        return Padding(
-          padding: EdgeInsets.only(bottom: isLast ? 0 : 8.h),
-          child: _buildLine(line),
-        );
-      }).toList(),
+            return Padding(
+              padding: EdgeInsets.only(bottom: isLast ? 0 : 8.h),
+              child: _buildLine(line),
+            );
+          }).toList(),
     );
   }
 
@@ -794,8 +785,8 @@ class _FormattedMessageText extends StatelessWidget {
       if (trimmed.isEmpty) continue;
 
       // Kiểm tra bullet point (*, -, •)
-      if (trimmed.startsWith('*') || 
-          trimmed.startsWith('-') || 
+      if (trimmed.startsWith('*') ||
+          trimmed.startsWith('-') ||
           trimmed.startsWith('•')) {
         final content = trimmed.substring(1).trim();
         if (content.isNotEmpty) {
@@ -827,9 +818,7 @@ class _FormattedMessageText extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: _buildRichText(line.content),
-          ),
+          Expanded(child: _buildRichText(line.content)),
         ],
       );
     }
@@ -841,17 +830,11 @@ class _FormattedMessageText extends StatelessWidget {
   /// Build RichText với inline bold formatting
   Widget _buildRichText(String text) {
     final spans = _parseInlineFormatting(text);
-    final baseStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-      color: textColor,
-      height: 1.5,
-    );
-    
-    return RichText(
-      text: TextSpan(
-        children: spans,
-        style: baseStyle,
-      ),
-    );
+    final baseStyle = Theme.of(
+      context,
+    ).textTheme.bodyMedium?.copyWith(color: textColor, height: 1.5);
+
+    return RichText(text: TextSpan(children: spans, style: baseStyle));
   }
 
   /// Parse inline bold (**text**) trong text
@@ -859,11 +842,11 @@ class _FormattedMessageText extends StatelessWidget {
     final spans = <TextSpan>[];
     final regex = RegExp(r'\*\*(.+?)\*\*');
     int lastMatchEnd = 0;
-    
-    final normalStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-      color: textColor,
-    );
-    
+
+    final normalStyle = Theme.of(
+      context,
+    ).textTheme.bodyMedium?.copyWith(color: textColor);
+
     final boldStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
       color: textColor,
       fontWeight: FontWeight.w700,
@@ -894,21 +877,13 @@ class _FormattedMessageText extends StatelessWidget {
     // Add phần text còn lại sau match cuối cùng
     if (lastMatchEnd < text.length) {
       spans.add(
-        TextSpan(
-          text: text.substring(lastMatchEnd),
-          style: normalStyle,
-        ),
+        TextSpan(text: text.substring(lastMatchEnd), style: normalStyle),
       );
     }
 
     // Nếu không có bold nào, return toàn bộ text
     if (spans.isEmpty) {
-      spans.add(
-        TextSpan(
-          text: text,
-          style: normalStyle,
-        ),
-      );
+      spans.add(TextSpan(text: text, style: normalStyle));
     }
 
     return spans;
@@ -921,8 +896,5 @@ class _MessageLine {
   final String content;
   final _LineType type;
 
-  const _MessageLine({
-    required this.content,
-    required this.type,
-  });
+  const _MessageLine({required this.content, required this.type});
 }

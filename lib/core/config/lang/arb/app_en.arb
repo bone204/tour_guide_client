@@ -758,5 +758,56 @@
 
   "sessionExpiredMessage": "Your login session has expired. Please sign in again.",
 
-  "ok": "OK"
+  "ok": "OK",
+  "searchDestinationHint": "Search for destination...",
+  "searchFavoritePlaceHint": "Search favorite places...",
+  "searchProvinceHint": "Search province/city...",
+  "contractTitle": "Contract #{id}",
+  "@contractTitle": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "vehicleTitle": "Vehicle #{licensePlate}",
+  "@vehicleTitle": {
+    "placeholders": {
+      "licensePlate": {
+        "type": "String"
+      }
+    }
+  },
+  "flagUS": "🇺🇸",
+  "flagVN": "🇻🇳"
+  ,
+  "searchResultsCount": "Found {count} results",
+  "@searchResultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "unknown": "Unknown"
+  ,
+  "drive": "Drive",
+  "walk": "Walk",
+  "motorbike": "Motorbike",
+  "calculatingRoute": "Calculating route...",
+  "updatingTime": "Updating time...",
+  "updatingDistance": "Updating distance...",
+  "hoursMinutes": "{hours} hours {minutes} minutes",
+  "@hoursMinutes": {
+    "placeholders": {
+      "hours": {"type": "int"},
+      "minutes": {"type": "int"}
+    }
+  },
+  "minutes": "{minutes} minutes",
+  "@minutes": {"placeholders": {"minutes": {"type": "int"}}},
+  "kilometers": "{km} km",
+  "@kilometers": {"placeholders": {"km": {"type": "String"}}},
+  "meters": "{m} m",
+  "@meters": {"placeholders": {"m": {"type": "int"}}}
 }

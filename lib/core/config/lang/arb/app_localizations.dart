@@ -2170,6 +2170,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OK'**
   String get ok;
+
+  /// No description provided for @searchDestinationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for destination...'**
+  String get searchDestinationHint;
+
+  /// No description provided for @searchFavoritePlaceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search favorite places...'**
+  String get searchFavoritePlaceHint;
+
+  /// No description provided for @searchProvinceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search province/city...'**
+  String get searchProvinceHint;
+
+  /// No description provided for @contractTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract #{id}'**
+  String contractTitle(int id);
+
+  /// No description provided for @vehicleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle #{licensePlate}'**
+  String vehicleTitle(String licensePlate);
+
+  /// No description provided for @flagUS.
+  ///
+  /// In en, this message translates to:
+  /// **'🇺🇸'**
+  String get flagUS;
+
+  /// No description provided for @flagVN.
+  ///
+  /// In en, this message translates to:
+  /// **'🇻🇳'**
+  String get flagVN;
+
+  /// No description provided for @searchResultsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Found {count} results'**
+  String searchResultsCount(int count);
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// No description provided for @drive.
+  ///
+  /// In en, this message translates to:
+  /// **'Drive'**
+  String get drive;
+
+  /// No description provided for @walk.
+  ///
+  /// In en, this message translates to:
+  /// **'Walk'**
+  String get walk;
+
+  /// No description provided for @calculatingRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculating route...'**
+  String get calculatingRoute;
+
+  /// No description provided for @updatingTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating time...'**
+  String get updatingTime;
+
+  /// No description provided for @updatingDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating distance...'**
+  String get updatingDistance;
+
+  /// No description provided for @hoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} hours {minutes} minutes'**
+  String hoursMinutes(int hours, int minutes);
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes'**
+  String minutes(int minutes);
+
+  /// No description provided for @kilometers.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km'**
+  String kilometers(String km);
+
+  /// No description provided for @meters.
+  ///
+  /// In en, this message translates to:
+  /// **'{m} m'**
+  String meters(int m);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

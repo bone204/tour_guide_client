@@ -11,9 +11,11 @@ class ProvinceSelectionPage extends StatefulWidget {
   // Static method to create page with BlocProvider
   static Widget withProvider() {
     return BlocProvider(
-      create: (context) => GetDestinationCubit()..getDestinations(
-        query: DestinationQuery(offset: 0, limit: 200),
-      ),
+      create:
+          (context) =>
+              GetDestinationCubit()..getDestinations(
+                query: DestinationQuery(offset: 0, limit: 200),
+              ),
       child: const ProvinceSelectionPage(),
     );
   }
@@ -24,13 +26,19 @@ class ProvinceSelectionPage extends StatefulWidget {
 
 class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
   String _searchQuery = '';
-  
+
   // Map province names to icons and colors
   final Map<String, Map<String, dynamic>> _provinceStyles = {
     'Đà Nẵng': {'icon': Icons.beach_access, 'color': const Color(0xFF007BFF)},
     'Hà Nội': {'icon': Icons.account_balance, 'color': const Color(0xFFFF7029)},
-    'Thành phố Hồ Chí Minh': {'icon': Icons.location_city, 'color': const Color(0xFF800080)},
-    'Hồ Chí Minh': {'icon': Icons.location_city, 'color': const Color(0xFF800080)},
+    'Thành phố Hồ Chí Minh': {
+      'icon': Icons.location_city,
+      'color': const Color(0xFF800080),
+    },
+    'Hồ Chí Minh': {
+      'icon': Icons.location_city,
+      'color': const Color(0xFF800080),
+    },
     'Nha Trang': {'icon': Icons.pool, 'color': const Color(0xFF4DA6FF)},
     'Hội An': {'icon': Icons.lightbulb, 'color': const Color(0xFFFFD336)},
     'Huế': {'icon': Icons.castle, 'color': const Color(0xFF77CC00)},
@@ -38,7 +46,10 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
     'Đà Lạt': {'icon': Icons.local_florist, 'color': const Color(0xFFFF69B4)},
     'Sa Pa': {'icon': Icons.terrain, 'color': const Color(0xFF77CC00)},
     'Vũng Tàu': {'icon': Icons.sailing, 'color': const Color(0xFF4DA6FF)},
-    'Hạ Long': {'icon': Icons.directions_boat, 'color': const Color(0xFF007BFF)},
+    'Hạ Long': {
+      'icon': Icons.directions_boat,
+      'color': const Color(0xFF007BFF),
+    },
     'Ninh Bình': {'icon': Icons.landscape, 'color': const Color(0xFF77CC00)},
     'Quy Nhơn': {'icon': Icons.surfing, 'color': const Color(0xFF4DA6FF)},
     'Cần Thơ': {'icon': Icons.agriculture, 'color': const Color(0xFF77CC00)},
@@ -57,12 +68,21 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
   List<Map<String, dynamic>> _buildProvinceList(List<String> provinces) {
     return provinces.map((province) {
       // Try to find matching style, or use default
-      final style = _provinceStyles[province] ?? 
-                    _provinceStyles.entries.firstWhere(
-                      (entry) => province.contains(entry.key) || entry.key.contains(province),
-                      orElse: () => MapEntry('', {'icon': Icons.place, 'color': AppColors.primaryBlue}),
-                    ).value;
-      
+      final style =
+          _provinceStyles[province] ??
+          _provinceStyles.entries
+              .firstWhere(
+                (entry) =>
+                    province.contains(entry.key) ||
+                    entry.key.contains(province),
+                orElse:
+                    () => MapEntry('', {
+                      'icon': Icons.place,
+                      'color': AppColors.primaryBlue,
+                    }),
+              )
+              .value;
+
       return {
         'name': province,
         'icon': style['icon'] as IconData,
@@ -71,10 +91,16 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
     }).toList();
   }
 
-  List<Map<String, dynamic>> _filterProvinces(List<Map<String, dynamic>> provinces) {
+  List<Map<String, dynamic>> _filterProvinces(
+    List<Map<String, dynamic>> provinces,
+  ) {
     if (_searchQuery.isEmpty) return provinces;
     return provinces
-        .where((p) => (p['name'] as String).toLowerCase().contains(_searchQuery.toLowerCase()))
+        .where(
+          (p) => (p['name'] as String).toLowerCase().contains(
+            _searchQuery.toLowerCase(),
+          ),
+        )
         .toList();
   }
 
@@ -107,7 +133,7 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
                   ),
                   SizedBox(height: 16.h),
                   Text(
-                    'Không thể tải danh sách tỉnh/thành phố',
+                    AppLocalizations.of(context)!.somethingWentWrong,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.textPrimary,
                     ),
@@ -134,9 +160,7 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
             return Column(
               children: [
                 _buildSearchBar(),
-                Expanded(
-                  child: _buildProvinceGrid(provinceList),
-                ),
+                Expanded(child: _buildProvinceGrid(provinceList)),
               ],
             );
           }
@@ -162,14 +186,14 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
       ),
       child: TextField(
         onChanged: (value) => setState(() => _searchQuery = value),
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: AppColors.textPrimary,
-        ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: AppColors.textPrimary),
         decoration: InputDecoration(
-          hintText: 'Tìm kiếm tỉnh/thành phố...',
-          hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSubtitle,
-          ),
+          hintText: AppLocalizations.of(context)!.searchProvinceHint,
+          hintStyle: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
           prefixIcon: Icon(
             Icons.search_rounded,
             color: AppColors.textSubtitle,
@@ -220,10 +244,10 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
             ),
             SizedBox(height: 16.h),
             Text(
-              'Không tìm thấy tỉnh/thành phố',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: AppColors.textSubtitle,
-              ),
+              AppLocalizations.of(context)!.searchProvinceHint,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: AppColors.textSubtitle),
             ),
           ],
         ),
@@ -280,10 +304,7 @@ class _ProvinceCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                color,
-                color.withOpacity(0.7),
-              ],
+              colors: [color, color.withOpacity(0.7)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -306,11 +327,7 @@ class _ProvinceCard extends StatelessWidget {
                   color: AppColors.primaryWhite.withOpacity(0.2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  icon,
-                  color: AppColors.primaryWhite,
-                  size: 28.sp,
-                ),
+                child: Icon(icon, color: AppColors.primaryWhite, size: 28.sp),
               ),
               SizedBox(height: 12.h),
               Padding(
@@ -333,5 +350,3 @@ class _ProvinceCard extends StatelessWidget {
     );
   }
 }
-
-

@@ -31,7 +31,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomAppBar(
-        title: 'Vehicle #${widget.licensePlate}',
+        title: AppLocalizations.of(context)!.vehicleTitle(widget.licensePlate),
         showBackButton: true,
         onBackPressed: () => Navigator.of(context).pop(),
       ),
@@ -57,26 +57,39 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.directions_car_filled, size: 56.sp, color: AppColors.primaryRed),
+            Icon(
+              Icons.directions_car_filled,
+              size: 56.sp,
+              color: AppColors.primaryRed,
+            ),
             SizedBox(height: 16.h),
             Text(
               'Không thể tải thông tin xe',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 8.h),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
             ),
             SizedBox(height: 20.h),
             ElevatedButton(
-              onPressed: () => context.read<VehicleDetailCubit>().fetchVehicle(widget.licensePlate),
+              onPressed:
+                  () => context.read<VehicleDetailCubit>().fetchVehicle(
+                    widget.licensePlate,
+                  ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue,
                 foregroundColor: AppColors.primaryWhite,
                 padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
               ),
               child: Text(AppLocalizations.of(context)!.retry),
             ),
@@ -94,98 +107,86 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
         children: [
           _buildHeader(vehicle),
           SizedBox(height: 20.h),
-          _buildSection(
-            AppLocalizations.of(context)!.vehicleInfo,
-            [
-              _InfoTile(
-                label: AppLocalizations.of(context)!.vehicleType,
-                value: _titleCase(vehicle.vehicleCatalog?.type ?? '—'),
-                icon: Icons.directions_car_filled_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.brandAndModel,
-                value: _vehicleName(vehicle),
-                icon: Icons.badge_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.color,
-                value: vehicle.vehicleCatalog?.color ?? '—',
-                icon: Icons.palette_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.numberOfSeats,
-                value: vehicle.vehicleCatalog?.seatingCapacity?.toString() ?? '—',
-                icon: Icons.event_seat_outlined,
-              ),
-            ],
-          ),
-          _buildSection(
-            AppLocalizations.of(context)!.priceAndPerformance,
-            [
-              _InfoTile(
-                label: AppLocalizations.of(context)!.pricePerHour,
-                value: _formatPrice(vehicle.pricePerHour),
-                icon: Icons.access_time,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.pricePerDay,
-                value: _formatPrice(vehicle.pricePerDay),
-                icon: Icons.calendar_month_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.totalRentals,
-                value: '${vehicle.totalRentals}',
-                icon: Icons.swap_horiz_rounded,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.averageRating,
-                value: vehicle.averageRating.toStringAsFixed(1),
-                icon: Icons.star_rate_rounded,
-              ),
-            ],
-          ),
-          _buildSection(
-            AppLocalizations.of(context)!.statusAndRequirements,
-            [
-              _InfoTile(
-                label: AppLocalizations.of(context)!.approvalStatus,
-                value: _statusLabel(vehicle.status),
-                icon: Icons.verified_outlined,
-              ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.available,
-                value: _availabilityLabel(vehicle.availability),
-                icon: Icons.shield_moon_outlined,
-              ),
-              if (vehicle.requirements?.isNotEmpty ?? false)
-                _InfoTile(
-                  label: AppLocalizations.of(context)!.requirements,
-                  value: vehicle.requirements!,
-                  icon: Icons.fact_check_outlined,
-                ),
-              if (vehicle.rejectedReason?.isNotEmpty ?? false)
-                _InfoTile(
-                  label: AppLocalizations.of(context)!.rejectionReasonLabel,
-                  value: vehicle.rejectedReason!,
-                  icon: Icons.report_problem_outlined,
-                ),
-              _InfoTile(
-                label: AppLocalizations.of(context)!.lastUpdated,
-                value: _formatDate(vehicle.updatedAt ?? vehicle.createdAt),
-                icon: Icons.schedule_outlined,
-              ),
-            ],
-          ),
-          if (vehicle.description?.isNotEmpty ?? false)
-            _buildSection(
-              'Mô tả',
-              [
-                Text(
-                  vehicle.description!,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
+          _buildSection(AppLocalizations.of(context)!.vehicleInfo, [
+            _InfoTile(
+              label: AppLocalizations.of(context)!.vehicleType,
+              value: _titleCase(vehicle.vehicleCatalog?.type ?? '—'),
+              icon: Icons.directions_car_filled_outlined,
             ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.brandAndModel,
+              value: _vehicleName(vehicle),
+              icon: Icons.badge_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.color,
+              value: vehicle.vehicleCatalog?.color ?? '—',
+              icon: Icons.palette_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.numberOfSeats,
+              value: vehicle.vehicleCatalog?.seatingCapacity?.toString() ?? '—',
+              icon: Icons.event_seat_outlined,
+            ),
+          ]),
+          _buildSection(AppLocalizations.of(context)!.priceAndPerformance, [
+            _InfoTile(
+              label: AppLocalizations.of(context)!.pricePerHour,
+              value: _formatPrice(vehicle.pricePerHour),
+              icon: Icons.access_time,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.pricePerDay,
+              value: _formatPrice(vehicle.pricePerDay),
+              icon: Icons.calendar_month_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.totalRentals,
+              value: '${vehicle.totalRentals}',
+              icon: Icons.swap_horiz_rounded,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.averageRating,
+              value: vehicle.averageRating.toStringAsFixed(1),
+              icon: Icons.star_rate_rounded,
+            ),
+          ]),
+          _buildSection(AppLocalizations.of(context)!.statusAndRequirements, [
+            _InfoTile(
+              label: AppLocalizations.of(context)!.approvalStatus,
+              value: _statusLabel(vehicle.status),
+              icon: Icons.verified_outlined,
+            ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.available,
+              value: _availabilityLabel(vehicle.availability),
+              icon: Icons.shield_moon_outlined,
+            ),
+            if (vehicle.requirements?.isNotEmpty ?? false)
+              _InfoTile(
+                label: AppLocalizations.of(context)!.requirements,
+                value: vehicle.requirements!,
+                icon: Icons.fact_check_outlined,
+              ),
+            if (vehicle.rejectedReason?.isNotEmpty ?? false)
+              _InfoTile(
+                label: AppLocalizations.of(context)!.rejectionReasonLabel,
+                value: vehicle.rejectedReason!,
+                icon: Icons.report_problem_outlined,
+              ),
+            _InfoTile(
+              label: AppLocalizations.of(context)!.lastUpdated,
+              value: _formatDate(vehicle.updatedAt ?? vehicle.createdAt),
+              icon: Icons.schedule_outlined,
+            ),
+          ]),
+          if (vehicle.description?.isNotEmpty ?? false)
+            _buildSection('Mô tả', [
+              Text(
+                vehicle.description!,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ]),
         ],
       ),
     );
@@ -241,16 +242,16 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
                     Text(
                       vehicle.licensePlate,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     SizedBox(height: 4.h),
                     Text(
                       _vehicleName(vehicle),
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.white70,
-                          ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
                     ),
                   ],
                 ),
@@ -297,12 +298,14 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
           ),
           SizedBox(height: 16.h),
-          ...children.expand((widget) => [widget, SizedBox(height: 14.h)]).toList()
+          ...children
+              .expand((widget) => [widget, SizedBox(height: 14.h)])
+              .toList()
             ..removeLast(),
         ],
       ),
@@ -310,16 +313,16 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
   }
 
   String _vehicleName(Vehicle vehicle) {
-    final parts = [
-      vehicle.vehicleCatalog?.brand,
-      vehicle.vehicleCatalog?.model,
-    ]
-        .whereType<String>()
-        .map((value) => value.trim())
-        .where((value) => value.isNotEmpty)
-        .toList();
+    final parts =
+        [vehicle.vehicleCatalog?.brand, vehicle.vehicleCatalog?.model]
+            .whereType<String>()
+            .map((value) => value.trim())
+            .where((value) => value.isNotEmpty)
+            .toList();
     final composed = parts.join(' ').trim();
-    return composed.isEmpty ? AppLocalizations.of(context)!.rentalVehicleDefault : composed;
+    return composed.isEmpty
+        ? AppLocalizations.of(context)!.rentalVehicleDefault
+        : composed;
   }
 
   String _formatPrice(double price) {
@@ -403,9 +406,9 @@ class _StatusChip extends StatelessWidget {
       child: Text(
         label,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -434,11 +437,7 @@ class _InfoTile extends StatelessWidget {
             color: AppColors.primaryBlue.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12.r),
           ),
-          child: Icon(
-            icon,
-            color: AppColors.primaryBlue,
-            size: 20.sp,
-          ),
+          child: Icon(icon, color: AppColors.primaryBlue, size: 20.sp),
         ),
         SizedBox(width: 12.w),
         Expanded(
@@ -447,16 +446,16 @@ class _InfoTile extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSubtitle,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
               ),
               SizedBox(height: 4.h),
               Text(
                 value.isEmpty ? '—' : value,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -465,6 +464,3 @@ class _InfoTile extends StatelessWidget {
     );
   }
 }
-
-
-
