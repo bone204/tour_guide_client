@@ -1,10 +1,15 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
+import 'package:tour_guide_app/common/widgets/button/secondary_button.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
-import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
+import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/core/network/logger_interceptor.dart';
 import 'package:tour_guide_app/main.dart';
 
@@ -12,7 +17,17 @@ class DioClient {
   late final Dio dio;
   final SharedPreferences prefs;
 
+  // --- STATE VARIABLES ---
+
+  // 1. Biến để chống duplicate dialog khi mất mạng (Concurrency Handling)
+  // Nếu != null nghĩa là đang có 1 dialog mất mạng đang hiển thị.
+  Future<bool>? _retryConnectionFuture;
+
+  // 2. Biến để chống duplicate request khi refresh token
   Future<bool>? _refreshTokenFuture;
+
+  bool _isExitingApp = false;
+  bool _isLoggingOut = false;
 
   DioClient(this.prefs) {
     dio = Dio(
@@ -20,137 +35,301 @@ class DioClient {
         baseUrl: ApiUrls.baseURL,
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
         validateStatus:
             (status) => status != null && status >= 200 && status < 300,
+        contentType: Headers.jsonContentType,
       ),
     );
 
-    dio.interceptors.addAll([
-      LoggerInterceptor(),
+    // --- INTERCEPTORS SETUP ---
+
+    // 1. Logger (Chạy đầu tiên khi request, cuối cùng khi response/error)
+    dio.interceptors.add(LoggerInterceptor());
+
+    // 2. Connectivity Interceptor (Xử lý lỗi mạng & Retry)
+    // Dùng InterceptorsWrapper thường để không khóa queue của Dio
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onError: (DioException error, ErrorInterceptorHandler handler) async {
+          // Kiểm tra lỗi mạng
+          if (_isConnectionError(error)) {
+            // [OPTIONAL] Xử lý cho API chạy ngầm (ví dụ Timer 30s)
+            // Nếu request có cờ 'silent', bỏ qua dialog và trả về lỗi luôn.
+            // Cách dùng: dio.get(url, options: Options(extra: {'silent': true}));
+            final bool isSilent = error.requestOptions.extra['silent'] ?? false;
+            if (isSilent) {
+              return handler.next(error);
+            }
+
+            print(
+              '⛔ Connectivity issue detected: ${error.requestOptions.path}',
+            );
+
+            // --- LOGIC DEDUPING DIALOG ---
+            // Thay vì showDialog trực tiếp, gọi qua hàm quản lý Future
+            final shouldRetry = await _getRetryDecision(
+              navigatorKey.currentContext,
+            );
+
+            if (shouldRetry) {
+              try {
+                print('🔁 Retrying request: ${error.requestOptions.path}');
+                // Gọi lại request (Recursive).
+                // Nếu retry thất bại, nó sẽ lại chui vào onError này -> Check _getRetryDecision -> Join dialog cũ hoặc hiện mới.
+                final response = await dio.fetch(error.requestOptions);
+                return handler.resolve(response);
+              } catch (e) {
+                // Nếu retry sinh ra lỗi (thường là DioException), chuyển tiếp nó.
+                return handler.next(e is DioException ? e : error);
+              }
+            }
+          }
+
+          // Không phải lỗi mạng hoặc user chọn Đóng
+          return handler.next(error);
+        },
+      ),
+    );
+
+    // 3. Auth Interceptor (Token Injection & Refresh Token)
+    // Dùng QueuedInterceptorsWrapper để xếp hàng các request khi đang Refresh
+    dio.interceptors.add(
       QueuedInterceptorsWrapper(
         onRequest: (options, handler) {
           final accessToken = prefs.getString("accessToken");
-          print('➡️ Request: ${options.method} ${options.path}');
-          print('Headers before request: ${options.headers}');
           if (accessToken != null && accessToken.isNotEmpty) {
             options.headers["Authorization"] = "Bearer $accessToken";
-            print('Added Authorization header: Bearer $accessToken');
           }
           handler.next(options);
         },
         onError: (error, handler) async {
-          final statusCode = error.response?.statusCode ?? 0;
-          print('⚠️ Request error: $statusCode ${error.requestOptions.path}');
-          if (error.response != null) {
-            print('Error response data: ${error.response?.data}');
-          }
+          final statusCode = error.response?.statusCode;
 
+          // Chỉ xử lý 401
           if (statusCode != 401) {
             return handler.next(error);
           }
 
-          final isRefreshCall = error.requestOptions.path.endsWith(
-            ApiUrls.refreshToken,
-          );
-          print('Is refresh token call: $isRefreshCall');
-          if (isRefreshCall) {
+          // Tránh loop nếu chính API refresh bị 401
+          if (error.requestOptions.path.endsWith(ApiUrls.refreshToken)) {
+            await _handleRefreshFailure(isTokenExpired: !_isLoggingOut);
             return handler.next(error);
           }
 
-          // Refresh token
+          print('🔒 401 Detected. Starting refresh token flow...');
+
+          // --- LOGIC REFRESH TOKEN ---
           _refreshTokenFuture ??= _refreshToken();
           final refreshed = await _refreshTokenFuture!;
           _refreshTokenFuture = null;
 
-          if (!refreshed) {
-            print('❌ Refresh token failed. Clearing tokens.');
-            await prefs.remove("accessToken");
-            await prefs.remove("refreshToken");
-            
-            // Show session expired dialog and navigate to sign in
-            _showSessionExpiredDialog();
-            
-            return handler.next(error);
+          if (refreshed) {
+            final newAccessToken = prefs.getString("accessToken");
+            if (newAccessToken != null && newAccessToken.isNotEmpty) {
+              // Update Header
+              final newHeaders = Map<String, dynamic>.from(
+                error.requestOptions.headers,
+              );
+              newHeaders["Authorization"] = "Bearer $newAccessToken";
+              final newOptions = error.requestOptions.copyWith(
+                headers: newHeaders,
+              );
+
+              try {
+                // Retry request sau khi refresh thành công
+                final response = await dio.fetch(newOptions);
+                return handler.resolve(response);
+              } catch (e) {
+                return handler.next(e is DioException ? e : error);
+              }
+            }
           }
 
-          final newAccessToken = prefs.getString("accessToken");
-          if (newAccessToken == null || newAccessToken.isEmpty) {
-            print('❌ New access token missing after refresh');
-            return handler.next(error);
-          }
-
-          try {
-            // Retry original request
-            final RequestOptions ro = error.requestOptions;
-            final newHeaders = Map<String, dynamic>.from(ro.headers);
-            newHeaders["Authorization"] = "Bearer $newAccessToken";
-            final newRO = ro.copyWith(headers: newHeaders);
-
-            print('🔁 Retrying request: ${ro.method} ${ro.path}');
-            final response = await dio.fetch(newRO);
-            print('✅ Retry success: ${response.statusCode}');
-            return handler.resolve(response);
-          } catch (e) {
-            print('❌ Retry failed: $e');
-            return handler.next(error);
-          }
+          // Refresh thất bại
+          await _handleRefreshFailure(isTokenExpired: !_isLoggingOut);
+          return handler.next(error);
         },
       ),
-    ]);
+    );
+  }
+
+  // ===========================================================================
+  // PRIVATE HELPER METHODS
+  // ===========================================================================
+
+  /// Quản lý việc hiển thị Dialog Mất kết nối để tránh hiển thị chồng chéo.
+  Future<bool> _getRetryDecision(BuildContext? context) async {
+    if (context == null) return false;
+
+    // 1. Nếu đang có dialog hiển thị (Future chưa hoàn thành), join vào nó.
+    if (_retryConnectionFuture != null) {
+      print(
+        '⚠️ Dialog already showing. Request joining existing wait queue...',
+      );
+      return await _retryConnectionFuture!;
+    }
+
+    // 2. Nếu chưa có, tạo dialog mới và lưu Future lại.
+    print('🆕 Showing new connectivity dialog...');
+    _retryConnectionFuture = _showConnectivityDialogSimple(context);
+
+    // 3. Đợi kết quả từ người dùng.
+    final result = await _retryConnectionFuture!;
+
+    // 4. Clear biến Future để lần lỗi tiếp theo (nếu có) sẽ hiện dialog mới.
+    // Dùng delay nhỏ để đảm bảo tất cả các request đang await ở bước 1 đều nhận được kết quả.
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _retryConnectionFuture = null;
+    });
+
+    return result;
+  }
+
+  bool _isConnectionError(DioException error) {
+    return error.type == DioExceptionType.connectionTimeout ||
+        error.type == DioExceptionType.receiveTimeout ||
+        error.type == DioExceptionType.sendTimeout ||
+        error.type == DioExceptionType.connectionError ||
+        (error.error is SocketException) ||
+        (error.message != null && error.message!.contains('SocketException'));
+  }
+
+  Future<bool> _showConnectivityDialogSimple(BuildContext context) async {
+    final completer = Completer<bool>();
+
+    await showAppDialog(
+      context: context,
+      title: 'Mất kết nối',
+      content: 'Kết nối bị gián đoạn. Vui lòng kiểm tra và thử lại.',
+      icon: Icons.wifi_off_rounded,
+      iconColor: Colors.red,
+      barrierDismissible: false,
+      actions: [
+        Row(
+          children: [
+            Expanded(
+              child: SecondaryButton(
+                title: 'Đóng',
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  if (!completer.isCompleted) completer.complete(false);
+                },
+                borderColor: AppColors.primaryGrey,
+                textColor: AppColors.primaryGrey,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: PrimaryButton(
+                title: 'Thử lại',
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  if (!completer.isCompleted) completer.complete(true);
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+
+    return completer.future;
   }
 
   Future<bool> _refreshToken() async {
     final refreshToken = prefs.getString("refreshToken");
-    print('🔄 Attempting to refresh token: $refreshToken');
     if (refreshToken == null || refreshToken.isEmpty) return false;
 
     try {
+      // Dùng instance Dio riêng để tránh dính interceptor của Dio chính
       final refreshDio = Dio(
         BaseOptions(
           baseUrl: ApiUrls.baseURL,
-          connectTimeout: const Duration(seconds: 10),
-          receiveTimeout: const Duration(seconds: 10),
+          connectTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
           validateStatus: (status) => status != null && status < 500,
-          contentType: Headers.jsonContentType,
         ),
       );
 
-      // Gửi refresh token qua header, không có body
       final res = await refreshDio.post(
         ApiUrls.refreshToken,
         options: Options(headers: {"Authorization": "Bearer $refreshToken"}),
       );
 
-      print('Refresh token response status: ${res.statusCode}');
-      print('Refresh token response data: ${res.data}');
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        final newAccessToken = res.data?["accessToken"] as String?;
+        final newRefreshToken = res.data?["refreshToken"] as String?;
 
-      // Chấp nhận tất cả các status code 2xx
-      if (res.statusCode == null ||
-          res.statusCode! < 200 ||
-          res.statusCode! >= 300) {
-        print('❌ Refresh token failed with status: ${res.statusCode}');
-        return false;
+        if ((newAccessToken ?? '').isNotEmpty &&
+            (newRefreshToken ?? '').isNotEmpty) {
+          await prefs.setString("accessToken", newAccessToken!);
+          await prefs.setString("refreshToken", newRefreshToken!);
+          print('✅ Token refreshed successfully');
+          return true;
+        }
       }
-
-      // Chỉ nhận accessToken mới, refreshToken giữ nguyên
-      final newAccessToken = res.data?["accessToken"] as String?;
-
-      if ((newAccessToken ?? '').isNotEmpty) {
-        await prefs.setString("accessToken", newAccessToken!);
-        print('✅ Access token refreshed successfully');
-        print('New access token: $newAccessToken');
-        return true;
-      }
-
-      print('❌ Invalid token response data');
       return false;
     } catch (e) {
-      print('❌ Refresh token request error: $e');
+      print('❌ Refresh token error: $e');
       return false;
     }
   }
 
-  // GET
+  Future<void> _handleRefreshFailure({bool isTokenExpired = true}) async {
+    await prefs.remove("accessToken");
+    await prefs.remove("refreshToken");
+
+    if (_isLoggingOut || _isExitingApp) return;
+
+    _isExitingApp = true;
+    final context = navigatorKey.currentContext;
+
+    if (context != null) {
+      final currentRoute = ModalRoute.of(context)?.settings.name;
+      final excludedRoutes = [AppRouteConstant.signIn];
+
+      if (!excludedRoutes.contains(currentRoute) && isTokenExpired) {
+        await showAppDialog(
+          context: context,
+          title: 'Phiên đăng nhập hết hạn',
+          content: 'Vui lòng đăng nhập lại để tiếp tục.',
+          icon: Icons.warning_amber_rounded,
+          iconColor: Colors.orange,
+          barrierDismissible: false,
+          actions: [
+            PrimaryButton(
+              title: 'OK',
+              onPressed: () {
+                Navigator.of(context).pop();
+                _performLogout(context);
+              },
+            ),
+          ],
+        );
+      } else {
+        _performLogout(context);
+      }
+    }
+
+    // Reset flag sau một khoảng thời gian ngắn
+    Future.delayed(const Duration(seconds: 1), () => _isExitingApp = false);
+  }
+
+  void _performLogout(BuildContext context) {
+    Navigator.of(
+      context,
+    ).pushNamedAndRemoveUntil(AppRouteConstant.signIn, (route) => false);
+  }
+
+  void setLoggingOut(bool isLoggingOut) {
+    _isLoggingOut = isLoggingOut;
+  }
+
+  // ===========================================================================
+  // HTTP WRAPPERS
+  // ===========================================================================
+
   Future<Response> get(
     String url, {
     Map<String, dynamic>? queryParameters,
@@ -158,7 +337,6 @@ class DioClient {
     CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
   }) async {
-    print('🔹 GET $url');
     return await dio.get(
       url,
       queryParameters: queryParameters,
@@ -168,7 +346,6 @@ class DioClient {
     );
   }
 
-  // POST
   Future<Response> post(
     String url, {
     dynamic data,
@@ -177,23 +354,16 @@ class DioClient {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    print('🔹 POST $url');
-    print('Body: $data');
-    try {
-      return await dio.post(
-        url,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-      );
-    } on DioException {
-      rethrow;
-    }
+    return await dio.post(
+      url,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
   }
 
-  // PUT
   Future<Response> put(
     String url, {
     dynamic data,
@@ -203,24 +373,17 @@ class DioClient {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    print('🔹 PUT $url');
-    print('Body: $data');
-    try {
-      return await dio.put(
-        url,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-      );
-    } on DioException {
-      rethrow;
-    }
+    return await dio.put(
+      url,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
   }
 
-  // DELETE
   Future<dynamic> delete(
     String url, {
     dynamic data,
@@ -228,22 +391,15 @@ class DioClient {
     Options? options,
     CancelToken? cancelToken,
   }) async {
-    print('🔹 DELETE $url');
-    print('Body: $data');
-    try {
-      return await dio.delete(
-        url,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-      );
-    } on DioException {
-      rethrow;
-    }
+    return await dio.delete(
+      url,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+      cancelToken: cancelToken,
+    );
   }
 
-  // PATCH
   Future<Response> patch(
     String url, {
     dynamic data,
@@ -253,52 +409,14 @@ class DioClient {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    print('🔹 PATCH $url');
-    print('Body: $data');
-    try {
-      return await dio.patch(
-        url,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-      );
-    } on DioException {
-      rethrow;
-    }
-  }
-
-  void _showSessionExpiredDialog() {
-    final context = navigatorKey.currentContext;
-    if (context == null) return;
-
-    final localizations = AppLocalizations.of(context);
-    if (localizations == null) return;
-
-    showAppDialog<void>(
-      context: context,
-      title: localizations.sessionExpired,
-      content: localizations.sessionExpiredMessage,
-      icon: Icons.warning_amber_rounded,
-      iconColor: Colors.orange,
-      barrierDismissible: false,
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context, rootNavigator: true).pop();
-            Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-              AppRouteConstant.signIn,
-              (route) => false,
-            );
-          },
-          child: Text(
-            localizations.ok,
-            style: const TextStyle(fontWeight: FontWeight.w700),
-          ),
-        ),
-      ],
+    return await dio.patch(
+      url,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
     );
   }
 }
