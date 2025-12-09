@@ -42,9 +42,10 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicle
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_cubit.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/pages/province_selection.page.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/pages/destination_selection.page.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/pages/itinerary_creation.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/province_selection.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/destination_selection.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/itinerary_creation.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/my_itinerary_list.page.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -124,8 +125,6 @@ class AppRouter {
           },
           transitionDuration: const Duration(milliseconds: 400),
         );
-
-
 
       case AppRouteConstant.language:
         return MaterialPageRoute(
@@ -283,52 +282,57 @@ class AppRouter {
       case AppRouteConstant.myVehicle:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (_) => sl<GetContractsCubit>()),
-              BlocProvider(create: (_) => sl<GetVehiclesCubit>()),
-            ],
-            child: const MyVehiclePage(),
-          ),
+          builder:
+              (_) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (_) => sl<GetContractsCubit>()),
+                  BlocProvider(create: (_) => sl<GetVehiclesCubit>()),
+                ],
+                child: const MyVehiclePage(),
+              ),
         );
 
       case AppRouteConstant.vehicleRentalRegister:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => BlocProvider(
-            create: (_) => sl<RegisterRentalVehicleCubit>(),
-            child: const VehicleRentalRegisterPage(),
-          ),
+          builder:
+              (_) => BlocProvider(
+                create: (_) => sl<RegisterRentalVehicleCubit>(),
+                child: const VehicleRentalRegisterPage(),
+              ),
         );
 
       case AppRouteConstant.addVehicle:
         final contractId = settings.arguments as int;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => BlocProvider(
-            create: (_) => sl<AddVehicleCubit>(),
-            child: AddVehiclePage(contractId: contractId),
-          ),
+          builder:
+              (_) => BlocProvider(
+                create: (_) => sl<AddVehicleCubit>(),
+                child: AddVehiclePage(contractId: contractId),
+              ),
         );
 
       case AppRouteConstant.contractDetail:
         final contractId = settings.arguments as int;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => BlocProvider(
-            create: (_) => sl<ContractDetailCubit>(),
-            child: ContractDetailPage(contractId: contractId),
-          ),
+          builder:
+              (_) => BlocProvider(
+                create: (_) => sl<ContractDetailCubit>(),
+                child: ContractDetailPage(contractId: contractId),
+              ),
         );
 
       case AppRouteConstant.vehicleDetail:
         final licensePlate = settings.arguments as String;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => BlocProvider(
-            create: (_) => sl<VehicleDetailCubit>(),
-            child: VehicleDetailPage(licensePlate: licensePlate),
-          ),
+          builder:
+              (_) => BlocProvider(
+                create: (_) => sl<VehicleDetailCubit>(),
+                child: VehicleDetailPage(licensePlate: licensePlate),
+              ),
         );
 
       case AppRouteConstant.itineraryProvinceSelection:
@@ -341,10 +345,11 @@ class AppRouter {
         final province = settings.arguments as String;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => BlocProvider(
-            create: (_) => sl<GetDestinationCubit>(),
-            child: DestinationSelectionPage(province: province),
-          ),
+          builder:
+              (_) => BlocProvider(
+                create: (_) => sl<GetDestinationCubit>(),
+                child: DestinationSelectionPage(province: province),
+              ),
         );
 
       case AppRouteConstant.itineraryCreation:
@@ -353,10 +358,17 @@ class AppRouter {
         final destinations = args['destinations'] as List<Destination>;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => ItineraryCreationPage(
-            province: province,
-            selectedDestinations: destinations,
-          ),
+          builder:
+              (_) => ItineraryCreationPage(
+                province: province,
+                selectedDestinations: destinations,
+              ),
+        );
+
+      case AppRouteConstant.myItineraryList:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const MyItineraryListPage(),
         );
 
       default:
@@ -367,7 +379,11 @@ class AppRouter {
                 canPop: false,
                 child: Scaffold(
                   body: Center(
-                    child: Text(AppLocalizations.of(context)!.noRouteDefined(settings.name ?? 'unknown')),
+                    child: Text(
+                      AppLocalizations.of(
+                        context,
+                      )!.noRouteDefined(settings.name ?? 'unknown'),
+                    ),
                   ),
                 ),
               ),

@@ -36,7 +36,7 @@ class ProfileFeatureTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(16.r),
           onTap: onTap,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
             child: Row(
               children: [
                 Container(
@@ -49,25 +49,22 @@ class ProfileFeatureTile extends StatelessWidget {
                     iconAsset,
                     width: 20.w,
                     height: 20.h,
-                    colorFilter: ColorFilter.mode(
-                      iconColor,
-                      BlendMode.srcIn,
-                    ),
+                    colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
                   ),
                 ),
                 SizedBox(width: 16.w),
                 Expanded(
                   child: Text(
                     title,
-                    style: textTheme.titleMedium?.copyWith(
+                    style: textTheme.titleSmall?.copyWith(
                       color: AppColors.textPrimary,
                     ),
                   ),
                 ),
                 SvgPicture.asset(
                   AppIcons.arrowRight,
-                  width: 18.w,
-                  height: 18.h,
+                  width: 16.w,
+                  height: 16.h,
                   colorFilter: const ColorFilter.mode(
                     AppColors.primaryGrey,
                     BlendMode.srcIn,
@@ -81,4 +78,3 @@ class ProfileFeatureTile extends StatelessWidget {
     );
   }
 }
-

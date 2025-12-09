@@ -1125,4 +1125,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String meters(int m) {
     return '$m m';
   }
+
+  @override
+  String get myItinerary => 'My Itinerary';
+
+  @override
+  String get memberFeatures => 'Member Features';
+
+  @override
+  String get favouriteDestinations => 'Favourite Destinations';
+
+  @override
+  String get travelHistory => 'Travel History';
+
+  @override
+  String get myWallet => 'My Wallet';
+
+  @override
+  String memberForDays(int days) {
+    return 'Member for $days days';
+  }
+
+  @override
+  String get bronzeMember => 'Bronze Member';
+
+  @override
+  String get silverMember => 'Silver Member';
+
+  @override
+  String get goldMember => 'Gold Member';
+
+  @override
+  String get platinumMember => 'Platinum Member';
+
+  @override
+  String get travelPoints => 'Travel Points';
+
+  @override
+  String get wallet => 'Wallet';
 }

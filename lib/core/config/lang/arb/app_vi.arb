@@ -809,5 +809,25 @@
   "kilometers": "{km} km",
   "@kilometers": {"placeholders": {"km": {"type": "String"}}},
   "meters": "{m} m",
-  "@meters": {"placeholders": {"m": {"type": "int"}}}
+  "@meters": {"placeholders": {"m": {"type": "int"}}},
+  "myItinerary": "Lịch trình của tôi",
+  "memberFeatures": "Tính năng hội viên",
+  "favouriteDestinations": "Điểm yêu thích",
+  "travelHistory": "Lịch sử chuyến đi",
+  "myWallet": "Ví của tôi",
+  "memberForDays": "Thành viên được {days} ngày",
+  "@memberForDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "bronzeMember": "Thành viên Đồng",
+  "silverMember": "Thành viên Bạc",
+  "goldMember": "Thành viên Vàng",
+  "platinumMember": "Thành viên Bạch Kim",
+  "travelPoints": "Điểm du lịch",
+  "reviews": "Đánh giá",
+  "wallet": "Ví"
 }

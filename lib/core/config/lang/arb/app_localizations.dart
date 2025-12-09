@@ -2278,6 +2278,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{m} m'**
   String meters(int m);
+
+  /// No description provided for @myItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'My Itinerary'**
+  String get myItinerary;
+
+  /// No description provided for @memberFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Member Features'**
+  String get memberFeatures;
+
+  /// No description provided for @favouriteDestinations.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourite Destinations'**
+  String get favouriteDestinations;
+
+  /// No description provided for @travelHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel History'**
+  String get travelHistory;
+
+  /// No description provided for @myWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'My Wallet'**
+  String get myWallet;
+
+  /// No description provided for @memberForDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Member for {days} days'**
+  String memberForDays(int days);
+
+  /// No description provided for @bronzeMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Bronze Member'**
+  String get bronzeMember;
+
+  /// No description provided for @silverMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Silver Member'**
+  String get silverMember;
+
+  /// No description provided for @goldMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold Member'**
+  String get goldMember;
+
+  /// No description provided for @platinumMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Platinum Member'**
+  String get platinumMember;
+
+  /// No description provided for @travelPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel Points'**
+  String get travelPoints;
+
+  /// No description provided for @wallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get wallet;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

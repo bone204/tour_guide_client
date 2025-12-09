@@ -7,14 +7,12 @@ class ProfileHeaderCard extends StatelessWidget {
     required this.fullName,
     required this.tier,
     required this.createdAt,
-    required this.isVietnamese,
   });
 
   final String avatarUrl;
   final String fullName;
   final String tier;
   final DateTime createdAt;
-  final bool isVietnamese;
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +69,7 @@ class ProfileHeaderCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 6.h),
-                _ProfileTierBadge(
-                  tier: tier,
-                  isVietnamese: isVietnamese,
-                ),
+                _ProfileTierBadge(tier: tier),
                 SizedBox(height: 12.h),
                 Row(
                   children: [
@@ -106,22 +101,18 @@ class ProfileHeaderCard extends StatelessWidget {
 
   String _memberSinceText(BuildContext context) {
     final days = DateTime.now().difference(createdAt).inDays + 1;
-    return isVietnamese ? 'Thành viên được $days ngày' : 'Member for $days days';
+    return AppLocalizations.of(context)!.memberForDays(days);
   }
 }
 
 class _ProfileTierBadge extends StatelessWidget {
-  const _ProfileTierBadge({
-    required this.tier,
-    required this.isVietnamese,
-  });
+  const _ProfileTierBadge({required this.tier});
 
   final String tier;
-  final bool isVietnamese;
 
   @override
   Widget build(BuildContext context) {
-    final config = _TierConfig.fromTier(tier, isVietnamese);
+    final config = _TierConfig.fromTier(context, tier);
     final textTheme = Theme.of(context).textTheme;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
@@ -143,17 +134,12 @@ class _ProfileTierBadge extends StatelessWidget {
             config.iconAsset,
             width: 16.w,
             height: 16.h,
-            colorFilter: const ColorFilter.mode(
-              Colors.white,
-              BlendMode.srcIn,
-            ),
+            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
           ),
           SizedBox(width: 8.w),
           Text(
             config.label,
-            style: textTheme.displayMedium?.copyWith(
-              color: Colors.white,
-            ),
+            style: textTheme.displayMedium?.copyWith(color: Colors.white),
           ),
         ],
       ),
@@ -172,31 +158,31 @@ class _TierConfig {
   final String iconAsset;
   final String label;
 
-  factory _TierConfig.fromTier(String tier, bool isVietnamese) {
+  factory _TierConfig.fromTier(BuildContext context, String tier) {
     switch (tier) {
       case 'Bronze':
         return _TierConfig(
           backgroundColor: const Color(0xFFCD7F32),
           iconAsset: AppIcons.star,
-          label: isVietnamese ? 'Thành viên Đồng' : 'Bronze Member',
+          label: AppLocalizations.of(context)!.bronzeMember,
         );
       case 'Silver':
         return _TierConfig(
           backgroundColor: const Color(0xFFC0C0C0),
           iconAsset: AppIcons.star,
-          label: isVietnamese ? 'Thành viên Bạc' : 'Silver Member',
+          label: AppLocalizations.of(context)!.silverMember,
         );
       case 'Gold':
         return _TierConfig(
           backgroundColor: const Color(0xFFFFD700),
           iconAsset: AppIcons.star,
-          label: isVietnamese ? 'Thành viên Vàng' : 'Gold Member',
+          label: AppLocalizations.of(context)!.goldMember,
         );
       case 'Platinum':
         return _TierConfig(
           backgroundColor: const Color(0xFFE5E4E2),
           iconAsset: AppIcons.star,
-          label: isVietnamese ? 'Thành viên Bạch Kim' : 'Platinum Member',
+          label: AppLocalizations.of(context)!.platinumMember,
         );
       default:
         return _TierConfig(
@@ -207,4 +193,3 @@ class _TierConfig {
     }
   }
 }
-

@@ -7,13 +7,11 @@ class ProfileStatsRow extends StatelessWidget {
     required this.travelPoints,
     required this.reviews,
     required this.walletBalance,
-    required this.isVietnamese,
   });
 
   final int travelPoints;
   final int reviews;
   final double walletBalance;
-  final bool isVietnamese;
 
   @override
   Widget build(BuildContext context) {
@@ -21,19 +19,19 @@ class ProfileStatsRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _ProfileStatCard(
-          title: isVietnamese ? 'Điểm du lịch' : 'Travel Points',
+          title: AppLocalizations.of(context)!.travelPoints,
           value: travelPoints.toString(),
           iconAsset: AppIcons.travel,
           iconColor: AppColors.primaryYellow,
         ),
         _ProfileStatCard(
-          title: isVietnamese ? 'Đánh giá' : 'Reviews',
+          title: AppLocalizations.of(context)!.reviews,
           value: reviews.toString(),
           iconAsset: AppIcons.star,
           iconColor: AppColors.primaryYellow,
         ),
         _ProfileStatCard(
-          title: isVietnamese ? 'Ví' : 'Wallet',
+          title: AppLocalizations.of(context)!.wallet,
           value: '${_formatWalletBalance(walletBalance)} ₫',
           iconAsset: AppIcons.gift,
           iconColor: AppColors.primaryYellow,
@@ -45,13 +43,19 @@ class ProfileStatsRow extends StatelessWidget {
   String _formatWalletBalance(double balance) {
     if (balance >= 1_000_000_000) {
       final value = balance / 1_000_000_000;
-      return value == value.toInt() ? '${value.toInt()}B' : '${value.toStringAsFixed(1)}B';
+      return value == value.toInt()
+          ? '${value.toInt()}B'
+          : '${value.toStringAsFixed(1)}B';
     } else if (balance >= 1_000_000) {
       final value = balance / 1_000_000;
-      return value == value.toInt() ? '${value.toInt()}M' : '${value.toStringAsFixed(1)}M';
+      return value == value.toInt()
+          ? '${value.toInt()}M'
+          : '${value.toStringAsFixed(1)}M';
     } else if (balance >= 1_000) {
       final value = balance / 1_000;
-      return value == value.toInt() ? '${value.toInt()}K' : '${value.toStringAsFixed(1)}K';
+      return value == value.toInt()
+          ? '${value.toInt()}K'
+          : '${value.toStringAsFixed(1)}K';
     }
     return balance.toInt().toString();
   }
@@ -82,10 +86,7 @@ class _ProfileStatCard extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppColors.primaryBlue,
-            Color(0xFF0056b3),
-          ],
+          colors: [AppColors.primaryBlue, Color(0xFF0056b3)],
         ),
         boxShadow: [
           BoxShadow(
@@ -102,10 +103,7 @@ class _ProfileStatCard extends StatelessWidget {
             iconAsset,
             width: 24.w,
             height: 24.h,
-            colorFilter: ColorFilter.mode(
-              iconColor,
-              BlendMode.srcIn,
-            ),
+            colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
           ),
           SizedBox(height: 8.h),
           Text(
@@ -119,9 +117,7 @@ class _ProfileStatCard extends StatelessWidget {
           SizedBox(height: 4.h),
           Text(
             title,
-            style: textTheme.bodySmall?.copyWith(
-              color: Colors.white,
-            ),
+            style: textTheme.bodySmall?.copyWith(color: Colors.white),
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -131,4 +127,3 @@ class _ProfileStatCard extends StatelessWidget {
     );
   }
 }
-

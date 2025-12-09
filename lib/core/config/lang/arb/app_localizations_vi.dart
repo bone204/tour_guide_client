@@ -1125,4 +1125,42 @@ class AppLocalizationsVi extends AppLocalizations {
   String meters(int m) {
     return '$m m';
   }
+
+  @override
+  String get myItinerary => 'Lịch trình của tôi';
+
+  @override
+  String get memberFeatures => 'Tính năng hội viên';
+
+  @override
+  String get favouriteDestinations => 'Điểm yêu thích';
+
+  @override
+  String get travelHistory => 'Lịch sử chuyến đi';
+
+  @override
+  String get myWallet => 'Ví của tôi';
+
+  @override
+  String memberForDays(int days) {
+    return 'Thành viên được $days ngày';
+  }
+
+  @override
+  String get bronzeMember => 'Thành viên Đồng';
+
+  @override
+  String get silverMember => 'Thành viên Bạc';
+
+  @override
+  String get goldMember => 'Thành viên Vàng';
+
+  @override
+  String get platinumMember => 'Thành viên Bạch Kim';
+
+  @override
+  String get travelPoints => 'Điểm du lịch';
+
+  @override
+  String get wallet => 'Ví';
 }

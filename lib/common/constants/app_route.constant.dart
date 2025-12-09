@@ -35,9 +35,13 @@ class AppRouteConstant {
   static const String contractDetail = '/contract_detail';
   static const String vehicleDetail = '/vehicle_detail';
   static const String addVehicle = '/add_vehicle';
-  static const String itineraryProvinceSelection = '/itinerary_province_selection';
-  static const String itineraryDestinationSelection = '/itinerary_destination_selection';
+  static const String itineraryProvinceSelection =
+      '/itinerary_province_selection';
+  static const String itineraryDestinationSelection =
+      '/itinerary_destination_selection';
   static const String itineraryCreation = '/itinerary_creation';
   static const String favouriteDestinations = '/favourite_destinations';
-  static const String favouriteDestinationsSearch = '/favourite_destinations_search';
+  static const String favouriteDestinationsSearch =
+      '/favourite_destinations_search';
+  static const String myItineraryList = '/my_itinerary_list';
 }
