@@ -45,7 +45,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_det
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/province_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/destination_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/itinerary_creation.page.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/my_itinerary_list.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/my_itinerary.page.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -365,10 +365,10 @@ class AppRouter {
               ),
         );
 
-      case AppRouteConstant.myItineraryList:
+      case AppRouteConstant.myItinerary:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const MyItineraryListPage(),
+          builder: (_) => const MyItineraryPage(),
         );
 
       default:

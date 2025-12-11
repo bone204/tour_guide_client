@@ -1163,4 +1163,31 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get wallet => 'Ví';
+
+  @override
+  String get totalTrips => 'Tổng chuyến đi';
+
+  @override
+  String get upcomingTrips => 'Sắp tới';
+
+  @override
+  String get completedTrips => 'Đã hoàn thành';
+
+  @override
+  String get tripList => 'Danh sách chuyến đi';
+
+  @override
+  String get foodWheel => 'Vòng quay đồ ăn';
+
+  @override
+  String get createTrip => 'Tạo chuyến đi';
+
+  @override
+  String get createTripDesc => 'Lên kế hoạch cho chuyến đi tiếp theo';
+
+  @override
+  String get tripListDesc => 'Xem lịch sử chuyến đi của bạn';
+
+  @override
+  String get foodWheelDesc => 'Quay để quyết định ăn gì';
 }

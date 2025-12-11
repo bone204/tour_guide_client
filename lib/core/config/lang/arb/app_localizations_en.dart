@@ -1163,4 +1163,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get wallet => 'Wallet';
+
+  @override
+  String get totalTrips => 'Total Trips';
+
+  @override
+  String get upcomingTrips => 'Upcoming';
+
+  @override
+  String get completedTrips => 'Completed';
+
+  @override
+  String get tripList => 'Trip List';
+
+  @override
+  String get foodWheel => 'Food Wheel';
+
+  @override
+  String get createTrip => 'Create Trip';
+
+  @override
+  String get createTripDesc => 'Plan your next adventure';
+
+  @override
+  String get tripListDesc => 'View your travel history';
+
+  @override
+  String get foodWheelDesc => 'Spin to decide what to eat';
 }

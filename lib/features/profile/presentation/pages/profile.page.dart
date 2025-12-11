@@ -105,7 +105,7 @@ class ProfilePage extends StatelessWidget {
                             Navigator.of(
                               context,
                               rootNavigator: true,
-                            ).pushNamed(AppRouteConstant.myItineraryList);
+                            ).pushNamed(AppRouteConstant.myItinerary);
                           }
                         },
                       );

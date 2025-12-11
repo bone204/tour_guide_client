@@ -2350,6 +2350,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Wallet'**
   String get wallet;
+
+  /// No description provided for @totalTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Trips'**
+  String get totalTrips;
+
+  /// No description provided for @upcomingTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get upcomingTrips;
+
+  /// No description provided for @completedTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completedTrips;
+
+  /// No description provided for @tripList.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip List'**
+  String get tripList;
+
+  /// No description provided for @foodWheel.
+  ///
+  /// In en, this message translates to:
+  /// **'Food Wheel'**
+  String get foodWheel;
+
+  /// No description provided for @createTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Trip'**
+  String get createTrip;
+
+  /// No description provided for @createTripDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan your next adventure'**
+  String get createTripDesc;
+
+  /// No description provided for @tripListDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View your travel history'**
+  String get tripListDesc;
+
+  /// No description provided for @foodWheelDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Spin to decide what to eat'**
+  String get foodWheelDesc;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

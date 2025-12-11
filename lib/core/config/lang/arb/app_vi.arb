@@ -829,5 +829,14 @@
   "platinumMember": "Thành viên Bạch Kim",
   "travelPoints": "Điểm du lịch",
   "reviews": "Đánh giá",
-  "wallet": "Ví"
+  "wallet": "Ví",
+  "totalTrips": "Tổng chuyến đi",
+  "upcomingTrips": "Sắp tới",
+  "completedTrips": "Đã hoàn thành",
+  "tripList": "Danh sách chuyến đi",
+  "foodWheel": "Vòng quay đồ ăn",
+  "createTrip": "Tạo chuyến đi",
+  "createTripDesc": "Lên kế hoạch cho chuyến đi tiếp theo",
+  "tripListDesc": "Xem lịch sử chuyến đi của bạn",
+  "foodWheelDesc": "Quay để quyết định ăn gì"
 }

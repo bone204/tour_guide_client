@@ -829,5 +829,14 @@
   "platinumMember": "Platinum Member",
   "travelPoints": "Travel Points",
   "reviews": "Reviews",
-  "wallet": "Wallet"
+  "wallet": "Wallet",
+  "totalTrips": "Total Trips",
+  "upcomingTrips": "Upcoming",
+  "completedTrips": "Completed",
+  "tripList": "Trip List",
+  "foodWheel": "Food Wheel",
+  "createTrip": "Create Trip",
+  "createTripDesc": "Plan your next adventure",
+  "tripListDesc": "View your travel history",
+  "foodWheelDesc": "Spin to decide what to eat"
 }
