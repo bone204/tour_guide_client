@@ -6,10 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
-import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
-import 'package:tour_guide_app/common/widgets/button/secondary_button.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
-import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/core/network/logger_interceptor.dart';
 import 'package:tour_guide_app/main.dart';
 
@@ -52,8 +49,21 @@ class DioClient {
     dio.interceptors.add(
       InterceptorsWrapper(
         onError: (DioException error, ErrorInterceptorHandler handler) async {
-          // Kiểm tra lỗi mạng
+          // Kiểm tra lỗi mạng hoặc lỗi server không phản hồi
+          String? errorTitle;
+          String? errorContent;
+
           if (_isConnectionError(error)) {
+            errorTitle = 'Mất kết nối';
+            errorContent =
+                'Kết nối mạng bị gián đoạn. Vui lòng kiểm tra và thử lại.';
+          } else if (_isServerNoResponseError(error)) {
+            errorTitle = 'Máy chủ không phản hồi';
+            errorContent =
+                'Quá thời gian chờ phản hồi từ máy chủ. Vui lòng thử lại sau.';
+          }
+
+          if (errorTitle != null && errorContent != null) {
             // [OPTIONAL] Xử lý cho API chạy ngầm (ví dụ Timer 30s)
             // Nếu request có cờ 'silent', bỏ qua dialog và trả về lỗi luôn.
             // Cách dùng: dio.get(url, options: Options(extra: {'silent': true}));
@@ -63,13 +73,15 @@ class DioClient {
             }
 
             print(
-              '⛔ Connectivity issue detected: ${error.requestOptions.path}',
+              '⛔ Connectivity/Server issue detected: ${error.requestOptions.path}',
             );
 
             // --- LOGIC DEDUPING DIALOG ---
             // Thay vì showDialog trực tiếp, gọi qua hàm quản lý Future
             final shouldRetry = await _getRetryDecision(
               navigatorKey.currentContext,
+              title: errorTitle,
+              content: errorContent,
             );
 
             if (shouldRetry) {
@@ -86,7 +98,7 @@ class DioClient {
             }
           }
 
-          // Không phải lỗi mạng hoặc user chọn Đóng
+          // Không phải lỗi mạng/server hoặc user chọn Đóng
           return handler.next(error);
         },
       ),
@@ -159,7 +171,11 @@ class DioClient {
   // ===========================================================================
 
   /// Quản lý việc hiển thị Dialog Mất kết nối để tránh hiển thị chồng chéo.
-  Future<bool> _getRetryDecision(BuildContext? context) async {
+  Future<bool> _getRetryDecision(
+    BuildContext? context, {
+    required String title,
+    required String content,
+  }) async {
     if (context == null) return false;
 
     // 1. Nếu đang có dialog hiển thị (Future chưa hoàn thành), join vào nó.
@@ -172,7 +188,11 @@ class DioClient {
 
     // 2. Nếu chưa có, tạo dialog mới và lưu Future lại.
     print('🆕 Showing new connectivity dialog...');
-    _retryConnectionFuture = _showConnectivityDialogSimple(context);
+    _retryConnectionFuture = _showConnectivityDialogSimple(
+      context,
+      title: title,
+      content: content,
+    );
 
     // 3. Đợi kết quả từ người dùng.
     final result = await _retryConnectionFuture!;
@@ -187,49 +207,48 @@ class DioClient {
   }
 
   bool _isConnectionError(DioException error) {
-    return error.type == DioExceptionType.connectionTimeout ||
-        error.type == DioExceptionType.receiveTimeout ||
-        error.type == DioExceptionType.sendTimeout ||
-        error.type == DioExceptionType.connectionError ||
+    return error.type == DioExceptionType.connectionError ||
         (error.error is SocketException) ||
         (error.message != null && error.message!.contains('SocketException'));
   }
 
-  Future<bool> _showConnectivityDialogSimple(BuildContext context) async {
+  bool _isServerNoResponseError(DioException error) {
+    return error.type == DioExceptionType.connectionTimeout ||
+        error.type == DioExceptionType.receiveTimeout ||
+        error.type == DioExceptionType.sendTimeout;
+  }
+
+  Future<bool> _showConnectivityDialogSimple(
+    BuildContext context, {
+    required String title,
+    required String content,
+  }) async {
+    // Ẩn bàn phím nếu đang mở
+    FocusManager.instance.primaryFocus?.unfocus();
+
     final completer = Completer<bool>();
 
     await showAppDialog(
       context: context,
-      title: 'Mất kết nối',
-      content: 'Kết nối bị gián đoạn. Vui lòng kiểm tra và thử lại.',
-      icon: Icons.wifi_off_rounded,
-      iconColor: Colors.red,
+      title: title,
+      content: content,
+      icon: Icons.wifi_off,
+      iconColor: Colors.redAccent,
       barrierDismissible: false,
       actions: [
-        Row(
-          children: [
-            Expanded(
-              child: SecondaryButton(
-                title: 'Đóng',
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  if (!completer.isCompleted) completer.complete(false);
-                },
-                borderColor: AppColors.primaryGrey,
-                textColor: AppColors.primaryGrey,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: PrimaryButton(
-                title: 'Thử lại',
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  if (!completer.isCompleted) completer.complete(true);
-                },
-              ),
-            ),
-          ],
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            if (!completer.isCompleted) completer.complete(false); // Đóng
+          },
+          child: const Text('Đóng'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            if (!completer.isCompleted) completer.complete(true); // Thử lại
+          },
+          child: const Text('Thử lại'),
         ),
       ],
     );
@@ -287,7 +306,7 @@ class DioClient {
 
     if (context != null) {
       final currentRoute = ModalRoute.of(context)?.settings.name;
-      final excludedRoutes = [AppRouteConstant.signIn];
+      final excludedRoutes = [AppRouteConstant.splash, AppRouteConstant.signIn];
 
       if (!excludedRoutes.contains(currentRoute) && isTokenExpired) {
         await showAppDialog(
@@ -298,12 +317,12 @@ class DioClient {
           iconColor: Colors.orange,
           barrierDismissible: false,
           actions: [
-            PrimaryButton(
-              title: 'OK',
+            TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _performLogout(context);
               },
+              child: const Text('OK'),
             ),
           ],
         );

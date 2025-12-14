@@ -38,6 +38,9 @@ import 'package:tour_guide_app/features/settings/domain/usecases/logout.dart';
 import 'package:tour_guide_app/features/chat_bot/data/data_source/chat_api_service.dart';
 import 'package:tour_guide_app/features/chat_bot/data/repository/chat_repository_impl.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/repository/chat_repository.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/repository/itinerary_repository_impl.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/repository/itinerary_repository.dart';
 
 final sl = GetIt.instance;
 
@@ -52,12 +55,14 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<DestinationApiService>(DestinationApiServiceImpl());
   sl.registerSingleton<MyVehicleApiService>(MyVehicleApiServiceImpl());
   sl.registerSingleton<ChatApiService>(ChatApiServiceImpl());
+  sl.registerSingleton<ItineraryApiService>(ItineraryApiServiceImpl());
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
   sl.registerSingleton<DestinationRepository>(DestinationRepositoryImpl());
   sl.registerSingleton<MyVehicleRepository>(MyVehicleRepositoryImpl());
   sl.registerSingleton<ChatRepository>(ChatRepositoryImpl());
+  sl.registerSingleton<ItineraryRepository>(ItineraryRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());

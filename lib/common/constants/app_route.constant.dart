@@ -1,3 +1,4 @@
+
 class AppRouteConstant {
   static const String root = "/";
   static const String mainScreen = '/main_screen';
@@ -44,4 +45,5 @@ class AppRouteConstant {
   static const String favouriteDestinationsSearch =
       '/favourite_destinations_search';
   static const String myItinerary = '/my_itinerary';
+  static const String splash = '/splash';
 }

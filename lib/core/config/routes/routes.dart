@@ -11,6 +11,7 @@ import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/moto
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_detail.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_bill.page.dart';
 import 'package:tour_guide_app/features/bus_booking/presentation/pages/bus_search.page.dart';
+import 'package:tour_guide_app/features/splash/presentation/pages/splash_screen.page.dart';
 import 'package:tour_guide_app/features/train_booking/presentation/pages/train_search.page.dart';
 import 'package:tour_guide_app/features/flight_booking/presentation/pages/flight_search.page.dart';
 import 'package:tour_guide_app/features/home/presentation/pages/home_search.page.dart';
@@ -154,6 +155,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => CarListPage(),
+        );
+
+      case AppRouteConstant.splash:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => SplashScreenPage(),
         );
 
       case AppRouteConstant.motorbikeList:

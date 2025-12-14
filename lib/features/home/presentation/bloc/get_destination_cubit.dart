@@ -13,24 +13,27 @@ class GetDestinationCubit extends Cubit<GetDestinationState> {
   Future<Either<Failure, DestinationResponse>> getDestinations({
     DestinationQuery? query,
   }) async {
-    emit(GetDestinationLoading());
+    if (!isClosed) emit(GetDestinationLoading());
 
     final params = query ?? DestinationQuery(offset: 0, limit: 10);
 
     final result = await sl<GetDestinationUseCase>().call(params);
 
     result.fold(
-      (failure) => emit(GetDestinationError(failure.message)),
+      (failure) {
+        if (!isClosed) emit(GetDestinationError(failure.message));
+      },
       (destinationResponse) {
         final hasReachedEnd = destinationResponse.items.length < params.limit;
-        
-        emit(
-          GetDestinationLoaded(
-            destinations: destinationResponse.items,
-            params: params,
-            hasReachedEnd: hasReachedEnd,
-          ),
-        );
+        if (!isClosed) {
+          emit(
+            GetDestinationLoaded(
+              destinations: destinationResponse.items,
+              params: params,
+              hasReachedEnd: hasReachedEnd,
+            ),
+          );
+        }
       },
     );
 
@@ -52,7 +55,7 @@ class GetDestinationCubit extends Cubit<GetDestinationState> {
       }
 
       // Set loading more state
-      emit(currentState.copyWith(isLoadingMore: true));
+      if (!isClosed) emit(currentState.copyWith(isLoadingMore: true));
 
       final nextParams = DestinationQuery(
         offset: currentState.params.offset + currentState.params.limit,
@@ -66,23 +69,25 @@ class GetDestinationCubit extends Cubit<GetDestinationState> {
       result.fold(
         (failure) {
           // Trở về state cũ nhưng tắt loading
-          emit(currentState.copyWith(isLoadingMore: false));
+          if (!isClosed) emit(currentState.copyWith(isLoadingMore: false));
           // Có thể show snackbar ở UI layer
         },
         (destinationResponse) {
-          final hasReachedEnd = destinationResponse.items.length < nextParams.limit;
-          
-          emit(
-            GetDestinationLoaded(
-              destinations: [
-                ...currentState.destinations,
-                ...destinationResponse.items,
-              ],
-              params: nextParams,
-              hasReachedEnd: hasReachedEnd,
-              isLoadingMore: false,
-            ),
-          );
+          final hasReachedEnd =
+              destinationResponse.items.length < nextParams.limit;
+          if (!isClosed) {
+            emit(
+              GetDestinationLoaded(
+                destinations: [
+                  ...currentState.destinations,
+                  ...destinationResponse.items,
+                ],
+                params: nextParams,
+                hasReachedEnd: hasReachedEnd,
+                isLoadingMore: false,
+              ),
+            );
+          }
         },
       );
 
