@@ -2,6 +2,7 @@ library map_page;
 
 import 'dart:async';
 import 'dart:math' as math;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -63,11 +64,13 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   bool _isNavigating = false; // Trạng thái đang điều hướng
   bool _isNavigationOverlayVisible = false; // Hiển thị summary navigation
   String _transportMode = 'car'; // Phương tiện di chuyển (car, foot, bike)
-  Timer? _transportModeDebounceTimer; // Debounce timer cho transport mode change
+  Timer?
+  _transportModeDebounceTimer; // Debounce timer cho transport mode change
   Timer? _searchDebounceTimer; // Debounce timer cho search
-  Map<String, OSRMRoute?> _routesByMode = {}; // Lưu routes cho từng transport mode
+  Map<String, OSRMRoute?> _routesByMode =
+      {}; // Lưu routes cho từng transport mode
   Set<String> _loadingModes = {}; // Các modes đang được tính toán
-  
+
   final OSMService _osmService = OSMService();
   final OSRMService _osrmService = OSRMService();
 
@@ -103,30 +106,32 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     final hasError = _errorMessage != null;
     final center = _currentPosition ?? _fallbackCenter;
 
-    final showFab = !hasError && !_isLoading && !_isNavigating;
+    final showFab =
+        !hasError && !_isLoading && !_isNavigating && !_isRouteLoading;
 
     return Scaffold(
       body: _buildBody(hasError, center),
-      floatingActionButton: showFab
-          ? Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                FloatingActionButton(
-                  heroTag: 'my_location',
-                  onPressed: _recenterOnUser,
-                  child: const Icon(Icons.my_location),
-                ),
-              ],
-            )
-          : null,
+      floatingActionButton:
+          showFab
+              ? Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    heroTag: 'my_location',
+                    onPressed: _recenterOnUser,
+                    child: const Icon(Icons.my_location),
+                  ),
+                ],
+              )
+              : null,
     );
   }
 }
 
 // Extension methods are in separate part files:
 // - map_location.dart: Location services
-// - map_search.dart: Search functionality  
+// - map_search.dart: Search functionality
 // - map_route.dart: Route calculation
 // - map_ui.dart: UI building
 // - map_destination.dart: Destination selection and animation
