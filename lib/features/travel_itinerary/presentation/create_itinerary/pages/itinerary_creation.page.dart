@@ -24,24 +24,30 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
   DateTime? _startDate;
   DateTime? _endDate;
   int _numberOfDays = 1;
-  
+
   // Map day number to list of destinations
   Map<int, List<Destination>> _dayDestinations = {};
 
   @override
   void initState() {
     super.initState();
-    _titleController.text = 'Lộ trình ${widget.province}';
+    _titleController.text = AppLocalizations.of(
+      context,
+    )!.itineraryCreationTitle(widget.province);
     // Initialize with default dates
     final tomorrow = DateTime.now().add(const Duration(days: 1));
     final dayAfterTomorrow = DateTime.now().add(const Duration(days: 2));
-    
+
     _startDate = DateTime(tomorrow.year, tomorrow.month, tomorrow.day);
-    _endDate = DateTime(dayAfterTomorrow.year, dayAfterTomorrow.month, dayAfterTomorrow.day);
-    
+    _endDate = DateTime(
+      dayAfterTomorrow.year,
+      dayAfterTomorrow.month,
+      dayAfterTomorrow.day,
+    );
+
     // Calculate number of days correctly (inclusive)
     _numberOfDays = _endDate!.difference(_startDate!).inDays + 1;
-    
+
     // Initialize day destinations
     _initializeDayDestinations();
   }
@@ -118,10 +124,7 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            AppColors.primaryBlue,
-            AppColors.primaryLightBlue,
-          ],
+          colors: [AppColors.primaryBlue, AppColors.primaryLightBlue],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -156,7 +159,7 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Sắp xếp lộ trình',
+                      AppLocalizations.of(context)!.arrangeItinerary,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: AppColors.primaryWhite,
                         fontWeight: FontWeight.w700,
@@ -172,8 +175,12 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          '${widget.selectedDestinations.length} địa điểm',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          AppLocalizations.of(
+                            context,
+                          )!.placesCount(widget.selectedDestinations.length),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
                             color: AppColors.primaryWhite.withOpacity(0.9),
                             fontWeight: FontWeight.w500,
                           ),
@@ -186,8 +193,12 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          '$_numberOfDays ngày',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          AppLocalizations.of(
+                            context,
+                          )!.daysCount(_numberOfDays),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
                             color: AppColors.primaryWhite.withOpacity(0.9),
                             fontWeight: FontWeight.w500,
                           ),
@@ -231,7 +242,7 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
               ),
               SizedBox(width: 8.w),
               Text(
-                'Tên lộ trình',
+                AppLocalizations.of(context)!.itineraryName,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w700,
@@ -248,9 +259,9 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
             ),
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context)!.itineraryHint,
-              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSubtitle,
-              ),
+              hintStyle: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
               prefixIcon: Icon(
                 Icons.title_rounded,
                 color: AppColors.textSubtitle,
@@ -315,7 +326,7 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
               ),
               SizedBox(width: 8.w),
               Text(
-                'Thời gian chuyến đi',
+                AppLocalizations.of(context)!.tripDuration,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w700,
@@ -340,7 +351,8 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
                     if (picked != null) {
                       setState(() {
                         _startDate = picked;
-                        if (_endDate != null && _endDate!.isBefore(_startDate!)) {
+                        if (_endDate != null &&
+                            _endDate!.isBefore(_startDate!)) {
                           _endDate = _startDate;
                         }
                         _updateNumberOfDays();
@@ -401,13 +413,13 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Tổng thời gian',
+                      AppLocalizations.of(context)!.totalDuration,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textSubtitle,
                       ),
                     ),
                     Text(
-                      '$_numberOfDays ngày',
+                      AppLocalizations.of(context)!.daysCount(_numberOfDays),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppColors.primaryBlue,
                         fontWeight: FontWeight.w700,
@@ -436,18 +448,16 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
         decoration: BoxDecoration(
           color: AppColors.backgroundColor,
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(
-            color: AppColors.secondaryGrey.withOpacity(0.3),
-          ),
+          border: Border.all(color: AppColors.secondaryGrey.withOpacity(0.3)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSubtitle,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
             ),
             SizedBox(height: 4.h),
             Row(
@@ -490,7 +500,7 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
               ),
               SizedBox(width: 8.w),
               Text(
-                'Sắp xếp địa điểm theo ngày',
+                AppLocalizations.of(context)!.arrangePlacesByDay,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w700,
@@ -500,10 +510,10 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
           ),
           SizedBox(height: 8.h),
           Text(
-            'Chọn địa điểm cho từng ngày trong lộ trình',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSubtitle,
-            ),
+            AppLocalizations.of(context)!.arrangePlacesByDayDesc,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
           ),
           SizedBox(height: 16.h),
           ...List.generate(_numberOfDays, (index) {
@@ -529,7 +539,8 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
   }
 
   Widget _buildBottomBar() {
-    final isValid = _titleController.text.isNotEmpty &&
+    final isValid =
+        _titleController.text.isNotEmpty &&
         _startDate != null &&
         _endDate != null;
 
@@ -559,7 +570,7 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
               ),
             ),
             child: Text(
-              'Hoàn tất lộ trình',
+              AppLocalizations.of(context)!.completeItinerary,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 color: AppColors.primaryWhite,
                 fontWeight: FontWeight.w600,
@@ -597,18 +608,18 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
         color: AppColors.primaryGreen,
       ),
       titleWidget: Text(
-        'Tạo lộ trình thành công!',
+        AppLocalizations.of(context)!.createItinerarySuccess,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w700,
+        ),
         textAlign: TextAlign.center,
       ),
       contentWidget: Text(
-        'Lộ trình của bạn đã được tạo. Bạn có thể xem và chỉnh sửa sau.',
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSubtitle,
-            ),
+        AppLocalizations.of(context)!.createItinerarySuccessMessage,
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
         textAlign: TextAlign.center,
       ),
       actionsAlignment: CrossAxisAlignment.end,
@@ -619,11 +630,11 @@ class _ItineraryCreationPageState extends State<ItineraryCreationPage> {
             Navigator.of(context).popUntil((route) => route.isFirst);
           },
           child: Text(
-            'Đóng',
+            AppLocalizations.of(context)!.close,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.primaryBlue,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: AppColors.primaryBlue,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],
@@ -688,7 +699,7 @@ class _DayPlanningCard extends StatelessWidget {
             ),
           ),
           title: Text(
-            'Ngày $dayNumber',
+            AppLocalizations.of(context)!.dayNumber(dayNumber),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w700,
@@ -697,13 +708,13 @@ class _DayPlanningCard extends StatelessWidget {
           subtitle: Text(
             date != null
                 ? DateFormat('dd/MM/yyyy').format(date!)
-                : 'Chưa có ngày',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSubtitle,
-            ),
+                : AppLocalizations.of(context)!.noDateSelected,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
           ),
           trailing: Text(
-            '${destinations.length} địa điểm',
+            AppLocalizations.of(context)!.placesCount(destinations.length),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppColors.primaryBlue,
               fontWeight: FontWeight.w600,
@@ -718,7 +729,7 @@ class _DayPlanningCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Text(
-                  'Chưa có địa điểm nào. Nhấn để thêm.',
+                  AppLocalizations.of(context)!.noPlacesAdded,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSubtitle,
                   ),
@@ -760,9 +771,10 @@ class _DayPlanningCard extends StatelessWidget {
 
   void _showAddDestinationDialog(BuildContext context) {
     // ✅ Get destinations not yet added to this day (chỉ địa điểm chưa có trong ngày này)
-    final availableDestinations = allDestinations
-        .where((d) => !destinations.any((dest) => dest.id == d.id))
-        .toList();
+    final availableDestinations =
+        allDestinations
+            .where((d) => !destinations.any((dest) => dest.id == d.id))
+            .toList();
 
     if (availableDestinations.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -813,16 +825,16 @@ class _DayPlanningCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Thêm địa điểm',
+                      AppLocalizations.of(context)!.addLocation,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     Text(
-                      'Ngày $dayNumber',
+                      AppLocalizations.of(context)!.dayNumber(dayNumber),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                        color: AppColors.textSubtitle,
+                      ),
                     ),
                   ],
                 ),
@@ -846,11 +858,11 @@ class _DayPlanningCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  '${availableDestinations.length} địa điểm chưa thêm',
+                  AppLocalizations.of(context)!.placesNotAdded(availableDestinations.length),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.primaryBlue,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: AppColors.primaryBlue,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -906,19 +918,18 @@ class _DayPlanningCard extends StatelessWidget {
                           children: [
                             Text(
                               dest.name,
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.w600),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            if (dest.specificAddress != null && dest.specificAddress!.isNotEmpty) ...[
+                            if (dest.specificAddress != null &&
+                                dest.specificAddress!.isNotEmpty) ...[
                               const SizedBox(height: 2),
                               Text(
                                 dest.specificAddress!,
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: AppColors.textSubtitle,
-                                    ),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: AppColors.textSubtitle),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -949,9 +960,9 @@ class _DayPlanningCard extends StatelessWidget {
           child: Text(
             'Đóng',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textSubtitle,
-                  fontWeight: FontWeight.w600,
-                ),
+              color: AppColors.textSubtitle,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],
@@ -998,10 +1009,7 @@ class _DestinationItem extends StatelessWidget {
             margin: EdgeInsets.all(8.w),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  AppColors.primaryBlue,
-                  AppColors.primaryLightBlue,
-                ],
+                colors: [AppColors.primaryBlue, AppColors.primaryLightBlue],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -1043,7 +1051,9 @@ class _DestinationItem extends StatelessWidget {
                       Expanded(
                         child: Text(
                           destination.name,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
                             color: AppColors.textPrimary,
                             fontWeight: FontWeight.w700,
                           ),
@@ -1053,7 +1063,8 @@ class _DestinationItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (destination.specificAddress != null && destination.specificAddress!.isNotEmpty) ...[
+                  if (destination.specificAddress != null &&
+                      destination.specificAddress!.isNotEmpty) ...[
                     SizedBox(height: 4.h),
                     Row(
                       children: [
@@ -1066,9 +1077,8 @@ class _DestinationItem extends StatelessWidget {
                         Expanded(
                           child: Text(
                             destination.specificAddress!,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.textSubtitle,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: AppColors.textSubtitle),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -1088,7 +1098,9 @@ class _DestinationItem extends StatelessWidget {
                         SizedBox(width: 4.w),
                         Text(
                           destination.rating!.toStringAsFixed(1),
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(
                             color: AppColors.textPrimary,
                             fontWeight: FontWeight.w600,
                           ),
@@ -1121,5 +1133,3 @@ class _DestinationItem extends StatelessWidget {
     );
   }
 }
-
-

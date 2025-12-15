@@ -385,10 +385,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseConfirmPolicies => 'Please confirm all policies';
 
   @override
-  String get addLocation => 'Add location';
+  String get addLocation => 'Add Location';
 
   @override
-  String get allLocationsAdded => 'All locations have been added to this day';
+  String get allLocationsAdded => 'All locations have been added to the itinerary';
 
   @override
   String get pleaseSelectSeatTrain => 'Please select a seat';
@@ -520,7 +520,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myVehicle => 'My Vehicle';
 
   @override
-  String get vehicleRentalRegister => 'Vehicle Rental Register';
+  String get vehicleRentalRegister => 'Vehicle Rental Registration';
 
   @override
   String get addVehicle => 'Add Vehicle';
@@ -957,7 +957,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneRequired => 'Phone number is required';
 
   @override
-  String get pleaseEnterValidPhone => 'Please enter a valid 10-digit phone number';
+  String get pleaseEnterValidPhone => 'Please enter a valid phone number';
 
   @override
   String get pleaseSelectBank => 'Please select a bank';
@@ -1190,4 +1190,215 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get foodWheelDesc => 'Spin to decide what to eat';
+
+  @override
+  String get documentation => 'Documentation';
+
+  @override
+  String get vehicleAddedSuccessfully => 'Vehicle Added Successfully!';
+
+  @override
+  String get vehicleAddedSuccessMessage => 'Your vehicle has been added successfully and is now available for rental.';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get failedToAddVehicle => 'Failed to Add Vehicle';
+
+  @override
+  String get exampleLicensePlate => 'e.g. 51F-12345';
+
+  @override
+  String colorPrefix(String color) {
+    return 'Color: $color';
+  }
+
+  @override
+  String registrationPrefix(String registration) {
+    return 'Registration: $registration';
+  }
+
+  @override
+  String get registrationSuccessful => 'Registration Successful!';
+
+  @override
+  String get registrationSuccessMessage => 'Your vehicle rental registration has been submitted successfully. We will review your information and contact you soon.';
+
+  @override
+  String get registrationFailed => 'Registration Failed';
+
+  @override
+  String get identityInformation => 'Identity Information';
+
+  @override
+  String get taxInformation => 'Tax Information';
+
+  @override
+  String get bankingInformation => 'Banking Information';
+
+  @override
+  String get failedToLoadContract => 'Failed to load contract';
+
+  @override
+  String contractOwner(String name) {
+    return 'Owner: $name';
+  }
+
+  @override
+  String emailPrefix(String email) {
+    return 'Email: $email';
+  }
+
+  @override
+  String phonePrefix(String phone) {
+    return 'Phone: $phone';
+  }
+
+  @override
+  String get statusApproved => 'Approved';
+
+  @override
+  String get statusRejected => 'Rejected';
+
+  @override
+  String get statusPending => 'Pending';
+
+  @override
+  String get statusSuspended => 'Suspended';
+
+  @override
+  String get pleaseFillAllRequiredFields => 'Please fill all required fields';
+
+  @override
+  String get itineraryDetailTitle => 'Itinerary Detail';
+
+  @override
+  String get itineraryInfo => 'Itinerary Information';
+
+  @override
+  String get itineraryName => 'Itinerary Name';
+
+  @override
+  String get itineraryCity => 'Province/City';
+
+  @override
+  String get itineraryDays => 'Duration (Days)';
+
+  @override
+  String get itineraryPlaces => 'Number of Places';
+
+  @override
+  String get itineraryStartDate => 'Start Date';
+
+  @override
+  String get itineraryEndDate => 'End Date';
+
+  @override
+  String exploreProvince(String province) {
+    return 'Explore $province';
+  }
+
+  @override
+  String get noFavouriteDestinations => 'No favourite destinations';
+
+  @override
+  String get addFavouriteDestinationsHint => 'Add destinations to favourites to see them here';
+
+  @override
+  String favouriteDestinationsCount(int count) {
+    return '$count favourite destinations';
+  }
+
+  @override
+  String get searchDestinationsHint => 'Search destinations...';
+
+  @override
+  String get searchInFavourites => 'Search in favourites';
+
+  @override
+  String get enterDestinationName => 'Enter destination name, province...';
+
+  @override
+  String get noResultsFound => 'No results found';
+
+  @override
+  String foundResults(int count) {
+    return 'Found $count results';
+  }
+
+  @override
+  String itineraryCreationTitle(String province) {
+    return 'Itinerary $province';
+  }
+
+  @override
+  String get arrangeItinerary => 'Arrange Itinerary';
+
+  @override
+  String placesCount(int count) {
+    return '$count places';
+  }
+
+  @override
+  String daysCount(int count) {
+    return '$count days';
+  }
+
+  @override
+  String get tripDuration => 'Trip Duration';
+
+  @override
+  String get totalDuration => 'Total Duration';
+
+  @override
+  String get arrangePlacesByDay => 'Arrange places by day';
+
+  @override
+  String get arrangePlacesByDayDesc => 'Select places for each day of the itinerary';
+
+  @override
+  String dayNumber(int number) {
+    return 'Day $number';
+  }
+
+  @override
+  String get noDateSelected => 'No date selected';
+
+  @override
+  String get noPlacesAdded => 'No places added. Tap to add.';
+
+  @override
+  String get completeItinerary => 'Complete Itinerary';
+
+  @override
+  String get createItinerarySuccess => 'Itinerary Created!';
+
+  @override
+  String get createItinerarySuccessMessage => 'Your itinerary has been created. You can view and edit it later.';
+
+  @override
+  String placesNotAdded(int count) {
+    return '$count places not added';
+  }
+
+  @override
+  String get failedToLoadDestination => 'Failed to load destination';
+
+  @override
+  String get unknownLocation => 'Unknown location';
+
+  @override
+  String reviewsCount(int count) {
+    return '($count reviews)';
+  }
+
+  @override
+  String get tabAbout => 'About';
+
+  @override
+  String get tabReviews => 'Reviews';
+
+  @override
+  String get tabPhotos => 'Photos';
 }

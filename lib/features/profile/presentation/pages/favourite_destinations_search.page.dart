@@ -20,10 +20,12 @@ class FavouriteDestinationsSearchPage extends StatefulWidget {
   }
 
   @override
-  State<FavouriteDestinationsSearchPage> createState() => _FavouriteDestinationsSearchPageState();
+  State<FavouriteDestinationsSearchPage> createState() =>
+      _FavouriteDestinationsSearchPageState();
 }
 
-class _FavouriteDestinationsSearchPageState extends State<FavouriteDestinationsSearchPage> {
+class _FavouriteDestinationsSearchPageState
+    extends State<FavouriteDestinationsSearchPage> {
   final TextEditingController _controller = TextEditingController();
   Timer? _debounce;
   String _searchQuery = '';
@@ -37,17 +39,20 @@ class _FavouriteDestinationsSearchPageState extends State<FavouriteDestinationsS
     });
   }
 
-  List<Destination> _filterDestinations(List<Destination> destinations, String query) {
+  List<Destination> _filterDestinations(
+    List<Destination> destinations,
+    String query,
+  ) {
     if (query.isEmpty) return [];
-    
+
     return destinations.where((destination) {
       final name = destination.name.toLowerCase();
       final province = destination.province?.toLowerCase() ?? '';
       final type = destination.type?.toLowerCase() ?? '';
-      
-      return name.contains(query) || 
-             province.contains(query) || 
-             type.contains(query);
+
+      return name.contains(query) ||
+          province.contains(query) ||
+          type.contains(query);
     }).toList();
   }
 
@@ -60,13 +65,10 @@ class _FavouriteDestinationsSearchPageState extends State<FavouriteDestinationsS
 
   @override
   Widget build(BuildContext context) {
-    final localeCode = Localizations.localeOf(context).languageCode;
-    final isVietnamese = localeCode == 'vi';
-
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: CustomSearchAppBar(
-        hintText: isVietnamese ? "Tìm kiếm địa điểm..." : "Search destinations...",
+        hintText: AppLocalizations.of(context)!.searchDestinationsHint,
         controller: _controller,
         onBack: () => Navigator.of(context).pop(),
         onSearchChanged: _onSearchChanged,
@@ -75,9 +77,7 @@ class _FavouriteDestinationsSearchPageState extends State<FavouriteDestinationsS
         builder: (context, state) {
           if (state is GetFavoritesLoading) {
             return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primaryBlue,
-              ),
+              child: CircularProgressIndicator(color: AppColors.primaryBlue),
             );
           }
 
@@ -105,7 +105,10 @@ class _FavouriteDestinationsSearchPageState extends State<FavouriteDestinationsS
 
           if (state is GetFavoritesLoaded) {
             final allDestinations = state.destinations;
-            final destinations = _filterDestinations(allDestinations, _searchQuery);
+            final destinations = _filterDestinations(
+              allDestinations,
+              _searchQuery,
+            );
 
             if (_searchQuery.isEmpty) {
               return Center(
@@ -119,14 +122,14 @@ class _FavouriteDestinationsSearchPageState extends State<FavouriteDestinationsS
                     ),
                     SizedBox(height: 16.h),
                     Text(
-                      isVietnamese ? "Tìm kiếm trong danh sách yêu thích" : "Search in favourites",
+                      AppLocalizations.of(context)!.searchInFavourites,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppColors.textSubtitle,
                       ),
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      isVietnamese ? "Nhập tên địa điểm, tỉnh thành..." : "Enter destination name, province...",
+                      AppLocalizations.of(context)!.enterDestinationName,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textSubtitle.withOpacity(0.7),
                       ),
@@ -148,7 +151,7 @@ class _FavouriteDestinationsSearchPageState extends State<FavouriteDestinationsS
                     ),
                     SizedBox(height: 16.h),
                     Text(
-                      isVietnamese ? "Không tìm thấy kết quả" : "No results found",
+                      AppLocalizations.of(context)!.noResultsFound,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSubtitle,
                       ),
@@ -165,9 +168,9 @@ class _FavouriteDestinationsSearchPageState extends State<FavouriteDestinationsS
                 children: [
                   // Search result header
                   Text(
-                    isVietnamese 
-                        ? 'Tìm thấy ${destinations.length} kết quả'
-                        : 'Found ${destinations.length} results',
+                    AppLocalizations.of(
+                      context,
+                    )!.foundResults(destinations.length),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: AppColors.textPrimary,
                     ),
@@ -189,16 +192,19 @@ class _FavouriteDestinationsSearchPageState extends State<FavouriteDestinationsS
                         onTap: () {
                           Navigator.of(context, rootNavigator: true).push(
                             MaterialPageRoute(
-                              builder: (context) => DestinationDetailPage.withProvider(
-                                destinationId: destination.id,
-                              ),
+                              builder:
+                                  (context) =>
+                                      DestinationDetailPage.withProvider(
+                                        destinationId: destination.id,
+                                      ),
                             ),
                           );
                         },
                         child: AttractionCard(
-                          imageUrl: destination.photos?.isNotEmpty == true
-                              ? destination.photos!.first
-                              : AppImage.defaultDestination,
+                          imageUrl:
+                              destination.photos?.isNotEmpty == true
+                                  ? destination.photos!.first
+                                  : AppImage.defaultDestination,
                           title: destination.name,
                           location: destination.province ?? "Unknown",
                           rating: destination.rating ?? 0.0,
@@ -218,4 +224,3 @@ class _FavouriteDestinationsSearchPageState extends State<FavouriteDestinationsS
     );
   }
 }
-

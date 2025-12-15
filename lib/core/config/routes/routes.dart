@@ -43,6 +43,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicle
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/itinerary_detail.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/province_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/destination_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/itinerary_creation.page.dart';
@@ -67,6 +68,13 @@ class AppRouter {
                 },
                 child: SignInPage(),
               ),
+        );
+
+      case AppRouteConstant.itineraryDetail:
+        final provinceName = settings.arguments as String;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ItineraryDetailPage(provinceName: provinceName),
         );
 
       case AppRouteConstant.signUp:

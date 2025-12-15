@@ -17,7 +17,8 @@ class VehicleInfoStep extends StatefulWidget {
     required String vehicleBrand,
     required String vehicleModel,
     required String vehicleColor,
-  }) onNext;
+  })
+  onNext;
 
   const VehicleInfoStep({
     super.key,
@@ -48,7 +49,9 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
     super.initState();
     _vehicleType = widget.vehicleType.isEmpty ? 'car' : widget.vehicleType;
     _licensePlateController = TextEditingController(text: widget.licensePlate);
-    _vehicleRegistrationController = TextEditingController(text: widget.vehicleRegistration);
+    _vehicleRegistrationController = TextEditingController(
+      text: widget.vehicleRegistration,
+    );
     _vehicleBrandController = TextEditingController(text: widget.vehicleBrand);
     _vehicleModelController = TextEditingController(text: widget.vehicleModel);
     _vehicleColorController = TextEditingController(text: widget.vehicleColor);
@@ -105,37 +108,58 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
             SizedBox(height: 16.h),
             CustomTextField(
               label: AppLocalizations.of(context)!.licensePlate,
-              placeholder: 'e.g. 51F-12345',
+              placeholder: AppLocalizations.of(context)!.exampleLicensePlate,
               controller: _licensePlateController,
-              validator: (value) => _validateRequired(value, 'License plate'),
+              validator:
+                  (value) => _validateRequired(
+                    value,
+                    AppLocalizations.of(context)!.licensePlate,
+                  ),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
               label: AppLocalizations.of(context)!.vehicleRegistrationNumber,
-              placeholder: AppLocalizations.of(context)!.enterRegistrationNumber,
+              placeholder:
+                  AppLocalizations.of(context)!.enterRegistrationNumber,
               controller: _vehicleRegistrationController,
-              validator: (value) => _validateRequired(value, 'Registration number'),
+              validator:
+                  (value) => _validateRequired(
+                    value,
+                    AppLocalizations.of(context)!.vehicleRegistrationNumber,
+                  ),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
               label: AppLocalizations.of(context)!.vehicleBrand,
               placeholder: AppLocalizations.of(context)!.exampleBrand,
               controller: _vehicleBrandController,
-              validator: (value) => _validateRequired(value, 'Vehicle brand'),
+              validator:
+                  (value) => _validateRequired(
+                    value,
+                    AppLocalizations.of(context)!.vehicleBrand,
+                  ),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
               label: AppLocalizations.of(context)!.vehicleModel,
               placeholder: AppLocalizations.of(context)!.exampleModel,
               controller: _vehicleModelController,
-              validator: (value) => _validateRequired(value, 'Vehicle model'),
+              validator:
+                  (value) => _validateRequired(
+                    value,
+                    AppLocalizations.of(context)!.vehicleModel,
+                  ),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
               label: AppLocalizations.of(context)!.vehicleColor,
               placeholder: AppLocalizations.of(context)!.exampleColor,
               controller: _vehicleColorController,
-              validator: (value) => _validateRequired(value, 'Vehicle color'),
+              validator:
+                  (value) => _validateRequired(
+                    value,
+                    AppLocalizations.of(context)!.vehicleColor,
+                  ),
             ),
             SizedBox(height: 32.h),
             ElevatedButton(
@@ -150,9 +174,9 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
               child: Text(
                 AppLocalizations.of(context)!.next,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.primaryWhite,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: AppColors.primaryWhite,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ],
@@ -161,4 +185,3 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
     );
   }
 }
-

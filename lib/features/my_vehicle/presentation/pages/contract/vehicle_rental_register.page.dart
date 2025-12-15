@@ -94,10 +94,10 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
               child: StepIndicator(
                 currentStep: _currentStep,
                 totalSteps: 3,
-                stepTitles: const [
-                  'Identity Information',
-                  'Tax\nInformation',
-                  'Banking Information',
+                stepTitles: [
+                  AppLocalizations.of(context)!.identityInformation,
+                  AppLocalizations.of(context)!.taxInformation,
+                  AppLocalizations.of(context)!.bankingInformation,
                 ],
               ),
             ),
@@ -201,9 +201,12 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
       bankAccountName: _bankAccountName,
       termsAccepted: _termsAccepted,
       notes: [
-        if (_fullName.isNotEmpty) 'Owner: $_fullName',
-        if (_email.isNotEmpty) 'Email: $_email',
-        if (_phone.isNotEmpty) 'Phone: $_phone',
+        if (_fullName.isNotEmpty)
+          AppLocalizations.of(context)!.contractOwner(_fullName),
+        if (_email.isNotEmpty)
+          AppLocalizations.of(context)!.emailPrefix(_email),
+        if (_phone.isNotEmpty)
+          AppLocalizations.of(context)!.phonePrefix(_phone),
       ].where((value) => value.isNotEmpty).join(' • '),
     );
 
@@ -222,18 +225,17 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
         icon: Icons.check_circle,
       ),
       titleWidget: Text(
-        'Registration Successful!',
-        style: Theme.of(context)
-            .textTheme
-            .titleLarge
-            ?.copyWith(fontWeight: FontWeight.w700),
+        AppLocalizations.of(context)!.registrationSuccessful,
+        style: Theme.of(
+          context,
+        ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         textAlign: TextAlign.center,
       ),
       contentWidget: Text(
-        'Your vehicle rental registration has been submitted successfully. We will review your information and contact you soon.',
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSubtitle,
-            ),
+        AppLocalizations.of(context)!.registrationSuccessMessage,
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
         textAlign: TextAlign.center,
       ),
       actions: [
@@ -254,11 +256,11 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
               ),
             ),
             child: Text(
-              'Done',
+              AppLocalizations.of(context)!.done,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.primaryWhite,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: AppColors.primaryWhite,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
@@ -275,18 +277,17 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
         icon: Icons.error_outline,
       ),
       titleWidget: Text(
-        'Registration Failed',
-        style: Theme.of(context)
-            .textTheme
-            .titleLarge
-            ?.copyWith(fontWeight: FontWeight.w700),
+        AppLocalizations.of(context)!.registrationFailed,
+        style: Theme.of(
+          context,
+        ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         textAlign: TextAlign.center,
       ),
       contentWidget: Text(
         message,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSubtitle,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
         textAlign: TextAlign.center,
       ),
       actions: [
@@ -304,11 +305,11 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
               ),
             ),
             child: Text(
-              'Try Again',
+              AppLocalizations.of(context)!.retry,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.primaryWhite,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: AppColors.primaryWhite,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
@@ -324,15 +325,8 @@ class _VehicleRentalRegisterPageState extends State<VehicleRentalRegisterPage> {
     return Container(
       width: 64.w,
       height: 64.w,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        shape: BoxShape.circle,
-      ),
-      child: Icon(
-        icon,
-        size: 48.sp,
-        color: iconColor,
-      ),
+      decoration: BoxDecoration(color: backgroundColor, shape: BoxShape.circle),
+      child: Icon(icon, size: 48.sp, color: iconColor),
     );
   }
 }

@@ -60,7 +60,7 @@ class _ContractDetailPageState extends State<ContractDetailPage> {
             Icon(Icons.error_outline, size: 48.sp, color: AppColors.primaryRed),
             SizedBox(height: 16.h),
             Text(
-              'Không thể tải hợp đồng',
+              AppLocalizations.of(context)!.failedToLoadContract,
               style: Theme.of(
                 context,
               ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
@@ -305,19 +305,19 @@ class _StatusChip extends StatelessWidget {
     switch (status) {
       case RentalContractStatus.approved:
         backgroundColor = AppColors.primaryGreen;
-        displayText = 'Approved';
+        displayText = AppLocalizations.of(context)!.statusApproved;
         break;
       case RentalContractStatus.rejected:
         backgroundColor = AppColors.primaryRed;
-        displayText = 'Rejected';
+        displayText = AppLocalizations.of(context)!.statusRejected;
         break;
       case RentalContractStatus.pending:
         backgroundColor = AppColors.primaryOrange;
-        displayText = 'Pending';
+        displayText = AppLocalizations.of(context)!.statusPending;
         break;
       case RentalContractStatus.suspended:
         backgroundColor = AppColors.primaryGrey;
-        displayText = 'Suspended';
+        displayText = AppLocalizations.of(context)!.statusSuspended;
         break;
     }
 

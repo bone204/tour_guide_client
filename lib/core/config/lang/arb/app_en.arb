@@ -838,5 +838,170 @@
   "createTrip": "Create Trip",
   "createTripDesc": "Plan your next adventure",
   "tripListDesc": "View your travel history",
-  "foodWheelDesc": "Spin to decide what to eat"
+  "foodWheelDesc": "Spin to decide what to eat",
+  "documentation": "Documentation",
+  "vehicleAddedSuccessfully": "Vehicle Added Successfully!",
+  "vehicleAddedSuccessMessage": "Your vehicle has been added successfully and is now available for rental.",
+  "done": "Done",
+  "failedToAddVehicle": "Failed to Add Vehicle",
+  "exampleLicensePlate": "e.g. 51F-12345",
+  "colorPrefix": "Color: {color}",
+  "@colorPrefix": {
+      "placeholders": {
+          "color": {
+              "type": "String"
+          }
+      }
+  },
+  "registrationPrefix": "Registration: {registration}",
+  "@registrationPrefix": {
+      "placeholders": {
+          "registration": {
+              "type": "String"
+          }
+      }
+  },
+  "registrationSuccessful": "Registration Successful!",
+  "registrationSuccessMessage": "Your vehicle rental registration has been submitted successfully. We will review your information and contact you soon.",
+  "registrationFailed": "Registration Failed",
+  "identityInformation": "Identity Information",
+  "taxInformation": "Tax Information",
+  "bankingInformation": "Banking Information",
+  "emailRequired": "Email is required",
+  "phoneRequired": "Phone number is required",
+  "pleaseEnterValidPhone": "Please enter a valid phone number",
+  "failedToLoadContract": "Failed to load contract",
+  "contractOwner": "Owner: {name}",
+  "@contractOwner": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "emailPrefix": "Email: {email}",
+  "@emailPrefix": {
+      "placeholders": {
+          "email": {
+              "type": "String"
+          }
+      }
+  },
+  "phonePrefix": "Phone: {phone}",
+  "@phonePrefix": {
+      "placeholders": {
+          "phone": {
+              "type": "String"
+          }
+      }
+  },
+  "statusApproved": "Approved",
+  "statusRejected": "Rejected",
+  "statusPending": "Pending",
+  "statusSuspended": "Suspended",
+  "pleaseFillAllRequiredFields": "Please fill all required fields",
+  "vehicleRentalRegister": "Vehicle Rental Registration",
+  "itineraryDetailTitle": "Itinerary Detail",
+  "itineraryInfo": "Itinerary Information",
+  "itineraryName": "Itinerary Name",
+  "itineraryCity": "Province/City",
+  "itineraryDays": "Duration (Days)",
+  "itineraryPlaces": "Number of Places",
+  "itineraryStartDate": "Start Date",
+  "itineraryEndDate": "End Date",
+  "exploreProvince": "Explore {province}",
+  "@exploreProvince": {
+    "placeholders": {
+      "province": {
+        "type": "String"
+      }
+    }
+  },
+  "noFavouriteDestinations": "No favourite destinations",
+  "addFavouriteDestinationsHint": "Add destinations to favourites to see them here",
+  "favouriteDestinationsCount": "{count} favourite destinations",
+  "@favouriteDestinationsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchDestinationsHint": "Search destinations...",
+  "searchInFavourites": "Search in favourites",
+  "enterDestinationName": "Enter destination name, province...",
+  "noResultsFound": "No results found",
+  "foundResults": "Found {count} results",
+  "@foundResults": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "itineraryCreationTitle": "Itinerary {province}",
+  "@itineraryCreationTitle": {
+    "placeholders": {
+      "province": {
+        "type": "String"
+      }
+    }
+  },
+  "arrangeItinerary": "Arrange Itinerary",
+  "placesCount": "{count} places",
+  "@placesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysCount": "{count} days",
+  "@daysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tripDuration": "Trip Duration",
+  "totalDuration": "Total Duration",
+  "arrangePlacesByDay": "Arrange places by day",
+  "arrangePlacesByDayDesc": "Select places for each day of the itinerary",
+  "dayNumber": "Day {number}",
+  "@dayNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "noDateSelected": "No date selected",
+  "noPlacesAdded": "No places added. Tap to add.",
+  "completeItinerary": "Complete Itinerary",
+  "createItinerarySuccess": "Itinerary Created!",
+  "createItinerarySuccessMessage": "Your itinerary has been created. You can view and edit it later.",
+  "addLocation": "Add Location",
+  "placesNotAdded": "{count} places not added",
+  "@placesNotAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "allLocationsAdded": "All locations have been added to the itinerary",
+  "failedToLoadDestination": "Failed to load destination",
+  "unknownLocation": "Unknown location",
+  "reviewsCount": "({count} reviews)",
+  "@reviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tabAbout": "About",
+  "tabReviews": "Reviews",
+  "tabPhotos": "Photos"
 }

@@ -101,10 +101,10 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
               child: StepIndicator(
                 currentStep: _currentStep,
                 totalSteps: 3,
-                stepTitles: const [
-                  'Vehicle Information',
-                  'Documentation\n',
-                  'Rental Information',
+                stepTitles: [
+                  AppLocalizations.of(context)!.vehicleInfo,
+                  AppLocalizations.of(context)!.documentation,
+                  AppLocalizations.of(context)!.rentalInfo,
                 ],
               ),
             ),
@@ -192,9 +192,10 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
     final description = [
       if (_vehicleBrand.isNotEmpty) _vehicleBrand,
       if (_vehicleModel.isNotEmpty) _vehicleModel,
-      if (_vehicleColor.isNotEmpty) 'Color: $_vehicleColor',
+      if (_vehicleColor.isNotEmpty)
+        AppLocalizations.of(context)!.colorPrefix(_vehicleColor),
       if (_vehicleRegistration.isNotEmpty)
-        'Registration: $_vehicleRegistration',
+        AppLocalizations.of(context)!.registrationPrefix(_vehicleRegistration),
     ].where((value) => value.trim().isNotEmpty).join(' • ');
 
     final vehicle = VehicleRentalParams(
@@ -222,18 +223,17 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
         icon: Icons.check_circle,
       ),
       titleWidget: Text(
-        'Vehicle Added Successfully!',
-        style: Theme.of(context)
-            .textTheme
-            .titleLarge
-            ?.copyWith(fontWeight: FontWeight.w700),
+        AppLocalizations.of(context)!.vehicleAddedSuccessfully,
+        style: Theme.of(
+          context,
+        ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         textAlign: TextAlign.center,
       ),
       contentWidget: Text(
-        'Your vehicle has been added successfully and is now available for rental.',
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSubtitle,
-            ),
+        AppLocalizations.of(context)!.vehicleAddedSuccessMessage,
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
         textAlign: TextAlign.center,
       ),
       actions: [
@@ -254,11 +254,11 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
               ),
             ),
             child: Text(
-              'Done',
+              AppLocalizations.of(context)!.done,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.primaryWhite,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: AppColors.primaryWhite,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
@@ -276,18 +276,17 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
         icon: Icons.error_outline,
       ),
       titleWidget: Text(
-        'Failed to Add Vehicle',
-        style: Theme.of(context)
-            .textTheme
-            .titleLarge
-            ?.copyWith(fontWeight: FontWeight.w700),
+        AppLocalizations.of(context)!.failedToAddVehicle,
+        style: Theme.of(
+          context,
+        ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         textAlign: TextAlign.center,
       ),
       contentWidget: Text(
         message,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSubtitle,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
         textAlign: TextAlign.center,
       ),
       actions: [
@@ -305,11 +304,11 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
               ),
             ),
             child: Text(
-              'Try Again',
+              AppLocalizations.of(context)!.retry,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.primaryWhite,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: AppColors.primaryWhite,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
@@ -325,15 +324,8 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
     return Container(
       width: 64.w,
       height: 64.w,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        shape: BoxShape.circle,
-      ),
-      child: Icon(
-        icon,
-        size: 48.sp,
-        color: iconColor,
-      ),
+      decoration: BoxDecoration(color: backgroundColor, shape: BoxShape.circle),
+      child: Icon(icon, size: 48.sp, color: iconColor),
     );
   }
 }

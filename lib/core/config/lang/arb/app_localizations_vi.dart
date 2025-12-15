@@ -388,7 +388,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get addLocation => 'Thêm địa điểm';
 
   @override
-  String get allLocationsAdded => 'Đã thêm tất cả địa điểm vào ngày này';
+  String get allLocationsAdded => 'Tất cả địa điểm đã được thêm vào lộ trình';
 
   @override
   String get pleaseSelectSeatTrain => 'Vui lòng chọn chỗ';
@@ -957,7 +957,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get phoneRequired => 'Số điện thoại là bắt buộc';
 
   @override
-  String get pleaseEnterValidPhone => 'Vui lòng nhập số điện thoại 10 chữ số hợp lệ';
+  String get pleaseEnterValidPhone => 'Vui lòng nhập số điện thoại hợp lệ';
 
   @override
   String get pleaseSelectBank => 'Vui lòng chọn ngân hàng';
@@ -1190,4 +1190,215 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get foodWheelDesc => 'Quay để quyết định ăn gì';
+
+  @override
+  String get documentation => 'Giấy tờ';
+
+  @override
+  String get vehicleAddedSuccessfully => 'Thêm xe thành công!';
+
+  @override
+  String get vehicleAddedSuccessMessage => 'Xe của bạn đã được thêm và sẵn sàng cho thuê.';
+
+  @override
+  String get done => 'Hoàn thành';
+
+  @override
+  String get failedToAddVehicle => 'Thêm xe thất bại';
+
+  @override
+  String get exampleLicensePlate => 'VD: 51F-12345';
+
+  @override
+  String colorPrefix(String color) {
+    return 'Màu: $color';
+  }
+
+  @override
+  String registrationPrefix(String registration) {
+    return 'Đăng ký: $registration';
+  }
+
+  @override
+  String get registrationSuccessful => 'Đăng ký thành công!';
+
+  @override
+  String get registrationSuccessMessage => 'Đăng ký thuê xe của bạn đã được gửi thành công. Chúng tôi sẽ xem xét và liên hệ lại với bạn sớm.';
+
+  @override
+  String get registrationFailed => 'Đăng ký thất bại';
+
+  @override
+  String get identityInformation => 'Thông tin định danh';
+
+  @override
+  String get taxInformation => 'Thông tin thuế';
+
+  @override
+  String get bankingInformation => 'Thông tin ngân hàng';
+
+  @override
+  String get failedToLoadContract => 'Không thể tải hợp đồng';
+
+  @override
+  String contractOwner(String name) {
+    return 'Chủ hợp đồng: $name';
+  }
+
+  @override
+  String emailPrefix(String email) {
+    return 'Email: $email';
+  }
+
+  @override
+  String phonePrefix(String phone) {
+    return 'SĐT: $phone';
+  }
+
+  @override
+  String get statusApproved => 'Đã duyệt';
+
+  @override
+  String get statusRejected => 'Từ chối';
+
+  @override
+  String get statusPending => 'Đang duyệt';
+
+  @override
+  String get statusSuspended => 'Vô hiệu hóa';
+
+  @override
+  String get pleaseFillAllRequiredFields => 'Vui lòng điền đầy đủ thông tin';
+
+  @override
+  String get itineraryDetailTitle => 'Chi tiết lộ trình';
+
+  @override
+  String get itineraryInfo => 'Thông tin lộ trình';
+
+  @override
+  String get itineraryName => 'Tên lộ trình';
+
+  @override
+  String get itineraryCity => 'Tỉnh/Thành phố';
+
+  @override
+  String get itineraryDays => 'Số ngày';
+
+  @override
+  String get itineraryPlaces => 'Số địa điểm';
+
+  @override
+  String get itineraryStartDate => 'Ngày bắt đầu';
+
+  @override
+  String get itineraryEndDate => 'Ngày kết thúc';
+
+  @override
+  String exploreProvince(String province) {
+    return 'Khám phá $province';
+  }
+
+  @override
+  String get noFavouriteDestinations => 'Chưa có địa điểm yêu thích';
+
+  @override
+  String get addFavouriteDestinationsHint => 'Thêm địa điểm vào yêu thích để xem ở đây';
+
+  @override
+  String favouriteDestinationsCount(int count) {
+    return '$count địa điểm yêu thích';
+  }
+
+  @override
+  String get searchDestinationsHint => 'Tìm kiếm địa điểm...';
+
+  @override
+  String get searchInFavourites => 'Tìm kiếm trong danh sách yêu thích';
+
+  @override
+  String get enterDestinationName => 'Nhập tên địa điểm, tỉnh thành...';
+
+  @override
+  String get noResultsFound => 'Không tìm thấy kết quả';
+
+  @override
+  String foundResults(int count) {
+    return 'Tìm thấy $count kết quả';
+  }
+
+  @override
+  String itineraryCreationTitle(String province) {
+    return 'Lộ trình $province';
+  }
+
+  @override
+  String get arrangeItinerary => 'Sắp xếp lộ trình';
+
+  @override
+  String placesCount(int count) {
+    return '$count địa điểm';
+  }
+
+  @override
+  String daysCount(int count) {
+    return '$count ngày';
+  }
+
+  @override
+  String get tripDuration => 'Thời gian chuyến đi';
+
+  @override
+  String get totalDuration => 'Tổng thời gian';
+
+  @override
+  String get arrangePlacesByDay => 'Sắp xếp địa điểm theo ngày';
+
+  @override
+  String get arrangePlacesByDayDesc => 'Chọn địa điểm cho từng ngày trong lộ trình';
+
+  @override
+  String dayNumber(int number) {
+    return 'Ngày $number';
+  }
+
+  @override
+  String get noDateSelected => 'Chưa có ngày';
+
+  @override
+  String get noPlacesAdded => 'Chưa có địa điểm nào. Nhấn để thêm.';
+
+  @override
+  String get completeItinerary => 'Hoàn tất lộ trình';
+
+  @override
+  String get createItinerarySuccess => 'Tạo lộ trình thành công!';
+
+  @override
+  String get createItinerarySuccessMessage => 'Lộ trình của bạn đã được tạo. Bạn có thể xem và chỉnh sửa sau.';
+
+  @override
+  String placesNotAdded(int count) {
+    return '$count địa điểm chưa thêm';
+  }
+
+  @override
+  String get failedToLoadDestination => 'Không thể tải thông tin địa điểm';
+
+  @override
+  String get unknownLocation => 'Không xác định';
+
+  @override
+  String reviewsCount(int count) {
+    return '($count đánh giá)';
+  }
+
+  @override
+  String get tabAbout => 'Giới thiệu';
+
+  @override
+  String get tabReviews => 'Đánh giá';
+
+  @override
+  String get tabPhotos => 'Hình ảnh';
 }

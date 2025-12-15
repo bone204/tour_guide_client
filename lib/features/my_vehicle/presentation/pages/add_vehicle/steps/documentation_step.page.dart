@@ -8,7 +8,8 @@ class DocumentationStep extends StatefulWidget {
   final Function({
     String? registrationFrontPhoto,
     String? registrationBackPhoto,
-  }) onNext;
+  })
+  onNext;
   final VoidCallback onBack;
 
   const DocumentationStep({
@@ -83,9 +84,9 @@ class _DocumentationStepState extends State<DocumentationStep> {
                   child: Text(
                     'Back',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
@@ -104,9 +105,9 @@ class _DocumentationStepState extends State<DocumentationStep> {
                   child: Text(
                     'Next',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppColors.primaryWhite,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: AppColors.primaryWhite,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
@@ -117,4 +118,3 @@ class _DocumentationStepState extends State<DocumentationStep> {
     );
   }
 }
-

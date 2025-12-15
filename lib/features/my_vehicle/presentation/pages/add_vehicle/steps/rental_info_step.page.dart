@@ -12,7 +12,8 @@ class RentalInfoStep extends StatefulWidget {
     String? pricePerHour,
     String? pricePerDay,
     String? requirements,
-  }) onSubmit;
+  })
+  onSubmit;
   final VoidCallback onBack;
 
   const RentalInfoStep({
@@ -104,7 +105,11 @@ class _RentalInfoStepState extends State<RentalInfoStep> {
               placeholder: AppLocalizations.of(context)!.enterPricePerHour,
               controller: _pricePerHourController,
               keyboardType: TextInputType.number,
-              validator: (value) => _validatePrice(value, 'Price per hour'),
+              validator:
+                  (value) => _validatePrice(
+                    value,
+                    AppLocalizations.of(context)!.pricePerHour,
+                  ),
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.digitsOnly,
                 _currencyFormatter,
@@ -116,11 +121,15 @@ class _RentalInfoStepState extends State<RentalInfoStep> {
               placeholder: AppLocalizations.of(context)!.enterPricePerDay,
               controller: _pricePerDayController,
               keyboardType: TextInputType.number,
-              validator: (value) => _validatePrice(value, 'Price per day'),
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly,
-              _currencyFormatter,
-            ],
+              validator:
+                  (value) => _validatePrice(
+                    value,
+                    AppLocalizations.of(context)!.pricePerDay,
+                  ),
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly,
+                _currencyFormatter,
+              ],
             ),
             SizedBox(height: 16.h),
             CustomTextField(
@@ -143,11 +152,11 @@ class _RentalInfoStepState extends State<RentalInfoStep> {
                       ),
                     ),
                     child: Text(
-                      'Back',
+                      AppLocalizations.of(context)!.back,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -166,9 +175,9 @@ class _RentalInfoStepState extends State<RentalInfoStep> {
                     child: Text(
                       AppLocalizations.of(context)!.submit,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.primaryWhite,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: AppColors.primaryWhite,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -206,4 +215,3 @@ class _CurrencyInputFormatter extends TextInputFormatter {
     );
   }
 }
-

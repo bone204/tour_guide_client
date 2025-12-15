@@ -105,7 +105,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
                   ),
                   SizedBox(height: 16.h),
                   Text(
-                    'Failed to load destination',
+                    AppLocalizations.of(context)!.failedToLoadDestination,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   SizedBox(height: 8.h),
@@ -151,7 +151,9 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
 
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
-          body: Center(child: Text(AppLocalizations.of(context)!.somethingWentWrong)),
+          body: Center(
+            child: Text(AppLocalizations.of(context)!.somethingWentWrong),
+          ),
         );
       },
     );
@@ -370,7 +372,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
               child: Text(
                 destination.specificAddress ??
                     destination.province ??
-                    'Unknown location',
+                    AppLocalizations.of(context)!.unknownLocation,
                 style: Theme.of(
                   context,
                 ).textTheme.titleSmall?.copyWith(color: AppColors.textSubtitle),
@@ -395,7 +397,9 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
               if (destination.userRatingsTotal != null) ...[
                 SizedBox(width: 4.w),
                 Text(
-                  '(${destination.userRatingsTotal} reviews)',
+                  AppLocalizations.of(
+                    context,
+                  )!.reviewsCount(destination.userRatingsTotal!),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSubtitle,
                   ),
@@ -428,7 +432,11 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
         unselectedLabelStyle: Theme.of(context).textTheme.displayMedium,
         indicatorSize: TabBarIndicatorSize.tab,
         dividerColor: Colors.transparent,
-        tabs: [Tab(text: 'About'), Tab(text: 'Reviews'), Tab(text: 'Photos')],
+        tabs: [
+          Tab(text: AppLocalizations.of(context)!.tabAbout),
+          Tab(text: AppLocalizations.of(context)!.tabReviews),
+          Tab(text: AppLocalizations.of(context)!.tabPhotos),
+        ],
       ),
     );
   }

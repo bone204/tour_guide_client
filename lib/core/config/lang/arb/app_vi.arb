@@ -838,5 +838,170 @@
   "createTrip": "Tạo chuyến đi",
   "createTripDesc": "Lên kế hoạch cho chuyến đi tiếp theo",
   "tripListDesc": "Xem lịch sử chuyến đi của bạn",
-  "foodWheelDesc": "Quay để quyết định ăn gì"
+  "foodWheelDesc": "Quay để quyết định ăn gì",
+  "documentation": "Giấy tờ",
+  "vehicleAddedSuccessfully": "Thêm xe thành công!",
+  "vehicleAddedSuccessMessage": "Xe của bạn đã được thêm và sẵn sàng cho thuê.",
+  "done": "Hoàn thành",
+  "failedToAddVehicle": "Thêm xe thất bại",
+  "exampleLicensePlate": "VD: 51F-12345",
+  "colorPrefix": "Màu: {color}",
+  "@colorPrefix": {
+      "placeholders": {
+          "color": {
+              "type": "String"
+          }
+      }
+  },
+  "registrationPrefix": "Đăng ký: {registration}",
+  "@registrationPrefix": {
+      "placeholders": {
+          "registration": {
+              "type": "String"
+          }
+      }
+  },
+  "registrationSuccessful": "Đăng ký thành công!",
+  "registrationSuccessMessage": "Đăng ký thuê xe của bạn đã được gửi thành công. Chúng tôi sẽ xem xét và liên hệ lại với bạn sớm.",
+  "registrationFailed": "Đăng ký thất bại",
+  "identityInformation": "Thông tin định danh",
+  "taxInformation": "Thông tin thuế",
+  "bankingInformation": "Thông tin ngân hàng",
+  "emailRequired": "Email là bắt buộc",
+  "phoneRequired": "Số điện thoại là bắt buộc",
+  "pleaseEnterValidPhone": "Vui lòng nhập số điện thoại hợp lệ",
+  "failedToLoadContract": "Không thể tải hợp đồng",
+  "contractOwner": "Chủ hợp đồng: {name}",
+  "@contractOwner": {
+      "placeholders": {
+          "name": {
+              "type": "String"
+          }
+      }
+  },
+  "emailPrefix": "Email: {email}",
+  "@emailPrefix": {
+      "placeholders": {
+          "email": {
+              "type": "String"
+          }
+      }
+  },
+  "phonePrefix": "SĐT: {phone}",
+  "@phonePrefix": {
+      "placeholders": {
+          "phone": {
+              "type": "String"
+          }
+      }
+  },
+  "statusApproved": "Đã duyệt",
+  "statusRejected": "Từ chối",
+  "statusPending": "Đang duyệt",
+  "statusSuspended": "Vô hiệu hóa",
+  "pleaseFillAllRequiredFields": "Vui lòng điền đầy đủ thông tin",
+  "vehicleRentalRegister": "Đăng ký thuê xe",
+  "itineraryDetailTitle": "Chi tiết lộ trình",
+  "itineraryInfo": "Thông tin lộ trình",
+  "itineraryName": "Tên lộ trình",
+  "itineraryCity": "Tỉnh/Thành phố",
+  "itineraryDays": "Số ngày",
+  "itineraryPlaces": "Số địa điểm",
+  "itineraryStartDate": "Ngày bắt đầu",
+  "itineraryEndDate": "Ngày kết thúc",
+  "exploreProvince": "Khám phá {province}",
+  "@exploreProvince": {
+    "placeholders": {
+      "province": {
+        "type": "String"
+      }
+    }
+  },
+  "noFavouriteDestinations": "Chưa có địa điểm yêu thích",
+  "addFavouriteDestinationsHint": "Thêm địa điểm vào yêu thích để xem ở đây",
+  "favouriteDestinationsCount": "{count} địa điểm yêu thích",
+  "@favouriteDestinationsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchDestinationsHint": "Tìm kiếm địa điểm...",
+  "searchInFavourites": "Tìm kiếm trong danh sách yêu thích",
+  "enterDestinationName": "Nhập tên địa điểm, tỉnh thành...",
+  "noResultsFound": "Không tìm thấy kết quả",
+  "foundResults": "Tìm thấy {count} kết quả",
+  "@foundResults": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "itineraryCreationTitle": "Lộ trình {province}",
+  "@itineraryCreationTitle": {
+    "placeholders": {
+      "province": {
+        "type": "String"
+      }
+    }
+  },
+  "arrangeItinerary": "Sắp xếp lộ trình",
+  "placesCount": "{count} địa điểm",
+  "@placesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysCount": "{count} ngày",
+  "@daysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tripDuration": "Thời gian chuyến đi",
+  "totalDuration": "Tổng thời gian",
+  "arrangePlacesByDay": "Sắp xếp địa điểm theo ngày",
+  "arrangePlacesByDayDesc": "Chọn địa điểm cho từng ngày trong lộ trình",
+  "dayNumber": "Ngày {number}",
+  "@dayNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "noDateSelected": "Chưa có ngày",
+  "noPlacesAdded": "Chưa có địa điểm nào. Nhấn để thêm.",
+  "completeItinerary": "Hoàn tất lộ trình",
+  "createItinerarySuccess": "Tạo lộ trình thành công!",
+  "createItinerarySuccessMessage": "Lộ trình của bạn đã được tạo. Bạn có thể xem và chỉnh sửa sau.",
+  "addLocation": "Thêm địa điểm",
+  "placesNotAdded": "{count} địa điểm chưa thêm",
+  "@placesNotAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "allLocationsAdded": "Tất cả địa điểm đã được thêm vào lộ trình",
+  "failedToLoadDestination": "Không thể tải thông tin địa điểm",
+  "unknownLocation": "Không xác định",
+  "reviewsCount": "({count} đánh giá)",
+  "@reviewsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tabAbout": "Giới thiệu",
+  "tabReviews": "Đánh giá",
+  "tabPhotos": "Hình ảnh"
 }

@@ -13,7 +13,8 @@ class BankingInfoStep extends StatefulWidget {
     String? bankAccountNumber,
     String? bankAccountName,
     required bool termsAccepted,
-  }) onSubmit;
+  })
+  onSubmit;
   final VoidCallback onBack;
 
   const BankingInfoStep({
@@ -43,8 +44,12 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
   void initState() {
     super.initState();
     _selectedBank = widget.bankName;
-    _accountNumberController = TextEditingController(text: widget.bankAccountNumber);
-    _accountNameController = TextEditingController(text: widget.bankAccountName);
+    _accountNumberController = TextEditingController(
+      text: widget.bankAccountNumber,
+    );
+    _accountNameController = TextEditingController(
+      text: widget.bankAccountName,
+    );
   }
 
   @override
@@ -77,7 +82,10 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
     if (!_formKey.currentState!.validate() || bankError != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(bankError ?? 'Please fill all required fields'),
+          content: Text(
+            bankError ??
+                AppLocalizations.of(context)!.pleaseFillAllRequiredFields,
+          ),
           backgroundColor: AppColors.primaryRed,
         ),
       );
@@ -126,14 +134,22 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
               placeholder: AppLocalizations.of(context)!.enterAccountNumber,
               controller: _accountNumberController,
               keyboardType: TextInputType.number,
-              validator: (value) => _validateRequired(value, 'Account number'),
+              validator:
+                  (value) => _validateRequired(
+                    value,
+                    AppLocalizations.of(context)!.bankAccountNumber,
+                  ),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
               label: AppLocalizations.of(context)!.bankAccountName,
               placeholder: AppLocalizations.of(context)!.enterAccountHolderName,
               controller: _accountNameController,
-              validator: (value) => _validateRequired(value, 'Account name'),
+              validator:
+                  (value) => _validateRequired(
+                    value,
+                    AppLocalizations.of(context)!.bankAccountName,
+                  ),
             ),
             SizedBox(height: 24.h),
             _buildCheckbox(
@@ -181,9 +197,9 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
                     child: Text(
                       AppLocalizations.of(context)!.back,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -202,9 +218,9 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
                     child: Text(
                       AppLocalizations.of(context)!.submit,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.primaryWhite,
-                            fontWeight: FontWeight.w700,
-                          ),
+                        color: AppColors.primaryWhite,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
@@ -237,10 +253,7 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
             onTap: () => onChanged(!value),
             child: Padding(
               padding: EdgeInsets.only(top: 12.h),
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
             ),
           ),
         ),

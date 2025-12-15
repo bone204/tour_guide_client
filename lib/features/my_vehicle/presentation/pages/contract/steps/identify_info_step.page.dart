@@ -15,7 +15,8 @@ class IdentifyInfoStep extends StatefulWidget {
     required String phone,
     required String identificationNumber,
     String? identificationPhoto,
-  }) onNext;
+  })
+  onNext;
 
   const IdentifyInfoStep({
     super.key,
@@ -45,7 +46,9 @@ class _IdentifyInfoStepState extends State<IdentifyInfoStep> {
     _fullNameController = TextEditingController(text: widget.fullName);
     _emailController = TextEditingController(text: widget.email);
     _phoneController = TextEditingController(text: widget.phone);
-    _idNumberController = TextEditingController(text: widget.identificationNumber);
+    _idNumberController = TextEditingController(
+      text: widget.identificationNumber,
+    );
     _idPhotoPath = widget.identificationPhoto;
   }
 
@@ -112,7 +115,11 @@ class _IdentifyInfoStepState extends State<IdentifyInfoStep> {
               label: AppLocalizations.of(context)!.fullName,
               placeholder: AppLocalizations.of(context)!.enterFullName,
               controller: _fullNameController,
-              validator: (value) => _validateRequired(value, 'Full name'),
+              validator:
+                  (value) => _validateRequired(
+                    value,
+                    AppLocalizations.of(context)!.fullName,
+                  ),
             ),
             SizedBox(height: 16.h),
             CustomTextField(
@@ -135,7 +142,11 @@ class _IdentifyInfoStepState extends State<IdentifyInfoStep> {
               label: AppLocalizations.of(context)!.identificationNumber,
               placeholder: AppLocalizations.of(context)!.enterIdNumber,
               controller: _idNumberController,
-              validator: (value) => _validateRequired(value, 'Identification number'),
+              validator:
+                  (value) => _validateRequired(
+                    value,
+                    AppLocalizations.of(context)!.identificationNumber,
+                  ),
             ),
             SizedBox(height: 20.h),
             ImagePickerField(
@@ -160,9 +171,9 @@ class _IdentifyInfoStepState extends State<IdentifyInfoStep> {
               child: Text(
                 AppLocalizations.of(context)!.next,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.primaryWhite,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  color: AppColors.primaryWhite,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ],

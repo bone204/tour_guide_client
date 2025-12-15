@@ -4,6 +4,7 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/bloc/get_provinces/get_province_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/bloc/get_provinces/get_province_state.dart';
+
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/widgets/province_card.widget.dart';
 
 class ProvinceSelectionPage extends StatefulWidget {
@@ -228,20 +229,12 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
       itemCount: provinces.length,
       itemBuilder: (context, index) {
         final province = provinces[index];
-        // Lấy locale hiện tại
-        final locale = Localizations.localeOf(context).languageCode;
-        final displayName =
-            (locale == 'vi' ||
-                    province.nameEn == null ||
-                    province.nameEn!.isEmpty)
-                ? province.name
-                : province.nameEn!;
         return ProvinceCard(
           province: province,
           onTap: () {
             Navigator.of(context).pushNamed(
-              AppRouteConstant.itineraryDestinationSelection,
-              arguments: displayName,
+              AppRouteConstant.itineraryDetail,
+              arguments: province.name,
             );
           },
         );

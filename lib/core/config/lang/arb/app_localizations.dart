@@ -842,13 +842,13 @@ abstract class AppLocalizations {
   /// No description provided for @addLocation.
   ///
   /// In en, this message translates to:
-  /// **'Add location'**
+  /// **'Add Location'**
   String get addLocation;
 
   /// No description provided for @allLocationsAdded.
   ///
   /// In en, this message translates to:
-  /// **'All locations have been added to this day'**
+  /// **'All locations have been added to the itinerary'**
   String get allLocationsAdded;
 
   /// No description provided for @pleaseSelectSeatTrain.
@@ -1100,7 +1100,7 @@ abstract class AppLocalizations {
   /// No description provided for @vehicleRentalRegister.
   ///
   /// In en, this message translates to:
-  /// **'Vehicle Rental Register'**
+  /// **'Vehicle Rental Registration'**
   String get vehicleRentalRegister;
 
   /// No description provided for @addVehicle.
@@ -1970,7 +1970,7 @@ abstract class AppLocalizations {
   /// No description provided for @pleaseEnterValidPhone.
   ///
   /// In en, this message translates to:
-  /// **'Please enter a valid 10-digit phone number'**
+  /// **'Please enter a valid phone number'**
   String get pleaseEnterValidPhone;
 
   /// No description provided for @pleaseSelectBank.
@@ -2404,6 +2404,372 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Spin to decide what to eat'**
   String get foodWheelDesc;
+
+  /// No description provided for @documentation.
+  ///
+  /// In en, this message translates to:
+  /// **'Documentation'**
+  String get documentation;
+
+  /// No description provided for @vehicleAddedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Added Successfully!'**
+  String get vehicleAddedSuccessfully;
+
+  /// No description provided for @vehicleAddedSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your vehicle has been added successfully and is now available for rental.'**
+  String get vehicleAddedSuccessMessage;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @failedToAddVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to Add Vehicle'**
+  String get failedToAddVehicle;
+
+  /// No description provided for @exampleLicensePlate.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 51F-12345'**
+  String get exampleLicensePlate;
+
+  /// No description provided for @colorPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Color: {color}'**
+  String colorPrefix(String color);
+
+  /// No description provided for @registrationPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration: {registration}'**
+  String registrationPrefix(String registration);
+
+  /// No description provided for @registrationSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Successful!'**
+  String get registrationSuccessful;
+
+  /// No description provided for @registrationSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your vehicle rental registration has been submitted successfully. We will review your information and contact you soon.'**
+  String get registrationSuccessMessage;
+
+  /// No description provided for @registrationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration Failed'**
+  String get registrationFailed;
+
+  /// No description provided for @identityInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity Information'**
+  String get identityInformation;
+
+  /// No description provided for @taxInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax Information'**
+  String get taxInformation;
+
+  /// No description provided for @bankingInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Banking Information'**
+  String get bankingInformation;
+
+  /// No description provided for @failedToLoadContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load contract'**
+  String get failedToLoadContract;
+
+  /// No description provided for @contractOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner: {name}'**
+  String contractOwner(String name);
+
+  /// No description provided for @emailPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Email: {email}'**
+  String emailPrefix(String email);
+
+  /// No description provided for @phonePrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone: {phone}'**
+  String phonePrefix(String phone);
+
+  /// No description provided for @statusApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Approved'**
+  String get statusApproved;
+
+  /// No description provided for @statusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get statusRejected;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get statusPending;
+
+  /// No description provided for @statusSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get statusSuspended;
+
+  /// No description provided for @pleaseFillAllRequiredFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all required fields'**
+  String get pleaseFillAllRequiredFields;
+
+  /// No description provided for @itineraryDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary Detail'**
+  String get itineraryDetailTitle;
+
+  /// No description provided for @itineraryInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary Information'**
+  String get itineraryInfo;
+
+  /// No description provided for @itineraryName.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary Name'**
+  String get itineraryName;
+
+  /// No description provided for @itineraryCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Province/City'**
+  String get itineraryCity;
+
+  /// No description provided for @itineraryDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration (Days)'**
+  String get itineraryDays;
+
+  /// No description provided for @itineraryPlaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of Places'**
+  String get itineraryPlaces;
+
+  /// No description provided for @itineraryStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get itineraryStartDate;
+
+  /// No description provided for @itineraryEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End Date'**
+  String get itineraryEndDate;
+
+  /// No description provided for @exploreProvince.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore {province}'**
+  String exploreProvince(String province);
+
+  /// No description provided for @noFavouriteDestinations.
+  ///
+  /// In en, this message translates to:
+  /// **'No favourite destinations'**
+  String get noFavouriteDestinations;
+
+  /// No description provided for @addFavouriteDestinationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add destinations to favourites to see them here'**
+  String get addFavouriteDestinationsHint;
+
+  /// No description provided for @favouriteDestinationsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} favourite destinations'**
+  String favouriteDestinationsCount(int count);
+
+  /// No description provided for @searchDestinationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search destinations...'**
+  String get searchDestinationsHint;
+
+  /// No description provided for @searchInFavourites.
+  ///
+  /// In en, this message translates to:
+  /// **'Search in favourites'**
+  String get searchInFavourites;
+
+  /// No description provided for @enterDestinationName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter destination name, province...'**
+  String get enterDestinationName;
+
+  /// No description provided for @noResultsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get noResultsFound;
+
+  /// No description provided for @foundResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Found {count} results'**
+  String foundResults(int count);
+
+  /// No description provided for @itineraryCreationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary {province}'**
+  String itineraryCreationTitle(String province);
+
+  /// No description provided for @arrangeItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrange Itinerary'**
+  String get arrangeItinerary;
+
+  /// No description provided for @placesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} places'**
+  String placesCount(int count);
+
+  /// No description provided for @daysCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days'**
+  String daysCount(int count);
+
+  /// No description provided for @tripDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip Duration'**
+  String get tripDuration;
+
+  /// No description provided for @totalDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Duration'**
+  String get totalDuration;
+
+  /// No description provided for @arrangePlacesByDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrange places by day'**
+  String get arrangePlacesByDay;
+
+  /// No description provided for @arrangePlacesByDayDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Select places for each day of the itinerary'**
+  String get arrangePlacesByDayDesc;
+
+  /// No description provided for @dayNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {number}'**
+  String dayNumber(int number);
+
+  /// No description provided for @noDateSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No date selected'**
+  String get noDateSelected;
+
+  /// No description provided for @noPlacesAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'No places added. Tap to add.'**
+  String get noPlacesAdded;
+
+  /// No description provided for @completeItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Itinerary'**
+  String get completeItinerary;
+
+  /// No description provided for @createItinerarySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary Created!'**
+  String get createItinerarySuccess;
+
+  /// No description provided for @createItinerarySuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your itinerary has been created. You can view and edit it later.'**
+  String get createItinerarySuccessMessage;
+
+  /// No description provided for @placesNotAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} places not added'**
+  String placesNotAdded(int count);
+
+  /// No description provided for @failedToLoadDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load destination'**
+  String get failedToLoadDestination;
+
+  /// No description provided for @unknownLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown location'**
+  String get unknownLocation;
+
+  /// No description provided for @reviewsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'({count} reviews)'**
+  String reviewsCount(int count);
+
+  /// No description provided for @tabAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get tabAbout;
+
+  /// No description provided for @tabReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get tabReviews;
+
+  /// No description provided for @tabPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get tabPhotos;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
