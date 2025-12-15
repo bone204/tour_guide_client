@@ -41,6 +41,7 @@ import 'package:tour_guide_app/features/chat_bot/domain/repository/chat_reposito
 import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/repository/itinerary_repository_impl.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/repository/itinerary_repository.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_provinces.dart';
 
 final sl = GetIt.instance;
 
@@ -79,6 +80,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetVehicleDetailUseCase>(GetVehicleDetailUseCase());
   sl.registerSingleton<AddVehicleUseCase>(AddVehicleUseCase());
   sl.registerSingleton<SendChatMessageUseCase>(SendChatMessageUseCase());
+  sl.registerSingleton<GetProvincesUseCase>(GetProvincesUseCase());
 
   // Cubits
   sl.registerFactory<RegisterRentalVehicleCubit>(() => RegisterRentalVehicleCubit());

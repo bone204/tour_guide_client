@@ -1,76 +1,268 @@
 class Province {
-  final int id;
   final String code;
   final String name;
-  final String? region;
-  final String? description;
-  final String? imageUrl;
-  final bool active;
-  final String? createdAt;
-  final String? updatedAt;
+  final String? nameEn;
+  final String? fullName;
+  final String? fullNameEn;
+  final String? codeName;
+  final int? administrativeUnitId;
+  final int? administrativeRegionId;
+  final AdministrativeUnit? administrativeUnit;
+  final AdministrativeRegion? region;
+  final List<District>? districts;
 
   Province({
-    required this.id,
     required this.code,
     required this.name,
+    this.nameEn,
+    this.fullName,
+    this.fullNameEn,
+    this.codeName,
+    this.administrativeUnitId,
+    this.administrativeRegionId,
+    this.administrativeUnit,
     this.region,
-    this.description,
-    this.imageUrl,
-    required this.active,
-    this.createdAt,
-    this.updatedAt,
+    this.districts,
   });
 
   factory Province.fromJson(Map<String, dynamic> json) {
     return Province(
-      id: json['id'] ?? 0,
       code: json['code'] ?? '',
       name: json['name'] ?? '',
-      region: json['region'],
-      description: json['description'],
-      imageUrl: json['imageUrl'],
-      active: json['active'] ?? true,
-      createdAt: json['createdAt']?.toString(),
-      updatedAt: json['updatedAt']?.toString(),
+      nameEn: json['nameEn'],
+      fullName: json['fullName'],
+      fullNameEn: json['fullNameEn'],
+      codeName: json['codeName'],
+      administrativeUnitId: json['administrativeUnitId'],
+      administrativeRegionId: json['administrativeRegionId'],
+      administrativeUnit:
+          json['administrativeUnit'] != null
+              ? AdministrativeUnit.fromJson(json['administrativeUnit'])
+              : null,
+      region:
+          json['region'] != null
+              ? AdministrativeRegion.fromJson(json['region'])
+              : null,
+      districts:
+          json['districts'] != null
+              ? (json['districts'] as List)
+                  .map((e) => District.fromJson(e))
+                  .toList()
+              : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'name': name,
+      'nameEn': nameEn,
+      'fullName': fullName,
+      'fullNameEn': fullNameEn,
+      'codeName': codeName,
+      'administrativeUnitId': administrativeUnitId,
+      'administrativeRegionId': administrativeRegionId,
+      'administrativeUnit': administrativeUnit?.toJson(),
+      'region': region?.toJson(),
+      'districts': districts?.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+class AdministrativeUnit {
+  final int id;
+  final String? fullName;
+  final String? fullNameEn;
+  final String? shortName;
+  final String? shortNameEn;
+  final String? codeName;
+  final String? codeNameEn;
+
+  AdministrativeUnit({
+    required this.id,
+    this.fullName,
+    this.fullNameEn,
+    this.shortName,
+    this.shortNameEn,
+    this.codeName,
+    this.codeNameEn,
+  });
+
+  factory AdministrativeUnit.fromJson(Map<String, dynamic> json) {
+    return AdministrativeUnit(
+      id: json['id'],
+      fullName: json['fullName'],
+      fullNameEn: json['fullNameEn'],
+      shortName: json['shortName'],
+      shortNameEn: json['shortNameEn'],
+      codeName: json['codeName'],
+      codeNameEn: json['codeNameEn'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'code': code,
-      'name': name,
-      'region': region,
-      'description': description,
-      'imageUrl': imageUrl,
-      'active': active,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      'fullName': fullName,
+      'fullNameEn': fullNameEn,
+      'shortName': shortName,
+      'shortNameEn': shortNameEn,
+      'codeName': codeName,
+      'codeNameEn': codeNameEn,
     };
   }
+}
 
-  Province copyWith({
-    int? id,
-    String? code,
-    String? name,
-    String? region,
-    String? description,
-    String? imageUrl,
-    bool? active,
-    String? createdAt,
-    String? updatedAt,
-  }) {
-    return Province(
-      id: id ?? this.id,
-      code: code ?? this.code,
-      name: name ?? this.name,
-      region: region ?? this.region,
-      description: description ?? this.description,
-      imageUrl: imageUrl ?? this.imageUrl,
-      active: active ?? this.active,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
+class AdministrativeRegion {
+  final int id;
+  final String name;
+  final String? nameEn;
+  final String? codeName;
+  final String? codeNameEn;
+
+  AdministrativeRegion({
+    required this.id,
+    required this.name,
+    this.nameEn,
+    this.codeName,
+    this.codeNameEn,
+  });
+
+  factory AdministrativeRegion.fromJson(Map<String, dynamic> json) {
+    return AdministrativeRegion(
+      id: json['id'],
+      name: json['name'],
+      nameEn: json['nameEn'],
+      codeName: json['codeName'],
+      codeNameEn: json['codeNameEn'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'nameEn': nameEn,
+      'codeName': codeName,
+      'codeNameEn': codeNameEn,
+    };
+  }
+}
+
+class District {
+  final String code;
+  final String name;
+  final String? nameEn;
+  final String? fullName;
+  final String? fullNameEn;
+  final String? codeName;
+  final String? provinceCode;
+  final int? administrativeUnitId;
+  final AdministrativeUnit? administrativeUnit;
+  final List<Ward>? wards;
+
+  District({
+    required this.code,
+    required this.name,
+    this.nameEn,
+    this.fullName,
+    this.fullNameEn,
+    this.codeName,
+    this.provinceCode,
+    this.administrativeUnitId,
+    this.administrativeUnit,
+    this.wards,
+  });
+
+  factory District.fromJson(Map<String, dynamic> json) {
+    return District(
+      code: json['code'] ?? '',
+      name: json['name'] ?? '',
+      nameEn: json['nameEn'],
+      fullName: json['fullName'],
+      fullNameEn: json['fullNameEn'],
+      codeName: json['codeName'],
+      provinceCode: json['provinceCode'],
+      administrativeUnitId: json['administrativeUnitId'],
+      administrativeUnit:
+          json['administrativeUnit'] != null
+              ? AdministrativeUnit.fromJson(json['administrativeUnit'])
+              : null,
+      wards:
+          json['wards'] != null
+              ? (json['wards'] as List).map((e) => Ward.fromJson(e)).toList()
+              : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'name': name,
+      'nameEn': nameEn,
+      'fullName': fullName,
+      'fullNameEn': fullNameEn,
+      'codeName': codeName,
+      'provinceCode': provinceCode,
+      'administrativeUnitId': administrativeUnitId,
+      'administrativeUnit': administrativeUnit?.toJson(),
+      'wards': wards?.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+class Ward {
+  final String code;
+  final String name;
+  final String? nameEn;
+  final String? fullName;
+  final String? fullNameEn;
+  final String? codeName;
+  final String? districtCode;
+  final int? administrativeUnitId;
+  final AdministrativeUnit? administrativeUnit;
+
+  Ward({
+    required this.code,
+    required this.name,
+    this.nameEn,
+    this.fullName,
+    this.fullNameEn,
+    this.codeName,
+    this.districtCode,
+    this.administrativeUnitId,
+    this.administrativeUnit,
+  });
+
+  factory Ward.fromJson(Map<String, dynamic> json) {
+    return Ward(
+      code: json['code'] ?? '',
+      name: json['name'] ?? '',
+      nameEn: json['nameEn'],
+      fullName: json['fullName'],
+      fullNameEn: json['fullNameEn'],
+      codeName: json['codeName'],
+      districtCode: json['districtCode'],
+      administrativeUnitId: json['administrativeUnitId'],
+      administrativeUnit:
+          json['administrativeUnit'] != null
+              ? AdministrativeUnit.fromJson(json['administrativeUnit'])
+              : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'name': name,
+      'nameEn': nameEn,
+      'fullName': fullName,
+      'fullNameEn': fullNameEn,
+      'codeName': codeName,
+      'districtCode': districtCode,
+      'administrativeUnitId': administrativeUnitId,
+      'administrativeUnit': administrativeUnit?.toJson(),
+    };
   }
 }
 
