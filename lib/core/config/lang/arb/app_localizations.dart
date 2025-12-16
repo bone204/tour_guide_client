@@ -2776,6 +2776,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Itinerary Schedule'**
   String get itinerarySchedule;
+
+  /// No description provided for @emptyItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'No itinerary found'**
+  String get emptyItinerary;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1004,5 +1004,6 @@
   "tabAbout": "About",
   "tabReviews": "Reviews",
   "tabPhotos": "Photos",
-  "itinerarySchedule": "Itinerary Schedule"
+  "itinerarySchedule": "Itinerary Schedule",
+  "emptyItinerary": "No itinerary found"
 }

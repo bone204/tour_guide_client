@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_provinces.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/bloc/get_provinces/get_province_state.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/get_provinces/get_province_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class GetProvinceCubit extends Cubit<GetProvinceState> {

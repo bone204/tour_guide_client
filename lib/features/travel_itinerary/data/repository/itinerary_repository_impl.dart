@@ -2,6 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/create_itinerary_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/add_stop_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary_query.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
@@ -38,5 +40,13 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   @override
   Future<Either<Failure, ProvinceResponse>> getProvinces(String? search) {
     return _apiService.getProvinces(search);
+  }
+
+  @override
+  Future<Either<Failure, Stop>> addStop(
+    int itineraryId,
+    AddStopRequest request,
+  ) {
+    return _apiService.addStop(itineraryId, request);
   }
 }

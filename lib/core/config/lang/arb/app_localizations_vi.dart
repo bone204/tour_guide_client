@@ -1404,4 +1404,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get itinerarySchedule => 'Lịch trình';
+
+  @override
+  String get emptyItinerary => 'Chưa có lịch trình nào';
 }

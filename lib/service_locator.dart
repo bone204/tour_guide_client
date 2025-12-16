@@ -46,7 +46,10 @@ import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_iti
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_itinerary_detail.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_itinerary_me.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_provinces.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/bloc/create_itinerary/create_itinerary_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/add_stop.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/create_itinerary/create_itinerary_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/bloc/get_itinerary_me/get_itinerary_me_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_itinerary_detail/get_itinerary_detail_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -94,6 +97,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetItinerariesUseCase>(GetItinerariesUseCase());
   sl.registerSingleton<GetItineraryDetailUseCase>(GetItineraryDetailUseCase());
   sl.registerSingleton<CreateItineraryUseCase>(CreateItineraryUseCase());
+  sl.registerSingleton<AddStopUseCase>(AddStopUseCase());
 
   // Cubits
   sl.registerFactory<RegisterRentalVehicleCubit>(
@@ -107,5 +111,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<GetDestinationCubit>(() => GetDestinationCubit());
   sl.registerFactory<CreateItineraryCubit>(
     () => CreateItineraryCubit(createItineraryUseCase: sl()),
+  );
+  sl.registerFactory<GetItineraryMeCubit>(() => GetItineraryMeCubit(sl()));
+  sl.registerFactory<GetItineraryDetailCubit>(
+    () => GetItineraryDetailCubit(sl()),
   );
 }

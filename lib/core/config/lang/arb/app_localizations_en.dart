@@ -1404,4 +1404,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get itinerarySchedule => 'Itinerary Schedule';
+
+  @override
+  String get emptyItinerary => 'No itinerary found';
 }

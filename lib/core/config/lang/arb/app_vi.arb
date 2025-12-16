@@ -1005,5 +1005,6 @@
   "tabReviews": "Đánh giá",
   "tabPhotos": "Hình ảnh",
   "viewOnMap": "Xem trên bản đồ",
-  "itinerarySchedule": "Lịch trình"
+  "itinerarySchedule": "Lịch trình",
+  "emptyItinerary": "Chưa có lịch trình nào"
 }

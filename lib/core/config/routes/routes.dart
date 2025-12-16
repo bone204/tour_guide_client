@@ -43,9 +43,9 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicle
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_cubit.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/create_itinerary.page.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail.page.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/province_selection.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/create_itinerary.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/itinerary_detail.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/province_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/my_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/itinerary_list.page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,10 +69,10 @@ class AppRouter {
         );
 
       case AppRouteConstant.itineraryDetail:
-        final itinerary = settings.arguments as Map<String, dynamic>;
+        final itineraryId = settings.arguments as int;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => ItineraryDetailPage(itinerary: itinerary),
+          builder: (_) => ItineraryDetailPage(itineraryId: itineraryId),
         );
 
       case AppRouteConstant.createItinerary:

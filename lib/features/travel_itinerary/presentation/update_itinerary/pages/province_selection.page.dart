@@ -2,10 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/bloc/get_provinces/get_province_cubit.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/bloc/get_provinces/get_province_state.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/get_provinces/get_province_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/get_provinces/get_province_state.dart';
 
-import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/widgets/province_card.widget.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/widgets/province_card.widget.dart';
 
 class ProvinceSelectionPage extends StatefulWidget {
   const ProvinceSelectionPage({super.key});

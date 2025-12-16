@@ -4,8 +4,10 @@ import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/create_itinerary_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/add_stop_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class ItineraryApiService {
@@ -18,13 +20,17 @@ abstract class ItineraryApiService {
     CreateItineraryRequest request,
   );
   Future<Either<Failure, ProvinceResponse>> getProvinces(String? search);
+  Future<Either<Failure, Stop>> addStop(
+    int itineraryId,
+    AddStopRequest request,
+  );
 }
 
 class ItineraryApiServiceImpl extends ItineraryApiService {
   @override
   Future<Either<Failure, ItineraryResponse>> getItineraryMe() async {
     try {
-      final response = await sl<DioClient>().get(ApiUrls.itinerary);
+      final response = await sl<DioClient>().get("${ApiUrls.itinerary}/me");
       final itineraryResponse = ItineraryResponse.fromJson(response.data);
       return Right(itineraryResponse);
     } on DioException catch (e) {
@@ -91,6 +97,30 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
       );
       final itinerary = Itinerary.fromJson(response.data);
       return Right(itinerary);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stop>> addStop(
+    int itineraryId,
+    AddStopRequest request,
+  ) async {
+    try {
+      final response = await sl<DioClient>().post(
+        '${ApiUrls.itinerary}/$itineraryId/stops',
+        data: request.toJson(),
+      );
+      final stop = Stop.fromJson(response.data);
+      return Right(stop);
     } on DioException catch (e) {
       return Left(
         ServerFailure(
