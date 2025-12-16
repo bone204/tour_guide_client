@@ -17,6 +17,9 @@ class VehicleAddedEvent {
 // Event khi itinerary được tạo thành công
 class CreateItinerarySuccessEvent {}
 
+// Event when a stop is added
+class StopAddedEvent {}
+
 // Singleton EventBus
 class AppEventBus {
   static final AppEventBus _instance = AppEventBus._internal();

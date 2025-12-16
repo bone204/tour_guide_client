@@ -49,4 +49,9 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   ) {
     return _apiService.addStop(itineraryId, request);
   }
+
+  @override
+  Future<Either<Failure, Stop>> getStopDetail(int itineraryId, int stopId) {
+    return _apiService.getStopDetail(itineraryId, stopId);
+  }
 }

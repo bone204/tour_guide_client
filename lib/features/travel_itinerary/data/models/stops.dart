@@ -1,3 +1,5 @@
+import 'package:tour_guide_app/features/destination/data/models/destination.dart';
+
 class Stop {
   final int id;
   final int dayOrder;
@@ -7,6 +9,7 @@ class Stop {
   final String startTime;
   final String endTime;
   final String notes;
+  final Destination? destination;
   final List<String> images;
   final List<String> videos;
   final String createdAt;
@@ -21,6 +24,7 @@ class Stop {
     required this.startTime,
     required this.endTime,
     required this.notes,
+    this.destination,
     required this.images,
     required this.videos,
     required this.createdAt,
@@ -37,8 +41,14 @@ class Stop {
       startTime: json['startTime'] ?? '',
       endTime: json['endTime'] ?? '',
       notes: json['notes'] ?? '',
-      images: (json['images'] as List?)?.map((e) => e.toString()).toList() ?? [],
-      videos: (json['videos'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      destination:
+          json['destination'] != null
+              ? Destination.fromJson(json['destination'])
+              : null,
+      images:
+          (json['images'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      videos:
+          (json['videos'] as List?)?.map((e) => e.toString()).toList() ?? [],
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
     );
@@ -54,6 +64,7 @@ class Stop {
       'startTime': startTime,
       'endTime': endTime,
       'notes': notes,
+      'destination': destination?.toJson(),
       'images': images,
       'videos': videos,
       'createdAt': createdAt,

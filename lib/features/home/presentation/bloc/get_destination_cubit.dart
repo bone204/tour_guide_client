@@ -62,6 +62,7 @@ class GetDestinationCubit extends Cubit<GetDestinationState> {
         limit: currentState.params.limit,
         q: currentState.params.q,
         available: currentState.params.available,
+        province: currentState.params.province,
       );
 
       final result = await sl<GetDestinationUseCase>().call(nextParams);

@@ -24,6 +24,7 @@ abstract class ItineraryApiService {
     int itineraryId,
     AddStopRequest request,
   );
+  Future<Either<Failure, Stop>> getStopDetail(int itineraryId, int stopId);
 }
 
 class ItineraryApiServiceImpl extends ItineraryApiService {
@@ -117,9 +118,11 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
     try {
       final response = await sl<DioClient>().post(
         '${ApiUrls.itinerary}/$itineraryId/stops',
-        data: request.toJson(),
+        data: [request.toJson()],
       );
-      final stop = Stop.fromJson(response.data);
+      final data = response.data;
+      final stop =
+          data is List ? Stop.fromJson(data.first) : Stop.fromJson(data);
       return Right(stop);
     } on DioException catch (e) {
       return Left(
@@ -142,6 +145,29 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
       );
       final provinceResponse = ProvinceResponse.fromJson(response.data);
       return Right(provinceResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stop>> getStopDetail(
+    int itineraryId,
+    int stopId,
+  ) async {
+    try {
+      final response = await sl<DioClient>().get(
+        '${ApiUrls.itinerary}/$itineraryId/stops/$stopId',
+      );
+      final stop = Stop.fromJson(response.data);
+      return Right(stop);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

@@ -21,4 +21,5 @@ abstract class ItineraryRepository {
     int itineraryId,
     AddStopRequest request,
   );
+  Future<Either<Failure, Stop>> getStopDetail(int itineraryId, int stopId);
 }

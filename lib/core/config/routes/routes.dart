@@ -45,7 +45,12 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_de
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/create_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/itinerary_detail.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/add_stop.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/edit_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/province_selection.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
+import 'package:tour_guide_app/features/destination/data/models/destination.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/destination_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/my_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/itinerary_list.page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,6 +78,24 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ItineraryDetailPage(itineraryId: itineraryId),
+        );
+
+      case AppRouteConstant.addStop:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          settings: settings,
+          builder:
+              (_) => AddStopPage(
+                itineraryId: args['itineraryId'] as int,
+                destination: args['destination'] as Destination,
+              ),
+        );
+
+      case AppRouteConstant.editItinerary:
+        final itinerary = settings.arguments as Itinerary;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => EditItineraryPage(itinerary: itinerary),
         );
 
       case AppRouteConstant.createItinerary:
@@ -371,6 +394,17 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const ItineraryListPage(),
+        );
+
+      case AppRouteConstant.itineraryDestinationSelection:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          settings: settings,
+          builder:
+              (_) => DestinationSelectionPage(
+                province: args['province'] as String,
+                itineraryId: args['itineraryId'] as int,
+              ),
         );
 
       default:
