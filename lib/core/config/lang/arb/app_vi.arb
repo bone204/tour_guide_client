@@ -1003,5 +1003,7 @@
   },
   "tabAbout": "Giới thiệu",
   "tabReviews": "Đánh giá",
-  "tabPhotos": "Hình ảnh"
+  "tabPhotos": "Hình ảnh",
+  "viewOnMap": "Xem trên bản đồ",
+  "itinerarySchedule": "Lịch trình"
 }

@@ -11,24 +11,12 @@ class ItineraryActionButtons extends StatelessWidget {
       child: Column(
         children: [
           ItineraryActionButton(
-            title: AppLocalizations.of(context)!.createTrip,
-            description: AppLocalizations.of(context)!.createTripDesc,
-            iconAsset: AppIcons.calendar,
-            color: AppColors.primaryBlue,
-            onTap: () {
-              Navigator.of(
-                context,
-              ).pushNamed(AppRouteConstant.itineraryProvinceSelection);
-            },
-          ),
-          SizedBox(height: 16.h),
-          ItineraryActionButton(
             title: AppLocalizations.of(context)!.tripList,
             description: AppLocalizations.of(context)!.tripListDesc,
             iconAsset: AppIcons.location,
             color: AppColors.primaryOrange,
             onTap: () {
-              // Navigate to trip list
+              Navigator.of(context).pushNamed(AppRouteConstant.itineraryList);
             },
           ),
           SizedBox(height: 16.h),

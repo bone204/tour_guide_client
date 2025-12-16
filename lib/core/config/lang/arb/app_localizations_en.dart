@@ -1401,4 +1401,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tabPhotos => 'Photos';
+
+  @override
+  String get itinerarySchedule => 'Itinerary Schedule';
 }

@@ -1401,4 +1401,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get tabPhotos => 'Hình ảnh';
+
+  @override
+  String get itinerarySchedule => 'Lịch trình';
 }

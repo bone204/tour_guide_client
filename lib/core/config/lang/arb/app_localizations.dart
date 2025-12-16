@@ -2770,6 +2770,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Photos'**
   String get tabPhotos;
+
+  /// No description provided for @itinerarySchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary Schedule'**
+  String get itinerarySchedule;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
