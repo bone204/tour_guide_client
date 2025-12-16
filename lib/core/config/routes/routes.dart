@@ -43,12 +43,11 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicle
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/create_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/province_selection.page.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/destination_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/my_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/itinerary_list.page.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -74,6 +73,13 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ItineraryDetailPage(itinerary: itinerary),
+        );
+
+      case AppRouteConstant.createItinerary:
+        final province = settings.arguments as String;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => CreateItineraryPage(province: province),
         );
 
       case AppRouteConstant.signUp:
@@ -353,17 +359,6 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ProvinceSelectionPage.withProvider(),
-        );
-
-      case AppRouteConstant.itineraryDestinationSelection:
-        final province = settings.arguments as String;
-        return MaterialPageRoute(
-          settings: settings,
-          builder:
-              (_) => BlocProvider(
-                create: (_) => sl<GetDestinationCubit>(),
-                child: DestinationSelectionPage(province: province),
-              ),
         );
 
       case AppRouteConstant.myItinerary:

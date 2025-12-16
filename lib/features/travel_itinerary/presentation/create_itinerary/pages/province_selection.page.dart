@@ -233,7 +233,7 @@ class _ProvinceSelectionPageState extends State<ProvinceSelectionPage> {
           province: province,
           onTap: () {
             Navigator.of(context).pushNamed(
-              AppRouteConstant.itineraryDetail,
+              AppRouteConstant.createItinerary,
               arguments: province.name,
             );
           },

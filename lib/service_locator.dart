@@ -46,6 +46,7 @@ import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_iti
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_itinerary_detail.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_itinerary_me.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_provinces.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/bloc/create_itinerary/create_itinerary_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -104,4 +105,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<AddVehicleCubit>(() => AddVehicleCubit());
   sl.registerFactory<GetVehiclesCubit>(() => GetVehiclesCubit());
   sl.registerFactory<GetDestinationCubit>(() => GetDestinationCubit());
+  sl.registerFactory<CreateItineraryCubit>(
+    () => CreateItineraryCubit(createItineraryUseCase: sl()),
+  );
 }
