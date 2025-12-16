@@ -23,4 +23,7 @@
 
     //Provinces URLs
     static const provinces = "$baseURL/vn-admin/legacy/provinces";
+
+    //Travel Routes URLs
+    static const itinerary = "$baseURL/travel-routes";
   }

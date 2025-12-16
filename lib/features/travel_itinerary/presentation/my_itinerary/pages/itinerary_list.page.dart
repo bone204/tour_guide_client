@@ -39,25 +39,23 @@ class ItineraryListPage extends StatelessWidget {
           Navigator.of(context).pop();
         },
       ),
-      body: Padding(
+      body: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-        child: ListView.builder(
-          itemCount: itineraries.length,
-          itemBuilder: (context, index) {
-            final item = itineraries[index];
-            return ItineraryCard(
-              title: item['title']!,
-              dateRange: item['dateRange']!,
-              destinationCount: item['destinationCount']!,
-              status: item['status']!,
-              onTap: () {
-                Navigator.of(
-                  context,
-                ).pushNamed(AppRouteConstant.itineraryDetail, arguments: item);
-              },
-            );
-          },
-        ),
+        itemCount: itineraries.length,
+        itemBuilder: (context, index) {
+          final item = itineraries[index];
+          return ItineraryCard(
+            title: item['title']!,
+            dateRange: item['dateRange']!,
+            destinationCount: item['destinationCount']!,
+            status: item['status']!,
+            onTap: () {
+              Navigator.of(
+                context,
+              ).pushNamed(AppRouteConstant.itineraryDetail, arguments: item);
+            },
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

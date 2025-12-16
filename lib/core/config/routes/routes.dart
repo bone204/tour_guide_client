@@ -46,10 +46,8 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_det
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/province_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/destination_selection.page.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/create_itinerary/pages/itinerary_creation.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/my_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/itinerary_list.page.dart';
-import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/service_locator.dart';
@@ -365,19 +363,6 @@ class AppRouter {
               (_) => BlocProvider(
                 create: (_) => sl<GetDestinationCubit>(),
                 child: DestinationSelectionPage(province: province),
-              ),
-        );
-
-      case AppRouteConstant.itineraryCreation:
-        final args = settings.arguments as Map<String, dynamic>;
-        final province = args['province'] as String;
-        final destinations = args['destinations'] as List<Destination>;
-        return MaterialPageRoute(
-          settings: settings,
-          builder:
-              (_) => ItineraryCreationPage(
-                province: province,
-                selectedDestinations: destinations,
               ),
         );
 

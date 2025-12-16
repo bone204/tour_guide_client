@@ -41,6 +41,10 @@ import 'package:tour_guide_app/features/chat_bot/domain/repository/chat_reposito
 import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/repository/itinerary_repository_impl.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/repository/itinerary_repository.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/create_itinerary.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_itineraries.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_itinerary_detail.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_itinerary_me.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_provinces.dart';
 
 final sl = GetIt.instance;
@@ -73,17 +77,27 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetDestinationByIdUseCase>(GetDestinationByIdUseCase());
   sl.registerSingleton<GetDestinationUseCase>(GetDestinationUseCase());
   sl.registerSingleton<GetFavoritesUseCase>(GetFavoritesUseCase());
-  sl.registerSingleton<FavoriteDestinationUseCase>(FavoriteDestinationUseCase());
-  sl.registerSingleton<RegisterRentalVehicleUseCase>(RegisterRentalVehicleUseCase());
+  sl.registerSingleton<FavoriteDestinationUseCase>(
+    FavoriteDestinationUseCase(),
+  );
+  sl.registerSingleton<RegisterRentalVehicleUseCase>(
+    RegisterRentalVehicleUseCase(),
+  );
   sl.registerSingleton<GetContractsUseCase>(GetContractsUseCase());
   sl.registerSingleton<GetContractDetailUseCase>(GetContractDetailUseCase());
   sl.registerSingleton<GetVehicleDetailUseCase>(GetVehicleDetailUseCase());
   sl.registerSingleton<AddVehicleUseCase>(AddVehicleUseCase());
   sl.registerSingleton<SendChatMessageUseCase>(SendChatMessageUseCase());
   sl.registerSingleton<GetProvincesUseCase>(GetProvincesUseCase());
+  sl.registerSingleton<GetItineraryMeUseCase>(GetItineraryMeUseCase());
+  sl.registerSingleton<GetItinerariesUseCase>(GetItinerariesUseCase());
+  sl.registerSingleton<GetItineraryDetailUseCase>(GetItineraryDetailUseCase());
+  sl.registerSingleton<CreateItineraryUseCase>(CreateItineraryUseCase());
 
   // Cubits
-  sl.registerFactory<RegisterRentalVehicleCubit>(() => RegisterRentalVehicleCubit());
+  sl.registerFactory<RegisterRentalVehicleCubit>(
+    () => RegisterRentalVehicleCubit(),
+  );
   sl.registerFactory<GetContractsCubit>(() => GetContractsCubit());
   sl.registerFactory<ContractDetailCubit>(() => ContractDetailCubit());
   sl.registerFactory<VehicleDetailCubit>(() => VehicleDetailCubit());

@@ -23,7 +23,6 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
   @override
   void initState() {
     super.initState();
-    // Load destinations for this province - load 100 items to get all provinces
     context.read<GetDestinationCubit>().getDestinations(
       query: DestinationQuery(offset: 0, limit: 200),
     );

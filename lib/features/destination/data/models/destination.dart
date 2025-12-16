@@ -20,7 +20,7 @@ class Destination {
   final bool? available;
   final String? createdAt;
   final String? updatedAt;
-  final bool isFromDatabase; // true nếu từ DB, false nếu từ OSM
+  final bool isFromDatabase; 
 
   const Destination({ 
     required this.id,
