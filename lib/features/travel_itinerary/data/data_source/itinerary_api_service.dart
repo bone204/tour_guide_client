@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
+import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/create_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/add_stop_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
@@ -16,6 +17,7 @@ abstract class ItineraryApiService {
     Map<String, dynamic> query,
   );
   Future<Either<Failure, Itinerary>> getItineraryDetail(int id);
+  Future<Either<Failure, SuccessResponse>> deleteItinerary(int id);
   Future<Either<Failure, Itinerary>> createItinerary(
     CreateItineraryRequest request,
   );
@@ -75,6 +77,24 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
       final response = await sl<DioClient>().get('${ApiUrls.itinerary}/$id');
       final itinerary = Itinerary.fromJson(response.data);
       return Right(itinerary);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> deleteItinerary(int id) async {
+    try {
+      final response = await sl<DioClient>().delete('${ApiUrls.itinerary}/$id');
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

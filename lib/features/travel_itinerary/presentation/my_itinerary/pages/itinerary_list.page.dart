@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,14 +6,55 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinera
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/widgets/itinerary_card.widget.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/widgets/shimmer_itinerary_list.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 
-class ItineraryListPage extends StatelessWidget {
+class ItineraryListPage extends StatefulWidget {
   const ItineraryListPage({super.key});
 
   @override
+  State<ItineraryListPage> createState() => _ItineraryListPageState();
+}
+
+class _ItineraryListPageState extends State<ItineraryListPage> {
+  late StreamSubscription _busSubscription;
+  late GetItineraryMeCubit _cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = sl<GetItineraryMeCubit>()..getItineraryMe();
+    _busSubscription = eventBus.on<ItineraryDeletedEvent>().listen((_) {
+      if (mounted) {
+        _cubit.getItineraryMe();
+      }
+    });
+    // Also listen to CreateItinerarySuccessEvent if needed, but sticking to Delete for now
+  }
+
+  @override
+  void dispose() {
+    _busSubscription.cancel();
+    _cubit
+        .close(); // Since we created it via sl(), we should technically close it if we own it, or let BlocProvider handle it?
+    // Wait, BlocProvider.value should be used if we create it in initState.
+    // Or simpler: Keep BlocProvider in build, but access it.
+    // Actually, purely creating in BlocProvider(create: ...) is cleaner if we access context.read in listener.
+    // But listener needs context. So we can't do it in initState easily unless we store the cubit.
+    // Better pattern: Wrap the Scaffold body in a pure State class?
+    // Let's stick to storing cubit in initState but providing it via BlocProvider.value or similar?
+    // No, standard way:
+    // BlocProvider(create: ...) in build.
+    // Listener in initState? No, initState doesn't have access to context provided by build's BlocProvider.
+    // SOLUTION: Use BlocProvider at top of build, and have a child widget that is Stateful and listens?
+    // OR: Just use the event bus to trigger a setState or call the methods, but we need the cubit instance.
+    // EASIEST: Create cubit in initState. Pass to BlocProvider.value.
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<GetItineraryMeCubit>()..getItineraryMe(),
+    return BlocProvider.value(
+      value: _cubit, // Use value since we created it in initState
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: CustomAppBar(
@@ -37,7 +79,7 @@ class ItineraryListPage extends StatelessWidget {
               }
               return RefreshIndicator(
                 onRefresh: () async {
-                  await context.read<GetItineraryMeCubit>().getItineraryMe();
+                  await _cubit.getItineraryMe();
                 },
                 child: ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),

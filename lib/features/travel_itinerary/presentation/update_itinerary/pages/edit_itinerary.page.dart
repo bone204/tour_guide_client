@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
@@ -132,19 +133,40 @@ class _EditItineraryViewState extends State<_EditItineraryView> {
         body: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.all(16.w),
-                itemCount: _currentItinerary.stops.length,
-                itemBuilder: (context, index) {
-                  final stop = _currentItinerary.stops[index];
-                  return StopCard(
-                    stop: stop,
-                    onTap: () {
-                      // TODO: Implement Edit Stop logic
-                    },
-                  );
-                },
-              ),
+              child:
+                  _currentItinerary.stops.isEmpty
+                      ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Lottie.asset(
+                              AppLotties.empty,
+                              width: 300.w,
+                              height: 300.h,
+                              fit: BoxFit.contain,
+                            ),
+                            SizedBox(height: 16.h),
+                            Text(
+                              AppLocalizations.of(context)!.noStop,
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(color: AppColors.textPrimary),
+                            ),
+                          ],
+                        ),
+                      )
+                      : ListView.builder(
+                        padding: EdgeInsets.all(16.w),
+                        itemCount: _currentItinerary.stops.length,
+                        itemBuilder: (context, index) {
+                          final stop = _currentItinerary.stops[index];
+                          return StopCard(
+                            stop: stop,
+                            onTap: () {
+                              // TODO: Implement Edit Stop logic
+                            },
+                          );
+                        },
+                      ),
             ),
             Padding(
               padding: EdgeInsets.all(16.w),

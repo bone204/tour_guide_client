@@ -119,18 +119,6 @@ abstract class AppLocalizations {
   /// **'Enter username or email'**
   String get enterUsernameOrEmail;
 
-  /// No description provided for @password.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
-  String get password;
-
-  /// No description provided for @enterPassword.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter Password'**
-  String get enterPassword;
-
   /// No description provided for @forgotPassword.
   ///
   /// In en, this message translates to:
@@ -167,29 +155,11 @@ abstract class AppLocalizations {
   /// **'Please fill the details and create account'**
   String get signUpDescription;
 
-  /// No description provided for @username.
-  ///
-  /// In en, this message translates to:
-  /// **'Username'**
-  String get username;
-
-  /// No description provided for @enterUsername.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter Username'**
-  String get enterUsername;
-
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
   /// **'Email'**
   String get email;
-
-  /// No description provided for @enterEmail.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter Your Email'**
-  String get enterEmail;
 
   /// No description provided for @confirmPassword.
   ///
@@ -335,12 +305,6 @@ abstract class AppLocalizations {
   /// **'Fast Delivery'**
   String get delivery;
 
-  /// No description provided for @findHotel.
-  ///
-  /// In en, this message translates to:
-  /// **'Find Hotel'**
-  String get findHotel;
-
   /// No description provided for @exclusiveVouchers.
   ///
   /// In en, this message translates to:
@@ -424,18 +388,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Daily Rent'**
   String get dailyRent;
-
-  /// No description provided for @startDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Start Date'**
-  String get startDate;
-
-  /// No description provided for @endDate.
-  ///
-  /// In en, this message translates to:
-  /// **'End Date'**
-  String get endDate;
 
   /// No description provided for @selectDateAndHour.
   ///
@@ -533,12 +485,6 @@ abstract class AppLocalizations {
   /// **'Description'**
   String get description;
 
-  /// No description provided for @reviews.
-  ///
-  /// In en, this message translates to:
-  /// **'Reviews'**
-  String get reviews;
-
   /// No description provided for @rentalInfo.
   ///
   /// In en, this message translates to:
@@ -581,23 +527,11 @@ abstract class AppLocalizations {
   /// **'Reward points discount'**
   String get discountPoint;
 
-  /// No description provided for @totalPayment.
-  ///
-  /// In en, this message translates to:
-  /// **'Total Payment'**
-  String get totalPayment;
-
   /// No description provided for @choosePayment.
   ///
   /// In en, this message translates to:
   /// **'Choose payment method'**
   String get choosePayment;
-
-  /// No description provided for @pricePerDay.
-  ///
-  /// In en, this message translates to:
-  /// **'Price Per Day'**
-  String get pricePerDay;
 
   /// No description provided for @useRewardPoint.
   ///
@@ -838,18 +772,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please confirm all policies'**
   String get pleaseConfirmPolicies;
-
-  /// No description provided for @addLocation.
-  ///
-  /// In en, this message translates to:
-  /// **'Add Location'**
-  String get addLocation;
-
-  /// No description provided for @allLocationsAdded.
-  ///
-  /// In en, this message translates to:
-  /// **'All locations have been added to the itinerary'**
-  String get allLocationsAdded;
 
   /// No description provided for @pleaseSelectSeatTrain.
   ///
@@ -1097,12 +1019,6 @@ abstract class AppLocalizations {
   /// **'My Vehicle'**
   String get myVehicle;
 
-  /// No description provided for @vehicleRentalRegister.
-  ///
-  /// In en, this message translates to:
-  /// **'Vehicle Rental Registration'**
-  String get vehicleRentalRegister;
-
   /// No description provided for @addVehicle.
   ///
   /// In en, this message translates to:
@@ -1186,6 +1102,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hotel List'**
   String get hotelList;
+
+  /// No description provided for @findHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Hotel'**
+  String get findHotel;
 
   /// No description provided for @selectTable.
   ///
@@ -1271,6 +1193,12 @@ abstract class AppLocalizations {
   /// **'Deposit'**
   String get deposit;
 
+  /// No description provided for @totalPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Payment'**
+  String get totalPayment;
+
   /// No description provided for @pickupPoint.
   ///
   /// In en, this message translates to:
@@ -1318,6 +1246,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total Room Price'**
   String get totalRoomPrice;
+
+  /// No description provided for @username.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
 
   /// No description provided for @businessType.
   ///
@@ -1432,6 +1372,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Arrival Airport'**
   String get arrivalAirport;
+
+  /// No description provided for @startDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get startDate;
+
+  /// No description provided for @endDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End Date'**
+  String get endDate;
 
   /// No description provided for @deliveryRequirements.
   ///
@@ -1571,6 +1523,12 @@ abstract class AppLocalizations {
   /// **'Price Per Hour'**
   String get pricePerHour;
 
+  /// No description provided for @pricePerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Per Day'**
+  String get pricePerDay;
+
   /// No description provided for @totalRentals.
   ///
   /// In en, this message translates to:
@@ -1588,12 +1546,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Approval Status'**
   String get approvalStatus;
-
-  /// No description provided for @available.
-  ///
-  /// In en, this message translates to:
-  /// **'Available'**
-  String get available;
 
   /// No description provided for @requirements.
   ///
@@ -1631,6 +1583,18 @@ abstract class AppLocalizations {
   /// **'Enter Recipient Phone'**
   String get enterRecipientPhone;
 
+  /// No description provided for @enterUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Username'**
+  String get enterUsername;
+
+  /// No description provided for @enterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Password'**
+  String get enterPassword;
+
   /// No description provided for @enterBusinessName.
   ///
   /// In en, this message translates to:
@@ -1654,6 +1618,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter Your Full Name'**
   String get enterFullName;
+
+  /// No description provided for @enterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Your Email'**
+  String get enterEmail;
 
   /// No description provided for @enterPhoneNumber.
   ///
@@ -1823,12 +1793,6 @@ abstract class AppLocalizations {
   /// **'Motorbike'**
   String get motorbike;
 
-  /// No description provided for @personal.
-  ///
-  /// In en, this message translates to:
-  /// **'Personal'**
-  String get personal;
-
   /// No description provided for @company.
   ///
   /// In en, this message translates to:
@@ -1901,6 +1865,12 @@ abstract class AppLocalizations {
   /// **'Status & Requirements'**
   String get statusAndRequirements;
 
+  /// No description provided for @personal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get personal;
+
   /// No description provided for @business.
   ///
   /// In en, this message translates to:
@@ -1970,7 +1940,7 @@ abstract class AppLocalizations {
   /// No description provided for @pleaseEnterValidPhone.
   ///
   /// In en, this message translates to:
-  /// **'Please enter a valid phone number'**
+  /// **'Please enter a valid 10-digit phone number'**
   String get pleaseEnterValidPhone;
 
   /// No description provided for @pleaseSelectBank.
@@ -2074,6 +2044,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Inactive'**
   String get inactive;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
 
   /// No description provided for @rented.
   ///
@@ -2339,11 +2315,11 @@ abstract class AppLocalizations {
   /// **'Platinum Member'**
   String get platinumMember;
 
-  /// No description provided for @travelPoints.
+  /// No description provided for @reviews.
   ///
   /// In en, this message translates to:
-  /// **'Travel Points'**
-  String get travelPoints;
+  /// **'Reviews'**
+  String get reviews;
 
   /// No description provided for @wallet.
   ///
@@ -2543,6 +2519,12 @@ abstract class AppLocalizations {
   /// **'Please fill all required fields'**
   String get pleaseFillAllRequiredFields;
 
+  /// No description provided for @vehicleRentalRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Rental Registration'**
+  String get vehicleRentalRegister;
+
   /// No description provided for @itineraryDetailTitle.
   ///
   /// In en, this message translates to:
@@ -2729,11 +2711,23 @@ abstract class AppLocalizations {
   /// **'Your itinerary has been created. You can view and edit it later.'**
   String get createItinerarySuccessMessage;
 
+  /// No description provided for @addLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Location'**
+  String get addLocation;
+
   /// No description provided for @placesNotAdded.
   ///
   /// In en, this message translates to:
   /// **'{count} places not added'**
   String placesNotAdded(int count);
+
+  /// No description provided for @allLocationsAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'All locations have been added to the itinerary'**
+  String get allLocationsAdded;
 
   /// No description provided for @failedToLoadDestination.
   ///
@@ -2801,6 +2795,12 @@ abstract class AppLocalizations {
   /// **'End Time'**
   String get endTime;
 
+  /// No description provided for @travelPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel Points'**
+  String get travelPoints;
+
   /// No description provided for @enterPoints.
   ///
   /// In en, this message translates to:
@@ -2846,8 +2846,74 @@ abstract class AppLocalizations {
   /// No description provided for @noSchedule.
   ///
   /// In en, this message translates to:
-  /// **'No schedule for this itinerary'**
+  /// **'No schedule for this trip'**
   String get noSchedule;
+
+  /// No description provided for @noStop.
+  ///
+  /// In en, this message translates to:
+  /// **'No stops for this trip'**
+  String get noStop;
+
+  /// No description provided for @statusUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get statusUpcoming;
+
+  /// No description provided for @statusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get statusCompleted;
+
+  /// No description provided for @statusOngoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Ongoing'**
+  String get statusOngoing;
+
+  /// No description provided for @statusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get statusCancelled;
+
+  /// No description provided for @statusDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft'**
+  String get statusDraft;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @confirmDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Delete'**
+  String get confirmDelete;
+
+  /// No description provided for @confirmDeleteContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this itinerary?'**
+  String get confirmDeleteContent;
+
+  /// No description provided for @deleteSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary deleted successfully'**
+  String get deleteSuccess;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

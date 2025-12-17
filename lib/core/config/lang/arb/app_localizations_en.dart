@@ -21,12 +21,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterUsernameOrEmail => 'Enter username or email';
 
   @override
-  String get password => 'Password';
-
-  @override
-  String get enterPassword => 'Enter Password';
-
-  @override
   String get forgotPassword => 'Forgot Password?';
 
   @override
@@ -45,16 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signUpDescription => 'Please fill the details and create account';
 
   @override
-  String get username => 'Username';
-
-  @override
-  String get enterUsername => 'Enter Username';
-
-  @override
   String get email => 'Email';
-
-  @override
-  String get enterEmail => 'Enter Your Email';
 
   @override
   String get confirmPassword => 'Confirm Password';
@@ -129,9 +114,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delivery => 'Fast Delivery';
 
   @override
-  String get findHotel => 'Find Hotel';
-
-  @override
   String get exclusiveVouchers => 'Exclusive Vouchers';
 
   @override
@@ -172,12 +154,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dailyRent => 'Daily Rent';
-
-  @override
-  String get startDate => 'Start Date';
-
-  @override
-  String get endDate => 'End Date';
 
   @override
   String get selectDateAndHour => 'Select date and hour';
@@ -228,9 +204,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get description => 'Description';
 
   @override
-  String get reviews => 'Reviews';
-
-  @override
   String get rentalInfo => 'Rental Information';
 
   @override
@@ -252,13 +225,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get discountPoint => 'Reward points discount';
 
   @override
-  String get totalPayment => 'Total Payment';
-
-  @override
   String get choosePayment => 'Choose payment method';
-
-  @override
-  String get pricePerDay => 'Price Per Day';
 
   @override
   String get useRewardPoint => 'Use reward points';
@@ -383,12 +350,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseConfirmPolicies => 'Please confirm all policies';
-
-  @override
-  String get addLocation => 'Add Location';
-
-  @override
-  String get allLocationsAdded => 'All locations have been added to the itinerary';
 
   @override
   String get pleaseSelectSeatTrain => 'Please select a seat';
@@ -520,9 +481,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myVehicle => 'My Vehicle';
 
   @override
-  String get vehicleRentalRegister => 'Vehicle Rental Registration';
-
-  @override
   String get addVehicle => 'Add Vehicle';
 
   @override
@@ -563,6 +521,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hotelList => 'Hotel List';
+
+  @override
+  String get findHotel => 'Find Hotel';
 
   @override
   String get selectTable => 'Select Table';
@@ -607,6 +568,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deposit => 'Deposit';
 
   @override
+  String get totalPayment => 'Total Payment';
+
+  @override
   String get pickupPoint => 'Pickup Point';
 
   @override
@@ -629,6 +593,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get totalRoomPrice => 'Total Room Price';
+
+  @override
+  String get username => 'Username';
+
+  @override
+  String get password => 'Password';
 
   @override
   String get businessType => 'Business Type';
@@ -686,6 +656,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get arrivalAirport => 'Arrival Airport';
+
+  @override
+  String get startDate => 'Start Date';
+
+  @override
+  String get endDate => 'End Date';
 
   @override
   String get deliveryRequirements => 'Delivery Requirements';
@@ -757,6 +733,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pricePerHour => 'Price Per Hour';
 
   @override
+  String get pricePerDay => 'Price Per Day';
+
+  @override
   String get totalRentals => 'Total Rentals';
 
   @override
@@ -764,9 +743,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get approvalStatus => 'Approval Status';
-
-  @override
-  String get available => 'Available';
 
   @override
   String get requirements => 'Requirements';
@@ -787,6 +763,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterRecipientPhone => 'Enter Recipient Phone';
 
   @override
+  String get enterUsername => 'Enter Username';
+
+  @override
+  String get enterPassword => 'Enter Password';
+
+  @override
   String get enterBusinessName => 'Enter Business Name';
 
   @override
@@ -797,6 +779,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterFullName => 'Enter Your Full Name';
+
+  @override
+  String get enterEmail => 'Enter Your Email';
 
   @override
   String get enterPhoneNumber => 'Enter Your Phone Number';
@@ -883,9 +868,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get motorbike => 'Motorbike';
 
   @override
-  String get personal => 'Personal';
-
-  @override
   String get company => 'Company';
 
   @override
@@ -920,6 +902,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statusAndRequirements => 'Status & Requirements';
+
+  @override
+  String get personal => 'Personal';
 
   @override
   String get business => 'Business';
@@ -957,7 +942,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneRequired => 'Phone number is required';
 
   @override
-  String get pleaseEnterValidPhone => 'Please enter a valid phone number';
+  String get pleaseEnterValidPhone => 'Please enter a valid 10-digit phone number';
 
   @override
   String get pleaseSelectBank => 'Please select a bank';
@@ -1009,6 +994,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inactive => 'Inactive';
+
+  @override
+  String get available => 'Available';
 
   @override
   String get rented => 'Rented';
@@ -1159,7 +1147,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get platinumMember => 'Platinum Member';
 
   @override
-  String get travelPoints => 'Travel Points';
+  String get reviews => 'Reviews';
 
   @override
   String get wallet => 'Wallet';
@@ -1271,6 +1259,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseFillAllRequiredFields => 'Please fill all required fields';
 
   @override
+  String get vehicleRentalRegister => 'Vehicle Rental Registration';
+
+  @override
   String get itineraryDetailTitle => 'Itinerary Detail';
 
   @override
@@ -1378,9 +1369,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createItinerarySuccessMessage => 'Your itinerary has been created. You can view and edit it later.';
 
   @override
+  String get addLocation => 'Add Location';
+
+  @override
   String placesNotAdded(int count) {
     return '$count places not added';
   }
+
+  @override
+  String get allLocationsAdded => 'All locations have been added to the itinerary';
 
   @override
   String get failedToLoadDestination => 'Failed to load destination';
@@ -1418,6 +1415,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get endTime => 'End Time';
 
   @override
+  String get travelPoints => 'Travel Points';
+
+  @override
   String get enterPoints => 'Enter points';
 
   @override
@@ -1439,5 +1439,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noDestinationsFound => 'No destinations found';
 
   @override
-  String get noSchedule => 'No schedule for this itinerary';
+  String get noSchedule => 'No schedule for this trip';
+
+  @override
+  String get noStop => 'No stops for this trip';
+
+  @override
+  String get statusUpcoming => 'Upcoming';
+
+  @override
+  String get statusCompleted => 'Completed';
+
+  @override
+  String get statusOngoing => 'Ongoing';
+
+  @override
+  String get statusCancelled => 'Cancelled';
+
+  @override
+  String get statusDraft => 'Draft';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get confirmDelete => 'Confirm Delete';
+
+  @override
+  String get confirmDeleteContent => 'Are you sure you want to delete this itinerary?';
+
+  @override
+  String get deleteSuccess => 'Itinerary deleted successfully';
 }

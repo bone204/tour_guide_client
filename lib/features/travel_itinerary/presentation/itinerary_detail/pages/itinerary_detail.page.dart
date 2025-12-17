@@ -4,8 +4,12 @@ import 'package:lottie/lottie.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_itinerary_detail/get_itinerary_detail_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/delete_itinerary/delete_itinerary_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/widgets/itinerary_detail_shimmer.widget.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/widgets/itinerary_timeline.widget.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common/widgets/menu/itinerary_action_menu.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 class ItineraryDetailPage extends StatelessWidget {
   final int itineraryId;
@@ -14,10 +18,14 @@ class ItineraryDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) =>
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
               sl<GetItineraryDetailCubit>()..getItineraryDetail(itineraryId),
+        ),
+        BlocProvider(create: (_) => sl<DeleteItineraryCubit>()),
+      ],
       child: _ItineraryDetailView(itineraryId: itineraryId),
     );
   }
@@ -41,8 +49,8 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
     _busSubscription = eventBus.on<StopAddedEvent>().listen((_) {
       if (mounted) {
         context.read<GetItineraryDetailCubit>().getItineraryDetail(
-          widget.itineraryId,
-        );
+              widget.itineraryId,
+            );
       }
     });
   }
@@ -55,17 +63,17 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetItineraryDetailCubit, GetItineraryDetailState>(
+    return BlocConsumer<GetItineraryDetailCubit, GetItineraryDetailState>(
+      listener: (context, state) {
+        if (state is GetItineraryDetailFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
+      },
       builder: (context, state) {
         if (state is GetItineraryDetailLoading) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        } else if (state is GetItineraryDetailFailure) {
-          return Scaffold(
-            appBar: AppBar(),
-            body: Center(child: Text(state.message)),
-          );
+          return const ItineraryDetailShimmer();
         } else if (state is GetItineraryDetailSuccess) {
           final itinerary = state.itinerary;
           // Unpack data
@@ -74,200 +82,268 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
           final status = itinerary.status;
           final imageUrl =
               'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop';
-          final days =
-              itinerary.stops
-                  .map(
-                    (stop) => {
-                      'day': AppLocalizations.of(
-                        context,
-                      )!.dayNumber(stop.dayOrder > 0 ? stop.dayOrder : 1),
-                      'activity': stop.destination!.name,
-                      'time': stop.startTime,
-                    },
-                  )
-                  .toList();
+          final days = itinerary.stops
+              .map(
+                (stop) => {
+                  'day': AppLocalizations.of(
+                    context,
+                  )!
+                      .dayNumber(stop.dayOrder > 0 ? stop.dayOrder : 1),
+                  'activity': stop.destination!.name,
+                  'time': stop.startTime,
+                },
+              )
+              .toList();
 
-          return Scaffold(
-            backgroundColor: AppColors.backgroundColor,
-            body: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  expandedHeight: 250.h,
-                  pinned: true,
-                  backgroundColor: AppColors.backgroundColor,
-                  leading: Padding(
-                    padding: EdgeInsets.only(left: 16.w, top: 8.h, bottom: 8.h),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white.withOpacity(0.9),
-                      child: IconButton(
-                        icon: SvgPicture.asset(
-                          AppIcons.arrowLeft,
-                          width: 16.w,
-                          height: 16.h,
-                          colorFilter: const ColorFilter.mode(
-                            AppColors.primaryBlack,
-                            BlendMode.srcIn,
+          return BlocListener<DeleteItineraryCubit, DeleteItineraryState>(
+            listener: (context, deleteState) {
+              if (deleteState is DeleteItinerarySuccess) {
+                Navigator.pop(context, true); // Return true to indicate deletion
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text(AppLocalizations.of(context)!.deleteSuccess)),
+                );
+              } else if (deleteState is DeleteItineraryFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(deleteState.message)),
+                );
+              }
+            },
+            child: Scaffold(
+              backgroundColor: AppColors.backgroundColor,
+              extendBody: true,
+              floatingActionButtonLocation: ExpandableFab.location,
+              floatingActionButton: ItineraryActionMenu(
+                onEdit: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRouteConstant.editItinerary,
+                    arguments: itinerary,
+                  );
+                },
+                onDelete: () {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: Text(AppLocalizations.of(context)!.confirmDelete),
+                      content: Text(AppLocalizations.of(context)!.confirmDeleteContent),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx),
+                          child: Text(AppLocalizations.of(context)!.cancel),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(ctx);
+                            context
+                                .read<DeleteItineraryCubit>()
+                                .deleteItinerary(itinerary.id);
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.delete,
+                            style: const TextStyle(color: Colors.red),
                           ),
                         ),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
+                      ],
                     ),
-                  ),
-                  actions: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: 16.w,
-                        top: 8.h,
-                        bottom: 8.h,
-                      ),
+                  );
+                },
+              ),
+              body: CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverAppBar(
+                    expandedHeight: 250.h,
+                    pinned: true,
+                    backgroundColor: AppColors.backgroundColor,
+                    leading: Padding(
+                      padding:
+                          EdgeInsets.only(left: 16.w, top: 8.h, bottom: 8.h),
                       child: CircleAvatar(
                         backgroundColor: Colors.white.withOpacity(0.9),
                         child: IconButton(
-                          icon: const Icon(Icons.edit, color: Colors.black),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRouteConstant.editItinerary,
-                              arguments: itinerary,
-                            );
-                          },
+                          icon: SvgPicture.asset(
+                            AppIcons.arrowLeft,
+                            width: 16.w,
+                            height: 16.h,
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.primaryBlack,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          onPressed: () => Navigator.of(context).pop(),
                         ),
                       ),
                     ),
-                  ],
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.network(
-                          imageUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder:
-                              (context, error, stackTrace) =>
-                                  Container(color: Colors.grey),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.transparent,
-                                Colors.black.withOpacity(0.7),
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(color: Colors.grey),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withOpacity(0.7),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 20.h,
+                            left: 20.w,
+                            right: 20.w,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w,
+                                    vertical: 4.h,
+                                  ),
+                                  margin: EdgeInsets.only(bottom: 8.h),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryBlue,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  child: Text(
+                                    _getTranslatedStatus(context, status),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall
+                                        ?.copyWith(color: Colors.white),
+                                  ),
+                                ),
+                                Text(
+                                  title,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall
+                                      ?.copyWith(color: Colors.white),
+                                ),
+                                SizedBox(height: 8.h),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      AppIcons.calendar,
+                                      width: 16.w,
+                                      height: 16.h,
+                                      colorFilter: const ColorFilter.mode(
+                                        AppColors.primaryBlack,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                    SizedBox(width: 6.w),
+                                    Text(
+                                      dateRange,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(color: Colors.white70),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
-                        ),
-                        Positioned(
-                          bottom: 20.h,
-                          left: 20.w,
-                          right: 20.w,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w,
-                                  vertical: 4.h,
-                                ),
-                                margin: EdgeInsets.only(bottom: 8.h),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryBlue,
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                                child: Text(
-                                  status,
-                                  style: Theme.of(context).textTheme.labelSmall
-                                      ?.copyWith(color: Colors.white),
-                                ),
-                              ),
-                              Text(
-                                title,
-                                style: Theme.of(context).textTheme.headlineSmall
-                                    ?.copyWith(color: Colors.white),
-                              ),
-                              SizedBox(height: 8.h),
-                              Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    AppIcons.calendar,
-                                    width: 16.w,
-                                    height: 16.h,
-                                    colorFilter: const ColorFilter.mode(
-                                      AppColors.primaryBlack,
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
-                                  SizedBox(width: 6.w),
-                                  Text(
-                                    dateRange,
-                                    style: Theme.of(context).textTheme.bodySmall
-                                        ?.copyWith(color: Colors.white70),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(20.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.itinerarySchedule,
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(color: AppColors.textPrimary),
-                        ),
-                        SizedBox(height: 16.h),
-                        days.isNotEmpty
-                            ? ItineraryTimeline(timelineItems: days)
-                            : Container(
-                              width: double.infinity,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Lottie.asset(
-                                    AppLotties.empty,
-                                    width: 300.w,
-                                    height: 300.h,
-                                    fit: BoxFit.contain,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Icon(
-                                        Icons.image_not_supported,
-                                        size: 64.sp,
-                                        color: AppColors.primaryGrey,
-                                      );
-                                    },
-                                  ),
-                                  SizedBox(height: 16.h),
-                                  Text(
-                                    AppLocalizations.of(context)!.noSchedule,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleLarge?.copyWith(
-                                      color: AppColors.textPrimary,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.all(20.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (days.isNotEmpty) ...[
+                            Text(
+                              AppLocalizations.of(context)!.itinerarySchedule,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(color: AppColors.textPrimary),
                             ),
-                        SizedBox(height: 80.h),
-                      ],
+                            SizedBox(height: 16.h),
+                          ],
+                          days.isNotEmpty
+                              ? ItineraryTimeline(timelineItems: days)
+                              : Container(
+                                  width: double.infinity,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Lottie.asset(
+                                        AppLotties.empty,
+                                        width: 300.w,
+                                        height: 300.h,
+                                        fit: BoxFit.contain,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Icon(
+                                            Icons.image_not_supported,
+                                            size: 64.sp,
+                                            color: AppColors.primaryGrey,
+                                          );
+                                        },
+                                      ),
+                                      SizedBox(height: 16.h),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 30.w,
+                                        ),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .noSchedule,
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.titleMedium?.copyWith(
+                                                color: AppColors.textPrimary,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          SizedBox(height: 120.h),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }
-        return const SizedBox();
+        return const SizedBox.shrink();
       },
     );
+  }
+
+  String _getTranslatedStatus(BuildContext context, String status) {
+    switch (status) {
+      case 'upcoming':
+        return AppLocalizations.of(context)!.statusUpcoming;
+      case 'completed':
+        return AppLocalizations.of(context)!.statusCompleted;
+      case 'ongoing':
+        return AppLocalizations.of(context)!.statusOngoing;
+      case 'cancelled':
+        return AppLocalizations.of(context)!.statusCancelled;
+      case 'draft':
+        return AppLocalizations.of(context)!.statusDraft;
+      default:
+        return status;
+    }
   }
 }

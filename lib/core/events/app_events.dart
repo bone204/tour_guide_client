@@ -20,6 +20,9 @@ class CreateItinerarySuccessEvent {}
 // Event when a stop is added
 class StopAddedEvent {}
 
+// Event when an itinerary is deleted
+class ItineraryDeletedEvent {}
+
 // Singleton EventBus
 class AppEventBus {
   static final AppEventBus _instance = AppEventBus._internal();

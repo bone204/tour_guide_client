@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
+import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/create_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/add_stop_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
@@ -22,4 +23,5 @@ abstract class ItineraryRepository {
     AddStopRequest request,
   );
   Future<Either<Failure, Stop>> getStopDetail(int itineraryId, int stopId);
+  Future<Either<Failure, SuccessResponse>> deleteItinerary(int id);
 }

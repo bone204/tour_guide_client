@@ -1,4 +1,5 @@
 {
+  "@@locale": "vi",
   "signInNow": "Đăng nhập ngay",
 
   "signInDescription": "Vui lòng đăng nhập để tiếp tục sử dụng ứng dụng của chúng tôi",
@@ -7,9 +8,9 @@
 
   "enterUsernameOrEmail": "Nhập tên đăng nhập hoặc email",
 
-  "password": "Mật khẩu",
 
-  "enterPassword": "Nhập mật khẩu",
+
+
 
   "forgotPassword": "Quên mật khẩu?",
 
@@ -23,13 +24,13 @@
 
   "signUpDescription": "Vui lòng điền thông tin và tạo tài khoản",
 
-  "username": "Tên đăng nhập",
 
-  "enterUsername": "Nhập tên đăng nhập",
+
+
 
   "email": "Email",
 
-  "enterEmail": "Nhập email",
+
 
   "confirmPassword": "Xác nhận mật khẩu",
 
@@ -79,7 +80,7 @@
 
   "delivery": "Giao Hàng",
 
-  "findHotel": "Tìm Khách Sạn",
+
 
   "exclusiveVouchers": "Ưu đãi đặc biệt",
   
@@ -109,9 +110,9 @@
   
   "dailyRent": "Thuê theo ngày",
 
-  "startDate": "Ngày bắt đầu",
 
-  "endDate": "Ngày kết thúc",
+
+
 
   "selectDateAndHour": "Chọn ngày và giờ",
 
@@ -145,7 +146,7 @@
 
   "description": "Mô tả",
 
-  "reviews": "Đánh giá",
+
 
   "rentalInfo": "Thông Tin Thuê Xe",
 
@@ -161,11 +162,11 @@
 
   "discountPoint": "Trừ điểm thưởng",
 
-  "totalPayment": "Tổng thanh toán",
+
 
   "choosePayment": "Chọn phương thức thanh toán",
 
-  "pricePerDay": "Giá mỗi ngày",
+
 
   "useRewardPoint": "Sử dụng điểm thưởng",
 
@@ -263,9 +264,9 @@
 
   "pleaseConfirmPolicies": "Vui lòng xác nhận tất cả các chính sách",
 
-  "addLocation": "Thêm địa điểm",
 
-  "allLocationsAdded": "Đã thêm tất cả địa điểm vào ngày này",
+
+
 
   "pleaseSelectSeatTrain": "Vui lòng chọn chỗ",
 
@@ -372,8 +373,6 @@
   "createItinerary": "Tạo lộ trình",
 
   "myVehicle": "Xe của tôi",
-
-  "vehicleRentalRegister": "Đăng ký thuê xe",
 
   "addVehicle": "Thêm xe",
 
@@ -551,8 +550,6 @@
 
   "approvalStatus": "Trạng thái duyệt",
 
-  "available": "Khả dụng",
-
   "requirements": "Yêu cầu",
 
   "rejectionReasonLabel": "Lý do bị từ chối",
@@ -633,10 +630,6 @@
 
   "car": "Xe hơi",
 
-  "motorbike": "Xe máy",
-
-  "personal": "Cá nhân",
-
   "company": "Công ty",
 
   "vehicleRegistrationNumber": "Số đăng ký xe",
@@ -684,13 +677,7 @@
 
   "pleaseEnterValidPrice": "Vui lòng nhập giá hợp lệ",
 
-  "emailRequired": "Email là bắt buộc",
-
   "pleaseEnterValidEmail": "Vui lòng nhập email hợp lệ",
-
-  "phoneRequired": "Số điện thoại là bắt buộc",
-
-  "pleaseEnterValidPhone": "Vui lòng nhập số điện thoại 10 chữ số hợp lệ",
 
   "pleaseSelectBank": "Vui lòng chọn ngân hàng",
 
@@ -827,7 +814,6 @@
   "silverMember": "Thành viên Bạc",
   "goldMember": "Thành viên Vàng",
   "platinumMember": "Thành viên Bạch Kim",
-  "travelPoints": "Điểm du lịch",
   "reviews": "Đánh giá",
   "wallet": "Ví",
   "totalTrips": "Tổng chuyến đi",
@@ -1018,5 +1004,16 @@
   "itineraryUpdated": "Lịch trình đã được cập nhật",
   "selectDestination": "Chọn điểm đến",
   "noDestinationsFound": "Không tìm thấy điểm đến nào",
-  "noSchedule": "Không có lịch trình cho chuyến đi này"
+  "noSchedule": "Không có lịch trình cho chuyến đi này",
+  "noStop": "Không có điểm dừng cho chuyến đi này",
+  "statusUpcoming": "Sắp tới",
+  "statusCompleted": "Hoàn thành",
+  "statusOngoing": "Đang diễn ra",
+  "statusCancelled": "Đã hủy",
+  "statusDraft": "Bản nháp",
+  "edit": "Sửa",
+  "delete": "Xóa",
+  "confirmDelete": "Xác nhận xóa",
+  "confirmDeleteContent": "Bạn có chắc chắn muốn xóa lịch trình này?",
+  "deleteSuccess": "Đã xóa lịch trình thành công"
 }

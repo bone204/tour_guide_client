@@ -21,12 +21,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get enterUsernameOrEmail => 'Nhập tên đăng nhập hoặc email';
 
   @override
-  String get password => 'Mật khẩu';
-
-  @override
-  String get enterPassword => 'Nhập mật khẩu';
-
-  @override
   String get forgotPassword => 'Quên mật khẩu?';
 
   @override
@@ -45,16 +39,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signUpDescription => 'Vui lòng điền thông tin và tạo tài khoản';
 
   @override
-  String get username => 'Tên đăng nhập';
-
-  @override
-  String get enterUsername => 'Nhập tên đăng nhập';
-
-  @override
   String get email => 'Email';
-
-  @override
-  String get enterEmail => 'Nhập email';
 
   @override
   String get confirmPassword => 'Xác nhận mật khẩu';
@@ -129,9 +114,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get delivery => 'Giao Hàng';
 
   @override
-  String get findHotel => 'Tìm khách sạn';
-
-  @override
   String get exclusiveVouchers => 'Ưu đãi đặc biệt';
 
   @override
@@ -172,12 +154,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get dailyRent => 'Thuê theo ngày';
-
-  @override
-  String get startDate => 'Ngày bắt đầu';
-
-  @override
-  String get endDate => 'Ngày kết thúc';
 
   @override
   String get selectDateAndHour => 'Chọn ngày và giờ';
@@ -228,9 +204,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get description => 'Mô tả';
 
   @override
-  String get reviews => 'Đánh giá';
-
-  @override
   String get rentalInfo => 'Thông Tin Thuê Xe';
 
   @override
@@ -252,13 +225,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get discountPoint => 'Trừ điểm thưởng';
 
   @override
-  String get totalPayment => 'Tổng thanh toán';
-
-  @override
   String get choosePayment => 'Chọn phương thức thanh toán';
-
-  @override
-  String get pricePerDay => 'Giá theo ngày';
 
   @override
   String get useRewardPoint => 'Sử dụng điểm thưởng';
@@ -383,12 +350,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get pleaseConfirmPolicies => 'Vui lòng xác nhận tất cả các chính sách';
-
-  @override
-  String get addLocation => 'Thêm địa điểm';
-
-  @override
-  String get allLocationsAdded => 'Tất cả địa điểm đã được thêm vào lộ trình';
 
   @override
   String get pleaseSelectSeatTrain => 'Vui lòng chọn chỗ';
@@ -520,9 +481,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get myVehicle => 'Xe của tôi';
 
   @override
-  String get vehicleRentalRegister => 'Đăng ký thuê xe';
-
-  @override
   String get addVehicle => 'Thêm xe';
 
   @override
@@ -563,6 +521,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get hotelList => 'Danh sách khách sạn';
+
+  @override
+  String get findHotel => 'Tìm khách sạn';
 
   @override
   String get selectTable => 'Chọn bàn';
@@ -607,6 +568,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get deposit => 'Tiền đặt cọc';
 
   @override
+  String get totalPayment => 'Tổng thanh toán';
+
+  @override
   String get pickupPoint => 'Điểm lấy hàng';
 
   @override
@@ -629,6 +593,12 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get totalRoomPrice => 'Tổng tiền phòng';
+
+  @override
+  String get username => 'Tên đăng nhập';
+
+  @override
+  String get password => 'Mật khẩu';
 
   @override
   String get businessType => 'Loại hình';
@@ -686,6 +656,12 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get arrivalAirport => 'Sân bay đến';
+
+  @override
+  String get startDate => 'Ngày bắt đầu';
+
+  @override
+  String get endDate => 'Ngày kết thúc';
 
   @override
   String get deliveryRequirements => 'Yêu cầu khi gửi';
@@ -757,6 +733,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get pricePerHour => 'Giá theo giờ';
 
   @override
+  String get pricePerDay => 'Giá theo ngày';
+
+  @override
   String get totalRentals => 'Tổng lượt thuê';
 
   @override
@@ -764,9 +743,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get approvalStatus => 'Trạng thái duyệt';
-
-  @override
-  String get available => 'Sẵn sàng';
 
   @override
   String get requirements => 'Yêu cầu';
@@ -787,6 +763,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get enterRecipientPhone => 'Nhập số điện thoại';
 
   @override
+  String get enterUsername => 'Nhập tên đăng nhập';
+
+  @override
+  String get enterPassword => 'Nhập mật khẩu';
+
+  @override
   String get enterBusinessName => 'Nhập tên doanh nghiệp';
 
   @override
@@ -797,6 +779,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get enterFullName => 'Nhập họ và tên';
+
+  @override
+  String get enterEmail => 'Nhập email';
 
   @override
   String get enterPhoneNumber => 'Nhập số điện thoại';
@@ -883,9 +868,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get motorbike => 'Xe máy';
 
   @override
-  String get personal => 'Cá nhân';
-
-  @override
   String get company => 'Công ty';
 
   @override
@@ -920,6 +902,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get statusAndRequirements => 'Tình trạng & yêu cầu';
+
+  @override
+  String get personal => 'Cá nhân';
 
   @override
   String get business => 'Doanh nghiệp';
@@ -1009,6 +994,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get inactive => 'Ngưng';
+
+  @override
+  String get available => 'Sẵn sàng';
 
   @override
   String get rented => 'Đang thuê';
@@ -1159,7 +1147,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get platinumMember => 'Thành viên Bạch Kim';
 
   @override
-  String get travelPoints => 'Điểm du lịch';
+  String get reviews => 'Đánh giá';
 
   @override
   String get wallet => 'Ví';
@@ -1271,6 +1259,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get pleaseFillAllRequiredFields => 'Vui lòng điền đầy đủ thông tin';
 
   @override
+  String get vehicleRentalRegister => 'Đăng ký thuê xe';
+
+  @override
   String get itineraryDetailTitle => 'Chi tiết lộ trình';
 
   @override
@@ -1378,9 +1369,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get createItinerarySuccessMessage => 'Lộ trình của bạn đã được tạo. Bạn có thể xem và chỉnh sửa sau.';
 
   @override
+  String get addLocation => 'Thêm địa điểm';
+
+  @override
   String placesNotAdded(int count) {
     return '$count địa điểm chưa thêm';
   }
+
+  @override
+  String get allLocationsAdded => 'Tất cả địa điểm đã được thêm vào lộ trình';
 
   @override
   String get failedToLoadDestination => 'Không thể tải thông tin địa điểm';
@@ -1418,6 +1415,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get endTime => 'Thời gian kết thúc';
 
   @override
+  String get travelPoints => 'Điểm du lịch';
+
+  @override
   String get enterPoints => 'Nhập điểm';
 
   @override
@@ -1440,4 +1440,37 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noSchedule => 'Không có lịch trình cho chuyến đi này';
+
+  @override
+  String get noStop => 'Không có điểm dừng cho chuyến đi này';
+
+  @override
+  String get statusUpcoming => 'Sắp tới';
+
+  @override
+  String get statusCompleted => 'Hoàn thành';
+
+  @override
+  String get statusOngoing => 'Đang diễn ra';
+
+  @override
+  String get statusCancelled => 'Đã hủy';
+
+  @override
+  String get statusDraft => 'Bản nháp';
+
+  @override
+  String get edit => 'Sửa';
+
+  @override
+  String get delete => 'Xóa';
+
+  @override
+  String get confirmDelete => 'Xác nhận xóa';
+
+  @override
+  String get confirmDeleteContent => 'Bạn có chắc chắn muốn xóa lịch trình này?';
+
+  @override
+  String get deleteSuccess => 'Đã xóa lịch trình thành công';
 }

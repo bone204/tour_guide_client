@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
+import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/create_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/add_stop_request.dart';
@@ -28,6 +29,11 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   @override
   Future<Either<Failure, Itinerary>> getItineraryDetail(int id) {
     return _apiService.getItineraryDetail(id);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> deleteItinerary(int id) {
+    return _apiService.deleteItinerary(id);
   }
 
   @override

@@ -89,7 +89,7 @@ class ItineraryCard extends StatelessWidget {
                         ],
                       ),
                       child: Text(
-                        status,
+                        _getTranslatedStatus(context, status),
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color:
                               status == 'Upcoming'
@@ -161,5 +161,22 @@ class ItineraryCard extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _getTranslatedStatus(BuildContext context, String status) {
+    switch (status) {
+      case 'Upcoming':
+        return AppLocalizations.of(context)!.statusUpcoming;
+      case 'Completed':
+        return AppLocalizations.of(context)!.statusCompleted;
+      case 'Ongoing':
+        return AppLocalizations.of(context)!.statusOngoing;
+      case 'Cancelled':
+        return AppLocalizations.of(context)!.statusCancelled;
+      case 'Draft':
+        return AppLocalizations.of(context)!.statusDraft;
+      default:
+        return status;
+    }
   }
 }
