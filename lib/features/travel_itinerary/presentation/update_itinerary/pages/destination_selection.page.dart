@@ -28,7 +28,7 @@ class DestinationSelectionPage extends StatelessWidget {
                 ..getDestinations(query: DestinationQuery(province: province)),
       child: Scaffold(
         appBar: CustomAppBar(
-          title: 'Select Destination',
+          title: AppLocalizations.of(context)!.selectDestination,
           showBackButton: true,
           onBackPressed: () => Navigator.pop(context),
         ),
@@ -40,7 +40,11 @@ class DestinationSelectionPage extends StatelessWidget {
               return Center(child: Text(state.message));
             } else if (state is GetDestinationLoaded) {
               if (state.destinations.isEmpty) {
-                return const Center(child: Text('No destinations found'));
+                return Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.noDestinationsFound,
+                  ),
+                );
               }
               return ListView.builder(
                 padding: EdgeInsets.all(16.w),

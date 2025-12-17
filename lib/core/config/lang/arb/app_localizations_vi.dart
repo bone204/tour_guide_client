@@ -1407,4 +1407,37 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get emptyItinerary => 'Chưa có lịch trình nào';
+
+  @override
+  String get addStop => 'Thêm điểm dừng';
+
+  @override
+  String get startTime => 'Thời gian bắt đầu';
+
+  @override
+  String get endTime => 'Thời gian kết thúc';
+
+  @override
+  String get enterPoints => 'Nhập điểm';
+
+  @override
+  String get addNotesHint => 'Thêm ghi chú ở đây...';
+
+  @override
+  String get selectStartEndTimeError => 'Vui lòng chọn cả thời gian bắt đầu và kết thúc';
+
+  @override
+  String get editItinerary => 'Chỉnh sửa lịch trình';
+
+  @override
+  String get itineraryUpdated => 'Lịch trình đã được cập nhật';
+
+  @override
+  String get selectDestination => 'Chọn điểm đến';
+
+  @override
+  String get noDestinationsFound => 'Không tìm thấy điểm đến nào';
+
+  @override
+  String get noSchedule => 'Không có lịch trình cho chuyến đi này';
 }

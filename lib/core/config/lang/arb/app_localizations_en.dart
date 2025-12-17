@@ -1407,4 +1407,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emptyItinerary => 'No itinerary found';
+
+  @override
+  String get addStop => 'Add Stop';
+
+  @override
+  String get startTime => 'Start Time';
+
+  @override
+  String get endTime => 'End Time';
+
+  @override
+  String get enterPoints => 'Enter points';
+
+  @override
+  String get addNotesHint => 'Add notes here...';
+
+  @override
+  String get selectStartEndTimeError => 'Please select both start and end time';
+
+  @override
+  String get editItinerary => 'Edit Itinerary';
+
+  @override
+  String get itineraryUpdated => 'Itinerary updated';
+
+  @override
+  String get selectDestination => 'Select Destination';
+
+  @override
+  String get noDestinationsFound => 'No destinations found';
+
+  @override
+  String get noSchedule => 'No schedule for this itinerary';
 }

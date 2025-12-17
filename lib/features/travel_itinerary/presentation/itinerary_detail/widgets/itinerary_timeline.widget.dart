@@ -63,7 +63,6 @@ class ItineraryTimeline extends StatelessWidget {
                 item['time']!,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: AppColors.primaryBlue,
-                  fontWeight: FontWeight.w700,
                 ),
               ),
               Text(
@@ -79,7 +78,7 @@ class ItineraryTimeline extends StatelessWidget {
             item['activity']!,
             style: Theme.of(
               context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+            ).textTheme.titleMedium,
           ),
         ],
       ),

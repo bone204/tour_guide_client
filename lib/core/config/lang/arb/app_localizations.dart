@@ -2782,6 +2782,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No itinerary found'**
   String get emptyItinerary;
+
+  /// No description provided for @addStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Stop'**
+  String get addStop;
+
+  /// No description provided for @startTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Time'**
+  String get startTime;
+
+  /// No description provided for @endTime.
+  ///
+  /// In en, this message translates to:
+  /// **'End Time'**
+  String get endTime;
+
+  /// No description provided for @enterPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter points'**
+  String get enterPoints;
+
+  /// No description provided for @addNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add notes here...'**
+  String get addNotesHint;
+
+  /// No description provided for @selectStartEndTimeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select both start and end time'**
+  String get selectStartEndTimeError;
+
+  /// No description provided for @editItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Itinerary'**
+  String get editItinerary;
+
+  /// No description provided for @itineraryUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary updated'**
+  String get itineraryUpdated;
+
+  /// No description provided for @selectDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Destination'**
+  String get selectDestination;
+
+  /// No description provided for @noDestinationsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No destinations found'**
+  String get noDestinationsFound;
+
+  /// No description provided for @noSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'No schedule for this itinerary'**
+  String get noSchedule;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

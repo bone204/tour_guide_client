@@ -1005,5 +1005,17 @@
   "tabReviews": "Reviews",
   "tabPhotos": "Photos",
   "itinerarySchedule": "Itinerary Schedule",
-  "emptyItinerary": "No itinerary found"
+  "emptyItinerary": "No itinerary found",
+  "addStop": "Add Stop",
+  "startTime": "Start Time",
+  "endTime": "End Time",
+  "travelPoints": "Travel Points",
+  "enterPoints": "Enter points",
+  "addNotesHint": "Add notes here...",
+  "selectStartEndTimeError": "Please select both start and end time",
+  "editItinerary": "Edit Itinerary",
+  "itineraryUpdated": "Itinerary updated",
+  "selectDestination": "Select Destination",
+  "noDestinationsFound": "No destinations found",
+  "noSchedule": "No schedule for this itinerary"
 }

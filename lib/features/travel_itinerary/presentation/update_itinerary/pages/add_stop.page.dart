@@ -87,11 +87,6 @@ class _AddStopPageState extends State<AddStopPage> {
                           widget.destination.name,
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          widget.destination.specificAddress ?? '',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
                         SizedBox(height: 24.h),
                         Container(
                           height: 200.h,
@@ -118,7 +113,8 @@ class _AddStopPageState extends State<AddStopPage> {
                                     ),
                                 child: AbsorbPointer(
                                   child: CustomTextField(
-                                    label: 'Start Time',
+                                    label:
+                                        AppLocalizations.of(context)!.startTime,
                                     placeholder: '08:00',
                                     controller: _startTimeController,
                                     suffixIcon: const Icon(Icons.access_time),
@@ -136,7 +132,8 @@ class _AddStopPageState extends State<AddStopPage> {
                                     ),
                                 child: AbsorbPointer(
                                   child: CustomTextField(
-                                    label: 'End Time',
+                                    label:
+                                        AppLocalizations.of(context)!.endTime,
                                     placeholder: '10:00',
                                     controller: _endTimeController,
                                     suffixIcon: const Icon(Icons.access_time),
@@ -149,24 +146,39 @@ class _AddStopPageState extends State<AddStopPage> {
                         SizedBox(height: 16.h),
 
                         CustomTextField(
-                          label: 'Travel Points',
-                          placeholder: 'Enter points',
+                          label: AppLocalizations.of(context)!.travelPoints,
+                          placeholder:
+                              AppLocalizations.of(context)!.enterPoints,
                           controller: _travelPointsController,
                           keyboardType: TextInputType.number,
                         ),
                         SizedBox(height: 16.h),
 
                         CustomTextField(
-                          label: 'Notes',
-                          placeholder: 'Add notes here...',
+                          label: AppLocalizations.of(context)!.note,
+                          placeholder:
+                              AppLocalizations.of(context)!.addNotesHint,
                           controller: _notesController,
                           maxLines: 3,
                         ),
                         SizedBox(height: 32.h),
 
                         PrimaryButton(
-                          title: 'Add Stop',
+                          title: AppLocalizations.of(context)!.addStop,
                           onPressed: () {
+                            if (_startTimeController.text.isEmpty ||
+                                _endTimeController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.selectStartEndTimeError,
+                                  ),
+                                ),
+                              );
+                              return;
+                            }
                             final request = AddStopRequest(
                               dayOrder: 1, // TOD: Add Day selection logic
                               travelPoints:

@@ -11,13 +11,17 @@ class GetStopDetailCubit extends Cubit<GetStopDetailState> {
   GetStopDetailCubit(this.getStopDetailUseCase) : super(GetStopDetailInitial());
 
   Future<void> getStopDetail(int itineraryId, int stopId) async {
-    emit(GetStopDetailLoading());
+    if (!isClosed) emit(GetStopDetailLoading());
     final result = await getStopDetailUseCase(
       GetStopDetailParams(itineraryId: itineraryId, stopId: stopId),
     );
     result.fold(
-      (failure) => emit(GetStopDetailFailure(message: failure.message)),
-      (stop) => emit(GetStopDetailSuccess(stop: stop)),
+      (failure) {
+        if (!isClosed) emit(GetStopDetailFailure(message: failure.message));
+      },
+      (stop) {
+        if (!isClosed) emit(GetStopDetailSuccess(stop: stop));
+      },
     );
   }
 }

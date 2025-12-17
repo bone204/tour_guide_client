@@ -60,26 +60,6 @@ class _EditItineraryPageState extends State<EditItineraryPage> {
         },
         child: Builder(
           builder: (context) {
-            // Need to re-listen for context access if we were initializing late,
-            // but here we used initState and context.read inside callback which is fine
-            // IF the context is correct.
-            // BUT initState's context does NOT have the provider if provider is created in build.
-            // Problem: provider is created in build, so context.read in initState listener will fail
-            // because it uses the parent context which is above BlocProvider.
-
-            // Fix: Move event listener to inside a child widget or use a Builder/wrapper
-            // or just ensure we use 'sl<GetItineraryDetailCubit>()' directly in listener
-            // if we don't care about context bubbling (but we do need to trigger the cubit provided).
-
-            // Better approach: Use a wrapper State/Widget for the listener, similar to ItineraryDetail.
-            // OR simply: initializing the listener in a `WidgetsBinding.instance.addPostFrameCallback`
-            // or `didChangeDependencies`? No.
-
-            // Simplest valid fix: Create the cubit in initState (if not closed automatically)
-            // or just rely on `Binder` and handle subscription in `_EditItineraryView`?
-
-            // Let's refactor to `EditItineraryView` pattern for consistency and correctness.
-
             return _EditItineraryView(itinerary: _currentItinerary);
           },
         ),
@@ -136,14 +116,16 @@ class _EditItineraryViewState extends State<_EditItineraryView> {
           setState(() {
             _currentItinerary = state.itinerary;
           });
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Itinerary updated')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.itineraryUpdated),
+            ),
+          );
         }
       },
       child: Scaffold(
         appBar: CustomAppBar(
-          title: 'Edit Itinerary',
+          title: AppLocalizations.of(context)!.editItinerary,
           showBackButton: true,
           onBackPressed: () => Navigator.pop(context),
         ),
@@ -167,7 +149,7 @@ class _EditItineraryViewState extends State<_EditItineraryView> {
             Padding(
               padding: EdgeInsets.all(16.w),
               child: PrimaryButton(
-                title: 'Add Stop',
+                title: AppLocalizations.of(context)!.addStop,
                 onPressed: () async {
                   Navigator.pushNamed(
                     context,
@@ -177,7 +159,6 @@ class _EditItineraryViewState extends State<_EditItineraryView> {
                       'itineraryId': _currentItinerary.id,
                     },
                   );
-                  // No need to handle result manually anymore as event bus handles refresh
                 },
               ),
             ),

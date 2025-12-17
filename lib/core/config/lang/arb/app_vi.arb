@@ -1006,5 +1006,17 @@
   "tabPhotos": "Hình ảnh",
   "viewOnMap": "Xem trên bản đồ",
   "itinerarySchedule": "Lịch trình",
-  "emptyItinerary": "Chưa có lịch trình nào"
+  "emptyItinerary": "Chưa có lịch trình nào",
+  "addStop": "Thêm điểm dừng",
+  "startTime": "Thời gian bắt đầu",
+  "endTime": "Thời gian kết thúc",
+  "travelPoints": "Điểm du lịch",
+  "enterPoints": "Nhập điểm",
+  "addNotesHint": "Thêm ghi chú ở đây...",
+  "selectStartEndTimeError": "Vui lòng chọn cả thời gian bắt đầu và kết thúc",
+  "editItinerary": "Chỉnh sửa lịch trình",
+  "itineraryUpdated": "Lịch trình đã được cập nhật",
+  "selectDestination": "Chọn điểm đến",
+  "noDestinationsFound": "Không tìm thấy điểm đến nào",
+  "noSchedule": "Không có lịch trình cho chuyến đi này"
 }

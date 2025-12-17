@@ -21,11 +21,15 @@ class GetItineraryMeCubit extends Cubit<GetItineraryMeState> {
   }
 
   Future<void> getItineraryMe() async {
-    emit(GetItineraryMeLoading());
+    if (!isClosed) emit(GetItineraryMeLoading());
     final result = await getItineraryMeUseCase.call(NoParams());
     result.fold(
-      (failure) => emit(GetItineraryMeFailure(failure.message)),
-      (response) => emit(GetItineraryMeSuccess(response.items)),
+      (failure) {
+        if (!isClosed) emit(GetItineraryMeFailure(failure.message));
+      },
+      (response) {
+        if (!isClosed) emit(GetItineraryMeSuccess(response.items));
+      },
     );
   }
 

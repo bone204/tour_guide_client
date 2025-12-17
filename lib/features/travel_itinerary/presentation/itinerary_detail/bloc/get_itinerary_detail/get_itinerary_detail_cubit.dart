@@ -12,11 +12,15 @@ class GetItineraryDetailCubit extends Cubit<GetItineraryDetailState> {
     : super(GetItineraryDetailInitial());
 
   Future<void> getItineraryDetail(int id) async {
-    emit(GetItineraryDetailLoading());
+    if (!isClosed) emit(GetItineraryDetailLoading());
     final result = await getItineraryDetailUseCase.call(id);
     result.fold(
-      (failure) => emit(GetItineraryDetailFailure(failure.message)),
-      (itinerary) => emit(GetItineraryDetailSuccess(itinerary)),
+      (failure) {
+        if (!isClosed) emit(GetItineraryDetailFailure(failure.message));
+      },
+      (itinerary) {
+        if (!isClosed) emit(GetItineraryDetailSuccess(itinerary));
+      },
     );
   }
 }

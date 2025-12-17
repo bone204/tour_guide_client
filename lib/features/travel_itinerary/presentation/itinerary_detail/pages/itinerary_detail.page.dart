@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_itinerary_detail/get_itinerary_detail_cubit.dart';
@@ -77,13 +78,11 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
               itinerary.stops
                   .map(
                     (stop) => {
-                      'day':
-                          stop.dayOrder > 0 ? 'Day ${stop.dayOrder}' : 'Day 1',
-                      'activity':
-                          stop.notes.isNotEmpty
-                              ? stop.notes
-                              : 'Stop ${stop.sequence}',
-                      'time': '${stop.startTime} - ${stop.endTime}',
+                      'day': AppLocalizations.of(
+                        context,
+                      )!.dayNumber(stop.dayOrder > 0 ? stop.dayOrder : 1),
+                      'activity': stop.destination!.name,
+                      'time': stop.startTime,
                     },
                   )
                   .toList();
@@ -187,13 +186,17 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                                 style: Theme.of(context).textTheme.headlineSmall
                                     ?.copyWith(color: Colors.white),
                               ),
-                              SizedBox(height: 4.h),
+                              SizedBox(height: 8.h),
                               Row(
                                 children: [
-                                  Icon(
-                                    Icons.calendar_today,
-                                    color: Colors.white70,
-                                    size: 14.sp,
+                                  SvgPicture.asset(
+                                    AppIcons.calendar,
+                                    width: 16.w,
+                                    height: 16.h,
+                                    colorFilter: const ColorFilter.mode(
+                                      AppColors.primaryBlack,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                   SizedBox(width: 6.w),
                                   Text(
@@ -224,7 +227,36 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                         SizedBox(height: 16.h),
                         days.isNotEmpty
                             ? ItineraryTimeline(timelineItems: days)
-                            : const Text('No stops yet'),
+                            : Container(
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Lottie.asset(
+                                    AppLotties.empty,
+                                    width: 300.w,
+                                    height: 300.h,
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Icon(
+                                        Icons.image_not_supported,
+                                        size: 64.sp,
+                                        color: AppColors.primaryGrey,
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: 16.h),
+                                  Text(
+                                    AppLocalizations.of(context)!.noSchedule,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.titleLarge?.copyWith(
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                         SizedBox(height: 80.h),
                       ],
                     ),

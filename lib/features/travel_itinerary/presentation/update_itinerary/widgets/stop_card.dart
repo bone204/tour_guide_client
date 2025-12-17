@@ -45,9 +45,8 @@ class StopCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  stop.notes.isNotEmpty ? stop.notes : 'Stop ${stop.sequence}',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  ),
+                  stop.destination!.name,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 SizedBox(height: 4.h),
                 Text(

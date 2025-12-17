@@ -12,13 +12,17 @@ class AddStopCubit extends Cubit<AddStopState> {
   AddStopCubit(this.addStopUseCase) : super(AddStopInitial());
 
   Future<void> addStop(int itineraryId, AddStopRequest request) async {
-    emit(AddStopLoading());
+    if (!isClosed) emit(AddStopLoading());
     final result = await addStopUseCase.call(
       AddStopParams(itineraryId: itineraryId, request: request),
     );
     result.fold(
-      (failure) => emit(AddStopFailure(failure.message)),
-      (stop) => emit(AddStopSuccess(stop)),
+      (failure) {
+        if (!isClosed) emit(AddStopFailure(failure.message));
+      },
+      (stop) {
+        if (!isClosed) emit(AddStopSuccess(stop));
+      },
     );
   }
 }

@@ -62,7 +62,7 @@ class CreateItineraryCubit extends Cubit<CreateItineraryState> {
   Future<void> submitted() async {
     if (!state.isValid) return;
 
-    emit(state.copyWith(status: CreateItineraryStatus.loading));
+    if (!isClosed) emit(state.copyWith(status: CreateItineraryStatus.loading));
 
     final request = CreateItineraryRequest(
       name: state.name,
@@ -75,18 +75,26 @@ class CreateItineraryCubit extends Cubit<CreateItineraryState> {
     final result = await _createItineraryUseCase(request);
 
     result.fold(
-      (failure) => emit(
-        state.copyWith(
-          status: CreateItineraryStatus.failure,
-          errorMessage: failure.message,
-        ),
-      ),
-      (itinerary) => emit(
-        state.copyWith(
-          status: CreateItineraryStatus.success,
-          createdItinerary: itinerary,
-        ),
-      ),
+      (failure) {
+        if (!isClosed) {
+          emit(
+            state.copyWith(
+              status: CreateItineraryStatus.failure,
+              errorMessage: failure.message,
+            ),
+          );
+        }
+      },
+      (itinerary) {
+        if (!isClosed) {
+          emit(
+            state.copyWith(
+              status: CreateItineraryStatus.success,
+              createdItinerary: itinerary,
+            ),
+          );
+        }
+      },
     );
   }
 }
