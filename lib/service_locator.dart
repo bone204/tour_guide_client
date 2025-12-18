@@ -42,6 +42,9 @@ import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itiner
 import 'package:tour_guide_app/features/travel_itinerary/data/repository/itinerary_repository_impl.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/repository/itinerary_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/create_itinerary.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/edit_stop_details.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/edit_stop_reorder.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/edit_stop_time.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_itineraries.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_itinerary_detail.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_itinerary_me.dart';
@@ -105,6 +108,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<AddStopUseCase>(AddStopUseCase());
   sl.registerSingleton<GetStopDetailUseCase>(GetStopDetailUseCase());
   sl.registerSingleton<DeleteItineraryUseCase>(DeleteItineraryUseCase());
+  sl.registerSingleton<EditStopTimeUseCase>(EditStopTimeUseCase());
+  sl.registerSingleton<EditStopReorderUseCase>(EditStopReorderUseCase());
+  sl.registerSingleton<EditStopDetailsUseCase>(EditStopDetailsUseCase());
 
   // Cubits
   sl.registerFactory<RegisterRentalVehicleCubit>(

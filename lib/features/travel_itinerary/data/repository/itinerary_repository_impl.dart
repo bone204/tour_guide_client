@@ -4,6 +4,9 @@ import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/create_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/add_stop_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_time_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_reorder_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_details_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary_query.dart';
@@ -59,5 +62,32 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   @override
   Future<Either<Failure, Stop>> getStopDetail(int itineraryId, int stopId) {
     return _apiService.getStopDetail(itineraryId, stopId);
+  }
+
+  @override
+  Future<Either<Failure, Stop>> editStopTime(
+    int itineraryId,
+    int stopId,
+    EditStopTimeRequest request,
+  ) {
+    return _apiService.editStopTime(itineraryId, stopId, request);
+  }
+
+  @override
+  Future<Either<Failure, Stop>> editStopReorder(
+    int itineraryId,
+    int stopId,
+    EditStopReorderRequest request,
+  ) {
+    return _apiService.editStopReorder(itineraryId, stopId, request);
+  }
+
+  @override
+  Future<Either<Failure, Stop>> editStopDetails(
+    int itineraryId,
+    int stopId,
+    EditStopDetailsRequest request,
+  ) {
+    return _apiService.editStopDetails(itineraryId, stopId, request);
   }
 }

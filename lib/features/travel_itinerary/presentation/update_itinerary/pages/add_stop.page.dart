@@ -26,7 +26,6 @@ class AddStopPage extends StatefulWidget {
 
 class _AddStopPageState extends State<AddStopPage> {
   final TextEditingController _notesController = TextEditingController();
-  final TextEditingController _travelPointsController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
 
@@ -146,15 +145,6 @@ class _AddStopPageState extends State<AddStopPage> {
                         SizedBox(height: 16.h),
 
                         CustomTextField(
-                          label: AppLocalizations.of(context)!.travelPoints,
-                          placeholder:
-                              AppLocalizations.of(context)!.enterPoints,
-                          controller: _travelPointsController,
-                          keyboardType: TextInputType.number,
-                        ),
-                        SizedBox(height: 16.h),
-
-                        CustomTextField(
                           label: AppLocalizations.of(context)!.note,
                           placeholder:
                               AppLocalizations.of(context)!.addNotesHint,
@@ -180,10 +170,9 @@ class _AddStopPageState extends State<AddStopPage> {
                               return;
                             }
                             final request = AddStopRequest(
-                              dayOrder: 1, // TOD: Add Day selection logic
-                              travelPoints:
-                                  int.tryParse(_travelPointsController.text) ??
-                                  0,
+                              dayOrder: 1,
+
+                              travelPoints: 0,
                               startTime: _startTimeController.text,
                               endTime: _endTimeController.text,
                               notes: _notesController.text,
@@ -215,7 +204,6 @@ class _AddStopPageState extends State<AddStopPage> {
   @override
   void dispose() {
     _notesController.dispose();
-    _travelPointsController.dispose();
     _startTimeController.dispose();
     _endTimeController.dispose();
     super.dispose();

@@ -7,6 +7,9 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart'
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary_query.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_time_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_reorder_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_details_request.dart';
 
 abstract class ItineraryRepository {
   Future<Either<Failure, ItineraryResponse>> getItineraryMe();
@@ -24,4 +27,19 @@ abstract class ItineraryRepository {
   );
   Future<Either<Failure, Stop>> getStopDetail(int itineraryId, int stopId);
   Future<Either<Failure, SuccessResponse>> deleteItinerary(int id);
+  Future<Either<Failure, Stop>> editStopTime(
+    int itineraryId,
+    int stopId,
+    EditStopTimeRequest request,
+  );
+  Future<Either<Failure, Stop>> editStopReorder(
+    int itineraryId,
+    int stopId,
+    EditStopReorderRequest request,
+  );
+  Future<Either<Failure, Stop>> editStopDetails(
+    int itineraryId,
+    int stopId,
+    EditStopDetailsRequest request,
+  );
 }

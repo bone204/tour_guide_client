@@ -6,6 +6,9 @@ import 'package:tour_guide_app/core/network/dio_client.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/create_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/add_stop_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_time_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_reorder_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_details_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
@@ -27,6 +30,21 @@ abstract class ItineraryApiService {
     AddStopRequest request,
   );
   Future<Either<Failure, Stop>> getStopDetail(int itineraryId, int stopId);
+  Future<Either<Failure, Stop>> editStopTime(
+    int itineraryId,
+    int stopId,
+    EditStopTimeRequest request,
+  );
+  Future<Either<Failure, Stop>> editStopReorder(
+    int itineraryId,
+    int stopId,
+    EditStopReorderRequest request,
+  );
+  Future<Either<Failure, Stop>> editStopDetails(
+    int itineraryId,
+    int stopId,
+    EditStopDetailsRequest request,
+  );
 }
 
 class ItineraryApiServiceImpl extends ItineraryApiService {
@@ -185,6 +203,81 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
     try {
       final response = await sl<DioClient>().get(
         '${ApiUrls.itinerary}/$itineraryId/stops/$stopId',
+      );
+      final stop = Stop.fromJson(response.data);
+      return Right(stop);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stop>> editStopTime(
+    int itineraryId,
+    int stopId,
+    EditStopTimeRequest request,
+  ) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.itinerary}/$itineraryId/stops/$stopId/time',
+        data: request.toJson(),
+      );
+      final stop = Stop.fromJson(response.data);
+      return Right(stop);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stop>> editStopReorder(
+    int itineraryId,
+    int stopId,
+    EditStopReorderRequest request,
+  ) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.itinerary}/$itineraryId/stops/$stopId/reorder',
+        data: request.toJson(),
+      );
+      final stop = Stop.fromJson(response.data);
+      return Right(stop);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stop>> editStopDetails(
+    int itineraryId,
+    int stopId,
+    EditStopDetailsRequest request,
+  ) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.itinerary}/$itineraryId/stops/$stopId/details',
+        data: request.toJson(),
       );
       final stop = Stop.fromJson(response.data);
       return Right(stop);
