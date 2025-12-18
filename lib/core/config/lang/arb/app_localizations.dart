@@ -2291,6 +2291,42 @@ abstract class AppLocalizations {
   /// **'Member for {days} days'**
   String memberForDays(int days);
 
+  /// No description provided for @unknownDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Destination'**
+  String get unknownDestination;
+
+  /// No description provided for @dayWithOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day}'**
+  String dayWithOrder(int day);
+
+  /// No description provided for @dayOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Day Order'**
+  String get dayOrder;
+
+  /// No description provided for @sequence.
+  ///
+  /// In en, this message translates to:
+  /// **'Sequence'**
+  String get sequence;
+
+  /// No description provided for @editStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Stop'**
+  String get editStop;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
   /// No description provided for @bronzeMember.
   ///
   /// In en, this message translates to:

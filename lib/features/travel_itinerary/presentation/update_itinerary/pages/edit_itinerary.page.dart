@@ -8,7 +8,8 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_itinerary_detail/get_itinerary_detail_cubit.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/widgets/stop_card.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/edit_stop.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/widgets/itinerary_stop_card.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class EditItineraryPage extends StatefulWidget {
@@ -159,10 +160,25 @@ class _EditItineraryViewState extends State<_EditItineraryView> {
                         itemCount: _currentItinerary.stops.length,
                         itemBuilder: (context, index) {
                           final stop = _currentItinerary.stops[index];
-                          return StopCard(
+                          return ItineraryStopCard(
                             stop: stop,
                             onTap: () {
-                              // TODO: Implement Edit Stop logic
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => EditStopPage(
+                                        itineraryId: _currentItinerary.id,
+                                        stop: stop,
+                                      ),
+                                ),
+                              ).then((updated) {
+                                if (updated == true) {
+                                  context
+                                      .read<GetItineraryDetailCubit>()
+                                      .getItineraryDetail(_currentItinerary.id);
+                                }
+                              });
                             },
                           );
                         },

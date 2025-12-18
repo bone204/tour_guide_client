@@ -293,7 +293,7 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                                       width: 16.w,
                                       height: 16.h,
                                       colorFilter: const ColorFilter.mode(
-                                        AppColors.primaryBlack,
+                                        AppColors.primaryWhite,
                                         BlendMode.srcIn,
                                       ),
                                     ),

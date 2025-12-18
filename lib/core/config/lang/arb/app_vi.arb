@@ -798,6 +798,19 @@
   "meters": "{m} m",
   "@meters": {"placeholders": {"m": {"type": "int"}}},
   "myItinerary": "Lịch trình của tôi",
+  "unknownDestination": "Điểm đến không xác định",
+  "dayWithOrder": "Ngày {day}",
+  "@dayWithOrder": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "dayOrder": "Thứ tự ngày",
+  "sequence": "Thứ tự",
+  "editStop": "Chỉnh sửa điểm dừng",
+  "saveChanges": "Lưu thay đổi",
   "memberFeatures": "Tính năng hội viên",
   "favouriteDestinations": "Điểm yêu thích",
   "travelHistory": "Lịch sử chuyến đi",

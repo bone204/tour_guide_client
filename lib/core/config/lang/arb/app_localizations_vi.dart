@@ -1135,6 +1135,26 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get unknownDestination => 'Điểm đến không xác định';
+
+  @override
+  String dayWithOrder(int day) {
+    return 'Ngày $day';
+  }
+
+  @override
+  String get dayOrder => 'Thứ tự ngày';
+
+  @override
+  String get sequence => 'Thứ tự';
+
+  @override
+  String get editStop => 'Chỉnh sửa điểm dừng';
+
+  @override
+  String get saveChanges => 'Lưu thay đổi';
+
+  @override
   String get bronzeMember => 'Thành viên Đồng';
 
   @override

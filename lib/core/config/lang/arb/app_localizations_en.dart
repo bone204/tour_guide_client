@@ -1135,6 +1135,26 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get unknownDestination => 'Unknown Destination';
+
+  @override
+  String dayWithOrder(int day) {
+    return 'Day $day';
+  }
+
+  @override
+  String get dayOrder => 'Day Order';
+
+  @override
+  String get sequence => 'Sequence';
+
+  @override
+  String get editStop => 'Edit Stop';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
   String get bronzeMember => 'Bronze Member';
 
   @override

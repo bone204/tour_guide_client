@@ -799,6 +799,19 @@
       }
     }
   },
+  "unknownDestination": "Unknown Destination",
+  "dayWithOrder": "Day {day}",
+  "@dayWithOrder": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "dayOrder": "Day Order",
+  "sequence": "Sequence",
+  "editStop": "Edit Stop",
+  "saveChanges": "Save Changes",
   "bronzeMember": "Bronze Member",
   "silverMember": "Silver Member",
   "goldMember": "Gold Member",

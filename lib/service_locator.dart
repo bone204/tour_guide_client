@@ -39,6 +39,7 @@ import 'package:tour_guide_app/features/chat_bot/data/data_source/chat_api_servi
 import 'package:tour_guide_app/features/chat_bot/data/repository/chat_repository_impl.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/repository/chat_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/edit_stop/edit_stop_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/repository/itinerary_repository_impl.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/repository/itinerary_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/create_itinerary.dart';
@@ -132,4 +133,5 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<AddStopCubit>(() => AddStopCubit(sl()));
   sl.registerFactory<GetStopDetailCubit>(() => GetStopDetailCubit(sl()));
   sl.registerFactory<DeleteItineraryCubit>(() => DeleteItineraryCubit(sl()));
+  sl.registerFactory<EditStopCubit>(() => EditStopCubit(sl(), sl(), sl()));
 }
