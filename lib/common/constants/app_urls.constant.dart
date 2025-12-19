@@ -25,4 +25,7 @@
 
     //Travel Routes URLs
     static const itinerary = "$baseURL/travel-routes";
+
+    //Feedback URLs
+    static const feedback = "$baseURL/feedback";
   }

@@ -12,6 +12,7 @@ import 'package:tour_guide_app/features/chat_bot/domain/usecases/send_chat_messa
 import 'package:tour_guide_app/features/destination/data/data_source/destination_api_service.dart';
 import 'package:tour_guide_app/features/destination/data/repository/destination_repository_impl.dart';
 import 'package:tour_guide_app/features/destination/domain/repository/destination_repository.dart';
+import 'package:tour_guide_app/features/destination/domain/usecases/create_feedback.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_destination_by_id.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_favorites.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/favorite_destination.dart';
@@ -112,6 +113,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<EditStopTimeUseCase>(EditStopTimeUseCase());
   sl.registerSingleton<EditStopReorderUseCase>(EditStopReorderUseCase());
   sl.registerSingleton<EditStopDetailsUseCase>(EditStopDetailsUseCase());
+  sl.registerSingleton<CreateFeedbackUseCase>(CreateFeedbackUseCase());
 
   // Cubits
   sl.registerFactory<RegisterRentalVehicleCubit>(
@@ -134,4 +136,6 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<GetStopDetailCubit>(() => GetStopDetailCubit(sl()));
   sl.registerFactory<DeleteItineraryCubit>(() => DeleteItineraryCubit(sl()));
   sl.registerFactory<EditStopCubit>(() => EditStopCubit(sl(), sl(), sl()));
+
+
 }
