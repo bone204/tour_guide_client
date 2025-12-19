@@ -3,6 +3,7 @@ import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/flight_booking/presentation/pages/flight_booking_confirmation.page.dart';
 import 'package:tour_guide_app/features/flight_booking/presentation/widgets/flight_seat_layout.widget.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class FlightDetailPage extends StatefulWidget {
   final Map<String, dynamic> flightData;
@@ -24,7 +25,7 @@ class FlightDetailPage extends StatefulWidget {
   State<FlightDetailPage> createState() => _FlightDetailPageState();
 }
 
-class _FlightDetailPageState extends State<FlightDetailPage> 
+class _FlightDetailPageState extends State<FlightDetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<Map<String, dynamic>> selectedSeats = [];
@@ -39,7 +40,8 @@ class _FlightDetailPageState extends State<FlightDetailPage>
   }
 
   void _setDefaultSeatClass() {
-    final availableSeats = widget.flightData['availableSeats'] as Map<String, dynamic>;
+    final availableSeats =
+        widget.flightData['availableSeats'] as Map<String, dynamic>;
     for (var entry in availableSeats.entries) {
       if (entry.value > 0) {
         selectedSeatClass = entry.key;
@@ -56,41 +58,34 @@ class _FlightDetailPageState extends State<FlightDetailPage>
 
   void _navigateToConfirmation() {
     if (selectedSeats.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.pleaseSelectSeat),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.pleaseSelectSeat,
+        type: SnackbarType.warning,
       );
       return;
     }
 
     if (selectedSeatClass == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.pleaseSelectSeatClass),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.pleaseSelectSeatClass,
+        type: SnackbarType.warning,
       );
       return;
     }
 
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (context) => FlightBookingConfirmationPage(
-          flightData: widget.flightData,
-          fromAirport: widget.fromAirport,
-          toAirport: widget.toAirport,
-          date: widget.date,
-          selectedSeats: selectedSeats,
-          seatClass: selectedSeatClass!,
-        ),
+        builder:
+            (context) => FlightBookingConfirmationPage(
+              flightData: widget.flightData,
+              fromAirport: widget.fromAirport,
+              toAirport: widget.toAirport,
+              date: widget.date,
+              selectedSeats: selectedSeats,
+              seatClass: selectedSeatClass!,
+            ),
       ),
     );
   }
@@ -116,10 +111,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [
-                _buildSeatsTab(),
-                _buildInfoTab(),
-              ],
+              children: [_buildSeatsTab(), _buildInfoTab()],
             ),
           ),
 
@@ -178,7 +170,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
               ),
             ),
           ),
-          
+
           // Content
           Padding(
             padding: EdgeInsets.all(20.r),
@@ -203,7 +195,9 @@ class _FlightDetailPageState extends State<FlightDetailPage>
                                     color: AppColors.primaryWhite,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -211,29 +205,34 @@ class _FlightDetailPageState extends State<FlightDetailPage>
                                 SizedBox(width: 8.w),
                                 Text(
                                   'Từ',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.fromAirport,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.flightData['departureTime'],
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(color: AppColors.primaryWhite),
                             ),
                           ],
                         ),
@@ -267,7 +266,9 @@ class _FlightDetailPageState extends State<FlightDetailPage>
                                 borderRadius: BorderRadius.circular(10.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primaryWhite.withOpacity(0.3),
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.3,
+                                    ),
                                     blurRadius: 8,
                                     offset: Offset(0, 2),
                                   ),
@@ -283,9 +284,11 @@ class _FlightDetailPageState extends State<FlightDetailPage>
                                   SizedBox(height: 2.h),
                                   Text(
                                     widget.flightData['duration'],
-                                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                          color: AppColors.primaryBlue,
-                                        ),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.displayMedium?.copyWith(
+                                      color: AppColors.primaryBlue,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -319,9 +322,13 @@ class _FlightDetailPageState extends State<FlightDetailPage>
                               children: [
                                 Text(
                                   'Đến',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(width: 8.w),
                                 Container(
@@ -331,7 +338,9 @@ class _FlightDetailPageState extends State<FlightDetailPage>
                                     color: AppColors.primaryOrange,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -341,11 +350,13 @@ class _FlightDetailPageState extends State<FlightDetailPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.toAirport,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.right,
@@ -353,9 +364,8 @@ class _FlightDetailPageState extends State<FlightDetailPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.flightData['arrivalTime'],
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(color: AppColors.primaryWhite),
                             ),
                           ],
                         ),
@@ -382,10 +392,7 @@ class _FlightDetailPageState extends State<FlightDetailPage>
         unselectedLabelStyle: Theme.of(context).textTheme.titleSmall,
         indicatorColor: AppColors.primaryBlue,
         indicatorWeight: 3,
-        tabs: [
-          Tab(text: 'Chọn ghế'),
-          Tab(text: 'Thông tin'),
-        ],
+        tabs: [Tab(text: 'Chọn ghế'), Tab(text: 'Thông tin')],
       ),
     );
   }
@@ -399,15 +406,15 @@ class _FlightDetailPageState extends State<FlightDetailPage>
           // Seat Class Selector
           Text(
             'Chọn hạng ghế',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
           ),
           SizedBox(height: 12.h),
           _buildSeatClassSelector(),
-          
+
           SizedBox(height: 20.h),
-          
+
           // Seat Layout
           if (selectedSeatClass != null)
             FlightSeatLayoutWidget(
@@ -423,95 +430,106 @@ class _FlightDetailPageState extends State<FlightDetailPage>
   }
 
   Widget _buildSeatClassSelector() {
-    final availableSeats = widget.flightData['availableSeats'] as Map<String, dynamic>;
+    final availableSeats =
+        widget.flightData['availableSeats'] as Map<String, dynamic>;
     final prices = widget.flightData['prices'] as Map<String, dynamic>;
 
     return Column(
-      children: availableSeats.keys.map((seatClass) {
-        final isAvailable = availableSeats[seatClass] > 0;
-        final isSelected = selectedSeatClass == seatClass;
-        
-        return GestureDetector(
-          onTap: isAvailable ? () {
-            setState(() {
-              selectedSeatClass = seatClass;
-              selectedSeats = []; // Reset selected seats when changing class
-            });
-          } : null,
-          child: Container(
-            margin: EdgeInsets.only(bottom: 12.h),
-            padding: EdgeInsets.all(16.r),
-            decoration: BoxDecoration(
-              color: AppColors.primaryWhite,
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(
-                color: isSelected 
-                    ? AppColors.primaryBlue
-                    : AppColors.textSubtitle.withOpacity(0.2),
-                width: isSelected ? 2 : 2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 6,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10.r),
-                  decoration: BoxDecoration(
-                    color: isSelected 
-                        ? AppColors.primaryBlue
-                        : AppColors.primaryBlue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10.r),
+      children:
+          availableSeats.keys.map((seatClass) {
+            final isAvailable = availableSeats[seatClass] > 0;
+            final isSelected = selectedSeatClass == seatClass;
+
+            return GestureDetector(
+              onTap:
+                  isAvailable
+                      ? () {
+                        setState(() {
+                          selectedSeatClass = seatClass;
+                          selectedSeats =
+                              []; // Reset selected seats when changing class
+                        });
+                      }
+                      : null,
+              child: Container(
+                margin: EdgeInsets.only(bottom: 12.h),
+                padding: EdgeInsets.all(16.r),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryWhite,
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color:
+                        isSelected
+                            ? AppColors.primaryBlue
+                            : AppColors.textSubtitle.withOpacity(0.2),
+                    width: isSelected ? 2 : 2,
                   ),
-                  child: Icon(
-                    Icons.airline_seat_recline_normal_rounded,
-                    color: isSelected 
-                        ? AppColors.primaryWhite
-                        : AppColors.primaryBlue,
-                    size: 24.r,
-                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 6,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        seatClass,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: AppColors.textPrimary,
-                            ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10.r),
+                      decoration: BoxDecoration(
+                        color:
+                            isSelected
+                                ? AppColors.primaryBlue
+                                : AppColors.primaryBlue.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        isAvailable 
-                            ? '${availableSeats[seatClass]} ghế trống'
-                            : 'Hết ghế',
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                              color: isAvailable 
-                                  ? AppColors.primaryGreen
-                                  : AppColors.primaryRed,
-                            ),
+                      child: Icon(
+                        Icons.airline_seat_recline_normal_rounded,
+                        color:
+                            isSelected
+                                ? AppColors.primaryWhite
+                                : AppColors.primaryBlue,
+                        size: 24.r,
                       ),
-                    ],
-                  ),
-                ),
-                Text(
-                  '${(prices[seatClass] as num).toStringAsFixed(0)}đ',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            seatClass,
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(color: AppColors.textPrimary),
+                          ),
+                          SizedBox(height: 4.h),
+                          Text(
+                            isAvailable
+                                ? '${availableSeats[seatClass]} ghế trống'
+                                : 'Hết ghế',
+                            style: Theme.of(
+                              context,
+                            ).textTheme.displayMedium?.copyWith(
+                              color:
+                                  isAvailable
+                                      ? AppColors.primaryGreen
+                                      : AppColors.primaryRed,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      '${(prices[seatClass] as num).toStringAsFixed(0)}đ',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: AppColors.primaryBlue,
                       ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
+              ),
+            );
+          }).toList(),
     );
   }
 
@@ -524,10 +542,29 @@ class _FlightDetailPageState extends State<FlightDetailPage>
           _buildInfoCard(
             title: AppLocalizations.of(context)!.flightTripInfo,
             items: [
-              {'icon': Icons.flight_rounded, 'label': 'Số hiệu', 'value': widget.flightData['flightNumber']},
-              {'icon': Icons.business_rounded, 'label': 'Hãng bay', 'value': widget.flightData['airline']},
-              {'icon': Icons.access_time_rounded, 'label': 'Thời gian bay', 'value': widget.flightData['duration']},
-              {'icon': Icons.route_rounded, 'label': 'Điểm dừng', 'value': widget.flightData['stops'] == 0 ? 'Bay thẳng' : '${widget.flightData['stops']} điểm'},
+              {
+                'icon': Icons.flight_rounded,
+                'label': 'Số hiệu',
+                'value': widget.flightData['flightNumber'],
+              },
+              {
+                'icon': Icons.business_rounded,
+                'label': 'Hãng bay',
+                'value': widget.flightData['airline'],
+              },
+              {
+                'icon': Icons.access_time_rounded,
+                'label': 'Thời gian bay',
+                'value': widget.flightData['duration'],
+              },
+              {
+                'icon': Icons.route_rounded,
+                'label': 'Điểm dừng',
+                'value':
+                    widget.flightData['stops'] == 0
+                        ? 'Bay thẳng'
+                        : '${widget.flightData['stops']} điểm',
+              },
             ],
           ),
 
@@ -536,8 +573,16 @@ class _FlightDetailPageState extends State<FlightDetailPage>
           _buildInfoCard(
             title: AppLocalizations.of(context)!.flightAmenities,
             items: [
-              {'icon': Icons.restaurant_rounded, 'label': 'Suất ăn', 'value': '✓'},
-              {'icon': Icons.local_drink_outlined, 'label': 'Đồ uống', 'value': '✓'},
+              {
+                'icon': Icons.restaurant_rounded,
+                'label': 'Suất ăn',
+                'value': '✓',
+              },
+              {
+                'icon': Icons.local_drink_outlined,
+                'label': 'Đồ uống',
+                'value': '✓',
+              },
               {'icon': Icons.tv_rounded, 'label': 'Giải trí', 'value': '✓'},
               {'icon': Icons.wifi_rounded, 'label': 'WiFi', 'value': '✓'},
               {'icon': Icons.power_rounded, 'label': 'Sạc điện', 'value': '✓'},
@@ -549,10 +594,26 @@ class _FlightDetailPageState extends State<FlightDetailPage>
           _buildInfoCard(
             title: AppLocalizations.of(context)!.policy,
             items: [
-              {'icon': Icons.cancel_outlined, 'label': 'Hủy vé', 'value': 'Trước 24h: 70%'},
-              {'icon': Icons.swap_horiz_rounded, 'label': 'Đổi vé', 'value': 'Phí 100.000đ'},
-              {'icon': Icons.luggage_outlined, 'label': 'Hành lý ký gửi', 'value': '20kg'},
-              {'icon': Icons.backpack_outlined, 'label': 'Hành lý xách tay', 'value': '7kg'},
+              {
+                'icon': Icons.cancel_outlined,
+                'label': 'Hủy vé',
+                'value': 'Trước 24h: 70%',
+              },
+              {
+                'icon': Icons.swap_horiz_rounded,
+                'label': 'Đổi vé',
+                'value': 'Phí 100.000đ',
+              },
+              {
+                'icon': Icons.luggage_outlined,
+                'label': 'Hành lý ký gửi',
+                'value': '20kg',
+              },
+              {
+                'icon': Icons.backpack_outlined,
+                'label': 'Hành lý xách tay',
+                'value': '7kg',
+              },
             ],
           ),
         ],
@@ -582,9 +643,9 @@ class _FlightDetailPageState extends State<FlightDetailPage>
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
           ),
           SizedBox(height: 12.h),
           ...items.map((item) {
@@ -592,18 +653,14 @@ class _FlightDetailPageState extends State<FlightDetailPage>
               padding: EdgeInsets.only(bottom: 12.h),
               child: Row(
                 children: [
-                  Icon(
-                    item['icon'],
-                    size: 20.r,
-                    color: AppColors.primaryBlue,
-                  ),
+                  Icon(item['icon'], size: 20.r, color: AppColors.primaryBlue),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
                       item['label'],
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                        color: AppColors.textSubtitle,
+                      ),
                     ),
                   ),
                   Text(
@@ -672,16 +729,16 @@ class _FlightDetailPageState extends State<FlightDetailPage>
                   Text(
                     'Tổng tiền',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtitle,
-                        ),
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     '${totalPrice.toStringAsFixed(0)}đ',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: AppColors.primaryBlue,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: AppColors.primaryBlue,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -699,4 +756,3 @@ class _FlightDetailPageState extends State<FlightDetailPage>
     );
   }
 }
-

@@ -24,7 +24,7 @@ class CustomDialog extends StatelessWidget {
     this.icon,
     this.iconColor,
     this.actions,
-    this.borderRadius = 20,
+    this.borderRadius = 24,
     this.contentPadding,
     this.titleStyle,
     this.contentStyle,
@@ -38,47 +38,47 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget? resolvedIcon = iconWidget ??
+    final theme = Theme.of(context);
+    final primaryColor = theme.primaryColor;
+
+    final Widget? resolvedIcon =
+        iconWidget ??
         (icon != null
             ? Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: (iconColor ?? Theme.of(context).primaryColor)
-                      .withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  icon,
-                  color: iconColor ?? Theme.of(context).primaryColor,
-                  size: 40,
-                ),
-              )
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: (iconColor ?? primaryColor).withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: iconColor ?? primaryColor, size: 48),
+            )
             : null);
 
-    final Widget? resolvedTitle = titleWidget ??
+    final Widget? resolvedTitle =
+        titleWidget ??
         (title != null
             ? Text(
-                title!,
-                style: titleStyle ??
-                    const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                    ),
-                textAlign: TextAlign.center,
-              )
+              title!,
+              style:
+                  titleStyle ??
+                  theme.textTheme.titleLarge,
+              textAlign: TextAlign.center,
+            )
             : null);
 
-    final Widget? resolvedContent = contentWidget ??
+    final Widget? resolvedContent =
+        contentWidget ??
         (content != null
             ? Text(
-                content!,
-                style: contentStyle ??
-                    const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                    ),
-                textAlign: TextAlign.center,
-              )
+              content!,
+              style:
+                  contentStyle ??
+                  theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.black54,
+                    height: 1.5,
+                  ),
+              textAlign: TextAlign.center,
+            )
             : null);
 
     final children = <Widget>[];
@@ -89,7 +89,7 @@ class CustomDialog extends StatelessWidget {
 
     if (resolvedIcon != null &&
         (resolvedTitle != null || resolvedContent != null)) {
-      children.add(const SizedBox(height: 16));
+      children.add(SizedBox(height: 24));
     }
 
     if (resolvedTitle != null) {
@@ -97,7 +97,7 @@ class CustomDialog extends StatelessWidget {
     }
 
     if (resolvedTitle != null && resolvedContent != null) {
-      children.add(const SizedBox(height: 16));
+      children.add(SizedBox(height: 12));
     }
 
     if (resolvedTitle == null &&
@@ -112,7 +112,7 @@ class CustomDialog extends StatelessWidget {
 
     if (actions != null && actions!.isNotEmpty) {
       if (children.isNotEmpty) {
-        children.add(const SizedBox(height: 24));
+        children.add(const SizedBox(height: 32));
       }
       children.add(
         Column(
@@ -121,8 +121,7 @@ class CustomDialog extends StatelessWidget {
           children: [
             for (int i = 0; i < actions!.length; i++) ...[
               actions![i],
-              if (i != actions!.length - 1)
-                SizedBox(height: actionsSpacing),
+              if (i != actions!.length - 1) SizedBox(height: actionsSpacing),
             ],
           ],
         ),
@@ -135,8 +134,20 @@ class CustomDialog extends StatelessWidget {
       ),
       backgroundColor: backgroundColor ?? Colors.white,
       elevation: 0,
-      child: Padding(
-        padding: contentPadding ?? const EdgeInsets.all(24),
+      child: Container(
+        padding: contentPadding ?? const EdgeInsets.all(32),
+        constraints: const BoxConstraints(maxWidth: 400),
+        decoration: BoxDecoration(
+          color: backgroundColor ?? Colors.white,
+          borderRadius: BorderRadius.circular(borderRadius),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -171,22 +182,23 @@ Future<T?> showAppDialog<T>({
     context: context,
     barrierDismissible: barrierDismissible,
     useRootNavigator: useRootNavigator,
-    builder: (context) => CustomDialog(
-      title: title,
-      content: content,
-      icon: icon,
-      iconColor: iconColor,
-      actions: actions,
-      borderRadius: borderRadius,
-      contentPadding: contentPadding,
-      titleStyle: titleStyle,
-      contentStyle: contentStyle,
-      backgroundColor: backgroundColor,
-      titleWidget: titleWidget,
-      contentWidget: contentWidget,
-      iconWidget: iconWidget,
-      actionsAlignment: actionsAlignment,
-      actionsSpacing: actionsSpacing,
-    ),
+    builder:
+        (context) => CustomDialog(
+          title: title,
+          content: content,
+          icon: icon,
+          iconColor: iconColor,
+          actions: actions,
+          borderRadius: borderRadius,
+          contentPadding: contentPadding,
+          titleStyle: titleStyle,
+          contentStyle: contentStyle,
+          backgroundColor: backgroundColor,
+          titleWidget: titleWidget,
+          contentWidget: contentWidget,
+          iconWidget: iconWidget,
+          actionsAlignment: actionsAlignment,
+          actionsSpacing: actionsSpacing,
+        ),
   );
 }

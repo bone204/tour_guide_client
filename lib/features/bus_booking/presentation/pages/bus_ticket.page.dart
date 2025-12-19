@@ -3,6 +3,7 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common/widgets/button/secondary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class BusTicketPage extends StatefulWidget {
   final Map<String, dynamic> busData;
@@ -626,24 +627,10 @@ class _BusTicketPageState extends State<BusTicketPage>
           child: PrimaryButton(
             icon: AppIcons.star,
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Row(
-                    children: [
-                      const Icon(
-                        Icons.download_done_rounded,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(AppLocalizations.of(context)!.downloadingTicket),
-                    ],
-                  ),
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                ),
+              CustomSnackbar.show(
+                context,
+                message: AppLocalizations.of(context)!.downloadingTicket,
+                type: SnackbarType.success,
               );
             },
             title: AppLocalizations.of(context)!.downloadTicket,
@@ -654,21 +641,10 @@ class _BusTicketPageState extends State<BusTicketPage>
           child: PrimaryButton(
             icon: AppIcons.star,
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Row(
-                    children: [
-                      const Icon(Icons.share_rounded, color: Colors.white),
-                      SizedBox(width: 8.w),
-                      Text(AppLocalizations.of(context)!.sharingTicket),
-                    ],
-                  ),
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.purple,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                ),
+              CustomSnackbar.show(
+                context,
+                message: AppLocalizations.of(context)!.sharingTicket,
+                type: SnackbarType.info,
               );
             },
             title: AppLocalizations.of(context)!.shareTicket,

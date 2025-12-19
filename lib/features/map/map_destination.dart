@@ -6,8 +6,10 @@ extension MapDestinationExtension on _MapPageState {
   Future<void> _handleMarkerTap(Destination destination) async {
     if (_isNavigating) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.navigatingCannotSelect)),
+        CustomSnackbar.show(
+          context,
+          message: AppLocalizations.of(context)!.navigatingCannotSelect,
+          type: SnackbarType.warning,
         );
       }
       return;
@@ -27,8 +29,10 @@ extension MapDestinationExtension on _MapPageState {
 
     if (latitude == null || longitude == null) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.locationNoData)),
+        CustomSnackbar.show(
+          context,
+          message: AppLocalizations.of(context)!.locationNoData,
+          type: SnackbarType.error,
         );
       }
       return;

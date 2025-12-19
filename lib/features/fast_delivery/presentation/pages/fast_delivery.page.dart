@@ -4,6 +4,7 @@ import 'package:tour_guide_app/common/widgets/picker/location_picker.dart';
 import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/fast_delivery/data/models/delivery_order.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class FastDeliveryPage extends StatefulWidget {
   const FastDeliveryPage({super.key});
@@ -14,11 +15,11 @@ class FastDeliveryPage extends StatefulWidget {
 
 class _FastDeliveryPageState extends State<FastDeliveryPage> {
   final _formKey = GlobalKey<FormState>();
-  
+
   // Controllers
   final _receiverNameController = TextEditingController();
   final _receiverPhoneController = TextEditingController();
-  
+
   // Location data
   String? _pickupLocation;
   String? _deliveryLocation;
@@ -33,14 +34,18 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
   void _navigateToDetailPage() {
     if (_formKey.currentState?.validate() ?? false) {
       if (_pickupLocation == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectPickupPoint)),
+        CustomSnackbar.show(
+          context,
+          message: AppLocalizations.of(context)!.pleaseSelectPickupPoint,
+          type: SnackbarType.warning,
         );
         return;
       }
       if (_deliveryLocation == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectDeliveryPoint)),
+        CustomSnackbar.show(
+          context,
+          message: AppLocalizations.of(context)!.pleaseSelectDeliveryPoint,
+          type: SnackbarType.warning,
         );
         return;
       }
@@ -78,7 +83,6 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                
                 // Pickup location
                 LocationField(
                   label: AppLocalizations.of(context)!.pickupPoint,
@@ -96,13 +100,14 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
                     size: 20.sp,
                   ),
                 ),
-                
+
                 SizedBox(height: 16.h),
-                
+
                 // Delivery location
                 LocationField(
                   label: AppLocalizations.of(context)!.deliveryPoint,
-                  placeholder: AppLocalizations.of(context)!.selectDeliveryPoint,
+                  placeholder:
+                      AppLocalizations.of(context)!.selectDeliveryPoint,
                   locationText: _deliveryLocation,
                   onTap: () {
                     // TODO: Implement location picker
@@ -116,9 +121,9 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
                     size: 20.sp,
                   ),
                 ),
-                
+
                 SizedBox(height: 16.h),
-                
+
                 // Receiver name
                 CustomTextField(
                   label: AppLocalizations.of(context)!.recipientName,
@@ -127,24 +132,29 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
                   prefixIconData: Icons.person_outline,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return AppLocalizations.of(context)!.pleaseEnterRecipientName;
+                      return AppLocalizations.of(
+                        context,
+                      )!.pleaseEnterRecipientName;
                     }
                     return null;
                   },
                 ),
-                
+
                 SizedBox(height: 16.h),
-                
+
                 // Receiver phone
                 CustomTextField(
                   label: AppLocalizations.of(context)!.recipientPhone,
-                  placeholder: AppLocalizations.of(context)!.enterRecipientPhone,
+                  placeholder:
+                      AppLocalizations.of(context)!.enterRecipientPhone,
                   controller: _receiverPhoneController,
                   keyboardType: TextInputType.phone,
                   prefixIconData: Icons.phone_outlined,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return AppLocalizations.of(context)!.pleaseEnterPhoneNumber;
+                      return AppLocalizations.of(
+                        context,
+                      )!.pleaseEnterPhoneNumber;
                     }
                     if (value.length < 10) {
                       return AppLocalizations.of(context)!.phoneNumberInvalid;
@@ -152,9 +162,9 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
                     return null;
                   },
                 ),
-                
+
                 SizedBox(height: 32.h),
-                
+
                 // Continue button
                 PrimaryButton(
                   title: AppLocalizations.of(context)!.continueButton,
@@ -170,4 +180,3 @@ class _FastDeliveryPageState extends State<FastDeliveryPage> {
     );
   }
 }
-

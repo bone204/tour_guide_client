@@ -3,6 +3,7 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/flight_booking/presentation/pages/flight_detail.page.dart';
 import 'package:tour_guide_app/features/flight_booking/presentation/widgets/flight_card.widget.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class FlightListPage extends StatefulWidget {
   final String fromAirport;
@@ -26,7 +27,7 @@ class FlightListPage extends StatefulWidget {
   State<FlightListPage> createState() => _FlightListPageState();
 }
 
-class _FlightListPageState extends State<FlightListPage> 
+class _FlightListPageState extends State<FlightListPage>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   Map<String, dynamic>? selectedDepartureFlight;
@@ -72,28 +73,31 @@ class _FlightListPageState extends State<FlightListPage>
 
           // Flight List
           Expanded(
-            child: flights.isEmpty
-                ? _buildEmptyState()
-                : ListView.builder(
-                    padding: EdgeInsets.all(16.r),
-                    itemCount: flights.length,
-                    itemBuilder: (context, index) {
-                      final flight = flights[index];
-                      return FlightCard(
-                        flightNumber: flight['flightNumber'],
-                        airline: flight['airline'],
-                        airlineLogo: flight['airlineLogo'],
-                        departureTime: flight['departureTime'],
-                        arrivalTime: flight['arrivalTime'],
-                        duration: flight['duration'],
-                        stops: flight['stops'],
-                        availableSeats: Map<String, int>.from(flight['availableSeats']),
-                        prices: Map<String, double>.from(flight['prices']),
-                        rating: flight['rating'],
-                        onTap: () => _navigateToFlightDetail(flight),
-                      );
-                    },
-                  ),
+            child:
+                flights.isEmpty
+                    ? _buildEmptyState()
+                    : ListView.builder(
+                      padding: EdgeInsets.all(16.r),
+                      itemCount: flights.length,
+                      itemBuilder: (context, index) {
+                        final flight = flights[index];
+                        return FlightCard(
+                          flightNumber: flight['flightNumber'],
+                          airline: flight['airline'],
+                          airlineLogo: flight['airlineLogo'],
+                          departureTime: flight['departureTime'],
+                          arrivalTime: flight['arrivalTime'],
+                          duration: flight['duration'],
+                          stops: flight['stops'],
+                          availableSeats: Map<String, int>.from(
+                            flight['availableSeats'],
+                          ),
+                          prices: Map<String, double>.from(flight['prices']),
+                          rating: flight['rating'],
+                          onTap: () => _navigateToFlightDetail(flight),
+                        );
+                      },
+                    ),
           ),
         ],
       ),
@@ -199,41 +203,48 @@ class _FlightListPageState extends State<FlightListPage>
       children: [
         // Flight List
         Expanded(
-          child: flights.isEmpty
-              ? _buildEmptyState()
-              : ListView.builder(
-                  padding: EdgeInsets.all(16.r),
-                  itemCount: flights.length,
-                  itemBuilder: (context, index) {
-                    final flight = flights[index];
-                    final isSelected = isDeparture
-                        ? (selectedDepartureFlight != null && selectedDepartureFlight!['id'] == flight['id'])
-                        : (selectedReturnFlight != null && selectedReturnFlight!['id'] == flight['id']);
+          child:
+              flights.isEmpty
+                  ? _buildEmptyState()
+                  : ListView.builder(
+                    padding: EdgeInsets.all(16.r),
+                    itemCount: flights.length,
+                    itemBuilder: (context, index) {
+                      final flight = flights[index];
+                      final isSelected =
+                          isDeparture
+                              ? (selectedDepartureFlight != null &&
+                                  selectedDepartureFlight!['id'] ==
+                                      flight['id'])
+                              : (selectedReturnFlight != null &&
+                                  selectedReturnFlight!['id'] == flight['id']);
 
-                    return FlightCard(
-                      flightNumber: flight['flightNumber'],
-                      airline: flight['airline'],
-                      airlineLogo: flight['airlineLogo'],
-                      departureTime: flight['departureTime'],
-                      arrivalTime: flight['arrivalTime'],
-                      duration: flight['duration'],
-                      stops: flight['stops'],
-                      availableSeats: Map<String, int>.from(flight['availableSeats']),
-                      prices: Map<String, double>.from(flight['prices']),
-                      rating: flight['rating'],
-                      isSelected: isSelected,
-                      onTap: () {
-                        setState(() {
-                          if (isDeparture) {
-                            selectedDepartureFlight = flight;
-                          } else {
-                            selectedReturnFlight = flight;
-                          }
-                        });
-                      },
-                    );
-                  },
-                ),
+                      return FlightCard(
+                        flightNumber: flight['flightNumber'],
+                        airline: flight['airline'],
+                        airlineLogo: flight['airlineLogo'],
+                        departureTime: flight['departureTime'],
+                        arrivalTime: flight['arrivalTime'],
+                        duration: flight['duration'],
+                        stops: flight['stops'],
+                        availableSeats: Map<String, int>.from(
+                          flight['availableSeats'],
+                        ),
+                        prices: Map<String, double>.from(flight['prices']),
+                        rating: flight['rating'],
+                        isSelected: isSelected,
+                        onTap: () {
+                          setState(() {
+                            if (isDeparture) {
+                              selectedDepartureFlight = flight;
+                            } else {
+                              selectedReturnFlight = flight;
+                            }
+                          });
+                        },
+                      );
+                    },
+                  ),
         ),
       ],
     );
@@ -241,14 +252,18 @@ class _FlightListPageState extends State<FlightListPage>
 
   Widget _buildRoundTripBottomBar() {
     // Get cheapest price from each flight
-    final departurePrices = (selectedDepartureFlight!['prices'] as Map<String, dynamic>)
-        .values.map((e) => (e as num).toDouble()).toList();
+    final departurePrices =
+        (selectedDepartureFlight!['prices'] as Map<String, dynamic>).values
+            .map((e) => (e as num).toDouble())
+            .toList();
     final departurePrice = departurePrices.reduce((a, b) => a < b ? a : b);
-    
-    final returnPrices = (selectedReturnFlight!['prices'] as Map<String, dynamic>)
-        .values.map((e) => (e as num).toDouble()).toList();
+
+    final returnPrices =
+        (selectedReturnFlight!['prices'] as Map<String, dynamic>).values
+            .map((e) => (e as num).toDouble())
+            .toList();
     final returnPrice = returnPrices.reduce((a, b) => a < b ? a : b);
-    
+
     final totalPrice = departurePrice + returnPrice;
 
     return Container(
@@ -275,15 +290,15 @@ class _FlightListPageState extends State<FlightListPage>
                   Text(
                     'Tổng tiền (từ)',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtitle,
-                        ),
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     '${totalPrice.toStringAsFixed(0)}đ',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: AppColors.primaryBlue,
-                        ),
+                      color: AppColors.primaryBlue,
+                    ),
                   ),
                 ],
               ),
@@ -302,8 +317,8 @@ class _FlightListPageState extends State<FlightListPage>
                 child: Text(
                   'Tiếp tục',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.primaryWhite,
-                      ),
+                    color: AppColors.primaryWhite,
+                  ),
                 ),
               ),
             ),
@@ -314,11 +329,10 @@ class _FlightListPageState extends State<FlightListPage>
   }
 
   void _navigateToRoundTripDetail() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context)!.bothTripsSelected),
-        behavior: SnackBarBehavior.floating,
-      ),
+    CustomSnackbar.show(
+      context,
+      message: AppLocalizations.of(context)!.bothTripsSelected,
+      type: SnackbarType.info,
     );
   }
 
@@ -370,7 +384,7 @@ class _FlightListPageState extends State<FlightListPage>
               ),
             ),
           ),
-          
+
           // Content
           Padding(
             padding: EdgeInsets.all(20.r),
@@ -381,26 +395,35 @@ class _FlightListPageState extends State<FlightListPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 7.h,
+                      ),
                       decoration: BoxDecoration(
-                        color: widget.isRoundTrip 
-                            ? AppColors.primaryOrange 
-                            : AppColors.primaryWhite.withOpacity(0.25),
+                        color:
+                            widget.isRoundTrip
+                                ? AppColors.primaryOrange
+                                : AppColors.primaryWhite.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(20.r),
-                        boxShadow: widget.isRoundTrip ? [
-                          BoxShadow(
-                            color: AppColors.primaryOrange.withOpacity(0.4),
-                            blurRadius: 8,
-                            offset: Offset(0, 2),
-                          ),
-                        ] : null,
+                        boxShadow:
+                            widget.isRoundTrip
+                                ? [
+                                  BoxShadow(
+                                    color: AppColors.primaryOrange.withOpacity(
+                                      0.4,
+                                    ),
+                                    blurRadius: 8,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ]
+                                : null,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            widget.isRoundTrip 
-                                ? Icons.repeat_rounded 
+                            widget.isRoundTrip
+                                ? Icons.repeat_rounded
                                 : Icons.arrow_forward_rounded,
                             size: 16.r,
                             color: AppColors.primaryWhite,
@@ -408,15 +431,17 @@ class _FlightListPageState extends State<FlightListPage>
                           SizedBox(width: 6.w),
                           Text(
                             widget.isRoundTrip ? 'Khứ hồi' : 'Một chiều',
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  color: AppColors.primaryWhite,
-                                ),
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(color: AppColors.primaryWhite),
                           ),
                         ],
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 7.h,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryWhite.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(20.r),
@@ -425,7 +450,7 @@ class _FlightListPageState extends State<FlightListPage>
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SvgPicture.asset(
-                           AppIcons.user,
+                            AppIcons.user,
                             width: 16.r,
                             height: 16.r,
                             color: AppColors.primaryWhite,
@@ -433,9 +458,8 @@ class _FlightListPageState extends State<FlightListPage>
                           SizedBox(width: 6.w),
                           Text(
                             '${widget.passengerCount} người',
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  color: AppColors.primaryWhite,
-                                ),
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(color: AppColors.primaryWhite),
                           ),
                         ],
                       ),
@@ -464,7 +488,9 @@ class _FlightListPageState extends State<FlightListPage>
                                     color: AppColors.primaryWhite,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -472,29 +498,37 @@ class _FlightListPageState extends State<FlightListPage>
                                 SizedBox(width: 8.w),
                                 Text(
                                   'Từ',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.fromAirport,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               '${widget.date.day} Th${widget.date.month}, ${widget.date.year}',
-                              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                    color: AppColors.primaryWhite.withOpacity(0.8),
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.displayMedium?.copyWith(
+                                color: AppColors.primaryWhite.withOpacity(0.8),
+                              ),
                             ),
                           ],
                         ),
@@ -528,15 +562,17 @@ class _FlightListPageState extends State<FlightListPage>
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primaryWhite.withOpacity(0.3),
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.3,
+                                    ),
                                     blurRadius: 8,
                                     offset: Offset(0, 2),
                                   ),
                                 ],
                               ),
                               child: Icon(
-                                widget.isRoundTrip 
-                                    ? Icons.swap_horiz_rounded 
+                                widget.isRoundTrip
+                                    ? Icons.swap_horiz_rounded
                                     : Icons.flight_rounded,
                                 color: AppColors.primaryBlue,
                                 size: 20.r,
@@ -571,9 +607,13 @@ class _FlightListPageState extends State<FlightListPage>
                               children: [
                                 Text(
                                   'Đến',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(width: 8.w),
                                 Container(
@@ -583,7 +623,9 @@ class _FlightListPageState extends State<FlightListPage>
                                     color: AppColors.primaryOrange,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -593,11 +635,13 @@ class _FlightListPageState extends State<FlightListPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.toAirport,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.right,
@@ -606,9 +650,13 @@ class _FlightListPageState extends State<FlightListPage>
                             if (widget.isRoundTrip && widget.returnDate != null)
                               Text(
                                 '${widget.returnDate!.day} Th${widget.returnDate!.month}, ${widget.returnDate!.year}',
-                                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                      color: AppColors.primaryWhite.withOpacity(0.8),
-                                    ),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.displayMedium?.copyWith(
+                                  color: AppColors.primaryWhite.withOpacity(
+                                    0.8,
+                                  ),
+                                ),
                               )
                             else
                               SizedBox(height: 14.h),
@@ -639,16 +687,16 @@ class _FlightListPageState extends State<FlightListPage>
           SizedBox(height: 16.h),
           Text(
             'Không tìm thấy chuyến bay',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(color: AppColors.textSubtitle),
           ),
           SizedBox(height: 8.h),
           Text(
             'Vui lòng thử lại với bộ lọc khác',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
           ),
         ],
       ),
@@ -789,15 +837,15 @@ class _FlightListPageState extends State<FlightListPage>
   void _navigateToFlightDetail(Map<String, dynamic> flight) {
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (context) => FlightDetailPage(
-          flightData: flight,
-          fromAirport: widget.fromAirport,
-          toAirport: widget.toAirport,
-          date: widget.date,
-          passengerCount: widget.passengerCount,
-        ),
+        builder:
+            (context) => FlightDetailPage(
+              flightData: flight,
+              fromAirport: widget.fromAirport,
+              toAirport: widget.toAirport,
+              date: widget.date,
+              passengerCount: widget.passengerCount,
+            ),
       ),
     );
   }
 }
-

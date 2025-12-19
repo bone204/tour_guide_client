@@ -5,6 +5,7 @@ import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/widgets/bill_info_item.widget.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/widgets/payment_method_selector.widget.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/widgets/reward_point_selector.widget.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class RestaurantBookingInfoPage extends StatefulWidget {
   const RestaurantBookingInfoPage({super.key});
@@ -154,16 +155,11 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                   PrimaryButton(
                     title: AppLocalizations.of(context)!.confirmTableBooking,
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
+                      CustomSnackbar.show(
+                        context,
+                        message:
                             AppLocalizations.of(context)!.tableBookingSuccess,
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                        ),
+                        type: SnackbarType.success,
                       );
                     },
                     backgroundColor: AppColors.primaryBlue,

@@ -8,6 +8,7 @@ import 'package:tour_guide_app/core/usecases/no_params.dart';
 import 'package:tour_guide_app/features/settings/domain/usecases/logout.dart';
 import 'package:tour_guide_app/features/settings/presentation/widgets/navigation_button.widget.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -16,14 +17,18 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     void logOut(BuildContext context) {
       context.read<ButtonStateCubit>().execute(
-            usecase: sl<LogOutUseCase>(),
-            params: NoParams(),
-          );
+        usecase: sl<LogOutUseCase>(),
+        params: NoParams(),
+      );
     }
 
     void openLanguageScreen(BuildContext context) {
-      Navigator.of(context, rootNavigator: true).pushNamed(AppRouteConstant.language);
+      Navigator.of(
+        context,
+        rootNavigator: true,
+      ).pushNamed(AppRouteConstant.language);
     }
+
     return MultiBlocProvider(
       providers: [BlocProvider(create: (context) => ButtonStateCubit())],
       child: BlocListener<ButtonStateCubit, ButtonState>(
@@ -36,12 +41,17 @@ class SettingsPage extends StatelessWidget {
           }
 
           if (state is ButtonFailureState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("${AppLocalizations.of(context)!.errorPrefix}${state.errorMessage}")),
+            CustomSnackbar.show(
+              context,
+              message:
+                  "${AppLocalizations.of(context)!.errorPrefix}${state.errorMessage}",
+              type: SnackbarType.error,
             );
           } else if (state is ButtonSuccessState) {
-            Navigator.of(context, rootNavigator: true)
-                .pushNamedAndRemoveUntil(AppRouteConstant.signIn, (route) => false);
+            Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
+              AppRouteConstant.signIn,
+              (route) => false,
+            );
           }
         },
         child: Scaffold(
@@ -105,12 +115,13 @@ class SettingsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 12.w),
                   Builder(
-                    builder: (context) => PrimaryButton(
-                      onPressed: () => logOut(context),
-                      title: AppLocalizations.of(context)!.signOut,
-                      backgroundColor: AppColors.primaryGrey,
-                      textColor: AppColors.textSecondary,
-                    ),
+                    builder:
+                        (context) => PrimaryButton(
+                          onPressed: () => logOut(context),
+                          title: AppLocalizations.of(context)!.signOut,
+                          backgroundColor: AppColors.primaryGrey,
+                          textColor: AppColors.textSecondary,
+                        ),
                   ),
                 ],
               ),

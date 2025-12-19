@@ -11,6 +11,7 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/edit_stop.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/widgets/itinerary_stop_card.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class EditItineraryPage extends StatefulWidget {
   final Itinerary itinerary;
@@ -55,9 +56,11 @@ class _EditItineraryPageState extends State<EditItineraryPage> {
               _currentItinerary = state.itinerary;
             });
           } else if (state is GetItineraryDetailFailure) {
-            ScaffoldMessenger.of(
+            CustomSnackbar.show(
               context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+              message: state.message,
+              type: SnackbarType.error,
+            );
           }
         },
         child: Builder(
@@ -150,10 +153,10 @@ class _EditItineraryViewState extends State<_EditItineraryView>
               _tabController = TabController(length: newDayCount, vsync: this);
             }
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.itineraryUpdated),
-            ),
+          CustomSnackbar.show(
+            context,
+            message: AppLocalizations.of(context)!.itineraryUpdated,
+            type: SnackbarType.success,
           );
         }
       },

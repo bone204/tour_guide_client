@@ -1089,15 +1089,14 @@
   "statusSoldOut": "Hết chỗ",
   "statusSelected": "Đang chọn",
   "statusEmpty": "Trống",
-  "selectLocation": "Chọn địa điểm",
   "selectDeparture": "Chọn điểm đi",
-  "selectDestination": "Chọn điểm đến",
+
   "busTicketTitle": "VÉ XE KHÁCH ĐIỆN TỬ",
   "busCompany": "Nhà xe",
-  "vehicleType": "Loại xe",
+
   "departureTime": "Giờ khởi hành",
   "arrivalTime": "Giờ đến nơi",
-  "departureDate": "Ngày đi",
+
   "seatNumber": "Số ghế",
   "passengerInfo": "Thông tin hành khách",
   "driver": "Tài xế",
@@ -1107,10 +1106,9 @@
   "selectFoodType": "Chọn loại đồ ăn",
   "continueAction": "Tiếp tục",
   "fillAllFields": "Vui lòng điền đầy đủ thông tin",
-  "selectReturnDate": "Vui lòng chọn ngày về",
+  "pleaseSelectReturnDate": "Vui lòng chọn ngày về",
   "invalidReturnDate": "Ngày về phải sau ngày đi",
-  "carDetails": "Chi tiết xe",
-  "reviews": "Đánh giá",
+
   "about": "Giới thiệu",
   "photos": "Hình ảnh",
   "videos": "Video",
@@ -1125,9 +1123,8 @@
   "ticketNote4": "Mang theo CMND/CCCD khi lên xe",
   "selectedRoom": "Phòng đã chọn",
   "people": "người",
-  "statusEmpty": "Trống",
-  "statusBooked": "Đã đặt",
-  "selectFoodType": "Chọn loại đồ ăn",
+
+
   "foodTypeAll": "Tất cả",
   "foodTypeVietnamese": "Món Việt",
   "foodTypeAsian": "Món Á",

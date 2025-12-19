@@ -192,7 +192,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get motorbikeList => 'Danh Sách Xe Máy';
 
   @override
-  String get carDetails => 'Chi tiết xe';
+  String get carDetails => 'Chi Tiết Xe';
 
   @override
   String get mortorbikeDetails => 'Chi Tiết Xe';
@@ -799,13 +799,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get selectDepartureDate => 'Chọn ngày đi';
 
   @override
-  String get selectReturnDate => 'Vui lòng chọn ngày về';
+  String get selectReturnDate => 'Chọn ngày về';
 
   @override
   String get selectDateAndTime => 'Chọn ngày và giờ';
 
   @override
-  String get selectLocation => 'Chọn địa điểm';
+  String get selectLocation => 'Chọn vị trí';
 
   @override
   String get selectCheckInDate => 'Chọn ngày nhận phòng';
@@ -1658,6 +1658,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get fillAllFields => 'Vui lòng điền đầy đủ thông tin';
+
+  @override
+  String get pleaseSelectReturnDate => 'Vui lòng chọn ngày về';
 
   @override
   String get invalidReturnDate => 'Ngày về phải sau ngày đi';

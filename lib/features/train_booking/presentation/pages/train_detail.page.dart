@@ -3,6 +3,7 @@ import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/train_booking/presentation/pages/train_booking_confirmation.page.dart';
 import 'package:tour_guide_app/features/train_booking/presentation/widgets/train_seat_layout.widget.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class TrainDetailPage extends StatefulWidget {
   final Map<String, dynamic> trainData;
@@ -24,7 +25,7 @@ class TrainDetailPage extends StatefulWidget {
   State<TrainDetailPage> createState() => _TrainDetailPageState();
 }
 
-class _TrainDetailPageState extends State<TrainDetailPage> 
+class _TrainDetailPageState extends State<TrainDetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<Map<String, dynamic>> selectedSeats = [];
@@ -39,7 +40,8 @@ class _TrainDetailPageState extends State<TrainDetailPage>
   }
 
   void _setDefaultSeatClass() {
-    final availableSeats = widget.trainData['availableSeats'] as Map<String, dynamic>;
+    final availableSeats =
+        widget.trainData['availableSeats'] as Map<String, dynamic>;
     for (var entry in availableSeats.entries) {
       if (entry.value > 0) {
         selectedSeatClass = entry.key;
@@ -56,41 +58,34 @@ class _TrainDetailPageState extends State<TrainDetailPage>
 
   void _navigateToConfirmation() {
     if (selectedSeats.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.pleaseSelectSeatTrain),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.pleaseSelectSeatTrain,
+        type: SnackbarType.warning,
       );
       return;
     }
 
     if (selectedSeatClass == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.pleaseSelectSeatClassTrain),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.pleaseSelectSeatClassTrain,
+        type: SnackbarType.warning,
       );
       return;
     }
 
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (context) => TrainBookingConfirmationPage(
-          trainData: widget.trainData,
-          fromStation: widget.fromStation,
-          toStation: widget.toStation,
-          date: widget.date,
-          selectedSeats: selectedSeats,
-          seatClass: selectedSeatClass!,
-        ),
+        builder:
+            (context) => TrainBookingConfirmationPage(
+              trainData: widget.trainData,
+              fromStation: widget.fromStation,
+              toStation: widget.toStation,
+              date: widget.date,
+              selectedSeats: selectedSeats,
+              seatClass: selectedSeatClass!,
+            ),
       ),
     );
   }
@@ -116,10 +111,7 @@ class _TrainDetailPageState extends State<TrainDetailPage>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [
-                _buildSeatsTab(),
-                _buildInfoTab(),
-              ],
+              children: [_buildSeatsTab(), _buildInfoTab()],
             ),
           ),
 
@@ -178,13 +170,12 @@ class _TrainDetailPageState extends State<TrainDetailPage>
               ),
             ),
           ),
-          
+
           // Content
           Padding(
             padding: EdgeInsets.all(20.r),
             child: Column(
               children: [
-
                 // Route Section
                 IntrinsicHeight(
                   child: Row(
@@ -204,7 +195,9 @@ class _TrainDetailPageState extends State<TrainDetailPage>
                                     color: AppColors.primaryWhite,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -212,29 +205,34 @@ class _TrainDetailPageState extends State<TrainDetailPage>
                                 SizedBox(width: 8.w),
                                 Text(
                                   'Ga đi',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.fromStation,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.trainData['departureTime'],
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(color: AppColors.primaryWhite),
                             ),
                           ],
                         ),
@@ -268,7 +266,9 @@ class _TrainDetailPageState extends State<TrainDetailPage>
                                 borderRadius: BorderRadius.circular(10.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primaryWhite.withOpacity(0.3),
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.3,
+                                    ),
                                     blurRadius: 8,
                                     offset: Offset(0, 2),
                                   ),
@@ -284,9 +284,11 @@ class _TrainDetailPageState extends State<TrainDetailPage>
                                   SizedBox(height: 2.h),
                                   Text(
                                     widget.trainData['duration'],
-                                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                          color: AppColors.primaryBlue,
-                                        ),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.displayMedium?.copyWith(
+                                      color: AppColors.primaryBlue,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -320,9 +322,13 @@ class _TrainDetailPageState extends State<TrainDetailPage>
                               children: [
                                 Text(
                                   'Ga đến',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(width: 8.w),
                                 Container(
@@ -332,7 +338,9 @@ class _TrainDetailPageState extends State<TrainDetailPage>
                                     color: AppColors.primaryOrange,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -342,11 +350,13 @@ class _TrainDetailPageState extends State<TrainDetailPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.toStation,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.right,
@@ -354,9 +364,8 @@ class _TrainDetailPageState extends State<TrainDetailPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.trainData['arrivalTime'],
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(color: AppColors.primaryWhite),
                             ),
                           ],
                         ),
@@ -379,16 +388,13 @@ class _TrainDetailPageState extends State<TrainDetailPage>
         controller: _tabController,
         labelColor: AppColors.primaryBlue,
         unselectedLabelColor: AppColors.textSubtitle,
-        labelStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+        labelStyle: Theme.of(
+          context,
+        ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
         unselectedLabelStyle: Theme.of(context).textTheme.titleSmall,
         indicatorColor: AppColors.primaryBlue,
         indicatorWeight: 3,
-        tabs: [
-          Tab(text: 'Chọn chỗ'),
-          Tab(text: 'Thông tin'),
-        ],
+        tabs: [Tab(text: 'Chọn chỗ'), Tab(text: 'Thông tin')],
       ),
     );
   }
@@ -403,15 +409,15 @@ class _TrainDetailPageState extends State<TrainDetailPage>
           Text(
             'Chọn hạng chỗ',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                ),
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           SizedBox(height: 12.h),
           _buildSeatClassSelector(),
-          
+
           SizedBox(height: 20.h),
-          
+
           // Seat Layout
           if (selectedSeatClass != null)
             TrainSeatLayoutWidget(
@@ -427,97 +433,108 @@ class _TrainDetailPageState extends State<TrainDetailPage>
   }
 
   Widget _buildSeatClassSelector() {
-    final availableSeats = widget.trainData['availableSeats'] as Map<String, dynamic>;
+    final availableSeats =
+        widget.trainData['availableSeats'] as Map<String, dynamic>;
     final prices = widget.trainData['prices'] as Map<String, dynamic>;
 
     return Column(
-      children: availableSeats.keys.map((seatClass) {
-        final isAvailable = availableSeats[seatClass] > 0;
-        final isSelected = selectedSeatClass == seatClass;
-        
-        return GestureDetector(
-          onTap: isAvailable ? () {
-            setState(() {
-              selectedSeatClass = seatClass;
-              selectedSeats = []; // Reset selected seats when changing class
-            });
-          } : null,
-          child: Container(
-            margin: EdgeInsets.only(bottom: 12.h),
-            padding: EdgeInsets.all(16.r),
-            decoration: BoxDecoration(
-              color:AppColors.primaryWhite,
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(
-                color: isSelected 
-                    ? AppColors.primaryBlue
-                    : AppColors.textSubtitle.withOpacity(0.2),
-                width: isSelected ? 2 : 2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 6,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10.r),
-                  decoration: BoxDecoration(
-                    color: isSelected 
-                        ? AppColors.primaryBlue
-                        : AppColors.primaryBlue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(10.r),
+      children:
+          availableSeats.keys.map((seatClass) {
+            final isAvailable = availableSeats[seatClass] > 0;
+            final isSelected = selectedSeatClass == seatClass;
+
+            return GestureDetector(
+              onTap:
+                  isAvailable
+                      ? () {
+                        setState(() {
+                          selectedSeatClass = seatClass;
+                          selectedSeats =
+                              []; // Reset selected seats when changing class
+                        });
+                      }
+                      : null,
+              child: Container(
+                margin: EdgeInsets.only(bottom: 12.h),
+                padding: EdgeInsets.all(16.r),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryWhite,
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color:
+                        isSelected
+                            ? AppColors.primaryBlue
+                            : AppColors.textSubtitle.withOpacity(0.2),
+                    width: isSelected ? 2 : 2,
                   ),
-                  child: Icon(
-                    seatClass.contains('Giường') 
-                        ? Icons.bed_rounded 
-                        : Icons.event_seat_rounded,
-                    color: isSelected 
-                        ? AppColors.primaryWhite
-                        : AppColors.primaryBlue,
-                    size: 24.r,
-                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 6,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        seatClass,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: AppColors.textPrimary,
-                            ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10.r),
+                      decoration: BoxDecoration(
+                        color:
+                            isSelected
+                                ? AppColors.primaryBlue
+                                : AppColors.primaryBlue.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        isAvailable 
-                            ? '${availableSeats[seatClass]} chỗ trống'
-                            : 'Hết chỗ',
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                              color: isAvailable 
-                                  ? AppColors.primaryGreen
-                                  : AppColors.primaryRed,
-                            ),
+                      child: Icon(
+                        seatClass.contains('Giường')
+                            ? Icons.bed_rounded
+                            : Icons.event_seat_rounded,
+                        color:
+                            isSelected
+                                ? AppColors.primaryWhite
+                                : AppColors.primaryBlue,
+                        size: 24.r,
                       ),
-                    ],
-                  ),
-                ),
-                Text(
-                  '${(prices[seatClass] as num).toStringAsFixed(0)}đ',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            seatClass,
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(color: AppColors.textPrimary),
+                          ),
+                          SizedBox(height: 4.h),
+                          Text(
+                            isAvailable
+                                ? '${availableSeats[seatClass]} chỗ trống'
+                                : 'Hết chỗ',
+                            style: Theme.of(
+                              context,
+                            ).textTheme.displayMedium?.copyWith(
+                              color:
+                                  isAvailable
+                                      ? AppColors.primaryGreen
+                                      : AppColors.primaryRed,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      '${(prices[seatClass] as num).toStringAsFixed(0)}đ',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: AppColors.primaryBlue,
                       ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
+              ),
+            );
+          }).toList(),
     );
   }
 
@@ -530,10 +547,26 @@ class _TrainDetailPageState extends State<TrainDetailPage>
           _buildInfoCard(
             title: AppLocalizations.of(context)!.trainTripInfo,
             items: [
-              {'icon': Icons.train_rounded, 'label': 'Số hiệu', 'value': widget.trainData['trainNumber']},
-              {'icon': Icons.category_rounded, 'label': 'Loại tàu', 'value': widget.trainData['trainType']},
-              {'icon': Icons.access_time_rounded, 'label': 'Thời gian', 'value': widget.trainData['duration']},
-              {'icon': Icons.route_rounded, 'label': 'Quãng đường', 'value': '1726 km'},
+              {
+                'icon': Icons.train_rounded,
+                'label': 'Số hiệu',
+                'value': widget.trainData['trainNumber'],
+              },
+              {
+                'icon': Icons.category_rounded,
+                'label': 'Loại tàu',
+                'value': widget.trainData['trainType'],
+              },
+              {
+                'icon': Icons.access_time_rounded,
+                'label': 'Thời gian',
+                'value': widget.trainData['duration'],
+              },
+              {
+                'icon': Icons.route_rounded,
+                'label': 'Quãng đường',
+                'value': '1726 km',
+              },
             ],
           ),
 
@@ -542,10 +575,26 @@ class _TrainDetailPageState extends State<TrainDetailPage>
           _buildInfoCard(
             title: AppLocalizations.of(context)!.trainAmenities,
             items: [
-              {'icon': Icons.restaurant_rounded, 'label': 'Toa ăn uống', 'value': '✓'},
-              {'icon': Icons.local_drink_outlined, 'label': 'Nước miễn phí', 'value': '✓'},
-              {'icon': Icons.ac_unit_rounded, 'label': 'Điều hòa', 'value': '✓'},
-              {'icon': Icons.power_rounded, 'label': 'Ổ cắm điện', 'value': '✓'},
+              {
+                'icon': Icons.restaurant_rounded,
+                'label': 'Toa ăn uống',
+                'value': '✓',
+              },
+              {
+                'icon': Icons.local_drink_outlined,
+                'label': 'Nước miễn phí',
+                'value': '✓',
+              },
+              {
+                'icon': Icons.ac_unit_rounded,
+                'label': 'Điều hòa',
+                'value': '✓',
+              },
+              {
+                'icon': Icons.power_rounded,
+                'label': 'Ổ cắm điện',
+                'value': '✓',
+              },
               {'icon': Icons.wc_rounded, 'label': 'Nhà vệ sinh', 'value': '✓'},
             ],
           ),
@@ -555,10 +604,26 @@ class _TrainDetailPageState extends State<TrainDetailPage>
           _buildInfoCard(
             title: AppLocalizations.of(context)!.policy,
             items: [
-              {'icon': Icons.cancel_outlined, 'label': 'Hủy vé', 'value': 'Trước 24h: 80%'},
-              {'icon': Icons.swap_horiz_rounded, 'label': 'Đổi vé', 'value': 'Phí 50.000đ'},
-              {'icon': Icons.luggage_outlined, 'label': 'Hành lý', 'value': 'Tối đa 30kg'},
-              {'icon': Icons.pets_rounded, 'label': 'Thú cưng', 'value': 'Không cho phép'},
+              {
+                'icon': Icons.cancel_outlined,
+                'label': 'Hủy vé',
+                'value': 'Trước 24h: 80%',
+              },
+              {
+                'icon': Icons.swap_horiz_rounded,
+                'label': 'Đổi vé',
+                'value': 'Phí 50.000đ',
+              },
+              {
+                'icon': Icons.luggage_outlined,
+                'label': 'Hành lý',
+                'value': 'Tối đa 30kg',
+              },
+              {
+                'icon': Icons.pets_rounded,
+                'label': 'Thú cưng',
+                'value': 'Không cho phép',
+              },
             ],
           ),
         ],
@@ -588,9 +653,9 @@ class _TrainDetailPageState extends State<TrainDetailPage>
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
           ),
           SizedBox(height: 12.h),
           ...items.map((item) {
@@ -598,18 +663,14 @@ class _TrainDetailPageState extends State<TrainDetailPage>
               padding: EdgeInsets.only(bottom: 12.h),
               child: Row(
                 children: [
-                  Icon(
-                    item['icon'],
-                    size: 20.r,
-                    color: AppColors.primaryBlue,
-                  ),
+                  Icon(item['icon'], size: 20.r, color: AppColors.primaryBlue),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
                       item['label'],
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                        color: AppColors.textSubtitle,
+                      ),
                     ),
                   ),
                   Text(
@@ -678,16 +739,16 @@ class _TrainDetailPageState extends State<TrainDetailPage>
                   Text(
                     'Tổng tiền',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtitle,
-                        ),
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     '${totalPrice.toStringAsFixed(0)}đ',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: AppColors.primaryBlue,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: AppColors.primaryBlue,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -705,4 +766,3 @@ class _TrainDetailPageState extends State<TrainDetailPage>
     );
   }
 }
-

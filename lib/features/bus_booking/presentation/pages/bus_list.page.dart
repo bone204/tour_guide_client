@@ -3,6 +3,7 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/bus_booking/presentation/pages/bus_detail.page.dart';
 import 'package:tour_guide_app/features/bus_booking/presentation/widgets/bus_card.widget.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class BusListPage extends StatefulWidget {
   final String fromLocation;
@@ -26,7 +27,7 @@ class BusListPage extends StatefulWidget {
   State<BusListPage> createState() => _BusListPageState();
 }
 
-class _BusListPageState extends State<BusListPage> 
+class _BusListPageState extends State<BusListPage>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   Map<String, dynamic>? selectedDepartureBus;
@@ -72,27 +73,28 @@ class _BusListPageState extends State<BusListPage>
 
           // Bus List
           Expanded(
-            child: buses.isEmpty
-                ? _buildEmptyState()
-                : ListView.builder(
-                    padding: EdgeInsets.all(16.r),
-                    itemCount: buses.length,
-                    itemBuilder: (context, index) {
-                      final bus = buses[index];
-                      return BusCard(
-                        busCompany: bus['company'],
-                        busType: bus['type'],
-                        departureTime: bus['departureTime'],
-                        arrivalTime: bus['arrivalTime'],
-                        duration: bus['duration'],
-                        availableSeats: bus['availableSeats'],
-                        price: bus['price'],
-                        rating: bus['rating'],
-                        amenities: List<String>.from(bus['amenities']),
-                        onTap: () => _navigateToBusDetail(bus),
-                      );
-                    },
-                  ),
+            child:
+                buses.isEmpty
+                    ? _buildEmptyState()
+                    : ListView.builder(
+                      padding: EdgeInsets.all(16.r),
+                      itemCount: buses.length,
+                      itemBuilder: (context, index) {
+                        final bus = buses[index];
+                        return BusCard(
+                          busCompany: bus['company'],
+                          busType: bus['type'],
+                          departureTime: bus['departureTime'],
+                          arrivalTime: bus['arrivalTime'],
+                          duration: bus['duration'],
+                          availableSeats: bus['availableSeats'],
+                          price: bus['price'],
+                          rating: bus['rating'],
+                          amenities: List<String>.from(bus['amenities']),
+                          onTap: () => _navigateToBusDetail(bus),
+                        );
+                      },
+                    ),
           ),
         ],
       ),
@@ -198,47 +200,52 @@ class _BusListPageState extends State<BusListPage>
       children: [
         // Bus List
         Expanded(
-          child: buses.isEmpty
-              ? _buildEmptyState()
-              : ListView.builder(
-                  padding: EdgeInsets.all(16.r),
-                  itemCount: buses.length,
-                  itemBuilder: (context, index) {
-                    final bus = buses[index];
-                    final isSelected = isDeparture
-                        ? (selectedDepartureBus != null && selectedDepartureBus!['id'] == bus['id'])
-                        : (selectedReturnBus != null && selectedReturnBus!['id'] == bus['id']);
+          child:
+              buses.isEmpty
+                  ? _buildEmptyState()
+                  : ListView.builder(
+                    padding: EdgeInsets.all(16.r),
+                    itemCount: buses.length,
+                    itemBuilder: (context, index) {
+                      final bus = buses[index];
+                      final isSelected =
+                          isDeparture
+                              ? (selectedDepartureBus != null &&
+                                  selectedDepartureBus!['id'] == bus['id'])
+                              : (selectedReturnBus != null &&
+                                  selectedReturnBus!['id'] == bus['id']);
 
-                    return BusCard(
-                      busCompany: bus['company'],
-                      busType: bus['type'],
-                      departureTime: bus['departureTime'],
-                      arrivalTime: bus['arrivalTime'],
-                      duration: bus['duration'],
-                      availableSeats: bus['availableSeats'],
-                      price: bus['price'],
-                      rating: bus['rating'],
-                      amenities: List<String>.from(bus['amenities']),
-                      isSelected: isSelected,
-                      onTap: () {
-                        setState(() {
-                          if (isDeparture) {
-                            selectedDepartureBus = bus;
-                          } else {
-                            selectedReturnBus = bus;
-                          }
-                        });
-                      },
-                    );
-                  },
-                ),
+                      return BusCard(
+                        busCompany: bus['company'],
+                        busType: bus['type'],
+                        departureTime: bus['departureTime'],
+                        arrivalTime: bus['arrivalTime'],
+                        duration: bus['duration'],
+                        availableSeats: bus['availableSeats'],
+                        price: bus['price'],
+                        rating: bus['rating'],
+                        amenities: List<String>.from(bus['amenities']),
+                        isSelected: isSelected,
+                        onTap: () {
+                          setState(() {
+                            if (isDeparture) {
+                              selectedDepartureBus = bus;
+                            } else {
+                              selectedReturnBus = bus;
+                            }
+                          });
+                        },
+                      );
+                    },
+                  ),
         ),
       ],
     );
   }
 
   Widget _buildRoundTripBottomBar() {
-    final totalPrice = (selectedDepartureBus!['price'] + selectedReturnBus!['price']) as num;
+    final totalPrice =
+        (selectedDepartureBus!['price'] + selectedReturnBus!['price']) as num;
 
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -264,15 +271,15 @@ class _BusListPageState extends State<BusListPage>
                   Text(
                     'Tổng tiền (2 chuyến)',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtitle,
-                        ),
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     '${totalPrice.toStringAsFixed(0)}đ',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: AppColors.primaryBlue,
-                        ),
+                      color: AppColors.primaryBlue,
+                    ),
                   ),
                 ],
               ),
@@ -291,8 +298,8 @@ class _BusListPageState extends State<BusListPage>
                 child: Text(
                   'Tiếp tục',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.primaryWhite,
-                      ),
+                    color: AppColors.primaryWhite,
+                  ),
                 ),
               ),
             ),
@@ -304,11 +311,10 @@ class _BusListPageState extends State<BusListPage>
 
   void _navigateToRoundTripDetail() {
     // Navigate to confirmation with both trips
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context)!.bothTripsSelected),
-        behavior: SnackBarBehavior.floating,
-      ),
+    CustomSnackbar.show(
+      context,
+      message: AppLocalizations.of(context)!.bothTripsSelected,
+      type: SnackbarType.info,
     );
   }
 
@@ -360,7 +366,7 @@ class _BusListPageState extends State<BusListPage>
               ),
             ),
           ),
-          
+
           // Content
           Padding(
             padding: EdgeInsets.all(20.r),
@@ -371,26 +377,35 @@ class _BusListPageState extends State<BusListPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 7.h,
+                      ),
                       decoration: BoxDecoration(
-                        color: widget.isRoundTrip 
-                            ? AppColors.primaryOrange 
-                            : AppColors.primaryWhite.withOpacity(0.25),
+                        color:
+                            widget.isRoundTrip
+                                ? AppColors.primaryOrange
+                                : AppColors.primaryWhite.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(20.r),
-                        boxShadow: widget.isRoundTrip ? [
-                          BoxShadow(
-                            color: AppColors.primaryOrange.withOpacity(0.4),
-                            blurRadius: 8,
-                            offset: Offset(0, 2),
-                          ),
-                        ] : null,
+                        boxShadow:
+                            widget.isRoundTrip
+                                ? [
+                                  BoxShadow(
+                                    color: AppColors.primaryOrange.withOpacity(
+                                      0.4,
+                                    ),
+                                    blurRadius: 8,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ]
+                                : null,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            widget.isRoundTrip 
-                                ? Icons.repeat_rounded 
+                            widget.isRoundTrip
+                                ? Icons.repeat_rounded
                                 : Icons.arrow_forward_rounded,
                             size: 16.r,
                             color: AppColors.primaryWhite,
@@ -398,15 +413,17 @@ class _BusListPageState extends State<BusListPage>
                           SizedBox(width: 6.w),
                           Text(
                             widget.isRoundTrip ? 'Khứ hồi' : 'Một chiều',
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  color: AppColors.primaryWhite,
-                                ),
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(color: AppColors.primaryWhite),
                           ),
                         ],
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 7.h,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryWhite.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(20.r),
@@ -415,7 +432,7 @@ class _BusListPageState extends State<BusListPage>
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SvgPicture.asset(
-                           AppIcons.user,
+                            AppIcons.user,
                             width: 16.r,
                             height: 16.r,
                             color: AppColors.primaryWhite,
@@ -423,9 +440,8 @@ class _BusListPageState extends State<BusListPage>
                           SizedBox(width: 6.w),
                           Text(
                             '${widget.passengerCount} người',
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  color: AppColors.primaryWhite,
-                                ),
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(color: AppColors.primaryWhite),
                           ),
                         ],
                       ),
@@ -454,7 +470,9 @@ class _BusListPageState extends State<BusListPage>
                                     color: AppColors.primaryWhite,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -462,29 +480,37 @@ class _BusListPageState extends State<BusListPage>
                                 SizedBox(width: 8.w),
                                 Text(
                                   'Điểm đi',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.fromLocation,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               '${widget.date.day} Th${widget.date.month}, ${widget.date.year}',
-                              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                    color: AppColors.primaryWhite.withOpacity(0.8),
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.displayMedium?.copyWith(
+                                color: AppColors.primaryWhite.withOpacity(0.8),
+                              ),
                             ),
                           ],
                         ),
@@ -518,15 +544,17 @@ class _BusListPageState extends State<BusListPage>
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primaryWhite.withOpacity(0.3),
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.3,
+                                    ),
                                     blurRadius: 8,
                                     offset: Offset(0, 2),
                                   ),
                                 ],
                               ),
                               child: Icon(
-                                widget.isRoundTrip 
-                                    ? Icons.swap_horiz_rounded 
+                                widget.isRoundTrip
+                                    ? Icons.swap_horiz_rounded
                                     : Icons.arrow_forward_rounded,
                                 color: AppColors.primaryBlue,
                                 size: 20.r,
@@ -561,9 +589,13 @@ class _BusListPageState extends State<BusListPage>
                               children: [
                                 Text(
                                   'Điểm đến',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(width: 8.w),
                                 Container(
@@ -573,7 +605,9 @@ class _BusListPageState extends State<BusListPage>
                                     color: AppColors.primaryOrange,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -583,11 +617,13 @@ class _BusListPageState extends State<BusListPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.toLocation,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.right,
@@ -596,9 +632,13 @@ class _BusListPageState extends State<BusListPage>
                             if (widget.isRoundTrip && widget.returnDate != null)
                               Text(
                                 '${widget.returnDate!.day} Th${widget.returnDate!.month}, ${widget.returnDate!.year}',
-                                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                      color: AppColors.primaryWhite.withOpacity(0.8),
-                                    ),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.displayMedium?.copyWith(
+                                  color: AppColors.primaryWhite.withOpacity(
+                                    0.8,
+                                  ),
+                                ),
                               )
                             else
                               SizedBox(height: 14.h),
@@ -629,16 +669,16 @@ class _BusListPageState extends State<BusListPage>
           SizedBox(height: 16.h),
           Text(
             'Không tìm thấy chuyến xe',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(color: AppColors.textSubtitle),
           ),
           SizedBox(height: 8.h),
           Text(
             'Vui lòng thử lại với bộ lọc khác',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
           ),
         ],
       ),
@@ -731,15 +771,15 @@ class _BusListPageState extends State<BusListPage>
   void _navigateToBusDetail(Map<String, dynamic> bus) {
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (context) => BusDetailPage(
-          busData: bus,
-          fromLocation: widget.fromLocation,
-          toLocation: widget.toLocation,
-          date: widget.date,
-          passengerCount: widget.passengerCount,
-        ),
+        builder:
+            (context) => BusDetailPage(
+              busData: bus,
+              fromLocation: widget.fromLocation,
+              toLocation: widget.toLocation,
+              date: widget.date,
+              passengerCount: widget.passengerCount,
+            ),
       ),
     );
   }
 }
-

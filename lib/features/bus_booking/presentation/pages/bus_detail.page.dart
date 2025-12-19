@@ -4,6 +4,7 @@ import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/bus_booking/presentation/pages/bus_booking_confirmation.page.dart';
 import 'package:tour_guide_app/features/bus_booking/presentation/widgets/seat_layout.widget.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class BusDetailPage extends StatefulWidget {
   final Map<String, dynamic> busData;
@@ -25,7 +26,7 @@ class BusDetailPage extends StatefulWidget {
   State<BusDetailPage> createState() => _BusDetailPageState();
 }
 
-class _BusDetailPageState extends State<BusDetailPage> 
+class _BusDetailPageState extends State<BusDetailPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<int> selectedSeats = [];
@@ -44,27 +45,24 @@ class _BusDetailPageState extends State<BusDetailPage>
 
   void _navigateToConfirmation() {
     if (selectedSeats.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.pleaseSelectSeatBus),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.pleaseSelectSeatBus,
+        type: SnackbarType.warning,
       );
       return;
     }
 
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (context) => BusBookingConfirmationPage(
-          busData: widget.busData,
-          fromLocation: widget.fromLocation,
-          toLocation: widget.toLocation,
-          date: widget.date,
-          selectedSeats: selectedSeats,
-        ),
+        builder:
+            (context) => BusBookingConfirmationPage(
+              busData: widget.busData,
+              fromLocation: widget.fromLocation,
+              toLocation: widget.toLocation,
+              date: widget.date,
+              selectedSeats: selectedSeats,
+            ),
       ),
     );
   }
@@ -90,10 +88,7 @@ class _BusDetailPageState extends State<BusDetailPage>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: [
-                _buildSeatsTab(),
-                _buildInfoTab(),
-              ],
+              children: [_buildSeatsTab(), _buildInfoTab()],
             ),
           ),
 
@@ -152,7 +147,7 @@ class _BusDetailPageState extends State<BusDetailPage>
               ),
             ),
           ),
-          
+
           // Content
           Padding(
             padding: EdgeInsets.all(20.r),
@@ -182,16 +177,17 @@ class _BusDetailPageState extends State<BusDetailPage>
                         children: [
                           Text(
                             widget.busData['company'],
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: AppColors.primaryWhite,
-                                ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.primaryWhite),
                           ),
                           SizedBox(height: 2.h),
                           Text(
                             widget.busData['type'],
-                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                  color: AppColors.primaryWhite.withOpacity(0.85),
-                                ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.displayMedium?.copyWith(
+                              color: AppColors.primaryWhite.withOpacity(0.85),
+                            ),
                           ),
                         ],
                       ),
@@ -220,7 +216,9 @@ class _BusDetailPageState extends State<BusDetailPage>
                                     color: AppColors.primaryWhite,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -228,29 +226,34 @@ class _BusDetailPageState extends State<BusDetailPage>
                                 SizedBox(width: 8.w),
                                 Text(
                                   'Điểm đi',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.fromLocation,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.busData['departureTime'],
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(color: AppColors.primaryWhite),
                             ),
                           ],
                         ),
@@ -284,7 +287,9 @@ class _BusDetailPageState extends State<BusDetailPage>
                                 borderRadius: BorderRadius.circular(10.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primaryWhite.withOpacity(0.3),
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.3,
+                                    ),
                                     blurRadius: 8,
                                     offset: Offset(0, 2),
                                   ),
@@ -300,9 +305,11 @@ class _BusDetailPageState extends State<BusDetailPage>
                                   SizedBox(height: 2.h),
                                   Text(
                                     widget.busData['duration'],
-                                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                          color: AppColors.primaryBlue,
-                                        ),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.displayMedium?.copyWith(
+                                      color: AppColors.primaryBlue,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -336,9 +343,13 @@ class _BusDetailPageState extends State<BusDetailPage>
                               children: [
                                 Text(
                                   'Điểm đến',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(width: 8.w),
                                 Container(
@@ -348,7 +359,9 @@ class _BusDetailPageState extends State<BusDetailPage>
                                     color: AppColors.primaryOrange,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -358,11 +371,13 @@ class _BusDetailPageState extends State<BusDetailPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.toLocation,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.right,
@@ -370,9 +385,8 @@ class _BusDetailPageState extends State<BusDetailPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.busData['arrivalTime'],
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(color: AppColors.primaryWhite),
                             ),
                           ],
                         ),
@@ -395,16 +409,13 @@ class _BusDetailPageState extends State<BusDetailPage>
         controller: _tabController,
         labelColor: AppColors.primaryBlue,
         unselectedLabelColor: AppColors.textSubtitle,
-        labelStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+        labelStyle: Theme.of(
+          context,
+        ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
         unselectedLabelStyle: Theme.of(context).textTheme.titleSmall,
         indicatorColor: AppColors.primaryBlue,
         indicatorWeight: 3,
-        tabs: [
-          Tab(text: 'Chọn ghế'),
-          Tab(text: 'Thông tin'),
-        ],
+        tabs: [Tab(text: 'Chọn ghế'), Tab(text: 'Thông tin')],
       ),
     );
   }
@@ -431,10 +442,26 @@ class _BusDetailPageState extends State<BusDetailPage>
           _buildInfoCard(
             title: AppLocalizations.of(context)!.busTripInfo,
             items: [
-              {'icon': Icons.location_on_outlined, 'label': 'Điểm đón', 'value': 'Bến xe Miền Đông'},
-              {'icon': Icons.flag_outlined, 'label': 'Điểm trả', 'value': 'Bến xe Đà Lạt'},
-              {'icon': Icons.access_time_rounded, 'label': 'Thời gian', 'value': widget.busData['duration']},
-              {'icon': Icons.route_rounded, 'label': 'Quãng đường', 'value': '308 km'},
+              {
+                'icon': Icons.location_on_outlined,
+                'label': 'Điểm đón',
+                'value': 'Bến xe Miền Đông',
+              },
+              {
+                'icon': Icons.flag_outlined,
+                'label': 'Điểm trả',
+                'value': 'Bến xe Đà Lạt',
+              },
+              {
+                'icon': Icons.access_time_rounded,
+                'label': 'Thời gian',
+                'value': widget.busData['duration'],
+              },
+              {
+                'icon': Icons.route_rounded,
+                'label': 'Quãng đường',
+                'value': '308 km',
+              },
             ],
           ),
 
@@ -442,13 +469,14 @@ class _BusDetailPageState extends State<BusDetailPage>
 
           _buildInfoCard(
             title: AppLocalizations.of(context)!.amenities,
-            items: (widget.busData['amenities'] as List).map((amenity) {
-              return {
-                'icon': _getAmenityIcon(amenity),
-                'label': amenity,
-                'value': '✓',
-              };
-            }).toList(),
+            items:
+                (widget.busData['amenities'] as List).map((amenity) {
+                  return {
+                    'icon': _getAmenityIcon(amenity),
+                    'label': amenity,
+                    'value': '✓',
+                  };
+                }).toList(),
           ),
 
           SizedBox(height: 16.h),
@@ -456,9 +484,21 @@ class _BusDetailPageState extends State<BusDetailPage>
           _buildInfoCard(
             title: AppLocalizations.of(context)!.policy,
             items: [
-              {'icon': Icons.cancel_outlined, 'label': 'Hủy vé', 'value': 'Miễn phí trước 24h'},
-              {'icon': Icons.swap_horiz_rounded, 'label': 'Đổi vé', 'value': 'Phí 20.000đ'},
-              {'icon': Icons.luggage_outlined, 'label': 'Hành lý', 'value': 'Tối đa 20kg'},
+              {
+                'icon': Icons.cancel_outlined,
+                'label': 'Hủy vé',
+                'value': 'Miễn phí trước 24h',
+              },
+              {
+                'icon': Icons.swap_horiz_rounded,
+                'label': 'Đổi vé',
+                'value': 'Phí 20.000đ',
+              },
+              {
+                'icon': Icons.luggage_outlined,
+                'label': 'Hành lý',
+                'value': 'Tối đa 20kg',
+              },
             ],
           ),
         ],
@@ -507,10 +547,9 @@ class _BusDetailPageState extends State<BusDetailPage>
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
           ),
           SizedBox(height: 12.h),
           ...items.map((item) {
@@ -518,18 +557,14 @@ class _BusDetailPageState extends State<BusDetailPage>
               padding: EdgeInsets.only(bottom: 12.h),
               child: Row(
                 children: [
-                  Icon(
-                    item['icon'],
-                    size: 20.r,
-                    color: AppColors.primaryBlue,
-                  ),
+                  Icon(item['icon'], size: 20.r, color: AppColors.primaryBlue),
                   SizedBox(width: 12.w),
                   Expanded(
                     child: Text(
                       item['label'],
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                        color: AppColors.textSubtitle,
+                      ),
                     ),
                   ),
                   Text(
@@ -572,16 +607,16 @@ class _BusDetailPageState extends State<BusDetailPage>
                   Text(
                     'Tổng tiền',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtitle,
-                        ),
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     '${totalPrice.toStringAsFixed(0)}đ',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: AppColors.primaryBlue,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: AppColors.primaryBlue,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -599,4 +634,3 @@ class _BusDetailPageState extends State<BusDetailPage>
     );
   }
 }
-

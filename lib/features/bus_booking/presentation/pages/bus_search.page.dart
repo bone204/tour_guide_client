@@ -7,6 +7,7 @@ import 'package:tour_guide_app/common/widgets/selector/passenger_counter.widget.
 import 'package:tour_guide_app/common/widgets/selector/trip_type.widget.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/bus_booking/presentation/pages/bus_list.page.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class BusSearchPage extends StatefulWidget {
   const BusSearchPage({Key? key}) : super(key: key);
@@ -130,19 +131,19 @@ class _BusSearchPageState extends State<BusSearchPage> {
   void _navigateToBusList() {
     // Validation
     if (fromLocation == null || toLocation == null || selectedDate == null) {
-      _showError('Vui lòng điền đầy đủ thông tin');
+      _showError(AppLocalizations.of(context)!.fillAllFields);
       return;
     }
 
     if (selectedTripType == TripType.roundTrip && returnDate == null) {
-      _showError('Vui lòng chọn ngày về');
+      _showError(AppLocalizations.of(context)!.pleaseSelectReturnDate);
       return;
     }
 
     if (selectedTripType == TripType.roundTrip &&
         returnDate != null &&
         returnDate!.isBefore(selectedDate!)) {
-      _showError('Ngày về phải sau ngày đi');
+      _showError(AppLocalizations.of(context)!.invalidReturnDate);
       return;
     }
 
@@ -162,15 +163,7 @@ class _BusSearchPageState extends State<BusSearchPage> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-      ),
-    );
+    CustomSnackbar.show(context, message: message, type: SnackbarType.error);
   }
 
   @override

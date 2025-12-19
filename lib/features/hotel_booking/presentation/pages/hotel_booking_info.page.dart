@@ -6,6 +6,7 @@ import 'package:tour_guide_app/features/car_rental/presentation/widgets/bill_inf
 import 'package:tour_guide_app/features/car_rental/presentation/widgets/payment_method_selector.widget.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/widgets/reward_point_selector.widget.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class HotelBookingInfoPage extends StatefulWidget {
   final HotelBooking hotelBooking;
@@ -200,16 +201,10 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                   PrimaryButton(
                     title: AppLocalizations.of(context)!.confirmBooking,
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            AppLocalizations.of(context)!.bookingSuccess,
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                        ),
+                      CustomSnackbar.show(
+                        context,
+                        message: AppLocalizations.of(context)!.bookingSuccess,
+                        type: SnackbarType.success,
                       );
                     },
                     backgroundColor: AppColors.primaryBlue,

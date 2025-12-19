@@ -268,11 +268,10 @@ extension MapRouteExtension on _MapPageState {
     // Chỉ mở tracking sheet, không tính route
     if (_selectedDestination == null || _currentPosition == null) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.pleaseSelectLocation),
-            duration: Duration(seconds: 2),
-          ),
+        CustomSnackbar.show(
+          context,
+          message: AppLocalizations.of(context)!.pleaseSelectLocation,
+          type: SnackbarType.warning,
         );
       }
       return;

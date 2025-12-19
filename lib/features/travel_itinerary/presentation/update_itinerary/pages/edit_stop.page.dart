@@ -9,6 +9,7 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart'
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/edit_stop/edit_stop_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/edit_stop/edit_stop_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class EditStopPage extends StatefulWidget {
   final int itineraryId;
@@ -83,9 +84,11 @@ class _EditStopPageState extends State<EditStopPage> {
             eventBus.fire(StopAddedEvent()); // Trigger refresh
             Navigator.pop(context, true);
           } else if (state is EditStopFailure) {
-            ScaffoldMessenger.of(
+            CustomSnackbar.show(
               context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+              message: state.message,
+              type: SnackbarType.error,
+            );
           }
         },
         builder: (context, state) {

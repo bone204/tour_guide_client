@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class ImagePickerWidget extends StatelessWidget {
   final List<String> images;
@@ -16,14 +17,18 @@ class ImagePickerWidget extends StatelessWidget {
     try {
       final picker = ImagePicker();
       final pickedFile = await picker.pickImage(source: source);
-      
+
       if (pickedFile != null) {
         final updatedImages = [...images, pickedFile.path];
         onImagesChanged(updatedImages);
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.errorSelectingImage(e.toString()))),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(
+          context,
+        )!.errorSelectingImage(e.toString()),
+        type: SnackbarType.error,
       );
     }
   }
@@ -71,7 +76,10 @@ class ImagePickerWidget extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library, color: AppColors.primaryBlue),
+                leading: Icon(
+                  Icons.photo_library,
+                  color: AppColors.primaryBlue,
+                ),
                 title: Text(AppLocalizations.of(context)!.selectFromGallery),
                 onTap: () {
                   Navigator.pop(context);
@@ -144,7 +152,7 @@ class ImagePickerWidget extends StatelessWidget {
                 ],
               );
             }).toList(),
-            
+
             // Add image button
             GestureDetector(
               onTap: () => _showImageSourceDialog(context),
@@ -186,4 +194,3 @@ class ImagePickerWidget extends StatelessWidget {
     );
   }
 }
-

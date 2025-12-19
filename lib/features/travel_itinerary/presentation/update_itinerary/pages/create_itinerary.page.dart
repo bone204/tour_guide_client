@@ -12,6 +12,7 @@ import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/create_itinerary/create_itinerary_cubit.dart';
 import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class CreateItineraryPage extends StatefulWidget {
   final String province;
@@ -43,12 +44,10 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
           } else if (state.status == CreateItineraryStatus.success) {
             LoadingDialog.hide(context);
             eventBus.fire(CreateItinerarySuccessEvent());
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppLocalizations.of(context)!.createItinerarySuccess,
-                ),
-              ),
+            CustomSnackbar.show(
+              context,
+              message: AppLocalizations.of(context)!.createItinerarySuccess,
+              type: SnackbarType.success,
             );
             Navigator.pushReplacementNamed(
               context,
@@ -57,13 +56,12 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
             );
           } else if (state.status == CreateItineraryStatus.failure) {
             LoadingDialog.hide(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
+            CustomSnackbar.show(
+              context,
+              message:
                   state.errorMessage ??
-                      AppLocalizations.of(context)!.somethingWentWrong,
-                ),
-              ),
+                  AppLocalizations.of(context)!.somethingWentWrong,
+              type: SnackbarType.error,
             );
           }
         },

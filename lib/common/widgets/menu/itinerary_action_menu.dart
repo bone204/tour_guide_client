@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ItineraryActionMenu extends StatelessWidget {
+class ItineraryActionMenu extends StatefulWidget {
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 
@@ -13,44 +13,108 @@ class ItineraryActionMenu extends StatelessWidget {
   });
 
   @override
+  State<ItineraryActionMenu> createState() => _ItineraryActionMenuState();
+}
+
+class _ItineraryActionMenuState extends State<ItineraryActionMenu>
+    with SingleTickerProviderStateMixin {
+  bool _isOpen = false;
+  late AnimationController _controller;
+  late Animation<double> _expandAnimation;
+  late Animation<double> _rotateAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      value: _isOpen ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 250),
+      vsync: this,
+    );
+    _expandAnimation = CurvedAnimation(
+      curve: Curves.fastOutSlowIn,
+      parent: _controller,
+    );
+    _rotateAnimation = Tween<double>(
+      begin: 0.0,
+      end: 0.5,
+    ).animate(CurvedAnimation(curve: Curves.easeInOut, parent: _controller));
+  }
+
+  void _toggleMenu() {
+    setState(() {
+      _isOpen = !_isOpen;
+      if (_isOpen) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ExpandableFab(
-      type: ExpandableFabType.up,
-      distance: 70.h,
-      openButtonBuilder: RotateFloatingActionButtonBuilder(
-        child: const Icon(Icons.add),
-        fabSize: ExpandableFabSize.regular,
-        foregroundColor: Colors.white,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        shape: const CircleBorder(),
-      ),
-      closeButtonBuilder: DefaultFloatingActionButtonBuilder(
-        child: const Icon(Icons.close),
-        fabSize: ExpandableFabSize.small,
-        foregroundColor: Colors.white,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        shape: const CircleBorder(),
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        FloatingActionButton.small(
-          heroTag: 'edit_fab',
-          onPressed: onEdit,
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          child: Icon(
-            Icons.edit_rounded,
-            color: Theme.of(context).colorScheme.primary,
+        if (_isOpen) ...[
+          _buildMenuItem(
+            onPressed: () {
+              _toggleMenu();
+              widget.onEdit();
+            },
+            icon: Icons.edit_rounded,
+            color: Theme.of(context).colorScheme.primaryContainer,
+            iconColor: Theme.of(context).colorScheme.primary,
+            heroTag: 'edit_fab',
           ),
-        ),
-        FloatingActionButton.small(
-          heroTag: 'delete_fab',
-          onPressed: onDelete,
-          backgroundColor: Theme.of(context).colorScheme.errorContainer,
-          child: Icon(
-            Icons.delete_rounded,
-            color: Theme.of(context).colorScheme.error,
+          SizedBox(height: 12.h),
+          _buildMenuItem(
+            onPressed: () {
+              _toggleMenu();
+              widget.onDelete();
+            },
+            icon: Icons.delete_rounded,
+            color: Theme.of(context).colorScheme.errorContainer,
+            iconColor: Theme.of(context).colorScheme.error,
+            heroTag: 'delete_fab',
+          ),
+          SizedBox(height: 12.h),
+        ],
+        FloatingActionButton(
+          onPressed: _toggleMenu,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          child: RotationTransition(
+            turns: _rotateAnimation,
+            child: Icon(Icons.add, size: 28.sp, color: Colors.white),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildMenuItem({
+    required VoidCallback onPressed,
+    required IconData icon,
+    required Color color,
+    required Color iconColor,
+    required String heroTag,
+  }) {
+    return ScaleTransition(
+      scale: _expandAnimation,
+      child: FloatingActionButton.small(
+        heroTag: heroTag,
+        onPressed: onPressed,
+        backgroundColor: color,
+        child: Icon(icon, color: iconColor),
+      ),
     );
   }
 }

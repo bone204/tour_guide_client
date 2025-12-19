@@ -4,6 +4,7 @@ import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/widgets/room_card.widget.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class HotelRoomListPage extends StatefulWidget {
   const HotelRoomListPage({super.key});
@@ -24,12 +25,10 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
         }).toList();
 
     if (selectedRoomBookings.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.pleaseSelectAtLeastOneRoom,
-          ),
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.pleaseSelectAtLeastOneRoom,
+        type: SnackbarType.warning,
       );
       return;
     }

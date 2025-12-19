@@ -1,5 +1,6 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 enum SeatStatus { available, selected, booked }
 
@@ -59,16 +60,12 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
         seatStatuses[index] = SeatStatus.selected;
         selectedSeats.add(index);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(
-                context,
-              )!.maxSeatsSelectedBus(widget.maxSeats),
-            ),
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 2),
-          ),
+        CustomSnackbar.show(
+          context,
+          message: AppLocalizations.of(
+            context,
+          )!.maxSeatsSelectedBus(widget.maxSeats),
+          type: SnackbarType.warning,
         );
       }
     });

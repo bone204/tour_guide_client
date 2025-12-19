@@ -17,6 +17,7 @@ import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/features/map/services/osm_service.dart';
 import 'package:tour_guide_app/features/map/services/osrm_service.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 part 'widgets/search_results_list.dart';
 part 'widgets/destination_marker.dart';

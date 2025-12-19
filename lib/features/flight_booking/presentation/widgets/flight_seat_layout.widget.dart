@@ -1,4 +1,5 @@
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 enum SeatStatus { available, selected, booked }
 
@@ -32,7 +33,7 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
     final config = _getSeatConfiguration();
     final totalRows = config['rows'] as int;
     final seatsPerRow = config['seatsPerRow'] as int;
-    
+
     // Random booked seats for demo
     final bookedSeats = [
       {'row': 2, 'col': 0},
@@ -45,7 +46,7 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
       {'row': 10, 'col': 5},
       {'row': 15, 'col': 2},
     ];
-    
+
     seatStatuses = List.generate(totalRows, (row) {
       return List.generate(seatsPerRow, (col) {
         // Check if this seat is booked
@@ -102,26 +103,28 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
 
     setState(() {
       final seatLabel = _getSeatLabel(row, col);
-      final seatIdentifier = {'row': row, 'column': col, 'seatLabel': seatLabel};
+      final seatIdentifier = {
+        'row': row,
+        'column': col,
+        'seatLabel': seatLabel,
+      };
       final alreadySelected = selectedSeats.any(
-        (s) => s['row'] == row && s['column'] == col
+        (s) => s['row'] == row && s['column'] == col,
       );
 
       if (alreadySelected) {
         seatStatuses[row][col] = SeatStatus.available;
-        selectedSeats.removeWhere(
-          (s) => s['row'] == row && s['column'] == col
-        );
+        selectedSeats.removeWhere((s) => s['row'] == row && s['column'] == col);
       } else if (selectedSeats.length < widget.maxSeats) {
         seatStatuses[row][col] = SeatStatus.selected;
         selectedSeats.add(seatIdentifier);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.maxSeatsSelected(widget.maxSeats)),
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 2),
-          ),
+        CustomSnackbar.show(
+          context,
+          message: AppLocalizations.of(
+            context,
+          )!.maxSeatsSelected(widget.maxSeats),
+          type: SnackbarType.warning,
         );
       }
     });
@@ -133,17 +136,17 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
   Widget build(BuildContext context) {
     final config = _getSeatConfiguration();
     final aisleAfter = config['aisleAfter'] as List<int>;
-    
+
     return Column(
       children: [
         // Legend
         _buildLegend(),
-        
+
         SizedBox(height: 20.h),
 
         // Plane Front Icon
         _buildPlaneHeader(),
-        
+
         SizedBox(height: 12.h),
 
         // Seat Layout
@@ -164,7 +167,7 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
             children: [
               // Column Labels
               _buildColumnLabels(config['seatsPerRow'] as int, aisleAfter),
-              
+
               SizedBox(height: 8.h),
 
               // Seats
@@ -209,17 +212,18 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
           child: Icon(
             Icons.airline_seat_recline_normal_rounded,
             size: 14.r,
-            color: color == AppColors.primaryBlue 
-                ? AppColors.primaryWhite 
-                : AppColors.textSubtitle,
+            color:
+                color == AppColors.primaryBlue
+                    ? AppColors.primaryWhite
+                    : AppColors.textSubtitle,
           ),
         ),
         SizedBox(width: 8.w),
         Text(
           label,
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                color: AppColors.textSubtitle,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.displayMedium?.copyWith(color: AppColors.textSubtitle),
         ),
       ],
     );
@@ -245,17 +249,13 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.flight_rounded,
-            color: AppColors.primaryWhite,
-            size: 24.r,
-          ),
+          Icon(Icons.flight_rounded, color: AppColors.primaryWhite, size: 24.r),
           SizedBox(width: 8.w),
           Text(
             'Đầu máy bay',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryWhite,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppColors.primaryWhite),
           ),
         ],
       ),
@@ -264,7 +264,7 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
 
   Widget _buildColumnLabels(int seatsPerRow, List<int> aisleAfter) {
     final columns = ['A', 'B', 'C', 'D', 'E', 'F'];
-    
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w),
       child: Row(
@@ -272,7 +272,7 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
         children: [
           // Row number space
           SizedBox(width: 35.w),
-          
+
           // Column labels with aisles
           ...List.generate(seatsPerRow, (col) {
             return [
@@ -284,9 +284,9 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
                 child: Text(
                   columns[col],
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: AppColors.primaryBlue,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: AppColors.primaryBlue,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ];
@@ -308,12 +308,12 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
             child: Text(
               '${row + 1}',
               style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                    color: AppColors.textSubtitle,
-                  ),
+                color: AppColors.textSubtitle,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
-          
+
           // Seats with aisles
           ...List.generate(seatStatuses[row].length, (col) {
             return [
@@ -331,7 +331,7 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
     final status = seatStatuses[row][col];
     Color backgroundColor;
     Color iconColor;
-    
+
     switch (status) {
       case SeatStatus.selected:
         backgroundColor = AppColors.primaryBlue;
@@ -384,9 +384,9 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
           Expanded(
             child: Text(
               'Đã chọn: ${selectedSeats.map((s) => s['seatLabel']).join(', ')}',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(color: AppColors.textSecondary),
             ),
           ),
         ],
@@ -394,4 +394,3 @@ class _FlightSeatLayoutWidgetState extends State<FlightSeatLayoutWidget> {
     );
   }
 }
-

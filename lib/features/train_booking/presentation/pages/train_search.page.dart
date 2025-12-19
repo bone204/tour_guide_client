@@ -7,6 +7,7 @@ import 'package:tour_guide_app/common/widgets/selector/passenger_counter.widget.
 import 'package:tour_guide_app/common/widgets/selector/trip_type.widget.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/train_booking/presentation/pages/train_list.page.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class TrainSearchPage extends StatefulWidget {
   const TrainSearchPage({Key? key}) : super(key: key);
@@ -73,11 +74,11 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
                   Text(
                     isFromStation ? 'Chọn ga đi' : 'Chọn ga đến',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                  
+
                   SizedBox(height: 16.h),
 
                   // Stations List
@@ -127,46 +128,39 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
   void _navigateToTrainList() {
     // Validation
     if (fromStation == null || toStation == null || selectedDate == null) {
-      _showError('Vui lòng điền đầy đủ thông tin');
+      _showError(AppLocalizations.of(context)!.fillAllFields);
       return;
     }
 
     if (selectedTripType == TripType.roundTrip && returnDate == null) {
-      _showError('Vui lòng chọn ngày về');
+      _showError(AppLocalizations.of(context)!.pleaseSelectReturnDate);
       return;
     }
 
-    if (selectedTripType == TripType.roundTrip && 
-        returnDate != null && 
+    if (selectedTripType == TripType.roundTrip &&
+        returnDate != null &&
         returnDate!.isBefore(selectedDate!)) {
-      _showError('Ngày về phải sau ngày đi');
+      _showError(AppLocalizations.of(context)!.invalidReturnDate);
       return;
     }
 
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (context) => TrainListPage(
-          fromStation: fromStation!,
-          toStation: toStation!,
-          date: selectedDate!,
-          passengerCount: passengerCount,
-          isRoundTrip: selectedTripType == TripType.roundTrip,
-          returnDate: returnDate,
-        ),
+        builder:
+            (context) => TrainListPage(
+              fromStation: fromStation!,
+              toStation: toStation!,
+              date: selectedDate!,
+              passengerCount: passengerCount,
+              isRoundTrip: selectedTripType == TripType.roundTrip,
+              returnDate: returnDate,
+            ),
       ),
     );
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-      ),
-    );
+    CustomSnackbar.show(context, message: message, type: SnackbarType.error);
   }
 
   @override
@@ -211,7 +205,7 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
                 color: AppColors.primaryBlue,
               ),
             ),
-            
+
             SizedBox(height: 16.h),
 
             // To Station
@@ -277,7 +271,7 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
                 setState(() => passengerCount = count);
               },
             ),
-            
+
             SizedBox(height: 32.h),
 
             // Search Button
@@ -293,4 +287,3 @@ class _TrainSearchPageState extends State<TrainSearchPage> {
     );
   }
 }
-

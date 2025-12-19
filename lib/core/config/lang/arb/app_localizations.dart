@@ -1658,7 +1658,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectReturnDate.
   ///
   /// In en, this message translates to:
-  /// **'Please select return date'**
+  /// **'Select Return Date'**
   String get selectReturnDate;
 
   /// No description provided for @selectDateAndTime.
@@ -1670,7 +1670,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectLocation.
   ///
   /// In en, this message translates to:
-  /// **'Select location'**
+  /// **'Select Location'**
   String get selectLocation;
 
   /// No description provided for @selectCheckInDate.
@@ -2870,7 +2870,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectDestination.
   ///
   /// In en, this message translates to:
-  /// **'Select destination'**
+  /// **'Select Destination'**
   String get selectDestination;
 
   /// No description provided for @noDestinationsFound.
@@ -3268,6 +3268,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please fill in all information'**
   String get fillAllFields;
+
+  /// No description provided for @pleaseSelectReturnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select return date'**
+  String get pleaseSelectReturnDate;
 
   /// No description provided for @invalidReturnDate.
   ///

@@ -799,13 +799,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectDepartureDate => 'Select Departure Date';
 
   @override
-  String get selectReturnDate => 'Please select return date';
+  String get selectReturnDate => 'Select Return Date';
 
   @override
   String get selectDateAndTime => 'Select Date and Time';
 
   @override
-  String get selectLocation => 'Select location';
+  String get selectLocation => 'Select Location';
 
   @override
   String get selectCheckInDate => 'Select Check In Date';
@@ -1453,7 +1453,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get itineraryUpdated => 'Itinerary updated';
 
   @override
-  String get selectDestination => 'Select destination';
+  String get selectDestination => 'Select Destination';
 
   @override
   String get noDestinationsFound => 'No destinations found';
@@ -1658,6 +1658,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fillAllFields => 'Please fill in all information';
+
+  @override
+  String get pleaseSelectReturnDate => 'Please select return date';
 
   @override
   String get invalidReturnDate => 'Return date must be after departure date';

@@ -1075,15 +1075,14 @@
   "statusSoldOut": "Sold Out",
   "statusSelected": "Selected",
   "statusEmpty": "Empty",
-  "selectLocation": "Select location",
   "selectDeparture": "Select departure point",
-  "selectDestination": "Select destination",
+
   "busTicketTitle": "ELECTRONIC BUS TICKET",
   "busCompany": "Bus Company",
-  "vehicleType": "Vehicle Type",
+
   "departureTime": "Departure Time",
   "arrivalTime": "Arrival Time",
-  "departureDate": "Departure Date",
+
   "seatNumber": "Seat Number",
   "passengerInfo": "Passenger Info",
   "driver": "Driver",
@@ -1093,10 +1092,9 @@
   "selectFoodType": "Select food type",
   "continueAction": "Continue",
   "fillAllFields": "Please fill in all information",
-  "selectReturnDate": "Please select return date",
+  "pleaseSelectReturnDate": "Please select return date",
   "invalidReturnDate": "Return date must be after departure date",
-  "carDetails": "Car Details",
-  "reviews": "Reviews",
+
   "about": "About",
   "photos": "Photos",
   "videos": "Videos",
@@ -1111,9 +1109,8 @@
   "ticketNote4": "Bring ID/CCCD when boarding",
   "selectedRoom": "Selected Room",
   "people": "people",
-  "statusEmpty": "Empty",
-  "statusBooked": "Booked",
-  "selectFoodType": "Select food type",
+
+
   "foodTypeAll": "All",
   "foodTypeVietnamese": "Vietnamese",
   "foodTypeAsian": "Asian",

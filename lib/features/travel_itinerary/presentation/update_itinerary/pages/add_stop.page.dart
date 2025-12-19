@@ -9,6 +9,7 @@ import 'package:tour_guide_app/features/destination/data/models/destination.dart
 import 'package:tour_guide_app/features/travel_itinerary/data/models/add_stop_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/add_stop/add_stop_cubit.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class AddStopPage extends StatefulWidget {
   final int itineraryId;
@@ -65,9 +66,11 @@ class _AddStopPageState extends State<AddStopPage> {
             eventBus.fire(StopAddedEvent());
             Navigator.pop(context, state.stop);
           } else if (state is AddStopFailure) {
-            ScaffoldMessenger.of(
+            CustomSnackbar.show(
               context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+              message: state.message,
+              type: SnackbarType.error,
+            );
           }
         },
         builder: (context, state) {
@@ -170,14 +173,13 @@ class _AddStopPageState extends State<AddStopPage> {
                           onPressed: () {
                             if (_startTimeController.text.isEmpty ||
                                 _endTimeController.text.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
+                              CustomSnackbar.show(
+                                context,
+                                message:
                                     AppLocalizations.of(
                                       context,
                                     )!.selectStartEndTimeError,
-                                  ),
-                                ),
+                                type: SnackbarType.warning,
                               );
                               return;
                             }

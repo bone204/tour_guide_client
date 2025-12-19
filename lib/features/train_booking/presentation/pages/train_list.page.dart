@@ -3,6 +3,7 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/train_booking/presentation/pages/train_detail.page.dart';
 import 'package:tour_guide_app/features/train_booking/presentation/widgets/train_card.widget.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class TrainListPage extends StatefulWidget {
   final String fromStation;
@@ -26,7 +27,7 @@ class TrainListPage extends StatefulWidget {
   State<TrainListPage> createState() => _TrainListPageState();
 }
 
-class _TrainListPageState extends State<TrainListPage> 
+class _TrainListPageState extends State<TrainListPage>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   Map<String, dynamic>? selectedDepartureTrain;
@@ -72,26 +73,29 @@ class _TrainListPageState extends State<TrainListPage>
 
           // Train List
           Expanded(
-            child: trains.isEmpty
-                ? _buildEmptyState()
-                : ListView.builder(
-                    padding: EdgeInsets.all(16.r),
-                    itemCount: trains.length,
-                    itemBuilder: (context, index) {
-                      final train = trains[index];
-                      return TrainCard(
-                        trainNumber: train['trainNumber'],
-                        trainType: train['trainType'],
-                        departureTime: train['departureTime'],
-                        arrivalTime: train['arrivalTime'],
-                        duration: train['duration'],
-                        availableSeats: Map<String, int>.from(train['availableSeats']),
-                        prices: Map<String, double>.from(train['prices']),
-                        rating: train['rating'],
-                        onTap: () => _navigateToTrainDetail(train),
-                      );
-                    },
-                  ),
+            child:
+                trains.isEmpty
+                    ? _buildEmptyState()
+                    : ListView.builder(
+                      padding: EdgeInsets.all(16.r),
+                      itemCount: trains.length,
+                      itemBuilder: (context, index) {
+                        final train = trains[index];
+                        return TrainCard(
+                          trainNumber: train['trainNumber'],
+                          trainType: train['trainType'],
+                          departureTime: train['departureTime'],
+                          arrivalTime: train['arrivalTime'],
+                          duration: train['duration'],
+                          availableSeats: Map<String, int>.from(
+                            train['availableSeats'],
+                          ),
+                          prices: Map<String, double>.from(train['prices']),
+                          rating: train['rating'],
+                          onTap: () => _navigateToTrainDetail(train),
+                        );
+                      },
+                    ),
           ),
         ],
       ),
@@ -197,39 +201,45 @@ class _TrainListPageState extends State<TrainListPage>
       children: [
         // Train List
         Expanded(
-          child: trains.isEmpty
-              ? _buildEmptyState()
-              : ListView.builder(
-                  padding: EdgeInsets.all(16.r),
-                  itemCount: trains.length,
-                  itemBuilder: (context, index) {
-                    final train = trains[index];
-                    final isSelected = isDeparture
-                        ? (selectedDepartureTrain != null && selectedDepartureTrain!['id'] == train['id'])
-                        : (selectedReturnTrain != null && selectedReturnTrain!['id'] == train['id']);
+          child:
+              trains.isEmpty
+                  ? _buildEmptyState()
+                  : ListView.builder(
+                    padding: EdgeInsets.all(16.r),
+                    itemCount: trains.length,
+                    itemBuilder: (context, index) {
+                      final train = trains[index];
+                      final isSelected =
+                          isDeparture
+                              ? (selectedDepartureTrain != null &&
+                                  selectedDepartureTrain!['id'] == train['id'])
+                              : (selectedReturnTrain != null &&
+                                  selectedReturnTrain!['id'] == train['id']);
 
-                    return TrainCard(
-                      trainNumber: train['trainNumber'],
-                      trainType: train['trainType'],
-                      departureTime: train['departureTime'],
-                      arrivalTime: train['arrivalTime'],
-                      duration: train['duration'],
-                      availableSeats: Map<String, int>.from(train['availableSeats']),
-                      prices: Map<String, double>.from(train['prices']),
-                      rating: train['rating'],
-                      isSelected: isSelected,
-                      onTap: () {
-                        setState(() {
-                          if (isDeparture) {
-                            selectedDepartureTrain = train;
-                          } else {
-                            selectedReturnTrain = train;
-                          }
-                        });
-                      },
-                    );
-                  },
-                ),
+                      return TrainCard(
+                        trainNumber: train['trainNumber'],
+                        trainType: train['trainType'],
+                        departureTime: train['departureTime'],
+                        arrivalTime: train['arrivalTime'],
+                        duration: train['duration'],
+                        availableSeats: Map<String, int>.from(
+                          train['availableSeats'],
+                        ),
+                        prices: Map<String, double>.from(train['prices']),
+                        rating: train['rating'],
+                        isSelected: isSelected,
+                        onTap: () {
+                          setState(() {
+                            if (isDeparture) {
+                              selectedDepartureTrain = train;
+                            } else {
+                              selectedReturnTrain = train;
+                            }
+                          });
+                        },
+                      );
+                    },
+                  ),
         ),
       ],
     );
@@ -237,14 +247,18 @@ class _TrainListPageState extends State<TrainListPage>
 
   Widget _buildRoundTripBottomBar() {
     // Get cheapest price from each train
-    final departurePrices = (selectedDepartureTrain!['prices'] as Map<String, dynamic>)
-        .values.map((e) => (e as num).toDouble()).toList();
+    final departurePrices =
+        (selectedDepartureTrain!['prices'] as Map<String, dynamic>).values
+            .map((e) => (e as num).toDouble())
+            .toList();
     final departurePrice = departurePrices.reduce((a, b) => a < b ? a : b);
-    
-    final returnPrices = (selectedReturnTrain!['prices'] as Map<String, dynamic>)
-        .values.map((e) => (e as num).toDouble()).toList();
+
+    final returnPrices =
+        (selectedReturnTrain!['prices'] as Map<String, dynamic>).values
+            .map((e) => (e as num).toDouble())
+            .toList();
     final returnPrice = returnPrices.reduce((a, b) => a < b ? a : b);
-    
+
     final totalPrice = departurePrice + returnPrice;
 
     return Container(
@@ -271,15 +285,15 @@ class _TrainListPageState extends State<TrainListPage>
                   Text(
                     'Tổng tiền (từ)',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtitle,
-                        ),
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     '${totalPrice.toStringAsFixed(0)}đ',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: AppColors.primaryBlue,
-                        ),
+                      color: AppColors.primaryBlue,
+                    ),
                   ),
                 ],
               ),
@@ -298,8 +312,8 @@ class _TrainListPageState extends State<TrainListPage>
                 child: Text(
                   'Tiếp tục',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.primaryWhite,
-                      ),
+                    color: AppColors.primaryWhite,
+                  ),
                 ),
               ),
             ),
@@ -310,11 +324,10 @@ class _TrainListPageState extends State<TrainListPage>
   }
 
   void _navigateToRoundTripDetail() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context)!.bothTripsSelected),
-        behavior: SnackBarBehavior.floating,
-      ),
+    CustomSnackbar.show(
+      context,
+      message: AppLocalizations.of(context)!.bothTripsSelected,
+      type: SnackbarType.info,
     );
   }
 
@@ -366,7 +379,7 @@ class _TrainListPageState extends State<TrainListPage>
               ),
             ),
           ),
-          
+
           // Content
           Padding(
             padding: EdgeInsets.all(20.r),
@@ -377,26 +390,35 @@ class _TrainListPageState extends State<TrainListPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 7.h,
+                      ),
                       decoration: BoxDecoration(
-                        color: widget.isRoundTrip 
-                            ? AppColors.primaryOrange 
-                            : AppColors.primaryWhite.withOpacity(0.25),
+                        color:
+                            widget.isRoundTrip
+                                ? AppColors.primaryOrange
+                                : AppColors.primaryWhite.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(20.r),
-                        boxShadow: widget.isRoundTrip ? [
-                          BoxShadow(
-                            color: AppColors.primaryOrange.withOpacity(0.4),
-                            blurRadius: 8,
-                            offset: Offset(0, 2),
-                          ),
-                        ] : null,
+                        boxShadow:
+                            widget.isRoundTrip
+                                ? [
+                                  BoxShadow(
+                                    color: AppColors.primaryOrange.withOpacity(
+                                      0.4,
+                                    ),
+                                    blurRadius: 8,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ]
+                                : null,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            widget.isRoundTrip 
-                                ? Icons.repeat_rounded 
+                            widget.isRoundTrip
+                                ? Icons.repeat_rounded
                                 : Icons.arrow_forward_rounded,
                             size: 16.r,
                             color: AppColors.primaryWhite,
@@ -404,15 +426,17 @@ class _TrainListPageState extends State<TrainListPage>
                           SizedBox(width: 6.w),
                           Text(
                             widget.isRoundTrip ? 'Khứ hồi' : 'Một chiều',
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  color: AppColors.primaryWhite,
-                                ),
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(color: AppColors.primaryWhite),
                           ),
                         ],
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 7.h,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryWhite.withOpacity(0.25),
                         borderRadius: BorderRadius.circular(20.r),
@@ -421,7 +445,7 @@ class _TrainListPageState extends State<TrainListPage>
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SvgPicture.asset(
-                           AppIcons.user,
+                            AppIcons.user,
                             width: 16.r,
                             height: 16.r,
                             color: AppColors.primaryWhite,
@@ -429,9 +453,8 @@ class _TrainListPageState extends State<TrainListPage>
                           SizedBox(width: 6.w),
                           Text(
                             '${widget.passengerCount} người',
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  color: AppColors.primaryWhite,
-                                ),
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(color: AppColors.primaryWhite),
                           ),
                         ],
                       ),
@@ -460,7 +483,9 @@ class _TrainListPageState extends State<TrainListPage>
                                     color: AppColors.primaryWhite,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -468,29 +493,37 @@ class _TrainListPageState extends State<TrainListPage>
                                 SizedBox(width: 8.w),
                                 Text(
                                   'Ga đi',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.fromStation,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               '${widget.date.day} Th${widget.date.month}, ${widget.date.year}',
-                              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                    color: AppColors.primaryWhite.withOpacity(0.8),
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.displayMedium?.copyWith(
+                                color: AppColors.primaryWhite.withOpacity(0.8),
+                              ),
                             ),
                           ],
                         ),
@@ -524,15 +557,17 @@ class _TrainListPageState extends State<TrainListPage>
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primaryWhite.withOpacity(0.3),
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.3,
+                                    ),
                                     blurRadius: 8,
                                     offset: Offset(0, 2),
                                   ),
                                 ],
                               ),
                               child: Icon(
-                                widget.isRoundTrip 
-                                    ? Icons.swap_horiz_rounded 
+                                widget.isRoundTrip
+                                    ? Icons.swap_horiz_rounded
                                     : Icons.train_rounded,
                                 color: AppColors.primaryBlue,
                                 size: 20.r,
@@ -567,9 +602,13 @@ class _TrainListPageState extends State<TrainListPage>
                               children: [
                                 Text(
                                   'Ga đến',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(width: 8.w),
                                 Container(
@@ -579,7 +618,9 @@ class _TrainListPageState extends State<TrainListPage>
                                     color: AppColors.primaryOrange,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -589,11 +630,13 @@ class _TrainListPageState extends State<TrainListPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.toStation,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.right,
@@ -602,9 +645,13 @@ class _TrainListPageState extends State<TrainListPage>
                             if (widget.isRoundTrip && widget.returnDate != null)
                               Text(
                                 '${widget.returnDate!.day} Th${widget.returnDate!.month}, ${widget.returnDate!.year}',
-                                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                      color: AppColors.primaryWhite.withOpacity(0.8),
-                                    ),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.displayMedium?.copyWith(
+                                  color: AppColors.primaryWhite.withOpacity(
+                                    0.8,
+                                  ),
+                                ),
                               )
                             else
                               SizedBox(height: 14.h),
@@ -635,16 +682,16 @@ class _TrainListPageState extends State<TrainListPage>
           SizedBox(height: 16.h),
           Text(
             'Không tìm thấy chuyến tàu',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(color: AppColors.textSubtitle),
           ),
           SizedBox(height: 8.h),
           Text(
             'Vui lòng thử lại với bộ lọc khác',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
           ),
         ],
       ),
@@ -764,15 +811,15 @@ class _TrainListPageState extends State<TrainListPage>
   void _navigateToTrainDetail(Map<String, dynamic> train) {
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (context) => TrainDetailPage(
-          trainData: train,
-          fromStation: widget.fromStation,
-          toStation: widget.toStation,
-          date: widget.date,
-          passengerCount: widget.passengerCount,
-        ),
+        builder:
+            (context) => TrainDetailPage(
+              trainData: train,
+              fromStation: widget.fromStation,
+              toStation: widget.toStation,
+              date: widget.date,
+              passengerCount: widget.passengerCount,
+            ),
       ),
     );
   }
 }
-

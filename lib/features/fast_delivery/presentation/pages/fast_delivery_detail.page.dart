@@ -9,14 +9,12 @@ import 'package:tour_guide_app/features/fast_delivery/presentation/widgets/deliv
 import 'package:tour_guide_app/features/fast_delivery/presentation/widgets/image_picker_widget.dart';
 import 'package:tour_guide_app/features/fast_delivery/presentation/widgets/shipping_provider_selector.widget.dart';
 import 'package:tour_guide_app/features/fast_delivery/presentation/widgets/vehicle_selector.widget.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class FastDeliveryDetailPage extends StatefulWidget {
   final DeliveryOrder initialOrder;
 
-  const FastDeliveryDetailPage({
-    super.key,
-    required this.initialOrder,
-  });
+  const FastDeliveryDetailPage({super.key, required this.initialOrder});
 
   @override
   State<FastDeliveryDetailPage> createState() => _FastDeliveryDetailPageState();
@@ -25,7 +23,7 @@ class FastDeliveryDetailPage extends StatefulWidget {
 class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
   late DeliveryOrder _deliveryOrder;
   final _requirementsController = TextEditingController();
-  
+
   // Data
   final List<ShippingProvider> _providers = ShippingProvider.getMockProviders();
   ShippingProvider? _selectedProvider;
@@ -46,27 +44,31 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
 
   double _calculateTotalCost() {
     if (_selectedVehicle == null) return 0;
-    
+
     // Simple calculation: base price + distance-based price
     // For demo: assume 5km distance
     final distance = 5.0;
     final distancePrice = distance * 5000; // 5000đ per km
     final totalCost = _selectedVehicle!.basePrice + distancePrice;
-    
+
     return totalCost;
   }
 
   void _confirmOrder() {
     if (_selectedProvider == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectDeliveryCompany)),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.pleaseSelectDeliveryCompany,
+        type: SnackbarType.warning,
       );
       return;
     }
-    
+
     if (_selectedVehicle == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectVehicleType)),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.pleaseSelectVehicleType,
+        type: SnackbarType.warning,
       );
       return;
     }
@@ -85,10 +87,9 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
     );
 
     // Navigate to bill page
-    Navigator.of(context).pushNamed(
-      AppRouteConstant.fastDeliveryBill,
-      arguments: updatedOrder,
-    );
+    Navigator.of(
+      context,
+    ).pushNamed(AppRouteConstant.fastDeliveryBill, arguments: updatedOrder);
   }
 
   @override
@@ -116,9 +117,9 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
                   receiverPhone: _deliveryOrder.receiverPhone,
                   receiverAddress: _deliveryOrder.receiverAddress,
                 ),
-                
+
                 SizedBox(height: 24.h),
-                
+
                 // Shipping provider selector
                 ShippingProviderSelector(
                   selectedProvider: _selectedProvider,
@@ -130,9 +131,9 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
                     });
                   },
                 ),
-                
+
                 SizedBox(height: 20.h),
-                
+
                 // Vehicle selector (only show if provider is selected)
                 if (_selectedProvider != null) ...[
                   VehicleSelector(
@@ -146,7 +147,7 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
                   ),
                   SizedBox(height: 20.h),
                 ],
-                
+
                 // Image picker
                 ImagePickerWidget(
                   images: _packageImages,
@@ -156,22 +157,23 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
                     });
                   },
                 ),
-                
+
                 SizedBox(height: 20.h),
-                
+
                 // Special requirements
                 CustomTextField(
                   label: AppLocalizations.of(context)!.deliveryRequirements,
-                  placeholder: AppLocalizations.of(context)!.deliveryRequirements,
+                  placeholder:
+                      AppLocalizations.of(context)!.deliveryRequirements,
                   controller: _requirementsController,
                   maxLines: 3,
                 ),
-                
+
                 SizedBox(height: 100.h), // Space for bottom bar
               ],
             ),
           ),
-          
+
           // Bottom bar with total cost and confirm button
           Positioned(
             left: 0,
@@ -231,4 +233,3 @@ class _FastDeliveryDetailPageState extends State<FastDeliveryDetailPage> {
     );
   }
 }
-
