@@ -1658,7 +1658,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectReturnDate.
   ///
   /// In en, this message translates to:
-  /// **'Select Return Date'**
+  /// **'Please select return date'**
   String get selectReturnDate;
 
   /// No description provided for @selectDateAndTime.
@@ -1670,7 +1670,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectLocation.
   ///
   /// In en, this message translates to:
-  /// **'Select Location'**
+  /// **'Select location'**
   String get selectLocation;
 
   /// No description provided for @selectCheckInDate.
@@ -2870,7 +2870,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectDestination.
   ///
   /// In en, this message translates to:
-  /// **'Select Destination'**
+  /// **'Select destination'**
   String get selectDestination;
 
   /// No description provided for @noDestinationsFound.
@@ -2986,6 +2986,444 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Spin Again'**
   String get spinAgain;
+
+  /// No description provided for @yourVehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Vehicles'**
+  String get yourVehicles;
+
+  /// No description provided for @readyToAddVehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to Add Vehicles'**
+  String get readyToAddVehicles;
+
+  /// No description provided for @contractApprovedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your contract has been approved! Start adding your vehicles to earn money from rentals.'**
+  String get contractApprovedMessage;
+
+  /// No description provided for @contractApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Approved!'**
+  String get contractApproved;
+
+  /// No description provided for @whatYouCanDoNow.
+  ///
+  /// In en, this message translates to:
+  /// **'What you can do now:'**
+  String get whatYouCanDoNow;
+
+  /// No description provided for @benefitAddUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Add unlimited vehicles to your account'**
+  String get benefitAddUnlimited;
+
+  /// No description provided for @benefitUploadPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload clear photos and documentation'**
+  String get benefitUploadPhotos;
+
+  /// No description provided for @benefitSetPrices.
+  ///
+  /// In en, this message translates to:
+  /// **'Set your own rental prices'**
+  String get benefitSetPrices;
+
+  /// No description provided for @benefitVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Your vehicles will be visible to customers'**
+  String get benefitVisibility;
+
+  /// No description provided for @benefitStartEarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Start earning from the first rental'**
+  String get benefitStartEarning;
+
+  /// No description provided for @noRentalContractYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Rental Contract Yet'**
+  String get noRentalContractYet;
+
+  /// No description provided for @registerContractBeforeListing.
+  ///
+  /// In en, this message translates to:
+  /// **'Register a rental contract before listing your vehicles for rent.'**
+  String get registerContractBeforeListing;
+
+  /// No description provided for @registerRentalContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Register Rental Contract'**
+  String get registerRentalContract;
+
+  /// No description provided for @whyRegisterContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Why register a rental contract first?'**
+  String get whyRegisterContract;
+
+  /// No description provided for @benefitReuseInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide owner information once and reuse it later'**
+  String get benefitReuseInfo;
+
+  /// No description provided for @benefitVerify.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Traveline to verify payouts and legal docs'**
+  String get benefitVerify;
+
+  /// No description provided for @benefitListUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock the ability to list unlimited vehicles'**
+  String get benefitListUnlimited;
+
+  /// No description provided for @benefitSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Get dedicated support for future rentals'**
+  String get benefitSupport;
+
+  /// No description provided for @cannotLoadVehicleInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot load vehicle information'**
+  String get cannotLoadVehicleInfo;
+
+  /// No description provided for @createdOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Created on {date}'**
+  String createdOn(String date);
+
+  /// No description provided for @contractId.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract #{id}'**
+  String contractId(String id);
+
+  /// No description provided for @idWithPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'ID: {id}'**
+  String idWithPrefix(String id);
+
+  /// No description provided for @connectionLostTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection Lost'**
+  String get connectionLostTitle;
+
+  /// No description provided for @connectionLostContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Network connection interrupted. Please check and try again.'**
+  String get connectionLostContent;
+
+  /// No description provided for @serverNoResponseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Server Not Responding'**
+  String get serverNoResponseTitle;
+
+  /// No description provided for @serverNoResponseContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Server response timed out. Please try again later.'**
+  String get serverNoResponseContent;
+
+  /// No description provided for @discountPointsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount (points)'**
+  String get discountPointsLabel;
+
+  /// No description provided for @payWithPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with points'**
+  String get payWithPoints;
+
+  /// No description provided for @statusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get statusAvailable;
+
+  /// No description provided for @statusBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get statusBooked;
+
+  /// No description provided for @statusSoldOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold Out'**
+  String get statusSoldOut;
+
+  /// No description provided for @statusSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get statusSelected;
+
+  /// No description provided for @statusEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty'**
+  String get statusEmpty;
+
+  /// No description provided for @selectDeparture.
+  ///
+  /// In en, this message translates to:
+  /// **'Select departure point'**
+  String get selectDeparture;
+
+  /// No description provided for @busTicketTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ELECTRONIC BUS TICKET'**
+  String get busTicketTitle;
+
+  /// No description provided for @busCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus Company'**
+  String get busCompany;
+
+  /// No description provided for @departureTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure Time'**
+  String get departureTime;
+
+  /// No description provided for @arrivalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival Time'**
+  String get arrivalTime;
+
+  /// No description provided for @seatNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Seat Number'**
+  String get seatNumber;
+
+  /// No description provided for @passengerInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Passenger Info'**
+  String get passengerInfo;
+
+  /// No description provided for @driver.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver'**
+  String get driver;
+
+  /// No description provided for @selectedSeats.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Seats'**
+  String get selectedSeats;
+
+  /// No description provided for @roomQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Room Quantity'**
+  String get roomQuantity;
+
+  /// No description provided for @roomNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Room not available'**
+  String get roomNotAvailable;
+
+  /// No description provided for @selectFoodType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select food type'**
+  String get selectFoodType;
+
+  /// No description provided for @continueAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueAction;
+
+  /// No description provided for @fillAllFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in all information'**
+  String get fillAllFields;
+
+  /// No description provided for @invalidReturnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Return date must be after departure date'**
+  String get invalidReturnDate;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @photos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photos;
+
+  /// No description provided for @videos.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos'**
+  String get videos;
+
+  /// No description provided for @ticketNoteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Important Note'**
+  String get ticketNoteTitle;
+
+  /// No description provided for @ticketNote1.
+  ///
+  /// In en, this message translates to:
+  /// **'Show QR code to driver for confirmation'**
+  String get ticketNote1;
+
+  /// No description provided for @ticketNote2.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrive 15 minutes before departure'**
+  String get ticketNote2;
+
+  /// No description provided for @ticketNote3.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket is valid for selected date and time only'**
+  String get ticketNote3;
+
+  /// No description provided for @bookingCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Code'**
+  String get bookingCodeLabel;
+
+  /// No description provided for @departure.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure'**
+  String get departure;
+
+  /// No description provided for @arrival.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival'**
+  String get arrival;
+
+  /// No description provided for @quantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get quantity;
+
+  /// No description provided for @ticketNote4.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring ID/CCCD when boarding'**
+  String get ticketNote4;
+
+  /// No description provided for @selectedRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Room'**
+  String get selectedRoom;
+
+  /// No description provided for @people.
+  ///
+  /// In en, this message translates to:
+  /// **'people'**
+  String get people;
+
+  /// No description provided for @foodTypeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get foodTypeAll;
+
+  /// No description provided for @foodTypeVietnamese.
+  ///
+  /// In en, this message translates to:
+  /// **'Vietnamese'**
+  String get foodTypeVietnamese;
+
+  /// No description provided for @foodTypeAsian.
+  ///
+  /// In en, this message translates to:
+  /// **'Asian'**
+  String get foodTypeAsian;
+
+  /// No description provided for @foodTypeEuropean.
+  ///
+  /// In en, this message translates to:
+  /// **'European'**
+  String get foodTypeEuropean;
+
+  /// No description provided for @foodTypeSeafood.
+  ///
+  /// In en, this message translates to:
+  /// **'Seafood'**
+  String get foodTypeSeafood;
+
+  /// No description provided for @foodTypeHotpot.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotpot'**
+  String get foodTypeHotpot;
+
+  /// No description provided for @foodTypeBBQ.
+  ///
+  /// In en, this message translates to:
+  /// **'BBQ'**
+  String get foodTypeBBQ;
+
+  /// No description provided for @foodTypeVegetarian.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegetarian'**
+  String get foodTypeVegetarian;
+
+  /// No description provided for @foodTypeKorean.
+  ///
+  /// In en, this message translates to:
+  /// **'Korean'**
+  String get foodTypeKorean;
+
+  /// No description provided for @foodTypeJapanese.
+  ///
+  /// In en, this message translates to:
+  /// **'Japanese'**
+  String get foodTypeJapanese;
+
+  /// No description provided for @foodTypeFastFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast Food'**
+  String get foodTypeFastFood;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

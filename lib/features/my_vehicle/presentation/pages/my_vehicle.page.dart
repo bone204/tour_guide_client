@@ -233,7 +233,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                           ),
                           SizedBox(width: 8.w),
                           Text(
-                            'Add Vehicle',
+                            AppLocalizations.of(context)!.addVehicle,
                             style: Theme.of(
                               context,
                             ).textTheme.bodyLarge?.copyWith(
@@ -248,7 +248,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                     SizedBox(height: 24.h),
                     // Vehicles list
                     Text(
-                      'Your Vehicles',
+                      AppLocalizations.of(context)!.yourVehicles,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -301,7 +301,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
               SizedBox(height: 24.h),
               // Title
               Text(
-                'Ready to Add Vehicles',
+                AppLocalizations.of(context)!.readyToAddVehicles,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
@@ -309,7 +309,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
               SizedBox(height: 12.h),
               // Description
               Text(
-                'Your contract has been approved! Start adding your vehicles to earn money from rentals.',
+                AppLocalizations.of(context)!.contractApprovedMessage,
                 style: Theme.of(
                   context,
                 ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
@@ -352,7 +352,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                       ),
                       SizedBox(width: 8.w),
                       Text(
-                        'Add Vehicle',
+                        AppLocalizations.of(context)!.addVehicle,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: AppColors.primaryWhite,
                           fontWeight: FontWeight.w700,
@@ -395,7 +395,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                         SizedBox(width: 12.w),
                         Expanded(
                           child: Text(
-                            'Contract Approved!',
+                            AppLocalizations.of(context)!.contractApproved,
                             style: Theme.of(
                               context,
                             ).textTheme.bodyLarge?.copyWith(
@@ -408,7 +408,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                     ),
                     SizedBox(height: 16.h),
                     Text(
-                      'What you can do now:',
+                      AppLocalizations.of(context)!.whatYouCanDoNow,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -417,31 +417,31 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                     _buildBenefitItem(
                       context,
                       icon: Icons.add_circle_outline,
-                      text: 'Add unlimited vehicles to your account',
+                      text: AppLocalizations.of(context)!.benefitAddUnlimited,
                     ),
                     SizedBox(height: 8.h),
                     _buildBenefitItem(
                       context,
                       icon: Icons.camera_alt_outlined,
-                      text: 'Upload clear photos and documentation',
+                      text: AppLocalizations.of(context)!.benefitUploadPhotos,
                     ),
                     SizedBox(height: 8.h),
                     _buildBenefitItem(
                       context,
                       icon: Icons.attach_money,
-                      text: 'Set your own rental prices',
+                      text: AppLocalizations.of(context)!.benefitSetPrices,
                     ),
                     SizedBox(height: 8.h),
                     _buildBenefitItem(
                       context,
                       icon: Icons.visibility_outlined,
-                      text: 'Your vehicles will be visible to customers',
+                      text: AppLocalizations.of(context)!.benefitVisibility,
                     ),
                     SizedBox(height: 8.h),
                     _buildBenefitItem(
                       context,
                       icon: Icons.trending_up,
-                      text: 'Start earning from the first rental',
+                      text: AppLocalizations.of(context)!.benefitStartEarning,
                     ),
                   ],
                 ),
@@ -519,14 +519,16 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                       SizedBox(height: 24.h),
                       // Title
                       Text(
-                        'No Rental Contract Yet',
+                        AppLocalizations.of(context)!.noRentalContractYet,
                         style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(fontWeight: FontWeight.w700),
                       ),
                       SizedBox(height: 12.h),
                       // Description
                       Text(
-                        'Register a rental contract before listing your vehicles for rent.',
+                        AppLocalizations.of(
+                          context,
+                        )!.registerContractBeforeListing,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSubtitle,
                         ),
@@ -564,7 +566,9 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                               ),
                               SizedBox(width: 8.w),
                               Text(
-                                'Register Rental Contract',
+                                AppLocalizations.of(
+                                  context,
+                                )!.registerRentalContract,
                                 style: Theme.of(
                                   context,
                                 ).textTheme.bodyLarge?.copyWith(
@@ -593,7 +597,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Why register a rental contract first?',
+                              AppLocalizations.of(context)!.whyRegisterContract,
                               style: Theme.of(context).textTheme.bodyLarge
                                   ?.copyWith(fontWeight: FontWeight.w700),
                             ),
@@ -602,27 +606,31 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                               context,
                               icon: Icons.edit_document,
                               text:
-                                  'Provide owner information once and reuse it later',
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.benefitReuseInfo,
                             ),
                             SizedBox(height: 8.h),
                             _buildBenefitItem(
                               context,
                               icon: Icons.security,
-                              text:
-                                  'Enable Traveline to verify payouts and legal docs',
+                              text: AppLocalizations.of(context)!.benefitVerify,
                             ),
                             SizedBox(height: 8.h),
                             _buildBenefitItem(
                               context,
                               icon: Icons.garage_outlined,
                               text:
-                                  'Unlock the ability to list unlimited vehicles',
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.benefitListUnlimited,
                             ),
                             SizedBox(height: 8.h),
                             _buildBenefitItem(
                               context,
                               icon: Icons.support_agent,
-                              text: 'Get dedicated support for future rentals',
+                              text:
+                                  AppLocalizations.of(context)!.benefitSupport,
                             ),
                           ],
                         ),
@@ -662,7 +670,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                       ),
                       SizedBox(height: 16.h),
                       Text(
-                        'Error',
+                        AppLocalizations.of(context)!.error,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
@@ -691,7 +699,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                           ),
                         ),
                         child: Text(
-                          'Retry',
+                          AppLocalizations.of(context)!.retry,
                           style: Theme.of(
                             context,
                           ).textTheme.bodyLarge?.copyWith(

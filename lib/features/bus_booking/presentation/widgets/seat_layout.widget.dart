@@ -30,10 +30,15 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
   }
 
   void _initializeSeatStatuses() {
-    final totalSeats = widget.busType.contains('40') ? 40 : 
-                       widget.busType.contains('45') ? 45 : 
-                       widget.busType.contains('34') ? 34 : 22;
-    
+    final totalSeats =
+        widget.busType.contains('40')
+            ? 40
+            : widget.busType.contains('45')
+            ? 45
+            : widget.busType.contains('34')
+            ? 34
+            : 22;
+
     // Random booked seats for demo
     seatStatuses = List.generate(totalSeats, (index) {
       if ([3, 7, 12, 15, 23, 28, 31].contains(index)) {
@@ -56,7 +61,11 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.maxSeatsSelectedBus(widget.maxSeats)),
+            content: Text(
+              AppLocalizations.of(
+                context,
+              )!.maxSeatsSelectedBus(widget.maxSeats),
+            ),
             behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 2),
           ),
@@ -69,14 +78,14 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final isLimousine = widget.busType.contains('Limousine') || 
-                        widget.busType.contains('22');
-    
+    final isLimousine =
+        widget.busType.contains('Limousine') || widget.busType.contains('22');
+
     return Column(
       children: [
         // Legend
         _buildLegend(),
-        
+
         SizedBox(height: 20.h),
 
         // Seat Layout
@@ -97,12 +106,12 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
             children: [
               // Driver section
               _buildDriverSection(),
-              
+
               SizedBox(height: 16.h),
 
               // Seats
-              isLimousine 
-                  ? _buildLimousineSeatLayout() 
+              isLimousine
+                  ? _buildLimousineSeatLayout()
                   : _buildStandardSeatLayout(),
             ],
           ),
@@ -120,9 +129,18 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildLegendItem(AppColors.textSubtitle.withOpacity(0.1), 'Trống'),
-        _buildLegendItem(AppColors.primaryBlue, 'Đang chọn'),
-        _buildLegendItem(AppColors.textSubtitle.withOpacity(0.4), 'Đã đặt'),
+        _buildLegendItem(
+          AppColors.textSubtitle.withOpacity(0.1),
+          AppLocalizations.of(context)!.statusEmpty,
+        ),
+        _buildLegendItem(
+          AppColors.primaryBlue,
+          AppLocalizations.of(context)!.statusSelected,
+        ),
+        _buildLegendItem(
+          AppColors.textSubtitle.withOpacity(0.4),
+          AppLocalizations.of(context)!.statusBooked,
+        ),
       ],
     );
   }
@@ -141,9 +159,9 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
         SizedBox(width: 8.w),
         Text(
           label,
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                color: AppColors.textSubtitle,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.displayMedium?.copyWith(color: AppColors.textSubtitle),
         ),
       ],
     );
@@ -170,8 +188,8 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
               Text(
                 'Tài xế',
                 style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      color: AppColors.primaryBlue,
-                    ),
+                  color: AppColors.primaryBlue,
+                ),
               ),
             ],
           ),
@@ -183,7 +201,7 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
   Widget _buildStandardSeatLayout() {
     // Standard bus: 4 seats per row (2-2 layout)
     final rows = (seatStatuses.length / 4).ceil();
-    
+
     return Column(
       children: List.generate(rows, (rowIndex) {
         return Padding(
@@ -194,15 +212,15 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
               _buildSeat(rowIndex * 4),
               SizedBox(width: 8.w),
               _buildSeat(rowIndex * 4 + 1),
-              
+
               // Aisle
               SizedBox(width: 24.w),
-              
+
               // Right side (2 seats)
-              if (rowIndex * 4 + 2 < seatStatuses.length) 
+              if (rowIndex * 4 + 2 < seatStatuses.length)
                 _buildSeat(rowIndex * 4 + 2),
               SizedBox(width: 8.w),
-              if (rowIndex * 4 + 3 < seatStatuses.length) 
+              if (rowIndex * 4 + 3 < seatStatuses.length)
                 _buildSeat(rowIndex * 4 + 3),
             ],
           ),
@@ -214,7 +232,7 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
   Widget _buildLimousineSeatLayout() {
     // Limousine: 2 beds per row (1-1 layout)
     final rows = (seatStatuses.length / 2).ceil();
-    
+
     return Column(
       children: List.generate(rows, (rowIndex) {
         return Padding(
@@ -224,7 +242,7 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
             children: [
               // Left bed
               _buildBedSeat(rowIndex * 2),
-              
+
               // Right bed
               if (rowIndex * 2 + 1 < seatStatuses.length)
                 _buildBedSeat(rowIndex * 2 + 1),
@@ -240,7 +258,7 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
 
     final status = seatStatuses[index];
     Color backgroundColor;
-    
+
     switch (status) {
       case SeatStatus.selected:
         backgroundColor = AppColors.primaryBlue;
@@ -265,11 +283,12 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
           child: Text(
             '${index + 1}',
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: status == SeatStatus.selected 
-                      ? AppColors.primaryWhite 
+              color:
+                  status == SeatStatus.selected
+                      ? AppColors.primaryWhite
                       : AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),
@@ -281,7 +300,7 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
 
     final status = seatStatuses[index];
     Color backgroundColor;
-    
+
     switch (status) {
       case SeatStatus.selected:
         backgroundColor = AppColors.primaryBlue;
@@ -302,9 +321,10 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(8.r),
           border: Border.all(
-            color: status == SeatStatus.selected 
-                ? AppColors.primaryBlue.withOpacity(0.5)
-                : Colors.transparent,
+            color:
+                status == SeatStatus.selected
+                    ? AppColors.primaryBlue.withOpacity(0.5)
+                    : Colors.transparent,
             width: 2,
           ),
         ),
@@ -315,19 +335,21 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
               Icon(
                 Icons.airline_seat_flat_rounded,
                 size: 24.r,
-                color: status == SeatStatus.selected 
-                    ? AppColors.primaryWhite 
-                    : AppColors.textPrimary,
+                color:
+                    status == SeatStatus.selected
+                        ? AppColors.primaryWhite
+                        : AppColors.textPrimary,
               ),
               SizedBox(height: 4.h),
               Text(
                 '${index + 1}',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: status == SeatStatus.selected 
-                          ? AppColors.primaryWhite 
+                  color:
+                      status == SeatStatus.selected
+                          ? AppColors.primaryWhite
                           : AppColors.textPrimary,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -353,19 +375,18 @@ class _SeatLayoutWidgetState extends State<SeatLayoutWidget> {
           SizedBox(width: 8.w),
           Text(
             'Đã chọn: ',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(color: AppColors.textSecondary),
           ),
           Text(
             selectedSeats.map((s) => s + 1).join(', '),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textSecondary,
-                            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(color: AppColors.textSecondary),
           ),
         ],
       ),
     );
   }
 }
-

@@ -64,7 +64,7 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
                     ),
                   ),
                   Text(
-                    'Chọn địa điểm',
+                    AppLocalizations.of(context)!.selectLocation,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   SizedBox(height: 16.h),
@@ -137,9 +137,9 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
                 setState(() => selectedRange = range);
               },
             ),
-            
+
             SizedBox(height: 24.h),
-            
+
             // Check-in date
             DatePickerField(
               label: AppLocalizations.of(context)!.checkInDate,
@@ -158,9 +158,9 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
                 ),
               ),
             ),
-            
+
             SizedBox(height: 16.h),
-            
+
             // Check-out date
             DatePickerField(
               label: AppLocalizations.of(context)!.checkOutDate,
@@ -179,9 +179,9 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
                 ),
               ),
             ),
-            
+
             SizedBox(height: 16.h),
-            
+
             // Number of rooms
             _buildCounterField(
               AppLocalizations.of(context)!.numberOfRooms,
@@ -191,9 +191,9 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
                 if (numberOfRooms > 1) numberOfRooms--;
               }),
             ),
-            
+
             SizedBox(height: 16.h),
-            
+
             // Number of guests
             _buildCounterField(
               AppLocalizations.of(context)!.numberOfGuests,
@@ -203,9 +203,9 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
                 if (numberOfGuests > 1) numberOfGuests--;
               }),
             ),
-            
+
             SizedBox(height: 16.h),
-            
+
             // Location
             LocationField(
               label: AppLocalizations.of(context)!.location,
@@ -222,9 +222,9 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
                 ),
               ),
             ),
-            
+
             SizedBox(height: 32.h),
-            
+
             // Search button
             PrimaryButton(
               title: AppLocalizations.of(context)!.searchButton,
@@ -238,14 +238,16 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
     );
   }
 
-  Widget _buildCounterField(String label, int count, VoidCallback onIncrement, VoidCallback onDecrement) {
+  Widget _buildCounterField(
+    String label,
+    int count,
+    VoidCallback onIncrement,
+    VoidCallback onDecrement,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.displayLarge,
-        ),
+        Text(label, style: Theme.of(context).textTheme.displayLarge),
         SizedBox(height: 6.h),
         Container(
           padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 12.w),
@@ -257,10 +259,7 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                label,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              Text(label, style: Theme.of(context).textTheme.bodyMedium),
               Row(
                 children: [
                   InkWell(
@@ -311,4 +310,3 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
     );
   }
 }
-

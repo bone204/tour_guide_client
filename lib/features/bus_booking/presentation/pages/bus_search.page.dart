@@ -71,13 +71,16 @@ class _BusSearchPageState extends State<BusSearchPage> {
 
                   // Title
                   Text(
-                    isFromLocation ? 'Chọn điểm đi' : 'Chọn điểm đến',
+                    isFromLocation
+                        ? AppLocalizations.of(context)!.selectDeparture
+                        : AppLocalizations.of(context)!.selectDestination,
+
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                  
+
                   SizedBox(height: 16.h),
 
                   // Cities List
@@ -136,8 +139,8 @@ class _BusSearchPageState extends State<BusSearchPage> {
       return;
     }
 
-    if (selectedTripType == TripType.roundTrip && 
-        returnDate != null && 
+    if (selectedTripType == TripType.roundTrip &&
+        returnDate != null &&
         returnDate!.isBefore(selectedDate!)) {
       _showError('Ngày về phải sau ngày đi');
       return;
@@ -145,14 +148,15 @@ class _BusSearchPageState extends State<BusSearchPage> {
 
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (context) => BusListPage(
-          fromLocation: fromLocation!,
-          toLocation: toLocation!,
-          date: selectedDate!,
-          passengerCount: passengerCount,
-          isRoundTrip: selectedTripType == TripType.roundTrip,
-          returnDate: returnDate,
-        ),
+        builder:
+            (context) => BusListPage(
+              fromLocation: fromLocation!,
+              toLocation: toLocation!,
+              date: selectedDate!,
+              passengerCount: passengerCount,
+              isRoundTrip: selectedTripType == TripType.roundTrip,
+              returnDate: returnDate,
+            ),
       ),
     );
   }
@@ -211,7 +215,7 @@ class _BusSearchPageState extends State<BusSearchPage> {
                 color: AppColors.primaryBlue,
               ),
             ),
-            
+
             SizedBox(height: 16.h),
 
             // To Location
@@ -277,7 +281,7 @@ class _BusSearchPageState extends State<BusSearchPage> {
                 setState(() => passengerCount = count);
               },
             ),
-            
+
             SizedBox(height: 32.h),
 
             // Search Button
@@ -293,4 +297,3 @@ class _BusSearchPageState extends State<BusSearchPage> {
     );
   }
 }
-

@@ -26,7 +26,10 @@ class TableCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: isAvailable ? AppColors.primaryBlue : AppColors.primaryGrey.withOpacity(0.5),
+            color:
+                isAvailable
+                    ? AppColors.primaryBlue
+                    : AppColors.primaryGrey.withOpacity(0.5),
             width: 2.w,
           ),
           boxShadow: [
@@ -57,17 +60,28 @@ class TableCard extends StatelessWidget {
                   ),
                   SizedBox(width: 8.w),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                      vertical: 5.h,
+                    ),
                     decoration: BoxDecoration(
-                      color: isAvailable 
-                        ? AppColors.primaryBlue.withOpacity(0.15)
-                        : AppColors.primaryGrey.withOpacity(0.3),
+                      color:
+                          isAvailable
+                              ? AppColors.primaryBlue.withOpacity(0.15)
+                              : AppColors.primaryGrey.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Text(
-                      isAvailable ? 'Trống' : 'Đã đặt',
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                        color: isAvailable ? AppColors.primaryBlue : AppColors.textSubtitle,
+                      isAvailable
+                          ? AppLocalizations.of(context)!.statusEmpty
+                          : AppLocalizations.of(context)!.statusBooked,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.displayMedium?.copyWith(
+                        color:
+                            isAvailable
+                                ? AppColors.primaryBlue
+                                : AppColors.textSubtitle,
                       ),
                     ),
                   ),
@@ -84,7 +98,7 @@ class TableCard extends StatelessWidget {
                   SizedBox(width: 8.w),
                   Flexible(
                     child: Text(
-                      '$seats người',
+                      '$seats ${AppLocalizations.of(context)!.people}',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textPrimary,
                         fontSize: 13.sp,
@@ -125,4 +139,3 @@ class TableCard extends StatelessWidget {
     );
   }
 }
-

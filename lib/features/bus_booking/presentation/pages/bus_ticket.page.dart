@@ -26,7 +26,8 @@ class BusTicketPage extends StatefulWidget {
   State<BusTicketPage> createState() => _BusTicketPageState();
 }
 
-class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProviderStateMixin {
+class _BusTicketPageState extends State<BusTicketPage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
@@ -38,16 +39,18 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    
+
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
-    
+
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.1),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOut));
-    
+    ).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    );
+
     _animationController.forward();
   }
 
@@ -65,7 +68,10 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
         title: AppLocalizations.of(context)!.busTicket,
         showBackButton: true,
         onBackPressed: () {
-          Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
+          Navigator.of(
+            context,
+            rootNavigator: true,
+          ).popUntil((route) => route.isFirst);
         },
       ),
       body: FadeTransition(
@@ -83,18 +89,21 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
 
                 // Actions
                 _buildActionButtons(context),
-                
+
                 SizedBox(height: 24.h),
-                
+
                 // Info Note
                 _buildInfoNote(),
-                
+
                 SizedBox(height: 32.h),
-                
+
                 // Home Button
                 SecondaryButton(
                   onPressed: () {
-                    Navigator.of(context, rootNavigator: true).popUntil((route) => route.isFirst);
+                    Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).popUntil((route) => route.isFirst);
                   },
                   title: AppLocalizations.of(context)!.backToHome,
                 ),
@@ -158,30 +167,33 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                     AppIcons.bus,
                     width: 40.w,
                     height: 40.h,
-                    colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  'VÉ XE KHÁCH ĐIỆN TỬ',
+                  AppLocalizations.of(context)!.busTicketTitle,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppColors.primaryWhite,
-                        letterSpacing: 1.5,
-                      ),
+                    color: AppColors.primaryWhite,
+                    letterSpacing: 1.5,
+                  ),
                 ),
                 SizedBox(height: 10.h),
                 Text(
                   'E-Ticket',
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                        color: AppColors.primaryWhite.withOpacity(0.9),
-                      ),
+                    color: AppColors.primaryWhite.withOpacity(0.9),
+                  ),
                 ),
               ],
             ),
           ),
 
           SizedBox(height: 24.h),
-              
+
           // Ticket Content
           Column(
             children: [
@@ -209,36 +221,39 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                       AppIcons.star,
                       width: 16.w,
                       height: 16.h,
-                      colorFilter: const ColorFilter.mode(AppColors.primaryYellow, BlendMode.srcIn),
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.primaryYellow,
+                        BlendMode.srcIn,
+                      ),
                     ),
                     SizedBox(width: 4.w),
                     Text(
-                      'Mã đặt vé: ',
+                      '${AppLocalizations.of(context)!.bookingCodeLabel}: ',
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                        color: AppColors.textSubtitle,
+                      ),
                     ),
                     SizedBox(width: 4.w),
                     Text(
                       widget.bookingCode,
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: Colors.orange.shade800,
-                            letterSpacing: 1,
-                          ),
+                        color: Colors.orange.shade800,
+                        letterSpacing: 1,
+                      ),
                     ),
                   ],
                 ),
               ),
-          
+
               SizedBox(height: 24.h),
-          
+
               // Company & Bus Type with cards
               Row(
                 children: [
                   Expanded(
                     child: _buildInfoCard(
                       context,
-                      'Nhà xe',
+                      AppLocalizations.of(context)!.busCompany,
                       widget.busData['company'],
                     ),
                   ),
@@ -246,25 +261,22 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                   Expanded(
                     child: _buildInfoCard(
                       context,
-                      'Loại xe',
+                      AppLocalizations.of(context)!.vehicleType,
                       widget.busData['type'],
                     ),
                   ),
                 ],
               ),
-          
+
               SizedBox(height: 24.h),
-          
+
               // Modern Route Design
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 decoration: BoxDecoration(
-                 color: AppColors.primaryWhite,
+                  color: AppColors.primaryWhite,
                   borderRadius: BorderRadius.circular(10.r),
-                  border: Border.all(
-                    color: AppColors.primaryBlue,
-                    width: 2,
-                  ),
+                  border: Border.all(color: AppColors.primaryBlue, width: 2),
                 ),
                 child: Column(
                   children: [
@@ -277,38 +289,44 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w,
+                                  vertical: 4.h,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppColors.primaryGreen,
                                   borderRadius: BorderRadius.circular(6.r),
                                 ),
                                 child: Text(
-                                  'Khởi hành',
-                                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                        color: AppColors.textSecondary,
-                                      ),
+                                  AppLocalizations.of(context)!.departure,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayMedium?.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 8.h),
                               Text(
                                 widget.busData['departureTime'],
-                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                      color: AppColors.primaryBlue,
-                                    ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(color: AppColors.primaryBlue),
                               ),
                               SizedBox(height: 6.h),
                               Text(
                                 widget.fromLocation,
-                                style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                      height: 1.3,
-                                    ),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.displayLarge?.copyWith(height: 1.3),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
                         ),
-          
+
                         // Duration & Arrow
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -316,16 +334,21 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                             children: [
                               SizedBox(height: 20.h),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w,
+                                  vertical: 6.h,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppColors.primaryBlue,
                                   borderRadius: BorderRadius.circular(8.r),
                                 ),
                                 child: Text(
                                   widget.busData['duration'],
-                                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                        color: AppColors.textSecondary,
-                                      ),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayMedium?.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 8.h),
@@ -337,38 +360,44 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                             ],
                           ),
                         ),
-          
+
                         // Arrival
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w,
+                                  vertical: 4.h,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppColors.primaryRed,
                                   borderRadius: BorderRadius.circular(6.r),
                                 ),
                                 child: Text(
-                                  'Đến nơi',
-                                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                        color: AppColors.textSecondary,
-                                      ),
+                                  AppLocalizations.of(context)!.arrival,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayMedium?.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
                                 ),
                               ),
                               SizedBox(height: 8.h),
                               Text(
                                 widget.busData['arrivalTime'],
-                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                      color: AppColors.primaryRed,
-                                    ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(color: AppColors.primaryRed),
                               ),
                               SizedBox(height: 6.h),
                               Text(
                                 widget.toLocation,
-                                style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                      height: 1.3,
-                                    ),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.displayLarge?.copyWith(height: 1.3),
                                 textAlign: TextAlign.right,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -381,19 +410,19 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                   ],
                 ),
               ),
-          
+
               SizedBox(height: 20.h),
-          
+
               // Dashed separator
               _buildDashedLine(),
-          
+
               SizedBox(height: 20.h),
-          
+
               // Date & Seats Info
               _buildModernInfoRow(
                 context,
                 AppIcons.calendar,
-                'Ngày đi',
+                AppLocalizations.of(context)!.departureDate,
                 '${widget.date.day}/${widget.date.month}/${widget.date.year}',
                 Colors.orange,
               ),
@@ -401,7 +430,7 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
               _buildModernInfoRow(
                 context,
                 AppIcons.seat,
-                'Số ghế',
+                AppLocalizations.of(context)!.seatNumber,
                 widget.selectedSeats.map((s) => s + 1).join(', '),
                 Colors.blue,
               ),
@@ -409,13 +438,13 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
               _buildModernInfoRow(
                 context,
                 AppIcons.star,
-                'Số lượng',
+                AppLocalizations.of(context)!.quantity,
                 '${widget.selectedSeats.length} vé',
                 Colors.green,
               ),
-          
+
               SizedBox(height: 24.h),
-          
+
               // Enhanced QR Code Section
               Container(
                 padding: EdgeInsets.all(20.r),
@@ -452,10 +481,12 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                           SizedBox(height: 12.h),
                           Text(
                             widget.bookingCode,
-                            style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                  color: AppColors.textSubtitle,
-                                  letterSpacing: 2,
-                                ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.displayLarge?.copyWith(
+                              color: AppColors.textSubtitle,
+                              letterSpacing: 2,
+                            ),
                           ),
                         ],
                       ),
@@ -470,11 +501,13 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                           color: AppColors.primaryBlue,
                         ),
                         SizedBox(width: 6.w),
-                        Text(
-                          'Vui lòng xuất trình mã QR khi lên xe',
-                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                color: AppColors.textSubtitle,
-                              ),
+                        Expanded(
+                          child: Text(
+                            AppLocalizations.of(context)!.ticketNote1,
+                            style: Theme.of(context).textTheme.displayLarge
+                                ?.copyWith(color: AppColors.textSubtitle),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ],
                     ),
@@ -487,7 +520,7 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
       ),
     );
   }
-  
+
   Widget _buildDashedLine() {
     return Row(
       children: List.generate(
@@ -495,43 +528,39 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
         (index) => Expanded(
           child: Container(
             height: 2,
-            color: index.isEven ? AppColors.textSubtitle.withOpacity(0.2) : Colors.transparent,
+            color:
+                index.isEven
+                    ? AppColors.textSubtitle.withOpacity(0.2)
+                    : Colors.transparent,
           ),
         ),
       ),
     );
   }
-  
-  Widget _buildInfoCard(
-    BuildContext context,
-    String label,
-    String value,
-  ) {
+
+  Widget _buildInfoCard(BuildContext context, String label, String value) {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: AppColors.primaryWhite,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: AppColors.primaryBlack,
-          width: 2,
-        ),
+        border: Border.all(color: AppColors.primaryBlack, width: 2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.displayLarge?.copyWith(color: AppColors.textSubtitle),
           ),
           SizedBox(height: 4.h),
           Text(
             value,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textPrimary,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(color: AppColors.textPrimary),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -539,7 +568,7 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
       ),
     );
   }
-  
+
   Widget _buildModernInfoRow(
     BuildContext context,
     String icon,
@@ -559,7 +588,10 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
             icon,
             width: 20.w,
             height: 20.h,
-            colorFilter: ColorFilter.mode(AppColors.primaryWhite , BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(
+              AppColors.primaryWhite,
+              BlendMode.srcIn,
+            ),
           ),
         ),
         SizedBox(width: 12.w),
@@ -570,15 +602,15 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
               Text(
                 label,
                 style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      color: AppColors.textSubtitle,
-                    ),
+                  color: AppColors.textSubtitle,
+                ),
               ),
               SizedBox(height: 6.h),
               Text(
                 value,
                 style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
+                  color: AppColors.textPrimary,
+                ),
               ),
             ],
           ),
@@ -598,7 +630,10 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
                 SnackBar(
                   content: Row(
                     children: [
-                      const Icon(Icons.download_done_rounded, color: Colors.white),
+                      const Icon(
+                        Icons.download_done_rounded,
+                        color: Colors.white,
+                      ),
                       SizedBox(width: 8.w),
                       Text(AppLocalizations.of(context)!.downloadingTicket),
                     ],
@@ -642,7 +677,7 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
       ],
     );
   }
-  
+
   Widget _buildInfoNote() {
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -670,24 +705,24 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
               ),
               SizedBox(width: 8.w),
               Text(
-                'Lưu ý quan trọng',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
+                AppLocalizations.of(context)!.ticketNoteTitle,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
               ),
             ],
           ),
           SizedBox(height: 12.h),
-          _buildNoteItem('Vui lòng có mặt tại điểm đón trước 15 phút'),
+          _buildNoteItem(AppLocalizations.of(context)!.ticketNote2),
           SizedBox(height: 8.h),
-          _buildNoteItem('Mang theo CMND/CCCD khi lên xe'),
+          _buildNoteItem(AppLocalizations.of(context)!.ticketNote4),
           SizedBox(height: 8.h),
-          _buildNoteItem('Xuất trình mã QR cho tài xế để xác nhận'),
+          _buildNoteItem(AppLocalizations.of(context)!.ticketNote1),
         ],
       ),
     );
   }
-  
+
   Widget _buildNoteItem(String text) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -706,9 +741,9 @@ class _BusTicketPageState extends State<BusTicketPage> with SingleTickerProvider
           child: Text(
             text,
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                  color: AppColors.textSubtitle,
-                  height: 1.3,
-                ),
+              color: AppColors.textSubtitle,
+              height: 1.3,
+            ),
           ),
         ),
       ],

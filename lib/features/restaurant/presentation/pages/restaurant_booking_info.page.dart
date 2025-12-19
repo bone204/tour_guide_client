@@ -10,7 +10,8 @@ class RestaurantBookingInfoPage extends StatefulWidget {
   const RestaurantBookingInfoPage({super.key});
 
   @override
-  State<RestaurantBookingInfoPage> createState() => _RestaurantBookingInfoPageState();
+  State<RestaurantBookingInfoPage> createState() =>
+      _RestaurantBookingInfoPageState();
 }
 
 class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
@@ -32,8 +33,10 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
     final theme = Theme.of(context).textTheme;
 
     final depositAmount = 100_000.0;
-    final totalAfterPoint =
-        (depositAmount - travelPointToUse).clamp(0, depositAmount);
+    final totalAfterPoint = (depositAmount - travelPointToUse).clamp(
+      0,
+      depositAmount,
+    );
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
@@ -50,10 +53,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
               width: double.infinity,
               height: 236.h,
               color: AppColors.primaryBlue.withOpacity(0.1),
-              child: Image.asset(
-                AppImage.defaultCar,
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset(AppImage.defaultCar, fit: BoxFit.cover),
             ),
 
             Padding(
@@ -61,53 +61,52 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Nhà hàng Sài Gòn',
-                    style: theme.titleLarge,
-                  ),
+                  Text('Nhà hàng Sài Gòn', style: theme.titleLarge),
                   SizedBox(height: 4.h),
                   Text(
                     'Món Việt • Quận 1, TP.HCM',
-                    style: theme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
+                    style: theme.bodyMedium?.copyWith(
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
                   SizedBox(height: 16.h),
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 8.h),
-                  
+
                   BillInfo(
                     label: AppLocalizations.of(context)!.customer,
-                    value: "Nguyễn Văn A"
+                    value: "Nguyễn Văn A",
                   ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.phoneNumber,
-                    value: "0909123456"
+                    value: "0909123456",
                   ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.email,
-                    value: "nguyenvana@gmail.com"
+                    value: "nguyenvana@gmail.com",
                   ),
-                  
+
                   SizedBox(height: 8.h),
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 8.h),
-                  
+
                   BillInfo(
                     label: AppLocalizations.of(context)!.table,
-                    value: "Bàn 01"
+                    value: "Bàn 01",
                   ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.numberOfPeople,
-                    value: "2 người"
+                    value: "2 người",
                   ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.location,
-                    value: "Tầng 1 - Gần cửa sổ"
+                    value: "Tầng 1 - Gần cửa sổ",
                   ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.time,
-                    value: "18:00 - 30/10/2025"
+                    value: "18:00 - 30/10/2025",
                   ),
-                  
+
                   SizedBox(height: 8.h),
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 16.h),
@@ -116,8 +115,8 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                     RewardPointSelector(
                       travelPoint: travelPoint,
                       travelPointToUse: travelPointToUse,
-                      onChanged: (value) =>
-                          setState(() => travelPointToUse = value),
+                      onChanged:
+                          (value) => setState(() => travelPointToUse = value),
                     ),
                     SizedBox(height: 16.h),
                   ],
@@ -128,7 +127,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                   ),
                   if (travelPointToUse > 0)
                     BillInfo(
-                      label: 'Giảm giá (điểm)',
+                      label: AppLocalizations.of(context)!.discountPointsLabel,
                       value: "-${Formatter.currency(travelPointToUse)}",
                     ),
                   SizedBox(height: 8.h),
@@ -157,7 +156,9 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(AppLocalizations.of(context)!.tableBookingSuccess),
+                          content: Text(
+                            AppLocalizations.of(context)!.tableBookingSuccess,
+                          ),
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.r),
@@ -167,7 +168,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                     },
                     backgroundColor: AppColors.primaryBlue,
                     textColor: AppColors.textSecondary,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -177,4 +178,3 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
     );
   }
 }
-

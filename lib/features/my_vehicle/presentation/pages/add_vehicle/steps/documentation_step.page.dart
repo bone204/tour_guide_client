@@ -82,7 +82,7 @@ class _DocumentationStepState extends State<DocumentationStep> {
                     ),
                   ),
                   child: Text(
-                    'Back',
+                    AppLocalizations.of(context)!.back,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w700,
@@ -103,7 +103,7 @@ class _DocumentationStepState extends State<DocumentationStep> {
                     ),
                   ),
                   child: Text(
-                    'Next',
+                    AppLocalizations.of(context)!.next,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.primaryWhite,
                       fontWeight: FontWeight.w700,

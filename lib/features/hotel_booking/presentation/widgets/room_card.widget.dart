@@ -25,9 +25,7 @@ class RoomCard extends StatelessWidget {
         color: AppColors.primaryWhite,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-          color: isSelected 
-              ? AppColors.primaryBlue 
-              : AppColors.secondaryGrey,
+          color: isSelected ? AppColors.primaryBlue : AppColors.secondaryGrey,
           width: isSelected ? 2.w : 1.w,
         ),
         boxShadow: [
@@ -57,11 +55,15 @@ class RoomCard extends StatelessWidget {
                   top: 12.h,
                   right: 12.w,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                      vertical: 6.h,
+                    ),
                     decoration: BoxDecoration(
-                      color: room.isAvailable 
-                          ? AppColors.primaryGreen
-                          : AppColors.primaryRed,
+                      color:
+                          room.isAvailable
+                              ? AppColors.primaryGreen
+                              : AppColors.primaryRed,
                       borderRadius: BorderRadius.circular(8.r),
                       boxShadow: [
                         BoxShadow(
@@ -72,7 +74,9 @@ class RoomCard extends StatelessWidget {
                       ],
                     ),
                     child: Text(
-                      room.isAvailable ? 'Còn phòng' : 'Hết phòng',
+                      room.isAvailable
+                          ? AppLocalizations.of(context)!.statusAvailable
+                          : AppLocalizations.of(context)!.statusSoldOut,
                       style: theme.displayMedium?.copyWith(
                         color: AppColors.textSecondary,
                       ),
@@ -85,7 +89,10 @@ class RoomCard extends StatelessWidget {
                     top: 12.h,
                     left: 12.w,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 6.h,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryBlue,
                         borderRadius: BorderRadius.circular(8.r),
@@ -107,7 +114,7 @@ class RoomCard extends StatelessWidget {
                           ),
                           SizedBox(width: 4.w),
                           Text(
-                            'Đã chọn',
+                            AppLocalizations.of(context)!.statusSelected,
                             style: theme.displayMedium?.copyWith(
                               color: AppColors.textSecondary,
                             ),
@@ -135,11 +142,7 @@ class RoomCard extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            room.name,
-                            style: theme.titleMedium?.copyWith(
-                            ),
-                          ),
+                          Text(room.name, style: theme.titleMedium?.copyWith()),
                           SizedBox(height: 4.h),
                           Text(
                             room.type,
@@ -152,7 +155,10 @@ class RoomCard extends StatelessWidget {
                     ),
                     // Price
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 6.h,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryOrange.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8.r),
@@ -197,36 +203,40 @@ class RoomCard extends StatelessWidget {
                 Wrap(
                   spacing: 8.w,
                   runSpacing: 8.h,
-                  children: room.amenities.take(4).map((amenity) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryBlue.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(6.r),
-                        border: Border.all(
-                          color: AppColors.primaryBlue.withOpacity(0.2),
-                          width: 1.w,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            _getAmenityIcon(amenity),
-                            size: 14.sp,
-                            color: AppColors.primaryBlue,
+                  children:
+                      room.amenities.take(4).map((amenity) {
+                        return Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 5.h,
                           ),
-                          SizedBox(width: 8.w),
-                          Text(
-                            amenity,
-                            style: theme.displayMedium?.copyWith(
-                              color: AppColors.primaryBlue,
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryBlue.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(6.r),
+                            border: Border.all(
+                              color: AppColors.primaryBlue.withOpacity(0.2),
+                              width: 1.w,
                             ),
                           ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                _getAmenityIcon(amenity),
+                                size: 14.sp,
+                                color: AppColors.primaryBlue,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                amenity,
+                                style: theme.displayMedium?.copyWith(
+                                  color: AppColors.primaryBlue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
                 ),
 
                 SizedBox(height: 16.h),
@@ -245,7 +255,7 @@ class RoomCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Số lượng phòng',
+                        AppLocalizations.of(context)!.roomQuantity,
                         style: theme.displayLarge?.copyWith(
                           color: AppColors.textPrimary,
                         ),
@@ -260,15 +270,19 @@ class RoomCard extends StatelessWidget {
                           children: [
                             // Decrement
                             InkWell(
-                              onTap: selectedQuantity > 0 
-                                  ? () => onQuantityChanged(selectedQuantity - 1)
-                                  : null,
+                              onTap:
+                                  selectedQuantity > 0
+                                      ? () => onQuantityChanged(
+                                        selectedQuantity - 1,
+                                      )
+                                      : null,
                               child: Container(
                                 padding: EdgeInsets.all(8.w),
                                 decoration: BoxDecoration(
-                                  color: selectedQuantity > 0 
-                                      ? AppColors.primaryBlue 
-                                      : AppColors.secondaryGrey,
+                                  color:
+                                      selectedQuantity > 0
+                                          ? AppColors.primaryBlue
+                                          : AppColors.secondaryGrey,
                                   borderRadius: BorderRadius.circular(8.r),
                                 ),
                                 child: Icon(
@@ -290,7 +304,8 @@ class RoomCard extends StatelessWidget {
                             ),
                             // Increment
                             InkWell(
-                              onTap: () => onQuantityChanged(selectedQuantity + 1),
+                              onTap:
+                                  () => onQuantityChanged(selectedQuantity + 1),
                               child: Container(
                                 padding: EdgeInsets.all(8.w),
                                 decoration: BoxDecoration(
@@ -314,7 +329,10 @@ class RoomCard extends StatelessWidget {
                     SizedBox(height: 12.h),
                     Container(
                       width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 12.w),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 10.h,
+                        horizontal: 12.w,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryBlue.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8.r),
@@ -323,13 +341,15 @@ class RoomCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Tạm tính:',
+                            '${AppLocalizations.of(context)!.subtotal}:',
                             style: theme.displayLarge?.copyWith(
                               color: AppColors.textSubtitle,
                             ),
                           ),
                           Text(
-                            Formatter.currency(room.pricePerNight * selectedQuantity),
+                            Formatter.currency(
+                              room.pricePerNight * selectedQuantity,
+                            ),
                             style: theme.titleSmall?.copyWith(
                               color: AppColors.primaryBlue,
                             ),
@@ -357,7 +377,7 @@ class RoomCard extends StatelessWidget {
                         ),
                         SizedBox(width: 6.w),
                         Text(
-                          'Phòng này hiện không có sẵn',
+                          AppLocalizations.of(context)!.roomNotAvailable,
                           style: theme.displayLarge?.copyWith(
                             color: AppColors.primaryRed,
                           ),

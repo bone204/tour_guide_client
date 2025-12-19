@@ -32,21 +32,21 @@ class CarDetailPage extends StatelessWidget {
       'Bluetooth',
       'Ghế trẻ em (có thể lắp)',
       'Cruise control',
-      'Camera lùi'
+      'Camera lùi',
     ],
     'reviews': [
       {
         'author': 'Nguyễn Văn A',
         'rating': 5,
-        'text': 'Xe sạch, chạy êm. Chủ xe nhiệt tình giao nhận.'
+        'text': 'Xe sạch, chạy êm. Chủ xe nhiệt tình giao nhận.',
       },
       {
         'author': 'Lê Thị B',
         'rating': 4,
-        'text': 'Xe tốt, giá hợp lý. Điều hòa hơi yếu khi nắng gắt.'
-      }
+        'text': 'Xe tốt, giá hợp lý. Điều hòa hơi yếu khi nắng gắt.',
+      },
     ],
-    'locations': ['Hà Nội - Hoàn Kiếm', 'Hà Nội - Cầu Giấy']
+    'locations': ['Hà Nội - Hoàn Kiếm', 'Hà Nội - Cầu Giấy'],
   };
 
   @override
@@ -71,16 +71,16 @@ class CarDetailPage extends StatelessWidget {
                   width: double.infinity,
                   height: 236.h,
                   color: AppColors.primaryBlue.withOpacity(0.1),
-                  child: Image.asset(
-                    c['image'] as String,
-                    fit: BoxFit.contain,
-                  ),
+                  child: Image.asset(c['image'] as String, fit: BoxFit.contain),
                 ),
                 Positioned(
                   right: 12.w,
                   top: 12.h,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 8.h,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.6),
                       borderRadius: BorderRadius.circular(8.r),
@@ -96,9 +96,8 @@ class CarDetailPage extends StatelessWidget {
                         SizedBox(width: 8.w),
                         Text(
                           (c['rating'] as double).toStringAsFixed(1),
-                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                          style: Theme.of(context).textTheme.displayLarge
+                              ?.copyWith(color: AppColors.textSecondary),
                         ),
                       ],
                     ),
@@ -125,7 +124,8 @@ class CarDetailPage extends StatelessWidget {
                             SizedBox(height: 4.h),
                             Text(
                               '${c['type']} • ${c['year']}',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(color: AppColors.textSubtitle),
                             ),
                           ],
                         ),
@@ -136,17 +136,17 @@ class CarDetailPage extends StatelessWidget {
                         children: [
                           Text(
                             Formatter.currency(c['price']),
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: AppColors.primaryOrange,
-                            ),
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(color: AppColors.primaryOrange),
                           ),
                           SizedBox(height: 4.h),
                           Text(
                             "/ ${AppLocalizations.of(context)!.day}",
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
-                          )
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: AppColors.textSubtitle),
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
 
@@ -157,15 +157,27 @@ class CarDetailPage extends StatelessWidget {
                       autoPlay: true,
                       enableInfiniteScroll: true,
                       autoPlayCurve: Curves.fastOutSlowIn,
-                      autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                      autoPlayAnimationDuration: const Duration(
+                        milliseconds: 800,
+                      ),
                       viewportFraction: 0.4,
                       padEnds: false,
                     ),
                     items: [
-                      CarInfoItem(icon: AppIcons.seat, text: '${c['seats']} chỗ'),
-                      CarInfoItem(icon: AppIcons.setting, text: c['transmission']),
+                      CarInfoItem(
+                        icon: AppIcons.seat,
+                        text:
+                            '${c['seats']} ${AppLocalizations.of(context)!.seats}',
+                      ),
+                      CarInfoItem(
+                        icon: AppIcons.setting,
+                        text: c['transmission'],
+                      ),
                       CarInfoItem(icon: AppIcons.gasPump, text: c['fuel']),
-                      CarInfoItem(icon: AppIcons.speed, text: '${c['mileage']} km'),
+                      CarInfoItem(
+                        icon: AppIcons.speed,
+                        text: '${c['mileage']} km',
+                      ),
                     ],
                   ),
 
@@ -173,42 +185,58 @@ class CarDetailPage extends StatelessWidget {
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 12.h),
 
-                  Text(AppLocalizations.of(context)!.description, style: Theme.of(context).textTheme.titleSmall),
+                  Text(
+                    AppLocalizations.of(context)!.description,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
                   SizedBox(height: 8.h),
                   Text(
                     c['description'] as String,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle, height: 1.5),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSubtitle,
+                      height: 1.5,
+                    ),
                   ),
 
                   SizedBox(height: 16.h),
 
-                  Text(AppLocalizations.of(context)!.features, style: Theme.of(context).textTheme.titleSmall),
+                  Text(
+                    AppLocalizations.of(context)!.features,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
                   SizedBox(height: 8.h),
                   Wrap(
                     spacing: 8.w,
                     runSpacing: 6.h,
-                    children: (c['features'] as List<dynamic>)
-                        .map((f) => FeatureChip(text: f as String))
-                        .toList(),
+                    children:
+                        (c['features'] as List<dynamic>)
+                            .map((f) => FeatureChip(text: f as String))
+                            .toList(),
                   ),
                   SizedBox(height: 16.h),
                   Divider(),
                   SizedBox(height: 12.h),
 
-                  Text(AppLocalizations.of(context)!.reviews, style: Theme.of(context).textTheme.titleSmall),
+                  Text(
+                    AppLocalizations.of(context)!.reviews,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
                   SizedBox(height: 12.h),
                   Column(
-                    children: (c['reviews'] as List<dynamic>)
-                      .map((r) => ReviewCard(
-                            author: r['author'] as String,
-                            rating: r['rating'] as int,
-                            text: r['text'] as String,
-                          ))
-                      .toList(),
+                    children:
+                        (c['reviews'] as List<dynamic>)
+                            .map(
+                              (r) => ReviewCard(
+                                author: r['author'] as String,
+                                rating: r['rating'] as int,
+                                text: r['text'] as String,
+                              ),
+                            )
+                            .toList(),
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

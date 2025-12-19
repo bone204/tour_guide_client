@@ -799,13 +799,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectDepartureDate => 'Select Departure Date';
 
   @override
-  String get selectReturnDate => 'Select Return Date';
+  String get selectReturnDate => 'Please select return date';
 
   @override
   String get selectDateAndTime => 'Select Date and Time';
 
   @override
-  String get selectLocation => 'Select Location';
+  String get selectLocation => 'Select location';
 
   @override
   String get selectCheckInDate => 'Select Check In Date';
@@ -1453,7 +1453,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get itineraryUpdated => 'Itinerary updated';
 
   @override
-  String get selectDestination => 'Select Destination';
+  String get selectDestination => 'Select destination';
 
   @override
   String get noDestinationsFound => 'No destinations found';
@@ -1511,4 +1511,229 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spinAgain => 'Spin Again';
+
+  @override
+  String get yourVehicles => 'Your Vehicles';
+
+  @override
+  String get readyToAddVehicles => 'Ready to Add Vehicles';
+
+  @override
+  String get contractApprovedMessage => 'Your contract has been approved! Start adding your vehicles to earn money from rentals.';
+
+  @override
+  String get contractApproved => 'Contract Approved!';
+
+  @override
+  String get whatYouCanDoNow => 'What you can do now:';
+
+  @override
+  String get benefitAddUnlimited => 'Add unlimited vehicles to your account';
+
+  @override
+  String get benefitUploadPhotos => 'Upload clear photos and documentation';
+
+  @override
+  String get benefitSetPrices => 'Set your own rental prices';
+
+  @override
+  String get benefitVisibility => 'Your vehicles will be visible to customers';
+
+  @override
+  String get benefitStartEarning => 'Start earning from the first rental';
+
+  @override
+  String get noRentalContractYet => 'No Rental Contract Yet';
+
+  @override
+  String get registerContractBeforeListing => 'Register a rental contract before listing your vehicles for rent.';
+
+  @override
+  String get registerRentalContract => 'Register Rental Contract';
+
+  @override
+  String get whyRegisterContract => 'Why register a rental contract first?';
+
+  @override
+  String get benefitReuseInfo => 'Provide owner information once and reuse it later';
+
+  @override
+  String get benefitVerify => 'Enable Traveline to verify payouts and legal docs';
+
+  @override
+  String get benefitListUnlimited => 'Unlock the ability to list unlimited vehicles';
+
+  @override
+  String get benefitSupport => 'Get dedicated support for future rentals';
+
+  @override
+  String get cannotLoadVehicleInfo => 'Cannot load vehicle information';
+
+  @override
+  String createdOn(String date) {
+    return 'Created on $date';
+  }
+
+  @override
+  String contractId(String id) {
+    return 'Contract #$id';
+  }
+
+  @override
+  String idWithPrefix(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String get connectionLostTitle => 'Connection Lost';
+
+  @override
+  String get connectionLostContent => 'Network connection interrupted. Please check and try again.';
+
+  @override
+  String get serverNoResponseTitle => 'Server Not Responding';
+
+  @override
+  String get serverNoResponseContent => 'Server response timed out. Please try again later.';
+
+  @override
+  String get discountPointsLabel => 'Discount (points)';
+
+  @override
+  String get payWithPoints => 'Pay with points';
+
+  @override
+  String get statusAvailable => 'Available';
+
+  @override
+  String get statusBooked => 'Booked';
+
+  @override
+  String get statusSoldOut => 'Sold Out';
+
+  @override
+  String get statusSelected => 'Selected';
+
+  @override
+  String get statusEmpty => 'Empty';
+
+  @override
+  String get selectDeparture => 'Select departure point';
+
+  @override
+  String get busTicketTitle => 'ELECTRONIC BUS TICKET';
+
+  @override
+  String get busCompany => 'Bus Company';
+
+  @override
+  String get departureTime => 'Departure Time';
+
+  @override
+  String get arrivalTime => 'Arrival Time';
+
+  @override
+  String get seatNumber => 'Seat Number';
+
+  @override
+  String get passengerInfo => 'Passenger Info';
+
+  @override
+  String get driver => 'Driver';
+
+  @override
+  String get selectedSeats => 'Selected Seats';
+
+  @override
+  String get roomQuantity => 'Room Quantity';
+
+  @override
+  String get roomNotAvailable => 'Room not available';
+
+  @override
+  String get selectFoodType => 'Select food type';
+
+  @override
+  String get continueAction => 'Continue';
+
+  @override
+  String get fillAllFields => 'Please fill in all information';
+
+  @override
+  String get invalidReturnDate => 'Return date must be after departure date';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get photos => 'Photos';
+
+  @override
+  String get videos => 'Videos';
+
+  @override
+  String get ticketNoteTitle => 'Important Note';
+
+  @override
+  String get ticketNote1 => 'Show QR code to driver for confirmation';
+
+  @override
+  String get ticketNote2 => 'Arrive 15 minutes before departure';
+
+  @override
+  String get ticketNote3 => 'Ticket is valid for selected date and time only';
+
+  @override
+  String get bookingCodeLabel => 'Booking Code';
+
+  @override
+  String get departure => 'Departure';
+
+  @override
+  String get arrival => 'Arrival';
+
+  @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get ticketNote4 => 'Bring ID/CCCD when boarding';
+
+  @override
+  String get selectedRoom => 'Selected Room';
+
+  @override
+  String get people => 'people';
+
+  @override
+  String get foodTypeAll => 'All';
+
+  @override
+  String get foodTypeVietnamese => 'Vietnamese';
+
+  @override
+  String get foodTypeAsian => 'Asian';
+
+  @override
+  String get foodTypeEuropean => 'European';
+
+  @override
+  String get foodTypeSeafood => 'Seafood';
+
+  @override
+  String get foodTypeHotpot => 'Hotpot';
+
+  @override
+  String get foodTypeBBQ => 'BBQ';
+
+  @override
+  String get foodTypeVegetarian => 'Vegetarian';
+
+  @override
+  String get foodTypeKorean => 'Korean';
+
+  @override
+  String get foodTypeJapanese => 'Japanese';
+
+  @override
+  String get foodTypeFastFood => 'Fast Food';
 }

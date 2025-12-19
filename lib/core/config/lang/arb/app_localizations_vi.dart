@@ -192,7 +192,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get motorbikeList => 'Danh Sách Xe Máy';
 
   @override
-  String get carDetails => 'Chi Tiết Xe';
+  String get carDetails => 'Chi tiết xe';
 
   @override
   String get mortorbikeDetails => 'Chi Tiết Xe';
@@ -799,13 +799,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get selectDepartureDate => 'Chọn ngày đi';
 
   @override
-  String get selectReturnDate => 'Chọn ngày về';
+  String get selectReturnDate => 'Vui lòng chọn ngày về';
 
   @override
   String get selectDateAndTime => 'Chọn ngày và giờ';
 
   @override
-  String get selectLocation => 'Chọn vị trí';
+  String get selectLocation => 'Chọn địa điểm';
 
   @override
   String get selectCheckInDate => 'Chọn ngày nhận phòng';
@@ -1511,4 +1511,229 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get spinAgain => 'Quay Lại';
+
+  @override
+  String get yourVehicles => 'Xe của bạn';
+
+  @override
+  String get readyToAddVehicles => 'Sẵn sàng thêm xe';
+
+  @override
+  String get contractApprovedMessage => 'Hợp đồng của bạn đã được duyệt! Bắt đầu thêm xe để kiếm tiền từ việc cho thuê.';
+
+  @override
+  String get contractApproved => 'Hợp đồng đã duyệt!';
+
+  @override
+  String get whatYouCanDoNow => 'Bạn có thể làm gì bây giờ:';
+
+  @override
+  String get benefitAddUnlimited => 'Thêm không giới hạn xe vào tài khoản của bạn';
+
+  @override
+  String get benefitUploadPhotos => 'Tải lên hình ảnh rõ ràng và giấy tờ';
+
+  @override
+  String get benefitSetPrices => 'Tự đặt giá cho thuê của bạn';
+
+  @override
+  String get benefitVisibility => 'Xe của bạn sẽ hiển thị với khách hàng';
+
+  @override
+  String get benefitStartEarning => 'Bắt đầu kiếm tiền từ lần thuê đầu tiên';
+
+  @override
+  String get noRentalContractYet => 'Chưa có hợp đồng thuê xe';
+
+  @override
+  String get registerContractBeforeListing => 'Đăng ký hợp đồng thuê xe trước khi đăng xe cho thuê.';
+
+  @override
+  String get registerRentalContract => 'Đăng ký hợp đồng thuê';
+
+  @override
+  String get whyRegisterContract => 'Tại sao cần đăng ký hợp đồng trước?';
+
+  @override
+  String get benefitReuseInfo => 'Cung cấp thông tin chủ sở hữu một lần và sử dụng lại sau';
+
+  @override
+  String get benefitVerify => 'Cho phép Traveline xác minh thanh toán và giấy tờ pháp lý';
+
+  @override
+  String get benefitListUnlimited => 'Mở khóa khả năng đăng không giới hạn xe';
+
+  @override
+  String get benefitSupport => 'Nhận hỗ trợ tận tình cho các lần thuê trong tương lai';
+
+  @override
+  String get cannotLoadVehicleInfo => 'Không thể tải thông tin xe';
+
+  @override
+  String createdOn(String date) {
+    return 'Tạo ngày $date';
+  }
+
+  @override
+  String contractId(String id) {
+    return 'Hợp đồng #$id';
+  }
+
+  @override
+  String idWithPrefix(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String get connectionLostTitle => 'Mất kết nối';
+
+  @override
+  String get connectionLostContent => 'Kết nối mạng bị gián đoạn. Vui lòng kiểm tra và thử lại.';
+
+  @override
+  String get serverNoResponseTitle => 'Máy chủ không phản hồi';
+
+  @override
+  String get serverNoResponseContent => 'Quá thời gian chờ phản hồi từ máy chủ. Vui lòng thử lại sau.';
+
+  @override
+  String get discountPointsLabel => 'Giảm giá (điểm)';
+
+  @override
+  String get payWithPoints => 'Thanh toán bằng điểm';
+
+  @override
+  String get statusAvailable => 'Còn chỗ';
+
+  @override
+  String get statusBooked => 'Đã đặt';
+
+  @override
+  String get statusSoldOut => 'Hết chỗ';
+
+  @override
+  String get statusSelected => 'Đang chọn';
+
+  @override
+  String get statusEmpty => 'Trống';
+
+  @override
+  String get selectDeparture => 'Chọn điểm đi';
+
+  @override
+  String get busTicketTitle => 'VÉ XE KHÁCH ĐIỆN TỬ';
+
+  @override
+  String get busCompany => 'Nhà xe';
+
+  @override
+  String get departureTime => 'Giờ khởi hành';
+
+  @override
+  String get arrivalTime => 'Giờ đến nơi';
+
+  @override
+  String get seatNumber => 'Số ghế';
+
+  @override
+  String get passengerInfo => 'Thông tin hành khách';
+
+  @override
+  String get driver => 'Tài xế';
+
+  @override
+  String get selectedSeats => 'Số lượng';
+
+  @override
+  String get roomQuantity => 'Số lượng phòng';
+
+  @override
+  String get roomNotAvailable => 'Phòng này hiện không có sẵn';
+
+  @override
+  String get selectFoodType => 'Chọn loại đồ ăn';
+
+  @override
+  String get continueAction => 'Tiếp tục';
+
+  @override
+  String get fillAllFields => 'Vui lòng điền đầy đủ thông tin';
+
+  @override
+  String get invalidReturnDate => 'Ngày về phải sau ngày đi';
+
+  @override
+  String get about => 'Giới thiệu';
+
+  @override
+  String get photos => 'Hình ảnh';
+
+  @override
+  String get videos => 'Video';
+
+  @override
+  String get ticketNoteTitle => 'Lưu ý quan trọng';
+
+  @override
+  String get ticketNote1 => 'Xuất trình mã QR cho tài xế để xác nhận';
+
+  @override
+  String get ticketNote2 => 'Có mặt trước giờ khởi hành 15 phút';
+
+  @override
+  String get ticketNote3 => 'Vé chỉ có giá trị cho ngày và giờ đã chọn';
+
+  @override
+  String get bookingCodeLabel => 'Mã đặt vé';
+
+  @override
+  String get departure => 'Khởi hành';
+
+  @override
+  String get arrival => 'Đến nơi';
+
+  @override
+  String get quantity => 'Số lượng';
+
+  @override
+  String get ticketNote4 => 'Mang theo CMND/CCCD khi lên xe';
+
+  @override
+  String get selectedRoom => 'Phòng đã chọn';
+
+  @override
+  String get people => 'người';
+
+  @override
+  String get foodTypeAll => 'Tất cả';
+
+  @override
+  String get foodTypeVietnamese => 'Món Việt';
+
+  @override
+  String get foodTypeAsian => 'Món Á';
+
+  @override
+  String get foodTypeEuropean => 'Món Âu';
+
+  @override
+  String get foodTypeSeafood => 'Hải sản';
+
+  @override
+  String get foodTypeHotpot => 'Lẩu';
+
+  @override
+  String get foodTypeBBQ => 'Nướng';
+
+  @override
+  String get foodTypeVegetarian => 'Chay';
+
+  @override
+  String get foodTypeKorean => 'Món Hàn';
+
+  @override
+  String get foodTypeJapanese => 'Món Nhật';
+
+  @override
+  String get foodTypeFastFood => 'Fast Food';
 }

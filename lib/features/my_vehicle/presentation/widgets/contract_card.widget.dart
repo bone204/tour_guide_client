@@ -17,25 +17,22 @@ class ContractCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 16.h),
         padding: EdgeInsets.all(18.w),
         decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16.r),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF000000).withOpacity(0.15),
-            blurRadius: 8.r,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+          borderRadius: BorderRadius.circular(16.r),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF000000).withOpacity(0.15),
+              blurRadius: 8.r,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(context),
             SizedBox(height: 16.h),
-            Divider(
-              height: 1,
-              color: AppColors.primaryBlue.withOpacity(0.08),
-            ),
+            Divider(height: 1, color: AppColors.primaryBlue.withOpacity(0.08)),
             SizedBox(height: 16.h),
             _buildInfoGrid(context),
             if (contract.createdAt != null) ...[
@@ -49,10 +46,12 @@ class ContractCard extends StatelessWidget {
                   ),
                   SizedBox(width: 6.w),
                   Text(
-                    'Tạo ngày ${_formatDate(contract.createdAt!)}',
+                    AppLocalizations.of(
+                      context,
+                    )!.createdOn(_formatDate(contract.createdAt!)),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtitle,
-                        ),
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
                 ],
               ),
@@ -87,19 +86,24 @@ class ContractCard extends StatelessWidget {
               Text(
                 contract.user?.fullName ??
                     contract.user?.email ??
-                    'Contract #${contract.id}',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                    AppLocalizations.of(
+                      context,
+                    )!.contractId(contract.id.toString()),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 4.h),
               Text(
-                contract.user?.email ?? 'ID: ${contract.id}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSubtitle,
-                    ),
+                contract.user?.email ??
+                    AppLocalizations.of(
+                      context,
+                    )!.idWithPrefix(contract.id.toString()),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -130,7 +134,9 @@ class ContractCard extends StatelessWidget {
         icon: Icons.business_center_outlined,
         label: AppLocalizations.of(context)!.businessTypeLabel,
         value:
-            contract.businessType == BusinessType.personal ? AppLocalizations.of(context)!.personal : AppLocalizations.of(context)!.company,
+            contract.businessType == BusinessType.personal
+                ? AppLocalizations.of(context)!.personal
+                : AppLocalizations.of(context)!.company,
       ),
       if (contract.taxCode?.isNotEmpty ?? false)
         _InfoChip(
@@ -148,12 +154,7 @@ class ContractCard extends StatelessWidget {
           runSpacing: 12.h,
           children:
               infoChips
-                  .map(
-                    (chip) => SizedBox(
-                      width: chipWidth,
-                      child: chip,
-                    ),
-                  )
+                  .map((chip) => SizedBox(width: chipWidth, child: chip))
                   .toList(),
         );
       },
@@ -167,19 +168,19 @@ class ContractCard extends StatelessWidget {
     switch (status) {
       case RentalContractStatus.approved:
         backgroundColor = AppColors.primaryGreen;
-        displayText = 'Approved';
+        displayText = AppLocalizations.of(context)!.statusApproved;
         break;
       case RentalContractStatus.rejected:
         backgroundColor = AppColors.primaryRed;
-        displayText = 'Rejected';
+        displayText = AppLocalizations.of(context)!.statusRejected;
         break;
       case RentalContractStatus.pending:
         backgroundColor = AppColors.primaryOrange;
-        displayText = 'Pending';
+        displayText = AppLocalizations.of(context)!.statusPending;
         break;
       case RentalContractStatus.suspended:
         backgroundColor = AppColors.primaryGrey;
-        displayText = 'Suspended';
+        displayText = AppLocalizations.of(context)!.statusSuspended;
         break;
     }
 
@@ -192,9 +193,9 @@ class ContractCard extends StatelessWidget {
       child: Text(
         displayText,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: AppColors.primaryWhite,
-            ),
+          fontWeight: FontWeight.w700,
+          color: AppColors.primaryWhite,
+        ),
       ),
     );
   }
@@ -231,18 +232,18 @@ class _InfoChip extends StatelessWidget {
               SizedBox(width: 6.w),
               Text(
                 label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSubtitle,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
               ),
             ],
           ),
           SizedBox(height: 6.h),
           Text(
             value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -251,4 +252,3 @@ class _InfoChip extends StatelessWidget {
     );
   }
 }
-

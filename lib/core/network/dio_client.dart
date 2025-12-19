@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
+import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/core/network/logger_interceptor.dart';
 import 'package:tour_guide_app/main.dart';
 
@@ -54,13 +55,19 @@ class DioClient {
           String? errorContent;
 
           if (_isConnectionError(error)) {
-            errorTitle = 'Mất kết nối';
-            errorContent =
-                'Kết nối mạng bị gián đoạn. Vui lòng kiểm tra và thử lại.';
+            final context = navigatorKey.currentContext;
+            if (context != null) {
+              errorTitle = AppLocalizations.of(context)!.connectionLostTitle;
+              errorContent =
+                  AppLocalizations.of(context)!.connectionLostContent;
+            }
           } else if (_isServerNoResponseError(error)) {
-            errorTitle = 'Máy chủ không phản hồi';
-            errorContent =
-                'Quá thời gian chờ phản hồi từ máy chủ. Vui lòng thử lại sau.';
+            final context = navigatorKey.currentContext;
+            if (context != null) {
+              errorTitle = AppLocalizations.of(context)!.serverNoResponseTitle;
+              errorContent =
+                  AppLocalizations.of(context)!.serverNoResponseContent;
+            }
           }
 
           if (errorTitle != null && errorContent != null) {
@@ -80,8 +87,10 @@ class DioClient {
             // Thay vì showDialog trực tiếp, gọi qua hàm quản lý Future
             final shouldRetry = await _getRetryDecision(
               navigatorKey.currentContext,
-              title: errorTitle,
-              content: errorContent,
+              title:
+                  errorTitle,
+              content:
+                  errorContent,
             );
 
             if (shouldRetry) {
@@ -214,8 +223,8 @@ class DioClient {
 
   bool _isServerNoResponseError(DioException error) {
     return error.type == DioExceptionType.connectionTimeout ||
-        error.type == DioExceptionType.receiveTimeout ||
-        error.type == DioExceptionType.sendTimeout;
+        (error.type == DioExceptionType.receiveTimeout) ||
+        (error.type == DioExceptionType.sendTimeout);
   }
 
   Future<bool> _showConnectivityDialogSimple(
@@ -241,14 +250,14 @@ class DioClient {
             Navigator.of(context).pop();
             if (!completer.isCompleted) completer.complete(false); // Đóng
           },
-          child: const Text('Đóng'),
+          child: Text(AppLocalizations.of(context)!.close),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
             if (!completer.isCompleted) completer.complete(true); // Thử lại
           },
-          child: const Text('Thử lại'),
+          child: Text(AppLocalizations.of(context)!.retry),
         ),
       ],
     );
@@ -311,8 +320,8 @@ class DioClient {
       if (!excludedRoutes.contains(currentRoute) && isTokenExpired) {
         await showAppDialog(
           context: context,
-          title: 'Phiên đăng nhập hết hạn',
-          content: 'Vui lòng đăng nhập lại để tiếp tục.',
+          title: AppLocalizations.of(context)!.sessionExpired,
+          content: AppLocalizations.of(context)!.sessionExpiredMessage,
           icon: Icons.warning_amber_rounded,
           iconColor: Colors.orange,
           barrierDismissible: false,
@@ -322,7 +331,7 @@ class DioClient {
                 Navigator.of(context).pop();
                 _performLogout(context);
               },
-              child: const Text('OK'),
+              child: Text(AppLocalizations.of(context)!.ok),
             ),
           ],
         );

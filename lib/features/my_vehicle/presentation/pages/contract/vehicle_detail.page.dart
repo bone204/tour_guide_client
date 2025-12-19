@@ -64,7 +64,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
             ),
             SizedBox(height: 16.h),
             Text(
-              'Không thể tải thông tin xe',
+              AppLocalizations.of(context)!.cannotLoadVehicleInfo,
               style: Theme.of(
                 context,
               ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
@@ -181,7 +181,7 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
             ),
           ]),
           if (vehicle.description?.isNotEmpty ?? false)
-            _buildSection('Mô tả', [
+            _buildSection(AppLocalizations.of(context)!.description, [
               Text(
                 vehicle.description!,
                 style: Theme.of(context).textTheme.bodyMedium,

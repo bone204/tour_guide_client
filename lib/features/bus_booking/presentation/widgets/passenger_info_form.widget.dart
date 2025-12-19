@@ -37,17 +37,17 @@ class PassengerInfoForm extends StatelessWidget {
                 child: Text(
                   'Ghế $seatNumber',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: AppColors.primaryWhite,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: AppColors.primaryWhite,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               SizedBox(width: 8.w),
               Text(
-                'Thông tin hành khách',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
+                AppLocalizations.of(context)!.passengerInfo,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(color: AppColors.textPrimary),
               ),
             ],
           ),
@@ -61,17 +61,24 @@ class PassengerInfoForm extends StatelessWidget {
               hintText: AppLocalizations.of(context)!.enterFullNameHint,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: AppColors.textSubtitle.withOpacity(0.3)),
+                borderSide: BorderSide(
+                  color: AppColors.textSubtitle.withOpacity(0.3),
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: AppColors.textSubtitle.withOpacity(0.3)),
+                borderSide: BorderSide(
+                  color: AppColors.textSubtitle.withOpacity(0.3),
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
                 borderSide: BorderSide(color: AppColors.primaryBlue, width: 2),
               ),
-              prefixIcon: Icon(Icons.person_outline, color: AppColors.primaryBlue),
+              prefixIcon: Icon(
+                Icons.person_outline,
+                color: AppColors.primaryBlue,
+              ),
             ),
             onChanged: (value) {
               // TODO: Call onChanged with name and phone
@@ -88,17 +95,24 @@ class PassengerInfoForm extends StatelessWidget {
               hintText: AppLocalizations.of(context)!.enterPhoneNumberHint,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: AppColors.textSubtitle.withOpacity(0.3)),
+                borderSide: BorderSide(
+                  color: AppColors.textSubtitle.withOpacity(0.3),
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
-                borderSide: BorderSide(color: AppColors.textSubtitle.withOpacity(0.3)),
+                borderSide: BorderSide(
+                  color: AppColors.textSubtitle.withOpacity(0.3),
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.r),
                 borderSide: BorderSide(color: AppColors.primaryBlue, width: 2),
               ),
-              prefixIcon: Icon(Icons.phone_outlined, color: AppColors.primaryBlue),
+              prefixIcon: Icon(
+                Icons.phone_outlined,
+                color: AppColors.primaryBlue,
+              ),
             ),
             onChanged: (value) {
               // TODO: Call onChanged with name and phone
@@ -109,4 +123,3 @@ class PassengerInfoForm extends StatelessWidget {
     );
   }
 }
-

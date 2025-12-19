@@ -1020,5 +1020,109 @@
   "spin": "Spin",
   "foodWheelResultTitle": "🎉 Today's meal:",
   "awesome": "Awesome!",
-  "spinAgain": "Spin Again"
+  "spinAgain": "Spin Again",
+  "yourVehicles": "Your Vehicles",
+  "readyToAddVehicles": "Ready to Add Vehicles",
+  "contractApprovedMessage": "Your contract has been approved! Start adding your vehicles to earn money from rentals.",
+  "contractApproved": "Contract Approved!",
+  "whatYouCanDoNow": "What you can do now:",
+  "benefitAddUnlimited": "Add unlimited vehicles to your account",
+  "benefitUploadPhotos": "Upload clear photos and documentation",
+  "benefitSetPrices": "Set your own rental prices",
+  "benefitVisibility": "Your vehicles will be visible to customers",
+  "benefitStartEarning": "Start earning from the first rental",
+  "noRentalContractYet": "No Rental Contract Yet",
+  "registerContractBeforeListing": "Register a rental contract before listing your vehicles for rent.",
+  "registerRentalContract": "Register Rental Contract",
+  "whyRegisterContract": "Why register a rental contract first?",
+  "benefitReuseInfo": "Provide owner information once and reuse it later",
+  "benefitVerify": "Enable Traveline to verify payouts and legal docs",
+  "benefitListUnlimited": "Unlock the ability to list unlimited vehicles",
+  "benefitSupport": "Get dedicated support for future rentals",
+  "cannotLoadVehicleInfo": "Cannot load vehicle information",
+  "createdOn": "Created on {date}",
+  "@createdOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "contractId": "Contract #{id}",
+  "@contractId": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "idWithPrefix": "ID: {id}",
+  "@idWithPrefix": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "connectionLostTitle": "Connection Lost",
+  "connectionLostContent": "Network connection interrupted. Please check and try again.",
+  "serverNoResponseTitle": "Server Not Responding",
+  "serverNoResponseContent": "Server response timed out. Please try again later.",
+  "discountPointsLabel": "Discount (points)",
+  "payWithPoints": "Pay with points",
+  "statusAvailable": "Available",
+  "statusBooked": "Booked",
+  "statusSoldOut": "Sold Out",
+  "statusSelected": "Selected",
+  "statusEmpty": "Empty",
+  "selectLocation": "Select location",
+  "selectDeparture": "Select departure point",
+  "selectDestination": "Select destination",
+  "busTicketTitle": "ELECTRONIC BUS TICKET",
+  "busCompany": "Bus Company",
+  "vehicleType": "Vehicle Type",
+  "departureTime": "Departure Time",
+  "arrivalTime": "Arrival Time",
+  "departureDate": "Departure Date",
+  "seatNumber": "Seat Number",
+  "passengerInfo": "Passenger Info",
+  "driver": "Driver",
+  "selectedSeats": "Selected Seats",
+  "roomQuantity": "Room Quantity",
+  "roomNotAvailable": "Room not available",
+  "selectFoodType": "Select food type",
+  "continueAction": "Continue",
+  "fillAllFields": "Please fill in all information",
+  "selectReturnDate": "Please select return date",
+  "invalidReturnDate": "Return date must be after departure date",
+  "carDetails": "Car Details",
+  "reviews": "Reviews",
+  "about": "About",
+  "photos": "Photos",
+  "videos": "Videos",
+  "ticketNoteTitle": "Important Note",
+  "ticketNote1": "Show QR code to driver for confirmation",
+  "ticketNote2": "Arrive 15 minutes before departure",
+  "ticketNote3": "Ticket is valid for selected date and time only",
+  "bookingCodeLabel": "Booking Code",
+  "departure": "Departure",
+  "arrival": "Arrival",
+  "quantity": "Quantity",
+  "ticketNote4": "Bring ID/CCCD when boarding",
+  "selectedRoom": "Selected Room",
+  "people": "people",
+  "statusEmpty": "Empty",
+  "statusBooked": "Booked",
+  "selectFoodType": "Select food type",
+  "foodTypeAll": "All",
+  "foodTypeVietnamese": "Vietnamese",
+  "foodTypeAsian": "Asian",
+  "foodTypeEuropean": "European",
+  "foodTypeSeafood": "Seafood",
+  "foodTypeHotpot": "Hotpot",
+  "foodTypeBBQ": "BBQ",
+  "foodTypeVegetarian": "Vegetarian",
+  "foodTypeKorean": "Korean",
+  "foodTypeJapanese": "Japanese",
+  "foodTypeFastFood": "Fast Food"
 }

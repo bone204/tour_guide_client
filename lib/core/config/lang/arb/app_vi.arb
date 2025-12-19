@@ -1034,5 +1034,109 @@
   "spin": "Quay",
   "foodWheelResultTitle": "🎉 Hôm nay ăn món:",
   "awesome": "Tuyệt vời!",
-  "spinAgain": "Quay Lại"
+  "spinAgain": "Quay Lại",
+  "yourVehicles": "Xe của bạn",
+  "readyToAddVehicles": "Sẵn sàng thêm xe",
+  "contractApprovedMessage": "Hợp đồng của bạn đã được duyệt! Bắt đầu thêm xe để kiếm tiền từ việc cho thuê.",
+  "contractApproved": "Hợp đồng đã duyệt!",
+  "whatYouCanDoNow": "Bạn có thể làm gì bây giờ:",
+  "benefitAddUnlimited": "Thêm không giới hạn xe vào tài khoản của bạn",
+  "benefitUploadPhotos": "Tải lên hình ảnh rõ ràng và giấy tờ",
+  "benefitSetPrices": "Tự đặt giá cho thuê của bạn",
+  "benefitVisibility": "Xe của bạn sẽ hiển thị với khách hàng",
+  "benefitStartEarning": "Bắt đầu kiếm tiền từ lần thuê đầu tiên",
+  "noRentalContractYet": "Chưa có hợp đồng thuê xe",
+  "registerContractBeforeListing": "Đăng ký hợp đồng thuê xe trước khi đăng xe cho thuê.",
+  "registerRentalContract": "Đăng ký hợp đồng thuê",
+  "whyRegisterContract": "Tại sao cần đăng ký hợp đồng trước?",
+  "benefitReuseInfo": "Cung cấp thông tin chủ sở hữu một lần và sử dụng lại sau",
+  "benefitVerify": "Cho phép Traveline xác minh thanh toán và giấy tờ pháp lý",
+  "benefitListUnlimited": "Mở khóa khả năng đăng không giới hạn xe",
+  "benefitSupport": "Nhận hỗ trợ tận tình cho các lần thuê trong tương lai",
+  "cannotLoadVehicleInfo": "Không thể tải thông tin xe",
+  "createdOn": "Tạo ngày {date}",
+  "@createdOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "contractId": "Hợp đồng #{id}",
+  "@contractId": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "idWithPrefix": "ID: {id}",
+  "@idWithPrefix": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "connectionLostTitle": "Mất kết nối",
+  "connectionLostContent": "Kết nối mạng bị gián đoạn. Vui lòng kiểm tra và thử lại.",
+  "serverNoResponseTitle": "Máy chủ không phản hồi",
+  "serverNoResponseContent": "Quá thời gian chờ phản hồi từ máy chủ. Vui lòng thử lại sau.",
+  "discountPointsLabel": "Giảm giá (điểm)",
+  "payWithPoints": "Thanh toán bằng điểm",
+  "statusAvailable": "Còn chỗ",
+  "statusBooked": "Đã đặt",
+  "statusSoldOut": "Hết chỗ",
+  "statusSelected": "Đang chọn",
+  "statusEmpty": "Trống",
+  "selectLocation": "Chọn địa điểm",
+  "selectDeparture": "Chọn điểm đi",
+  "selectDestination": "Chọn điểm đến",
+  "busTicketTitle": "VÉ XE KHÁCH ĐIỆN TỬ",
+  "busCompany": "Nhà xe",
+  "vehicleType": "Loại xe",
+  "departureTime": "Giờ khởi hành",
+  "arrivalTime": "Giờ đến nơi",
+  "departureDate": "Ngày đi",
+  "seatNumber": "Số ghế",
+  "passengerInfo": "Thông tin hành khách",
+  "driver": "Tài xế",
+  "selectedSeats": "Số lượng",
+  "roomQuantity": "Số lượng phòng",
+  "roomNotAvailable": "Phòng này hiện không có sẵn",
+  "selectFoodType": "Chọn loại đồ ăn",
+  "continueAction": "Tiếp tục",
+  "fillAllFields": "Vui lòng điền đầy đủ thông tin",
+  "selectReturnDate": "Vui lòng chọn ngày về",
+  "invalidReturnDate": "Ngày về phải sau ngày đi",
+  "carDetails": "Chi tiết xe",
+  "reviews": "Đánh giá",
+  "about": "Giới thiệu",
+  "photos": "Hình ảnh",
+  "videos": "Video",
+  "ticketNoteTitle": "Lưu ý quan trọng",
+  "ticketNote1": "Xuất trình mã QR cho tài xế để xác nhận",
+  "ticketNote2": "Có mặt trước giờ khởi hành 15 phút",
+  "ticketNote3": "Vé chỉ có giá trị cho ngày và giờ đã chọn",
+  "bookingCodeLabel": "Mã đặt vé",
+  "departure": "Khởi hành",
+  "arrival": "Đến nơi",
+  "quantity": "Số lượng",
+  "ticketNote4": "Mang theo CMND/CCCD khi lên xe",
+  "selectedRoom": "Phòng đã chọn",
+  "people": "người",
+  "statusEmpty": "Trống",
+  "statusBooked": "Đã đặt",
+  "selectFoodType": "Chọn loại đồ ăn",
+  "foodTypeAll": "Tất cả",
+  "foodTypeVietnamese": "Món Việt",
+  "foodTypeAsian": "Món Á",
+  "foodTypeEuropean": "Món Âu",
+  "foodTypeSeafood": "Hải sản",
+  "foodTypeHotpot": "Lẩu",
+  "foodTypeBBQ": "Nướng",
+  "foodTypeVegetarian": "Chay",
+  "foodTypeKorean": "Món Hàn",
+  "foodTypeJapanese": "Món Nhật",
+  "foodTypeFastFood": "Fast Food"
 }

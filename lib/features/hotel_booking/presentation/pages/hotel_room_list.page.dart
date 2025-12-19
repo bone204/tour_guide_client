@@ -17,17 +17,19 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
   final Map<String, int> _selectedRooms = {}; // roomId -> quantity
 
   void _navigateToBookingInfo() {
-    final selectedRoomBookings = _selectedRooms.entries
-        .where((entry) => entry.value > 0)
-        .map((entry) {
+    final selectedRoomBookings =
+        _selectedRooms.entries.where((entry) => entry.value > 0).map((entry) {
           final room = _rooms.firstWhere((r) => r.id == entry.key);
           return RoomBooking(room: room, quantity: entry.value);
-        })
-        .toList();
+        }).toList();
 
     if (selectedRoomBookings.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectAtLeastOneRoom)),
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.pleaseSelectAtLeastOneRoom,
+          ),
+        ),
       );
       return;
     }
@@ -46,10 +48,9 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
       numberOfNights: 1, // Mock data
     );
 
-    Navigator.of(context).pushNamed(
-      AppRouteConstant.hotelBookingInfo,
-      arguments: booking,
-    );
+    Navigator.of(
+      context,
+    ).pushNamed(AppRouteConstant.hotelBookingInfo, arguments: booking);
   }
 
   double _getTotalPrice() {
@@ -125,17 +126,18 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
                         children: [
                           Text(
                             '$totalRooms phòng',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textSubtitle,
-                                ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: AppColors.textSubtitle),
                           ),
                           SizedBox(height: 4.h),
                           Text(
                             Formatter.currency(totalPrice),
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                  color: AppColors.primaryBlue,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.headlineMedium?.copyWith(
+                              color: AppColors.primaryBlue,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ],
                       ),
@@ -152,10 +154,9 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
                           ),
                         ),
                         child: Text(
-                          'Tiếp tục',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                          AppLocalizations.of(context)!.continueAction,
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(color: AppColors.textSecondary),
                         ),
                       ),
                     ),
@@ -168,4 +169,3 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
     );
   }
 }
-

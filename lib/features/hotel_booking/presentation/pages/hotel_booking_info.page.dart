@@ -10,10 +10,7 @@ import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.
 class HotelBookingInfoPage extends StatefulWidget {
   final HotelBooking hotelBooking;
 
-  const HotelBookingInfoPage({
-    super.key,
-    required this.hotelBooking,
-  });
+  const HotelBookingInfoPage({super.key, required this.hotelBooking});
 
   @override
   State<HotelBookingInfoPage> createState() => _HotelBookingInfoPageState();
@@ -39,7 +36,10 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
     final booking = widget.hotelBooking;
 
     final totalAmount = booking.totalCost;
-    final totalAfterPoint = (totalAmount - travelPointToUse).clamp(0, totalAmount);
+    final totalAfterPoint = (totalAmount - travelPointToUse).clamp(
+      0,
+      totalAmount,
+    );
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
@@ -57,10 +57,7 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
               width: double.infinity,
               height: 236.h,
               color: AppColors.primaryBlue.withOpacity(0.1),
-              child: Image.asset(
-                AppImage.defaultCar,
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset(AppImage.defaultCar, fit: BoxFit.cover),
             ),
 
             Padding(
@@ -76,13 +73,15 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                   SizedBox(height: 4.h),
                   Text(
                     booking.hotelAddress ?? 'TP.HCM',
-                    style: theme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
+                    style: theme.bodyMedium?.copyWith(
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
-                  
+
                   SizedBox(height: 16.h),
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 8.h),
-                  
+
                   // Guest info (mock data)
                   BillInfo(
                     label: AppLocalizations.of(context)!.customer,
@@ -96,11 +95,11 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                     label: AppLocalizations.of(context)!.email,
                     value: "nguyenvana@gmail.com",
                   ),
-                  
+
                   SizedBox(height: 8.h),
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 8.h),
-                  
+
                   // Booking details
                   BillInfo(
                     label: AppLocalizations.of(context)!.checkIn,
@@ -114,14 +113,14 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                     label: AppLocalizations.of(context)!.numberOfNights,
                     value: "${booking.numberOfNights ?? 2}",
                   ),
-                  
+
                   SizedBox(height: 8.h),
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 8.h),
-                  
+
                   // Room details
                   Text(
-                    'Phòng đã chọn',
+                    AppLocalizations.of(context)!.selectedRoom,
                     style: theme.titleMedium,
                   ),
                   SizedBox(height: 8.h),
@@ -147,7 +146,7 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                       ),
                     );
                   }).toList(),
-                  
+
                   SizedBox(height: 8.h),
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 16.h),
@@ -157,8 +156,8 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                     RewardPointSelector(
                       travelPoint: travelPoint,
                       travelPointToUse: travelPointToUse,
-                      onChanged: (value) =>
-                          setState(() => travelPointToUse = value),
+                      onChanged:
+                          (value) => setState(() => travelPointToUse = value),
                     ),
                     SizedBox(height: 16.h),
                   ],
@@ -170,7 +169,7 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                   ),
                   if (travelPointToUse > 0)
                     BillInfo(
-                      label: 'Giảm giá (điểm)',
+                      label: AppLocalizations.of(context)!.discountPointsLabel,
                       value: "-${Formatter.currency(travelPointToUse)}",
                     ),
                   SizedBox(height: 8.h),
@@ -194,16 +193,18 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                     selectedBank: selectedBank,
                     onSelect: (id) => setState(() => selectedBank = id),
                   ),
-                  
+
                   SizedBox(height: 24.h),
-                  
+
                   // Confirm button
                   PrimaryButton(
                     title: AppLocalizations.of(context)!.confirmBooking,
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(AppLocalizations.of(context)!.bookingSuccess),
+                          content: Text(
+                            AppLocalizations.of(context)!.bookingSuccess,
+                          ),
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.r),
@@ -223,4 +224,3 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
     );
   }
 }
-
