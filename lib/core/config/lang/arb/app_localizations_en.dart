@@ -1493,4 +1493,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteSuccess => 'Itinerary deleted successfully';
+
+  @override
+  String get foodWheelTitle => 'What to eat today?';
+
+  @override
+  String get spinWheel => 'Spin Wheel';
+
+  @override
+  String get spin => 'Spin';
+
+  @override
+  String get foodWheelResultTitle => '🎉 Today\'s meal:';
+
+  @override
+  String get awesome => 'Awesome!';
+
+  @override
+  String get spinAgain => 'Spin Again';
 }

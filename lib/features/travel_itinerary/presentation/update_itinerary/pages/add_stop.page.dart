@@ -13,11 +13,13 @@ import 'package:tour_guide_app/service_locator.dart';
 class AddStopPage extends StatefulWidget {
   final int itineraryId;
   final Destination destination;
+  final int? dayOrder;
 
   const AddStopPage({
     super.key,
     required this.itineraryId,
     required this.destination,
+    this.dayOrder,
   });
 
   @override
@@ -28,11 +30,14 @@ class _AddStopPageState extends State<AddStopPage> {
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
+  late TextEditingController _dayOrderController;
 
   @override
   void initState() {
     super.initState();
-    // Pre-populate logic if needed
+    _dayOrderController = TextEditingController(
+      text: (widget.dayOrder ?? 1).toString(),
+    );
   }
 
   Future<void> _selectTime(
@@ -101,6 +106,13 @@ class _AddStopPageState extends State<AddStopPage> {
                         ),
 
                         SizedBox(height: 24.h),
+                        CustomTextField(
+                          label: AppLocalizations.of(context)!.day,
+                          placeholder: '1',
+                          controller: _dayOrderController,
+                          keyboardType: TextInputType.number,
+                        ),
+                        SizedBox(height: 16.h),
                         Row(
                           children: [
                             Expanded(
@@ -170,8 +182,8 @@ class _AddStopPageState extends State<AddStopPage> {
                               return;
                             }
                             final request = AddStopRequest(
-                              dayOrder: 1,
-
+                              dayOrder:
+                                  int.tryParse(_dayOrderController.text) ?? 1,
                               travelPoints: 0,
                               startTime: _startTimeController.text,
                               endTime: _endTimeController.text,

@@ -14,11 +14,13 @@ import 'package:tour_guide_app/service_locator.dart';
 class DestinationSelectionPage extends StatelessWidget {
   final String province;
   final int itineraryId;
+  final int? dayOrder;
 
   const DestinationSelectionPage({
     super.key,
     required this.province,
     required this.itineraryId,
+    this.dayOrder,
   });
 
   @override
@@ -79,7 +81,11 @@ class DestinationSelectionPage extends StatelessWidget {
         Navigator.pushReplacementNamed(
           context,
           AppRouteConstant.addStop,
-          arguments: {'itineraryId': itineraryId, 'destination': destination},
+          arguments: {
+            'itineraryId': itineraryId,
+            'destination': destination,
+            'dayOrder': dayOrder,
+          },
         );
       },
       child: Container(

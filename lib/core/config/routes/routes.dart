@@ -53,6 +53,7 @@ import 'package:tour_guide_app/features/destination/data/models/destination.dart
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/destination_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/my_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/itinerary_list.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/food_wheel.page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -88,6 +89,7 @@ class AppRouter {
               (_) => AddStopPage(
                 itineraryId: args['itineraryId'] as int,
                 destination: args['destination'] as Destination,
+                dayOrder: args['dayOrder'] as int?,
               ),
         );
 
@@ -404,7 +406,14 @@ class AppRouter {
               (_) => DestinationSelectionPage(
                 province: args['province'] as String,
                 itineraryId: args['itineraryId'] as int,
+                dayOrder: args['dayOrder'] as int?,
               ),
+        );
+
+      case AppRouteConstant.foodWheel:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const FoodWheelPage(),
         );
 
       default:

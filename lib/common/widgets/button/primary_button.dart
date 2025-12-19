@@ -10,6 +10,7 @@ class PrimaryButton extends StatelessWidget {
   final double height;
   final double? width;
   final String? icon;
+  final bool isLoading;
 
   const PrimaryButton({
     Key? key,
@@ -21,12 +22,13 @@ class PrimaryButton extends StatelessWidget {
     this.height = 50,
     this.width,
     this.icon,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         minimumSize: Size(width ?? double.infinity, height.h),
@@ -35,26 +37,36 @@ class PrimaryButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius.r),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (icon != null) ...[
-            SvgPicture.asset(
-              icon!,
-              width: 20.w,
-              height: 20.h,
-              colorFilter: ColorFilter.mode(textColor, BlendMode.srcIn),
-            ),
-            SizedBox(width: 8.w),
-          ],
-          Text(
-            title,
-            style: Theme.of(
-              context,
-            ).textTheme.titleSmall?.copyWith(color: AppColors.textSecondary),
-          ),
-        ],
-      ),
+      child:
+          isLoading
+              ? SizedBox(
+                width: 24.w,
+                height: 24.w,
+                child: const CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+              : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (icon != null) ...[
+                    SvgPicture.asset(
+                      icon!,
+                      width: 20.w,
+                      height: 20.h,
+                      colorFilter: ColorFilter.mode(textColor, BlendMode.srcIn),
+                    ),
+                    SizedBox(width: 8.w),
+                  ],
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
     );
   }
 }

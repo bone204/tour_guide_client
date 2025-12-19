@@ -1028,5 +1028,11 @@
   "delete": "Xóa",
   "confirmDelete": "Xác nhận xóa",
   "confirmDeleteContent": "Bạn có chắc chắn muốn xóa lịch trình này?",
-  "deleteSuccess": "Đã xóa lịch trình thành công"
+  "deleteSuccess": "Đã xóa lịch trình thành công",
+  "foodWheelTitle": "Hôm nay ăn gì?",
+  "spinWheel": "Quay Ngay",
+  "spin": "Quay",
+  "foodWheelResultTitle": "🎉 Hôm nay ăn món:",
+  "awesome": "Tuyệt vời!",
+  "spinAgain": "Quay Lại"
 }

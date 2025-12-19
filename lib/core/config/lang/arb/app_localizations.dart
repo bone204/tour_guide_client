@@ -2950,6 +2950,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Itinerary deleted successfully'**
   String get deleteSuccess;
+
+  /// No description provided for @foodWheelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What to eat today?'**
+  String get foodWheelTitle;
+
+  /// No description provided for @spinWheel.
+  ///
+  /// In en, this message translates to:
+  /// **'Spin Wheel'**
+  String get spinWheel;
+
+  /// No description provided for @spin.
+  ///
+  /// In en, this message translates to:
+  /// **'Spin'**
+  String get spin;
+
+  /// No description provided for @foodWheelResultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'🎉 Today\'s meal:'**
+  String get foodWheelResultTitle;
+
+  /// No description provided for @awesome.
+  ///
+  /// In en, this message translates to:
+  /// **'Awesome!'**
+  String get awesome;
+
+  /// No description provided for @spinAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Spin Again'**
+  String get spinAgain;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

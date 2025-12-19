@@ -48,5 +48,6 @@ class AppRouteConstant {
       '/favourite_destinations_search';
   static const String myItinerary = '/my_itinerary';
   static const String itineraryList = '/itinerary_list';
+  static const String foodWheel = '/food_wheel';
   static const String splash = '/splash';
 }

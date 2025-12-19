@@ -1493,4 +1493,22 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get deleteSuccess => 'Đã xóa lịch trình thành công';
+
+  @override
+  String get foodWheelTitle => 'Hôm nay ăn gì?';
+
+  @override
+  String get spinWheel => 'Quay Ngay';
+
+  @override
+  String get spin => 'Quay';
+
+  @override
+  String get foodWheelResultTitle => '🎉 Hôm nay ăn món:';
+
+  @override
+  String get awesome => 'Tuyệt vời!';
+
+  @override
+  String get spinAgain => 'Quay Lại';
 }
