@@ -168,9 +168,12 @@ class _EditItineraryViewState extends State<_EditItineraryView>
           labelColor: AppColors.primaryBlue,
           indicatorColor: AppColors.primaryBlue,
           tabs: List.generate(dayCount, (index) {
-            return Tab(
-              text: "${AppLocalizations.of(context)!.day} ${index + 1}",
-            );
+            final dayLabel = AppLocalizations.of(context)!.day;
+            final capitalizedDay =
+                dayLabel.isNotEmpty
+                    ? '${dayLabel[0].toUpperCase()}${dayLabel.substring(1)}'
+                    : dayLabel;
+            return Tab(text: "$capitalizedDay ${index + 1}");
           }),
         ),
       ),

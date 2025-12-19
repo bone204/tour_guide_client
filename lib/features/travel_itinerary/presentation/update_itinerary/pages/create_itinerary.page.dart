@@ -53,8 +53,10 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
               context,
               AppRouteConstant.itineraryDetail,
               (route) =>
-                  route.settings.name !=
-                  AppRouteConstant.itineraryProvinceSelection,
+                  route.isFirst ||
+                  route.settings.name == AppRouteConstant.itineraryList ||
+                  route.settings.name == AppRouteConstant.myItinerary ||
+                  route.settings.name == AppRouteConstant.mainScreen,
               arguments: state.createdItinerary!.id,
             );
           } else if (state.status == CreateItineraryStatus.failure) {

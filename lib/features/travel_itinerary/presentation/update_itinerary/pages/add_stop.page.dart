@@ -71,13 +71,14 @@ class _AddStopPageState extends State<AddStopPage> {
         },
         builder: (context, state) {
           final isLoading = state is AddStopLoading;
+
           return Stack(
             children: [
               GestureDetector(
                 onTap: () => FocusScope.of(context).unfocus(),
                 child: Scaffold(
                   appBar: CustomAppBar(
-                    title: 'Add Stop',
+                    title: AppLocalizations.of(context)!.addStop,
                     showBackButton: true,
                     onBackPressed: () => Navigator.pop(context),
                   ),
@@ -105,11 +106,10 @@ class _AddStopPageState extends State<AddStopPage> {
                         ),
 
                         SizedBox(height: 24.h),
-                        _buildReadOnlyField(
+                        _buildNumberDisplay(
                           context,
                           label: AppLocalizations.of(context)!.day,
                           value: '${widget.dayOrder ?? 1}',
-                          icon: Icons.calendar_today,
                         ),
                         SizedBox(height: 16.h),
                         Row(
@@ -218,11 +218,10 @@ class _AddStopPageState extends State<AddStopPage> {
     super.dispose();
   }
 
-  Widget _buildReadOnlyField(
+  Widget _buildNumberDisplay(
     BuildContext context, {
     required String label,
     required String value,
-    required IconData icon,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,30 +229,25 @@ class _AddStopPageState extends State<AddStopPage> {
         Text(label, style: Theme.of(context).textTheme.displayLarge),
         SizedBox(height: 8.h),
         Container(
-          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 4.w),
+          alignment: Alignment.center,
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(vertical: 16.h),
           decoration: BoxDecoration(
-            color: AppColors.primaryWhite,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(color: AppColors.primaryGrey, width: 1.w),
+            color: AppColors.primaryBlue.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(color: AppColors.primaryBlue, width: 1.w),
           ),
-          child: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.w),
-                child: Icon(icon, size: 20.sp, color: AppColors.primaryBlack),
-              ),
-              Expanded(
-                child: Text(
-                  value,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.primaryBlack,
-                  ),
-                ),
-              ),
-            ],
+          child: Text(
+            value,
+            style: Theme.of(context).textTheme.displayLarge?.copyWith(
+              color: AppColors.primaryBlue,
+              fontSize: 32.sp,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ],
     );
   }
+
 }
