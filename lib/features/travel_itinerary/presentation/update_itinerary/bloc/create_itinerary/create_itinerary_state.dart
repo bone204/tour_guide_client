@@ -8,7 +8,6 @@ class CreateItineraryState extends Equatable {
   final String province;
   final DateTime? startDate;
   final DateTime? endDate;
-  final int numberOfDays;
   final String? errorMessage;
   final Itinerary? createdItinerary;
 
@@ -18,7 +17,6 @@ class CreateItineraryState extends Equatable {
     this.province = '',
     this.startDate,
     this.endDate,
-    this.numberOfDays = 1,
     this.errorMessage,
     this.createdItinerary,
   });
@@ -29,7 +27,6 @@ class CreateItineraryState extends Equatable {
     String? province,
     DateTime? startDate,
     DateTime? endDate,
-    int? numberOfDays,
     String? errorMessage,
     Itinerary? createdItinerary,
   }) {
@@ -39,10 +36,15 @@ class CreateItineraryState extends Equatable {
       province: province ?? this.province,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
-      numberOfDays: numberOfDays ?? this.numberOfDays,
       errorMessage: errorMessage ?? this.errorMessage,
       createdItinerary: createdItinerary ?? this.createdItinerary,
     );
+  }
+
+  int get numberOfDays {
+    if (startDate == null || endDate == null) return 1;
+    final diff = endDate!.difference(startDate!).inDays;
+    return diff >= 0 ? diff + 1 : 1;
   }
 
   bool get isValid =>
@@ -58,7 +60,6 @@ class CreateItineraryState extends Equatable {
     province,
     startDate,
     endDate,
-    numberOfDays,
     errorMessage,
     createdItinerary,
   ];

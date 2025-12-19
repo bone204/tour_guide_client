@@ -49,9 +49,12 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
               message: AppLocalizations.of(context)!.createItinerarySuccess,
               type: SnackbarType.success,
             );
-            Navigator.pushReplacementNamed(
+            Navigator.pushNamedAndRemoveUntil(
               context,
               AppRouteConstant.itineraryDetail,
+              (route) =>
+                  route.settings.name !=
+                  AppRouteConstant.itineraryProvinceSelection,
               arguments: state.createdItinerary!.id,
             );
           } else if (state.status == CreateItineraryStatus.failure) {

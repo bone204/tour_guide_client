@@ -15,17 +15,14 @@ class CreateItineraryCubit extends Cubit<CreateItineraryState> {
       super(const CreateItineraryState());
 
   void initialize(String province) {
-    // Default to tomorrow/day after tomorrow
     final tomorrow = DateTime.now().add(const Duration(days: 1));
     final dayAfterTomorrow = DateTime.now().add(const Duration(days: 2));
-    final numberOfDays = dayAfterTomorrow.difference(tomorrow).inDays + 1;
 
     emit(
       state.copyWith(
         province: province,
         startDate: tomorrow,
         endDate: dayAfterTomorrow,
-        numberOfDays: numberOfDays,
       ),
     );
   }
@@ -45,18 +42,7 @@ class CreateItineraryCubit extends Cubit<CreateItineraryState> {
       newEndDate = newStartDate;
     }
 
-    int numberOfDays = state.numberOfDays;
-    if (newStartDate != null && newEndDate != null) {
-      numberOfDays = newEndDate.difference(newStartDate).inDays + 1;
-    }
-
-    emit(
-      state.copyWith(
-        startDate: newStartDate,
-        endDate: newEndDate,
-        numberOfDays: numberOfDays,
-      ),
-    );
+    emit(state.copyWith(startDate: newStartDate, endDate: newEndDate));
   }
 
   Future<void> submitted() async {
@@ -67,7 +53,6 @@ class CreateItineraryCubit extends Cubit<CreateItineraryState> {
     final request = CreateItineraryRequest(
       name: state.name,
       province: state.province,
-      numberOfDays: state.numberOfDays,
       startDate: DateFormat('yyyy-MM-dd').format(state.startDate!),
       endDate: DateFormat('yyyy-MM-dd').format(state.endDate!),
     );

@@ -9,6 +9,7 @@ class CustomSnackbar {
     required String message,
     SnackbarType type = SnackbarType.info,
     Duration duration = const Duration(seconds: 3),
+    EdgeInsetsGeometry? margin,
   }) {
     Color backgroundColor;
     IconData icon;
@@ -70,7 +71,7 @@ class CustomSnackbar {
         borderRadius: BorderRadius.circular(16.r),
         side: BorderSide(color: iconColor.withOpacity(0.3), width: 1),
       ),
-      margin: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
+      margin: margin ?? EdgeInsets.only(left: 16.w, right: 16.w, bottom: 20.h),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       duration: duration,
     );

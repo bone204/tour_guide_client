@@ -86,8 +86,7 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
           final title = itinerary.name;
           final dateRange = '${itinerary.startDate} - ${itinerary.endDate}';
           final status = itinerary.status;
-          final defaultImage =
-              'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop';
+          final defaultImage = 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop';
           final List<String> images = [];
           if (itinerary.stops.isNotEmpty) {
             for (var stop in itinerary.stops) {
@@ -118,11 +117,6 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                   context,
                   true,
                 ); // Return true to indicate deletion
-                CustomSnackbar.show(
-                  context,
-                  message: AppLocalizations.of(context)!.deleteSuccess,
-                  type: SnackbarType.success,
-                );
               } else if (deleteState is DeleteItineraryFailure) {
                 CustomSnackbar.show(
                   context,

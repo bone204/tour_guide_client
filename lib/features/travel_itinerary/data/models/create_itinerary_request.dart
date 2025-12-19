@@ -1,28 +1,22 @@
   class CreateItineraryRequest {
   final String name;
   final String? province;
-  final int? numberOfDays;
   final String? startDate;
   final String? endDate;
-  final List<RouteStopRequest>? stops;
 
   const CreateItineraryRequest({
     required this.name,
     this.province,
-    this.numberOfDays,
     this.startDate,
     this.endDate,
-    this.stops,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'name': name,
       if (province != null) 'province': province,
-      if (numberOfDays != null) 'numberOfDays': numberOfDays,
       if (startDate != null) 'startDate': startDate,
       if (endDate != null) 'endDate': endDate,
-      if (stops != null) 'stops': stops!.map((e) => e.toJson()).toList(),
     };
   }
 }

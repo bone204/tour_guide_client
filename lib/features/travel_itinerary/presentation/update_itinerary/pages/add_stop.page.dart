@@ -31,14 +31,10 @@ class _AddStopPageState extends State<AddStopPage> {
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _startTimeController = TextEditingController();
   final TextEditingController _endTimeController = TextEditingController();
-  late TextEditingController _dayOrderController;
 
   @override
   void initState() {
     super.initState();
-    _dayOrderController = TextEditingController(
-      text: (widget.dayOrder ?? 1).toString(),
-    );
   }
 
   Future<void> _selectTime(
@@ -109,11 +105,11 @@ class _AddStopPageState extends State<AddStopPage> {
                         ),
 
                         SizedBox(height: 24.h),
-                        CustomTextField(
+                        _buildReadOnlyField(
+                          context,
                           label: AppLocalizations.of(context)!.day,
-                          placeholder: '1',
-                          controller: _dayOrderController,
-                          keyboardType: TextInputType.number,
+                          value: '${widget.dayOrder ?? 1}',
+                          icon: Icons.calendar_today,
                         ),
                         SizedBox(height: 16.h),
                         Row(
@@ -184,8 +180,7 @@ class _AddStopPageState extends State<AddStopPage> {
                               return;
                             }
                             final request = AddStopRequest(
-                              dayOrder:
-                                  int.tryParse(_dayOrderController.text) ?? 1,
+                              dayOrder: widget.dayOrder ?? 1,
                               travelPoints: 0,
                               startTime: _startTimeController.text,
                               endTime: _endTimeController.text,
@@ -221,5 +216,44 @@ class _AddStopPageState extends State<AddStopPage> {
     _startTimeController.dispose();
     _endTimeController.dispose();
     super.dispose();
+  }
+
+  Widget _buildReadOnlyField(
+    BuildContext context, {
+    required String label,
+    required String value,
+    required IconData icon,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: Theme.of(context).textTheme.displayLarge),
+        SizedBox(height: 8.h),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 4.w),
+          decoration: BoxDecoration(
+            color: AppColors.primaryWhite,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(color: AppColors.primaryGrey, width: 1.w),
+          ),
+          child: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                child: Icon(icon, size: 20.sp, color: AppColors.primaryBlack),
+              ),
+              Expanded(
+                child: Text(
+                  value,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.primaryBlack,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

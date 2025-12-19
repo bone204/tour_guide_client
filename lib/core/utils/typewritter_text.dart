@@ -28,12 +28,17 @@ class _TypewriterTextState extends State<TypewriterText> {
   bool _isVisible = true;
 
   void _startTypingLoop() {
+    if (!mounted) return;
     _displayedText = '';
     _index = 0;
     _isVisible = true;
     setState(() {});
 
     _typingTimer = Timer.periodic(widget.typingDuration, (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       if (_index < widget.text.length) {
         setState(() {
           _displayedText += widget.text[_index];
@@ -48,9 +53,11 @@ class _TypewriterTextState extends State<TypewriterText> {
 
   void _startHoldAndFade() {
     Future.delayed(widget.holdDuration, () {
+      if (!mounted) return;
       setState(() => _isVisible = false);
 
       Future.delayed(widget.fadeDuration, () {
+        if (!mounted) return;
         _startTypingLoop();
       });
     });

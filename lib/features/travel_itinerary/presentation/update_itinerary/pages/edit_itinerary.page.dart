@@ -55,6 +55,11 @@ class _EditItineraryPageState extends State<EditItineraryPage> {
             setState(() {
               _currentItinerary = state.itinerary;
             });
+            CustomSnackbar.show(
+              context,
+              message: AppLocalizations.of(context)!.itineraryUpdated,
+              type: SnackbarType.success,
+            );
           } else if (state is GetItineraryDetailFailure) {
             CustomSnackbar.show(
               context,
@@ -87,14 +92,30 @@ class _EditItineraryViewState extends State<_EditItineraryView>
   late StreamSubscription _busSubscription;
   late TabController _tabController;
 
+  int get _calculatedDays {
+    if (_currentItinerary.startDate.isEmpty ||
+        _currentItinerary.endDate.isEmpty) {
+      return _currentItinerary.numberOfDays > 0
+          ? _currentItinerary.numberOfDays
+          : 1;
+    }
+    try {
+      final start = DateTime.parse(_currentItinerary.startDate);
+      final end = DateTime.parse(_currentItinerary.endDate);
+      return end.difference(start).inDays + 1;
+    } catch (e) {
+      return _currentItinerary.numberOfDays > 0
+          ? _currentItinerary.numberOfDays
+          : 1;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _currentItinerary = widget.itinerary;
     // Ensure at least 1 day to avoid errors
-    final dayCount =
-        _currentItinerary.numberOfDays > 0 ? _currentItinerary.numberOfDays : 1;
-    _tabController = TabController(length: dayCount, vsync: this);
+    _tabController = TabController(length: _calculatedDays, vsync: this);
 
     _busSubscription = eventBus.on<StopAddedEvent>().listen((_) {
       if (mounted) {
@@ -113,13 +134,10 @@ class _EditItineraryViewState extends State<_EditItineraryView>
       // but usually itinerary days don't change dynamically in this view.
       // If they do, we'd need to dispose and create a new controller.
       // For now, assuming day count is stable or we just update content.
-      if (widget.itinerary.numberOfDays != oldWidget.itinerary.numberOfDays) {
+      final newDays = _calculatedDays;
+      if (_tabController.length != newDays) {
         _tabController.dispose();
-        final dayCount =
-            widget.itinerary.numberOfDays > 0
-                ? widget.itinerary.numberOfDays
-                : 1;
-        _tabController = TabController(length: dayCount, vsync: this);
+        _tabController = TabController(length: newDays, vsync: this);
       }
       _currentItinerary = widget.itinerary;
     }
@@ -135,141 +153,115 @@ class _EditItineraryViewState extends State<_EditItineraryView>
   @override
   Widget build(BuildContext context) {
     // Ensure we have a valid day count for UI generation
-    final dayCount =
-        _currentItinerary.numberOfDays > 0 ? _currentItinerary.numberOfDays : 1;
+    // Ensure we have a valid day count for UI generation
+    final dayCount = _calculatedDays;
 
-    return BlocListener<GetItineraryDetailCubit, GetItineraryDetailState>(
-      listener: (context, state) {
-        if (state is GetItineraryDetailSuccess) {
-          setState(() {
-            _currentItinerary = state.itinerary;
-            // Handle day count change if necessary matching logic in didUpdateWidget
-            if (state.itinerary.numberOfDays != _tabController.length) {
-              _tabController.dispose();
-              final newDayCount =
-                  state.itinerary.numberOfDays > 0
-                      ? state.itinerary.numberOfDays
-                      : 1;
-              _tabController = TabController(length: newDayCount, vsync: this);
-            }
-          });
-          CustomSnackbar.show(
-            context,
-            message: AppLocalizations.of(context)!.itineraryUpdated,
-            type: SnackbarType.success,
-          );
-        }
-      },
-      child: Scaffold(
-        appBar: CustomAppBar(
-          title: AppLocalizations.of(context)!.editItinerary,
-          showBackButton: true,
-          onBackPressed: () => Navigator.pop(context),
-          bottom: TabBar(
-            controller: _tabController,
-            isScrollable: true,
-            tabAlignment: TabAlignment.start,
-            labelColor: AppColors.primaryBlue,
-            indicatorColor: AppColors.primaryBlue,
-            tabs: List.generate(dayCount, (index) {
-              return Tab(
-                text: "${AppLocalizations.of(context)!.day} ${index + 1}",
-              );
-            }),
-          ),
+    return Scaffold(
+      appBar: CustomAppBar(
+        title: AppLocalizations.of(context)!.editItinerary,
+        showBackButton: true,
+        onBackPressed: () => Navigator.pop(context),
+        bottom: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          tabAlignment: TabAlignment.start,
+          labelColor: AppColors.primaryBlue,
+          indicatorColor: AppColors.primaryBlue,
+          tabs: List.generate(dayCount, (index) {
+            return Tab(
+              text: "${AppLocalizations.of(context)!.day} ${index + 1}",
+            );
+          }),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: List.generate(dayCount, (dayIndex) {
-                  final currentDay = dayIndex + 1;
-                  final dayStops =
-                      _currentItinerary.stops
-                          .where((stop) => stop.dayOrder == currentDay)
-                          .toList();
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: List.generate(dayCount, (dayIndex) {
+                final currentDay = dayIndex + 1;
+                final dayStops =
+                    _currentItinerary.stops
+                        .where((stop) => stop.dayOrder == currentDay)
+                        .toList();
 
-                  if (dayStops.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Lottie.asset(
-                            AppLotties.empty,
-                            width: 200.w,
-                            height: 200.h,
-                            fit: BoxFit.contain,
+                if (dayStops.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Lottie.asset(
+                          AppLotties.empty,
+                          width: 200.w,
+                          height: 200.h,
+                          fit: BoxFit.contain,
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          AppLocalizations.of(context)!.noStop,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: AppColors.textPrimary),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  padding: EdgeInsets.all(16.w),
+                  itemCount: dayStops.length,
+                  itemBuilder: (context, index) {
+                    final stop = dayStops[index];
+                    return ItineraryStopCard(
+                      stop: stop,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => EditStopPage(
+                                  itineraryId: _currentItinerary.id,
+                                  stop: stop,
+                                  // Pass day count to EditStopPage if needed,
+                                  // or just rely on it updating the backend.
+                                ),
                           ),
-                          SizedBox(height: 16.h),
-                          Text(
-                            AppLocalizations.of(context)!.noStop,
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(color: AppColors.textPrimary),
-                          ),
-                        ],
-                      ),
+                        ).then((updated) {
+                          if (updated == true) {
+                            context
+                                .read<GetItineraryDetailCubit>()
+                                .getItineraryDetail(_currentItinerary.id);
+                          }
+                        });
+                      },
                     );
-                  }
-
-                  return ListView.builder(
-                    padding: EdgeInsets.all(16.w),
-                    itemCount: dayStops.length,
-                    itemBuilder: (context, index) {
-                      final stop = dayStops[index];
-                      return ItineraryStopCard(
-                        stop: stop,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => EditStopPage(
-                                    itineraryId: _currentItinerary.id,
-                                    stop: stop,
-                                    // Pass day count to EditStopPage if needed,
-                                    // or just rely on it updating the backend.
-                                  ),
-                            ),
-                          ).then((updated) {
-                            if (updated == true) {
-                              context
-                                  .read<GetItineraryDetailCubit>()
-                                  .getItineraryDetail(_currentItinerary.id);
-                            }
-                          });
-                        },
-                      );
-                    },
-                  );
-                }),
-              ),
+                  },
+                );
+              }),
             ),
-            Padding(
-              padding: EdgeInsets.all(16.w),
-              child: PrimaryButton(
-                title: AppLocalizations.of(context)!.addStop,
-                onPressed: () async {
-                  // Pass the currently selected day to the destination selection
-                  // So the new stop is added to the correct day
-                  final currentDayIndex = _tabController.index;
-                  final currentDay = currentDayIndex + 1;
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.w),
+            child: PrimaryButton(
+              title: AppLocalizations.of(context)!.addStop,
+              onPressed: () async {
+                final currentDayIndex = _tabController.index;
+                final currentDay = currentDayIndex + 1;
 
-                  Navigator.pushNamed(
-                    context,
-                    AppRouteConstant.itineraryDestinationSelection,
-                    arguments: {
-                      'province': _currentItinerary.province,
-                      'itineraryId': _currentItinerary.id,
-                      'dayOrder':
-                          currentDay, // OPTIONAL: if backend/selection supports pre-selecting day
-                    },
-                  );
-                },
-              ),
+                Navigator.pushNamed(
+                  context,
+                  AppRouteConstant.itineraryDestinationSelection,
+                  arguments: {
+                    'province': _currentItinerary.province,
+                    'itineraryId': _currentItinerary.id,
+                    'dayOrder': currentDay,
+                  },
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
