@@ -5,6 +5,7 @@ import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
+import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/edit_stop/edit_stop_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/edit_stop/edit_stop_state.dart';
@@ -29,8 +30,6 @@ class _EditStopPageState extends State<EditStopPage> {
   late TextEditingController _notesController;
   late TextEditingController _startTimeController;
   late TextEditingController _endTimeController;
-  late TextEditingController _dayOrderController;
-  late TextEditingController _sequenceController;
 
   @override
   void initState() {
@@ -38,12 +37,6 @@ class _EditStopPageState extends State<EditStopPage> {
     _notesController = TextEditingController(text: widget.stop.notes);
     _startTimeController = TextEditingController(text: widget.stop.startTime);
     _endTimeController = TextEditingController(text: widget.stop.endTime);
-    _dayOrderController = TextEditingController(
-      text: widget.stop.dayOrder.toString(),
-    );
-    _sequenceController = TextEditingController(
-      text: widget.stop.sequence.toString(),
-    );
   }
 
   Future<void> _selectTime(
@@ -113,7 +106,16 @@ class _EditStopPageState extends State<EditStopPage> {
                               AppLocalizations.of(context)!.unknown,
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
-                        SizedBox(height: 24.h),
+                       if (widget.stop.destination?.descriptionViet != null ||
+                            widget.stop.destination?.descriptionEng != null) ...[
+                          SizedBox(height: 12.h),
+                          _buildDetailsSection(
+                            context,
+                            widget.stop.destination!,
+                          ),
+                          SizedBox(height: 12.h),
+                        ],
+                        SizedBox(height: 12.h),
                         if (widget.stop.destination?.photos?.isNotEmpty == true)
                           Container(
                             height: 200.h,
@@ -173,30 +175,6 @@ class _EditStopPageState extends State<EditStopPage> {
                         ),
                         SizedBox(height: 16.h),
 
-                        // Reorder Fields
-                        Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextField(
-                                label: AppLocalizations.of(context)!.dayOrder,
-                                placeholder: '',
-                                controller: _dayOrderController,
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                            SizedBox(width: 16.w),
-                            Expanded(
-                              child: CustomTextField(
-                                label: AppLocalizations.of(context)!.sequence,
-                                placeholder: '',
-                                controller: _sequenceController,
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 16.h),
-
                         // Notes
                         CustomTextField(
                           label: AppLocalizations.of(context)!.note,
@@ -221,12 +199,6 @@ class _EditStopPageState extends State<EditStopPage> {
                               newStartTime: _startTimeController.text,
                               newEndTime: _endTimeController.text,
                               newNotes: _notesController.text,
-                              newDayOrder: int.tryParse(
-                                _dayOrderController.text,
-                              ),
-                              newSequence: int.tryParse(
-                                _sequenceController.text,
-                              ),
                             );
                           },
                         ),
@@ -252,8 +224,24 @@ class _EditStopPageState extends State<EditStopPage> {
     _notesController.dispose();
     _startTimeController.dispose();
     _endTimeController.dispose();
-    _dayOrderController.dispose();
-    _sequenceController.dispose();
+
     super.dispose();
+  }
+
+  Widget _buildDetailsSection(BuildContext context, Destination destination) {
+    final description =
+        destination.descriptionViet ?? destination.descriptionEng;
+    if (description == null || description.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return Text(
+      description,
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        color: AppColors.textPrimary,
+        height: 1.5,
+      ),
+      maxLines: 4,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 }

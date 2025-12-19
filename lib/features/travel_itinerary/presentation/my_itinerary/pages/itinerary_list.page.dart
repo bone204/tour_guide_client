@@ -109,11 +109,25 @@ class _ItineraryListPageState extends State<ItineraryListPage> {
                   itemCount: state.itineraries.length,
                   itemBuilder: (context, index) {
                     final item = state.itineraries[index];
+                    String imageUrl =
+                        'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop';
+
+                    if (item.stops.isNotEmpty) {
+                      for (final stop in item.stops) {
+                        if (stop.destination?.photos != null &&
+                            stop.destination!.photos!.isNotEmpty) {
+                          imageUrl = stop.destination!.photos!.first;
+                          break;
+                        }
+                      }
+                    }
+
                     return ItineraryCard(
                       title: item.name,
                       dateRange: '${item.startDate} - ${item.endDate}',
                       destinationCount: item.stops.length.toString(),
                       status: item.status,
+                      imageUrl: imageUrl,
                       onTap: () async {
                         final result = await Navigator.of(context).pushNamed(
                           AppRouteConstant.itineraryDetail,

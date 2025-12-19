@@ -28,9 +28,9 @@ class ItineraryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
+            color: AppColors.primaryGrey.withOpacity(0.25),
+            blurRadius: 8.r,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -164,17 +164,22 @@ class ItineraryCard extends StatelessWidget {
   }
 
   String _getTranslatedStatus(BuildContext context, String status) {
-    switch (status) {
-      case 'Upcoming':
+    switch (status.toLowerCase()) {
+      case 'upcoming':
         return AppLocalizations.of(context)!.statusUpcoming;
-      case 'Completed':
+      case 'completed':
         return AppLocalizations.of(context)!.statusCompleted;
-      case 'Ongoing':
+      case 'ongoing':
         return AppLocalizations.of(context)!.statusOngoing;
-      case 'Cancelled':
+      case 'cancelled':
         return AppLocalizations.of(context)!.statusCancelled;
-      case 'Draft':
+      case 'draft':
         return AppLocalizations.of(context)!.statusDraft;
+      case 'public': // Assuming 'public' maps to 'upcoming' or has its own, using 'upcoming' or similar if no specific trans exists, providing fallback or mapping to existing.
+      // Actually let's just stick to the ones we have locals for.
+      // If the user says status is not translated, likely it is uppercase or slightly different.
+      // But if there is a 'public' status, we might need a key.
+      // For now, let's stick to safe defaults and case insensitivity.
       default:
         return status;
     }

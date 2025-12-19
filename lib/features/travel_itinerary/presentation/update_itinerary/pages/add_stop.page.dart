@@ -91,7 +91,13 @@ class _AddStopPageState extends State<AddStopPage> {
                           widget.destination.name,
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
-                        SizedBox(height: 24.h),
+                        if (widget.destination.descriptionViet != null ||
+                            widget.destination.descriptionEng != null) ...[
+                          SizedBox(height: 12.h),
+                          _buildDetailsSection(context, widget.destination),
+                          SizedBox(height: 12.h),
+                        ],
+                        SizedBox(height: 12.h),
                         Container(
                           height: 200.h,
                           decoration: BoxDecoration(
@@ -250,4 +256,20 @@ class _AddStopPageState extends State<AddStopPage> {
     );
   }
 
+  Widget _buildDetailsSection(BuildContext context, Destination destination) {
+    final description =
+        destination.descriptionViet ?? destination.descriptionEng;
+    if (description == null || description.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return Text(
+      description,
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        color: AppColors.textPrimary,
+        height: 1.5,
+      ),
+      maxLines: 4,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
 }

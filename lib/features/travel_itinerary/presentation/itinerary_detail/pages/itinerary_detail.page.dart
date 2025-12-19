@@ -86,7 +86,8 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
           final title = itinerary.name;
           final dateRange = '${itinerary.startDate} - ${itinerary.endDate}';
           final status = itinerary.status;
-          final defaultImage = 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop';
+          final defaultImage =
+              'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop';
           final List<String> images = [];
           if (itinerary.stops.isNotEmpty) {
             for (var stop in itinerary.stops) {
@@ -226,25 +227,54 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 10.w,
-                                        vertical: 4.h,
-                                      ),
-                                      margin: EdgeInsets.only(bottom: 8.h),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primaryBlue,
-                                        borderRadius: BorderRadius.circular(
-                                          8.r,
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 10.w,
+                                            vertical: 4.h,
+                                          ),
+                                          margin: EdgeInsets.only(bottom: 8.h),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primaryBlue,
+                                            borderRadius: BorderRadius.circular(
+                                              8.r,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            _getTranslatedStatus(
+                                              context,
+                                              status,
+                                            ),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelSmall
+                                                ?.copyWith(color: Colors.white),
+                                          ),
                                         ),
-                                      ),
-                                      child: Text(
-                                        _getTranslatedStatus(context, status),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall
-                                            ?.copyWith(color: Colors.white),
-                                      ),
+                                        SizedBox(width: 8.w),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 10.w,
+                                            vertical: 4.h,
+                                          ),
+                                          margin: EdgeInsets.only(bottom: 8.h),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primaryGreen,
+                                            borderRadius: BorderRadius.circular(
+                                              8.r,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            itinerary.province,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelSmall
+                                                ?.copyWith(color: Colors.white),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Text(
                                       title,
