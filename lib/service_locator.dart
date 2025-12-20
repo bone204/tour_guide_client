@@ -40,6 +40,7 @@ import 'package:tour_guide_app/features/chat_bot/data/data_source/chat_api_servi
 import 'package:tour_guide_app/features/chat_bot/data/repository/chat_repository_impl.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/repository/chat_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/add_stop_media.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/edit_stop/edit_stop_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/repository/itinerary_repository_impl.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/repository/itinerary_repository.dart';
@@ -114,6 +115,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<EditStopReorderUseCase>(EditStopReorderUseCase());
   sl.registerSingleton<EditStopDetailsUseCase>(EditStopDetailsUseCase());
   sl.registerSingleton<CreateFeedbackUseCase>(CreateFeedbackUseCase());
+  sl.registerSingleton<AddStopMediaUseCase>(AddStopMediaUseCase());
 
   // Cubits
   sl.registerFactory<RegisterRentalVehicleCubit>(

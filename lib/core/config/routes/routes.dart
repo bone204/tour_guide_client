@@ -56,6 +56,8 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinera
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/food_wheel.page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/stop_detail.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -408,6 +410,13 @@ class AppRouter {
                 itineraryId: args['itineraryId'] as int,
                 dayOrder: args['dayOrder'] as int?,
               ),
+        );
+
+      case AppRouteConstant.itineraryStopDetail:
+        final stop = settings.arguments as Stop;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => StopDetailPage(stop: stop),
         );
 
       case AppRouteConstant.foodWheel:

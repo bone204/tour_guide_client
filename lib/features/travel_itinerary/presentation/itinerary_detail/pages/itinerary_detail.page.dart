@@ -98,15 +98,16 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
               }
             }
           }
-          final days =
+          final List<Map<String, dynamic>> days =
               itinerary.stops
                   .map(
-                    (stop) => {
+                    (stop) => <String, dynamic>{
                       'day': AppLocalizations.of(
                         context,
                       )!.dayNumber(stop.dayOrder > 0 ? stop.dayOrder : 1),
                       'activity': stop.destination!.name,
                       'time': stop.startTime,
+                      'stop': stop,
                     },
                   )
                   .toList();

@@ -2,7 +2,7 @@ import 'package:timelines_plus/timelines_plus.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
 class ItineraryTimeline extends StatelessWidget {
-  final List<Map<String, String>> timelineItems;
+  final List<Map<String, dynamic>> timelineItems;
 
   const ItineraryTimeline({super.key, required this.timelineItems});
 
@@ -39,48 +39,60 @@ class ItineraryTimeline extends StatelessWidget {
     );
   }
 
-  Widget _buildTimelineContent(BuildContext context, Map<String, String> item) {
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                item['time']!,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: AppColors.primaryBlue,
+  Widget _buildTimelineContent(
+    BuildContext context,
+    Map<String, dynamic> item,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        if (item['stop'] != null) {
+          Navigator.pushNamed(
+            context,
+            AppRouteConstant.itineraryStopDetail,
+            arguments: item['stop'],
+          );
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  item['time']! as String,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: AppColors.primaryBlue,
+                  ),
                 ),
-              ),
-              Text(
-                item['day']!,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            item['activity']!,
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium,
-          ),
-        ],
+                Text(
+                  item['day']! as String,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSubtitle,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              item['activity']! as String,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ],
+        ),
       ),
     );
   }

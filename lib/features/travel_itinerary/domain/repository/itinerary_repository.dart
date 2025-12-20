@@ -42,4 +42,10 @@ abstract class ItineraryRepository {
     int stopId,
     EditStopDetailsRequest request,
   );
+  Future<Either<Failure, Stop>> uploadStopMedia(
+    int itineraryId,
+    int stopId,
+    List<String> imagePaths,
+    List<String> videoPaths,
+  );
 }

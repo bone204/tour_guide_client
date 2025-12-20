@@ -90,4 +90,19 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   ) {
     return _apiService.editStopDetails(itineraryId, stopId, request);
   }
+
+  @override
+  Future<Either<Failure, Stop>> uploadStopMedia(
+    int itineraryId,
+    int stopId,
+    List<String> imagePaths,
+    List<String> videoPaths,
+  ) {
+    return _apiService.uploadStopMedia(
+      itineraryId,
+      stopId,
+      imagePaths,
+      videoPaths,
+    );
+  }
 }
