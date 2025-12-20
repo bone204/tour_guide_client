@@ -2,14 +2,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/add_stop_media.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_stop_detail.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_stop_media.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/stop_media/stop_media_state.dart';
 
 class StopMediaCubit extends Cubit<StopMediaState> {
   final AddStopMediaUseCase _addStopMediaUseCase;
   final GetStopDetailUseCase _getStopDetailUseCase;
+  final DeleteStopMediaUseCase _deleteStopMediaUseCase;
 
-  StopMediaCubit(this._addStopMediaUseCase, this._getStopDetailUseCase)
-    : super(StopMediaInitial());
+  StopMediaCubit(
+    this._addStopMediaUseCase,
+    this._getStopDetailUseCase,
+    this._deleteStopMediaUseCase,
+  ) : super(StopMediaInitial());
 
   Future<void> loadStop(int itineraryId, int stopId) async {
     emit(StopMediaLoading());
@@ -34,6 +39,26 @@ class StopMediaCubit extends Cubit<StopMediaState> {
       stopId: stopId,
       imagePaths: imagePaths,
       videoPaths: videoPaths,
+    );
+
+    result.fold(
+      (failure) => emit(StopMediaFailure(failure.message)),
+      (stop) => emit(StopMediaUploaded(stop)),
+    );
+  }
+
+  Future<void> deleteMedia({
+    required int itineraryId,
+    required int stopId,
+    List<String> images = const [],
+    List<String> videos = const [],
+  }) async {
+    emit(StopMediaLoading());
+    final result = await _deleteStopMediaUseCase(
+      itineraryId: itineraryId,
+      stopId: stopId,
+      images: images,
+      videos: videos,
     );
 
     result.fold(

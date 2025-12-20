@@ -32,8 +32,8 @@ class ItineraryStatCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: shadowColor.withOpacity(0.4),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
+            blurRadius: 8.r,
+            offset: const Offset(0, 2),
           ),
         ],
       ),

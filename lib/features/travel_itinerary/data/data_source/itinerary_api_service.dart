@@ -51,6 +51,12 @@ abstract class ItineraryApiService {
     List<String> imagePaths,
     List<String> videoPaths,
   );
+  Future<Either<Failure, Stop>> deleteStopMedia(
+    int itineraryId,
+    int stopId,
+    List<String> images,
+    List<String> videos,
+  );
 }
 
 class ItineraryApiServiceImpl extends ItineraryApiService {
@@ -324,6 +330,32 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
       final response = await sl<DioClient>().post(
         '${ApiUrls.itinerary}/$itineraryId/stops/$stopId/media',
         data: formData,
+      );
+      final stop = Stop.fromJson(response.data);
+      return Right(stop);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Stop>> deleteStopMedia(
+    int itineraryId,
+    int stopId,
+    List<String> images,
+    List<String> videos,
+  ) async {
+    try {
+      final response = await sl<DioClient>().delete(
+        '${ApiUrls.itinerary}/$itineraryId/stops/$stopId/media',
+        data: {'images': images, 'videos': videos},
       );
       final stop = Stop.fromJson(response.data);
       return Right(stop);

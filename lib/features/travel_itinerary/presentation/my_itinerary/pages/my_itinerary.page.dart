@@ -25,7 +25,7 @@ class MyItineraryPage extends StatelessWidget {
             const MyItineraryHeader(),
             SizedBox(height: 16.h),
             const ItineraryStatsGrid(),
-            SizedBox(height: 24.h),
+            SizedBox(height: 4.h),
             const ItineraryActionButtons(),
             SizedBox(height: 40.h),
           ],
