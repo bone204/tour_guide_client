@@ -128,7 +128,56 @@ class _StopVideosPageState extends State<StopVideosPage> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.only(bottom: 16.h),
-                        child: VideoListItem(url: videos[index]),
+                        child: Builder(
+                          builder: (context) {
+                            return GestureDetector(
+                              onLongPress: () {
+                                final RenderBox box =
+                                    context.findRenderObject() as RenderBox;
+                                final Offset position = box.localToGlobal(
+                                  Offset.zero,
+                                );
+
+                                showMenu(
+                                  context: context,
+                                  position: RelativeRect.fromLTRB(
+                                    position.dx,
+                                    position.dy,
+                                    position.dx + box.size.width,
+                                    position.dy + box.size.height,
+                                  ),
+                                  items: [
+                                    PopupMenuItem(
+                                      value: 'delete',
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          SizedBox(width: 8.w),
+                                          Text(
+                                            AppLocalizations.of(
+                                              context,
+                                            )!.delete,
+                                            style: const TextStyle(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ).then((value) {
+                                  if (value == 'delete') {
+                                    _confirmDelete(context, videos[index]);
+                                  }
+                                });
+                              },
+                              child: VideoListItem(url: videos[index]),
+                            );
+                          },
+                        ),
                       );
                     },
                   );
@@ -197,6 +246,37 @@ class _StopVideosPageState extends State<StopVideosPage> {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: Container(color: Colors.white),
+    );
+  }
+
+  void _confirmDelete(BuildContext context, String videoUrl) {
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            title: Text(AppLocalizations.of(context)!.confirmDelete),
+            content: Text(AppLocalizations.of(context)!.confirmDeleteContent),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text(AppLocalizations.of(context)!.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                  context.read<StopMediaCubit>().deleteMedia(
+                    itineraryId: widget.itineraryId,
+                    stopId: widget.stop.id,
+                    videos: [videoUrl],
+                  );
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.delete,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
     );
   }
 }

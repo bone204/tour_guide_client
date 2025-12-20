@@ -125,23 +125,76 @@ class _StopImagesPageState extends State<StopImagesPage> {
                     padding: EdgeInsets.all(16.w),
                     itemCount: images.length,
                     itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap:
-                            () => _openFullScreenImage(context, images, index),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12.r),
-                          child: Image.network(
-                            images[index],
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return _buildShimmerItem();
+                      return Builder(
+                        builder: (context) {
+                          return GestureDetector(
+                            onTap:
+                                () => _openFullScreenImage(
+                                  context,
+                                  images,
+                                  index,
+                                ),
+                            onLongPress: () {
+                              final RenderBox box =
+                                  context.findRenderObject() as RenderBox;
+                              final Offset position = box.localToGlobal(
+                                Offset.zero,
+                              );
+
+                              showMenu(
+                                context: context,
+                                position: RelativeRect.fromLTRB(
+                                  position.dx,
+                                  position.dy,
+                                  position.dx + box.size.width,
+                                  position.dy + box.size.height,
+                                ),
+                                items: [
+                                  PopupMenuItem(
+                                    value: 'delete',
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                        SizedBox(width: 8.w),
+                                        Text(
+                                          AppLocalizations.of(context)!.delete,
+                                          style: const TextStyle(
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ).then((value) {
+                                if (value == 'delete') {
+                                  _confirmDelete(context, images[index]);
+                                }
+                              });
                             },
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Center(child: Icon(Icons.error));
-                            },
-                          ),
-                        ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: Image.network(
+                                images[index],
+                                fit: BoxFit.cover,
+                                loadingBuilder: (
+                                  context,
+                                  child,
+                                  loadingProgress,
+                                ) {
+                                  if (loadingProgress == null) return child;
+                                  return _buildShimmerItem();
+                                },
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Center(child: Icon(Icons.error));
+                                },
+                              ),
+                            ),
+                          );
+                        },
                       );
                     },
                   );
@@ -227,6 +280,37 @@ class _StopImagesPageState extends State<StopImagesPage> {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: Container(color: Colors.white),
+    );
+  }
+
+  void _confirmDelete(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            title: Text(AppLocalizations.of(context)!.confirmDelete),
+            content: Text(AppLocalizations.of(context)!.confirmDeleteContent),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text(AppLocalizations.of(context)!.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                  context.read<StopMediaCubit>().deleteMedia(
+                    itineraryId: widget.itineraryId,
+                    stopId: widget.stop.id,
+                    images: [imageUrl],
+                  );
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.delete,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
     );
   }
 }
