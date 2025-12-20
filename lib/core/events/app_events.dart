@@ -23,6 +23,12 @@ class StopAddedEvent {}
 // Event when an itinerary is deleted
 class ItineraryDeletedEvent {}
 
+// Event when a stop is updated (e.g. media added)
+class StopUpdatedEvent {
+  final int stopId;
+  StopUpdatedEvent(this.stopId);
+}
+
 // Singleton EventBus
 class AppEventBus {
   static final AppEventBus _instance = AppEventBus._internal();

@@ -330,7 +330,10 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                                 SizedBox(height: 16.h),
                               ],
                               days.isNotEmpty
-                                  ? ItineraryTimeline(timelineItems: days)
+                                  ? ItineraryTimeline(
+                                    timelineItems: days,
+                                    itineraryId: widget.itineraryId,
+                                  )
                                   : Container(
                                     width: double.infinity,
                                     child: Column(

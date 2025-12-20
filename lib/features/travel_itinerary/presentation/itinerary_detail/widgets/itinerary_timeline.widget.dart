@@ -3,8 +3,13 @@ import 'package:tour_guide_app/common_libs.dart';
 
 class ItineraryTimeline extends StatelessWidget {
   final List<Map<String, dynamic>> timelineItems;
+  final int itineraryId;
 
-  const ItineraryTimeline({super.key, required this.timelineItems});
+  const ItineraryTimeline({
+    super.key,
+    required this.timelineItems,
+    required this.itineraryId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +54,7 @@ class ItineraryTimeline extends StatelessWidget {
           Navigator.pushNamed(
             context,
             AppRouteConstant.itineraryStopDetail,
-            arguments: item['stop'],
+            arguments: {'stop': item['stop'], 'itineraryId': itineraryId},
           );
         }
       },

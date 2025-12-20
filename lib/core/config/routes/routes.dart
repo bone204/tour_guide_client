@@ -58,6 +58,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/stop_detail.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/stop_media.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_stop_detail/get_stop_detail_cubit.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -413,16 +415,35 @@ class AppRouter {
         );
 
       case AppRouteConstant.itineraryStopDetail:
-        final stop = settings.arguments as Stop;
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => StopDetailPage(stop: stop),
+          builder:
+              (_) => BlocProvider(
+                create: (_) => sl<GetStopDetailCubit>(),
+                child: StopDetailPage(
+                  stop: args['stop'] as Stop,
+                  itineraryId: args['itineraryId'] as int,
+                ),
+              ),
         );
 
       case AppRouteConstant.foodWheel:
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const FoodWheelPage(),
+        );
+
+      case AppRouteConstant.stopMedia:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          settings: settings,
+          builder:
+              (_) => StopMediaPage(
+                stop: args['stop'] as Stop,
+                initialType: args['initialType'] as MediaType,
+                itineraryId: args['itineraryId'] as int,
+              ),
         );
 
       default:
