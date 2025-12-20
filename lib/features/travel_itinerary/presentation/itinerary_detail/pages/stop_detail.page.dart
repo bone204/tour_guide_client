@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/stop_media.page.dart';
-import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_stop_detail/get_stop_detail_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/widgets/creative_media_button.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 
 class StopDetailPage extends StatefulWidget {
   final Stop stop;
@@ -59,9 +58,7 @@ class _StopDetailPageState extends State<StopDetailPage> {
       },
       child: Scaffold(
         appBar: CustomAppBar(
-          title:
-              _currentStop.destination?.name ??
-              AppLocalizations.of(context)!.unknown,
+          title: AppLocalizations.of(context)!.stopDetail,
           showBackButton: true,
           onBackPressed: () => Navigator.pop(context),
         ),
@@ -70,6 +67,14 @@ class _StopDetailPageState extends State<StopDetailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                _currentStop.destination?.name ??
+                    AppLocalizations.of(context)!.unknown,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(color: AppColors.textPrimary),
+              ),
+              SizedBox(height: 12.h),
               // Description
               if (_currentStop.destination?.descriptionViet != null ||
                   _currentStop.destination?.descriptionEng != null) ...[
@@ -187,22 +192,13 @@ class _StopDetailPageState extends State<StopDetailPage> {
 
   Widget _buildMediaSection(BuildContext context) {
     // Collect images and videos
-    final List<String> allImages = [
-      if (_currentStop.destination?.photos != null)
-        ..._currentStop.destination!.photos!,
-      ..._currentStop.images,
-    ];
-    final List<String> allVideos = [
-      if (_currentStop.destination?.videos != null)
-        ..._currentStop.destination!.videos!,
-      ..._currentStop.videos,
-    ];
+    final List<String> allImages = _currentStop.images;
+    final List<String> allVideos = _currentStop.videos;
 
     return Row(
       children: [
         Expanded(
-          child: _buildCreativeMediaButton(
-            context,
+          child: CreativeMediaButton(
             title: AppLocalizations.of(context)!.photos,
             count: allImages.length,
             icon: Icons.photo_library_outlined,
@@ -213,12 +209,11 @@ class _StopDetailPageState extends State<StopDetailPage> {
         ),
         SizedBox(width: 16.w),
         Expanded(
-          child: _buildCreativeMediaButton(
-            context,
+          child: CreativeMediaButton(
             title: AppLocalizations.of(context)!.videos,
             count: allVideos.length,
             icon: Icons.play_circle_outline,
-            imageUrl: allImages.isNotEmpty ? allImages.last : null,
+            videoUrl: allVideos.isNotEmpty ? allVideos.first : null,
             color: Colors.orangeAccent,
             onTap: () => _openVideoGallery(context),
           ),
@@ -227,102 +222,19 @@ class _StopDetailPageState extends State<StopDetailPage> {
     );
   }
 
-  Widget _buildCreativeMediaButton(
-    BuildContext context, {
-    required String title,
-    required int count,
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-    String? imageUrl,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 120.h,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.r),
-          boxShadow: [
-            BoxShadow(
-              color: color.withOpacity(0.2),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(16.r),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              // Background Image with Blur
-              if (imageUrl != null) Image.network(imageUrl, fit: BoxFit.cover),
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                child: Container(color: Colors.black.withOpacity(0.3)),
-              ),
-              // Content
-              Padding(
-                padding: EdgeInsets.all(12.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8.w),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.5),
-                          width: 1,
-                        ),
-                      ),
-                      child: Icon(icon, color: Colors.white, size: 24.sp),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      title,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleSmall?.copyWith(color: Colors.white),
-                    ),
-                    Text(
-                      '$count items',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.white.withOpacity(0.8),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   void _openGallery(BuildContext context) {
     Navigator.pushNamed(
       context,
-      AppRouteConstant.stopMedia,
-      arguments: {
-        'stop': _currentStop,
-        'initialType': MediaType.image,
-        'itineraryId': widget.itineraryId,
-      },
+      AppRouteConstant.stopImages,
+      arguments: {'stop': _currentStop, 'itineraryId': widget.itineraryId},
     );
   }
 
   void _openVideoGallery(BuildContext context) {
     Navigator.pushNamed(
       context,
-      AppRouteConstant.stopMedia,
-      arguments: {
-        'stop': _currentStop,
-        'initialType': MediaType.video,
-        'itineraryId': widget.itineraryId,
-      },
+      AppRouteConstant.stopVideos,
+      arguments: {'stop': _currentStop, 'itineraryId': widget.itineraryId},
     );
   }
 }

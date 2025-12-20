@@ -1135,6 +1135,36 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String itemsCount(int count) {
+    return '$count items';
+  }
+
+  @override
+  String get mediaUpdatedSuccessfully => 'Media updated successfully';
+
+  @override
+  String photosCount(int count) {
+    return 'Photos ($count)';
+  }
+
+  @override
+  String videosCount(int count) {
+    return 'Videos ($count)';
+  }
+
+  @override
+  String get addPhotos => 'Add Photos';
+
+  @override
+  String get addVideo => 'Add Video';
+
+  @override
+  String get noPhotosYet => 'No photos yet';
+
+  @override
+  String get noVideosYet => 'No videos yet';
+
+  @override
   String get unknownDestination => 'Unknown Destination';
 
   @override
@@ -1409,6 +1439,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String reviewsCount(int count) {
     return '($count reviews)';
   }
+
+  @override
+  String get stopDetail => 'Stop Detail';
 
   @override
   String get tabAbout => 'About';

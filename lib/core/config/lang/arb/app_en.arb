@@ -799,6 +799,35 @@
       }
     }
   },
+  "itemsCount": "{count} items",
+  "@itemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mediaUpdatedSuccessfully": "Media updated successfully",
+  "photosCount": "Photos ({count})",
+  "@photosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "videosCount": "Videos ({count})",
+  "@videosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addPhotos": "Add Photos",
+  "addVideo": "Add Video",
+  "noPhotosYet": "No photos yet",
+  "noVideosYet": "No videos yet",
   "unknownDestination": "Unknown Destination",
   "dayWithOrder": "Day {day}",
   "@dayWithOrder": {
@@ -987,6 +1016,7 @@
       }
     }
   },
+  "stopDetail": "Stop Detail",
   "tabAbout": "About",
   "tabReviews": "Reviews",
   "tabPhotos": "Photos",

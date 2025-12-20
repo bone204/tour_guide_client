@@ -49,7 +49,8 @@ class AppRouteConstant {
   static const String myItinerary = '/my_itinerary';
   static const String itineraryList = '/itinerary_list';
   static const String itineraryStopDetail = '/itinerary_stop_detail';
-  static const String stopMedia = '/stop_media';
+  static const String stopImages = '/stop_images';
+  static const String stopVideos = '/stop_videos';
   static const String foodWheel = '/food_wheel';
 
   static const String splash = '/splash';

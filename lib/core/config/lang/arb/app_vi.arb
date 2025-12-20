@@ -798,6 +798,35 @@
   "meters": "{m} m",
   "@meters": {"placeholders": {"m": {"type": "int"}}},
   "myItinerary": "Lịch trình của tôi",
+  "itemsCount": "{count} mục",
+  "@itemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mediaUpdatedSuccessfully": "Cập nhật media thành công",
+  "photosCount": "Ảnh ({count})",
+  "@photosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "videosCount": "Video ({count})",
+  "@videosCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addPhotos": "Thêm ảnh",
+  "addVideo": "Thêm video",
+  "noPhotosYet": "Chưa có ảnh nào",
+  "noVideosYet": "Chưa có video nào",
   "unknownDestination": "Điểm đến không xác định",
   "dayWithOrder": "Ngày {day}",
   "@dayWithOrder": {
@@ -807,6 +836,7 @@
       }
     }
   },
+  "stopDetail": "Chi tiết điểm dừng",
   "dayOrder": "Thứ tự ngày",
   "sequence": "Thứ tự",
   "editStop": "Chỉnh sửa điểm dừng",

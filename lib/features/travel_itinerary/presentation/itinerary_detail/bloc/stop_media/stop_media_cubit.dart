@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/add_stop_media.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_stop_detail.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/stop_media/stop_media_state.dart';
@@ -40,4 +41,25 @@ class StopMediaCubit extends Cubit<StopMediaState> {
       (stop) => emit(StopMediaUploaded(stop)),
     );
   }
+
+  MediaType _currentType = MediaType.image;
+  List<String> get media =>
+      _currentType == MediaType.image
+          ? (state is StopMediaLoaded
+              ? (state as StopMediaLoaded).stop.images
+              : (state is StopMediaUploaded
+                  ? (state as StopMediaUploaded).stop.images
+                  : []))
+          : (state is StopMediaLoaded
+              ? (state as StopMediaLoaded).stop.videos
+              : (state is StopMediaUploaded
+                  ? (state as StopMediaUploaded).stop.videos
+                  : []));
+
+  void init(Stop stop, MediaType type) {
+    _currentType = type;
+    emit(StopMediaLoaded(stop));
+  }
 }
+
+enum MediaType { image, video }

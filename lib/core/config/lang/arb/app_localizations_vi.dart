@@ -1135,6 +1135,36 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String itemsCount(int count) {
+    return '$count mục';
+  }
+
+  @override
+  String get mediaUpdatedSuccessfully => 'Cập nhật media thành công';
+
+  @override
+  String photosCount(int count) {
+    return 'Ảnh ($count)';
+  }
+
+  @override
+  String videosCount(int count) {
+    return 'Video ($count)';
+  }
+
+  @override
+  String get addPhotos => 'Thêm ảnh';
+
+  @override
+  String get addVideo => 'Thêm video';
+
+  @override
+  String get noPhotosYet => 'Chưa có ảnh nào';
+
+  @override
+  String get noVideosYet => 'Chưa có video nào';
+
+  @override
   String get unknownDestination => 'Điểm đến không xác định';
 
   @override
@@ -1409,6 +1439,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String reviewsCount(int count) {
     return '($count đánh giá)';
   }
+
+  @override
+  String get stopDetail => 'Chi tiết điểm dừng';
 
   @override
   String get tabAbout => 'Giới thiệu';

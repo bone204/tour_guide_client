@@ -2291,6 +2291,54 @@ abstract class AppLocalizations {
   /// **'Member for {days} days'**
   String memberForDays(int days);
 
+  /// No description provided for @itemsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items'**
+  String itemsCount(int count);
+
+  /// No description provided for @mediaUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Media updated successfully'**
+  String get mediaUpdatedSuccessfully;
+
+  /// No description provided for @photosCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos ({count})'**
+  String photosCount(int count);
+
+  /// No description provided for @videosCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos ({count})'**
+  String videosCount(int count);
+
+  /// No description provided for @addPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Photos'**
+  String get addPhotos;
+
+  /// No description provided for @addVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Video'**
+  String get addVideo;
+
+  /// No description provided for @noPhotosYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No photos yet'**
+  String get noPhotosYet;
+
+  /// No description provided for @noVideosYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No videos yet'**
+  String get noVideosYet;
+
   /// No description provided for @unknownDestination.
   ///
   /// In en, this message translates to:
@@ -2782,6 +2830,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'({count} reviews)'**
   String reviewsCount(int count);
+
+  /// No description provided for @stopDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Detail'**
+  String get stopDetail;
 
   /// No description provided for @tabAbout.
   ///
