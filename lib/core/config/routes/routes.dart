@@ -50,6 +50,8 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/stop_images.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/stop_videos.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_stop_detail/get_stop_detail_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/contract.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/vehicle/vehicle.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -388,6 +390,18 @@ class AppRouter {
                 stop: args['stop'] as Stop,
                 itineraryId: args['itineraryId'] as int,
               ),
+        );
+
+      case AppRouteConstant.contract:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const ContractPage(),
+        );
+
+      case AppRouteConstant.vehicle:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const VehiclePage(),
         );
 
       default:

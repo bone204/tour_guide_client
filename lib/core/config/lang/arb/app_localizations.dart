@@ -323,6 +323,54 @@ abstract class AppLocalizations {
   /// **'Fast Delivery'**
   String get delivery;
 
+  /// No description provided for @rentalContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Contract'**
+  String get rentalContract;
+
+  /// No description provided for @vehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicles'**
+  String get vehicles;
+
+  /// No description provided for @rentalCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Rentals'**
+  String get rentalCount;
+
+  /// No description provided for @rating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get rating;
+
+  /// No description provided for @reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason: {reason}'**
+  String reason(String reason);
+
+  /// No description provided for @errorOccurred.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred'**
+  String get errorOccurred;
+
+  /// No description provided for @noContracts.
+  ///
+  /// In en, this message translates to:
+  /// **'No contracts found'**
+  String get noContracts;
+
+  /// No description provided for @registerNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Register Now'**
+  String get registerNow;
+
   /// No description provided for @exclusiveVouchers.
   ///
   /// In en, this message translates to:
@@ -1847,6 +1895,12 @@ abstract class AppLocalizations {
   /// **'Contract Owner Information'**
   String get contractOwnerInfo;
 
+  /// No description provided for @contractInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Information'**
+  String get contractInfo;
+
   /// No description provided for @businessInfo.
   ///
   /// In en, this message translates to:
@@ -2056,6 +2110,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rejected'**
   String get rejected;
+
+  /// No description provided for @suspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Suspended'**
+  String get suspended;
 
   /// No description provided for @inactive.
   ///

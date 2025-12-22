@@ -123,6 +123,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delivery => 'Fast Delivery';
 
   @override
+  String get rentalContract => 'Rental Contract';
+
+  @override
+  String get vehicles => 'Vehicles';
+
+  @override
+  String get rentalCount => 'Rentals';
+
+  @override
+  String get rating => 'Rating';
+
+  @override
+  String reason(String reason) {
+    return 'Reason: $reason';
+  }
+
+  @override
+  String get errorOccurred => 'An error occurred';
+
+  @override
+  String get noContracts => 'No contracts found';
+
+  @override
+  String get registerNow => 'Register Now';
+
+  @override
   String get exclusiveVouchers => 'Exclusive Vouchers';
 
   @override
@@ -895,6 +921,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contractOwnerInfo => 'Contract Owner Information';
 
   @override
+  String get contractInfo => 'Contract Information';
+
+  @override
   String get businessInfo => 'Business Information';
 
   @override
@@ -1000,6 +1029,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rejected => 'Rejected';
+
+  @override
+  String get suspended => 'Suspended';
 
   @override
   String get inactive => 'Inactive';

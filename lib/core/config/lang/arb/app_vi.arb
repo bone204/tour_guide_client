@@ -81,7 +81,21 @@
 
   "findRes": "Tìm Nhà Hàng",
 
-  "delivery": "Giao Hàng",
+  "rentalContract": "Hợp đồng cho thuê",
+  "vehicles": "Xe",
+  "rentalCount": "Lượt thuê",
+  "rating": "Đánh giá",
+  "reason": "Lý do: {reason}",
+  "@reason": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "errorOccurred": "Đã có lỗi xảy ra",
+  "noContracts": "Chưa có hợp đồng nào",
+  "registerNow": "Đăng ký ngay",
 
 
 
@@ -645,6 +659,8 @@
 
   "contractOwnerInfo": "Thông tin chủ hợp đồng",
 
+  "contractInfo": "Thông tin hợp đồng",
+
   "businessInfo": "Thông tin kinh doanh",
 
   "bankingInfo": "Thông tin ngân hàng",
@@ -710,9 +726,11 @@
 
   "approved": "Đã duyệt",
 
-  "pending": "Đang duyệt",
+  "pending": "Đang chờ duyệt",
 
   "rejected": "Bị từ chối",
+
+  "suspended": "Bị đình chỉ",
 
   "inactive": "Ngưng",
 

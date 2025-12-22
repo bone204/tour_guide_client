@@ -76,6 +76,22 @@
   "findRes": "Find Restaurant",
 
   "delivery": "Fast Delivery",
+  
+  "rentalContract": "Rental Contract",
+  "vehicles": "Vehicles",
+  "rentalCount": "Rentals",
+  "rating": "Rating",
+  "reason": "Reason: {reason}",
+  "@reason": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "errorOccurred": "An error occurred",
+  "noContracts": "No contracts found",
+  "registerNow": "Register Now",
 
   "exclusiveVouchers": "Exclusive Vouchers",
 
@@ -631,6 +647,8 @@
 
   "contractOwnerInfo": "Contract Owner Information",
 
+  "contractInfo": "Contract Information",
+
   "businessInfo": "Business Information",
 
   "bankingInfo": "Banking Information",
@@ -705,6 +723,8 @@
   "pending": "Pending",
 
   "rejected": "Rejected",
+
+  "suspended": "Suspended",
 
   "inactive": "Inactive",
 

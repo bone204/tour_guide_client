@@ -120,7 +120,33 @@ class AppLocalizationsVi extends AppLocalizations {
   String get findRes => 'Tìm Nhà Hàng';
 
   @override
-  String get delivery => 'Giao Hàng';
+  String get delivery => 'Fast Delivery';
+
+  @override
+  String get rentalContract => 'Hợp đồng cho thuê';
+
+  @override
+  String get vehicles => 'Xe';
+
+  @override
+  String get rentalCount => 'Lượt thuê';
+
+  @override
+  String get rating => 'Đánh giá';
+
+  @override
+  String reason(String reason) {
+    return 'Lý do: $reason';
+  }
+
+  @override
+  String get errorOccurred => 'Đã có lỗi xảy ra';
+
+  @override
+  String get noContracts => 'Chưa có hợp đồng nào';
+
+  @override
+  String get registerNow => 'Đăng ký ngay';
 
   @override
   String get exclusiveVouchers => 'Ưu đãi đặc biệt';
@@ -895,6 +921,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get contractOwnerInfo => 'Thông tin chủ hợp đồng';
 
   @override
+  String get contractInfo => 'Thông tin hợp đồng';
+
+  @override
   String get businessInfo => 'Thông tin kinh doanh';
 
   @override
@@ -996,10 +1025,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get approved => 'Đã duyệt';
 
   @override
-  String get pending => 'Đang duyệt';
+  String get pending => 'Đang chờ duyệt';
 
   @override
   String get rejected => 'Bị từ chối';
+
+  @override
+  String get suspended => 'Bị đình chỉ';
 
   @override
   String get inactive => 'Ngưng';
