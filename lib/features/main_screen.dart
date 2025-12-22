@@ -1,17 +1,13 @@
 // ignore_for_file: deprecated_member_use
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:flutter/services.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
 import 'package:tour_guide_app/features/home/presentation/pages/home.page.dart';
 import 'package:tour_guide_app/features/map/map.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/my_vehicle.page.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_vehicles/get_vehicles_cubit.dart';
 import 'package:tour_guide_app/features/profile/presentation/pages/profile.page.dart';
 import 'package:tour_guide_app/features/settings/presentation/pages/settings.page.dart';
 import 'package:tour_guide_app/features/translate/translate.page.dart';
-import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
 class MainScreen extends StatefulWidget {
@@ -102,13 +98,7 @@ class _MainScreenState extends State<MainScreen> {
           statusBarIconBrightness: Brightness.light,
           statusBarBrightness: Brightness.light,
         ),
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (_) => sl<GetContractsCubit>()),
-            BlocProvider(create: (_) => sl<GetVehiclesCubit>()),
-          ],
-          child: const MyVehiclePage(),
-        ),
+        child: const MyVehiclePage(),
       ),
       item: ItemConfig(
         icon: const Icon(Icons.explore),
