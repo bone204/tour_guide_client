@@ -53,6 +53,16 @@ import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/delete_stop/delete_stop_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_stop_media.dart';
 
+import 'package:tour_guide_app/features/my_vehicle/data/data_source/my_vehicle_api_service.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/repository/my_vehicle_repository_impl.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/repository/my_vehicle_repository.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/add_contract.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/add_vehicle.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_contracts.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_contract_detail.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_vehicles.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_detail.dart';
+
 final sl = GetIt.instance;
 
 void setUpServiceLocator(SharedPreferences prefs) {
@@ -66,12 +76,14 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<DestinationApiService>(DestinationApiServiceImpl());
   sl.registerSingleton<ChatApiService>(ChatApiServiceImpl());
   sl.registerSingleton<ItineraryApiService>(ItineraryApiServiceImpl());
+  sl.registerSingleton<MyVehicleApiService>(MyVehicleApiServiceImpl());
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
   sl.registerSingleton<DestinationRepository>(DestinationRepositoryImpl());
   sl.registerSingleton<ChatRepository>(ChatRepositoryImpl());
   sl.registerSingleton<ItineraryRepository>(ItineraryRepositoryImpl());
+  sl.registerSingleton<MyVehicleRepository>(MyVehicleRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());
@@ -101,7 +113,19 @@ void setUpServiceLocator(SharedPreferences prefs) {
     DeleteItineraryStopUseCase(sl()),
   );
   sl.registerSingleton<AddStopMediaUseCase>(AddStopMediaUseCase());
+  sl.registerSingleton<AddStopMediaUseCase>(AddStopMediaUseCase());
   sl.registerSingleton<DeleteStopMediaUseCase>(DeleteStopMediaUseCase());
+
+  // My Vehicle
+  sl.registerSingleton<AddContractUseCase>(AddContractUseCase());
+  sl.registerSingleton<GetMyContractsUseCase>(GetMyContractsUseCase());
+  sl.registerSingleton<GetMyContractDetailUseCase>(
+    GetMyContractDetailUseCase(),
+  );
+  // Rental Vehicles
+  sl.registerSingleton<AddVehicleUseCase>(AddVehicleUseCase());
+  sl.registerSingleton<GetMyVehiclesUseCase>(GetMyVehiclesUseCase());
+  sl.registerSingleton<GetVehicleDetailUseCase>(GetVehicleDetailUseCase());
 
   // Cubits
   sl.registerFactory<DeleteStopCubit>(() => DeleteStopCubit(sl()));
