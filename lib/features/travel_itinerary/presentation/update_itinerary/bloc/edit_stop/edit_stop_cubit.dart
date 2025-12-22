@@ -70,14 +70,19 @@ class EditStopCubit extends Cubit<EditStopState> {
     }
 
     // 2. Update Reorder if changed
-    if ((newDayOrder != null && newDayOrder != originalStop.dayOrder) ||
-        (newSequence != null && newSequence != originalStop.sequence)) {
-      // Note: using updatedStop to carry over previous changes if any
-      // But wait, reorder endpoint might return new Stop structure.
 
+    // Note: using updatedStop to carry over previous changes if any
+    // But wait, reorder endpoint might return new Stop structure.
+
+    final seq = newSequence ?? updatedStop.sequence;
+    // We force update if newSequence is explicitly provided to handle drag-drop intent
+    // even if local data implies no change (e.g. slight sync mismatch).
+    final isReorder =
+        (newDayOrder != null && newDayOrder != originalStop.dayOrder) ||
+        newSequence != null;
+
+    if (isReorder) {
       final day = newDayOrder ?? updatedStop.dayOrder;
-      final seq = newSequence ?? updatedStop.sequence;
-
       final result = await _editStopReorderUseCase(
         EditStopReorderParams(
           itineraryId: itineraryId,

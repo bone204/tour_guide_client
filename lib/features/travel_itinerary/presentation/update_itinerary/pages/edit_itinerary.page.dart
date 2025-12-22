@@ -12,6 +12,8 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/update_iti
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/widgets/itinerary_stop_card.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/edit_stop/edit_stop_cubit.dart';
 
 class EditItineraryPage extends StatefulWidget {
   final Itinerary itinerary;
@@ -24,24 +26,15 @@ class EditItineraryPage extends StatefulWidget {
 
 class _EditItineraryPageState extends State<EditItineraryPage> {
   late Itinerary _currentItinerary;
-  late StreamSubscription _busSubscription;
 
   @override
   void initState() {
     super.initState();
     _currentItinerary = widget.itinerary;
-    _busSubscription = eventBus.on<StopAddedEvent>().listen((_) {
-      if (mounted) {
-        context.read<GetItineraryDetailCubit>().getItineraryDetail(
-          _currentItinerary.id,
-        );
-      }
-    });
   }
 
   @override
   void dispose() {
-    _busSubscription.cancel();
     super.dispose();
   }
 
@@ -49,29 +42,32 @@ class _EditItineraryPageState extends State<EditItineraryPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<GetItineraryDetailCubit>(),
-      child: BlocListener<GetItineraryDetailCubit, GetItineraryDetailState>(
-        listener: (context, state) {
-          if (state is GetItineraryDetailSuccess) {
-            setState(() {
-              _currentItinerary = state.itinerary;
-            });
-            CustomSnackbar.show(
-              context,
-              message: AppLocalizations.of(context)!.itineraryUpdated,
-              type: SnackbarType.success,
-            );
-          } else if (state is GetItineraryDetailFailure) {
-            CustomSnackbar.show(
-              context,
-              message: state.message,
-              type: SnackbarType.error,
-            );
-          }
-        },
-        child: Builder(
-          builder: (context) {
-            return _EditItineraryView(itinerary: _currentItinerary);
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => sl<GetItineraryDetailCubit>()),
+          BlocProvider(create: (context) => sl<EditStopCubit>()),
+        ],
+        child: BlocListener<GetItineraryDetailCubit, GetItineraryDetailState>(
+          listener: (context, state) {
+            if (state is GetItineraryDetailSuccess) {
+              setState(() {
+                _currentItinerary = state.itinerary;
+              });
+              // Only show success message if it's not a background refresh or if explicit action happened.
+              // For now, keeping as is, but could be noisy on drag/drop refresh.
+            } else if (state is GetItineraryDetailFailure) {
+              CustomSnackbar.show(
+                context,
+                message: state.message,
+                type: SnackbarType.error,
+              );
+            }
           },
+          child: Builder(
+            builder: (context) {
+              return _EditItineraryView(itinerary: _currentItinerary);
+            },
+          ),
         ),
       ),
     );
@@ -211,12 +207,72 @@ class _EditItineraryViewState extends State<_EditItineraryView>
                   );
                 }
 
-                return ListView.builder(
+                return ReorderableListView.builder(
                   padding: EdgeInsets.all(16.w),
                   itemCount: dayStops.length,
+                  proxyDecorator: (child, index, animation) {
+                    return AnimatedBuilder(
+                      animation: animation,
+                      builder: (BuildContext context, Widget? child) {
+                        return Material(
+                          elevation: 5,
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(16.r),
+                          child: ItineraryStopCard(
+                            stop: dayStops[index],
+                            onTap: () {}, 
+                            margin: EdgeInsets.zero,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  onReorder: (oldIndex, newIndex) {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    if (oldIndex == newIndex) return;
+
+                    final stop = dayStops[oldIndex];
+                    final newSequence = newIndex + 1; // 1-based sequence
+
+                    // Optimistic update locally
+                    setState(() {
+                      final newDayStops = List<Stop>.from(dayStops);
+                      newDayStops.removeAt(oldIndex);
+                      newDayStops.insert(newIndex, stop);
+
+                      final updatedStops =
+                          _currentItinerary.stops
+                              .where((s) => s.dayOrder != currentDay)
+                              .toList();
+                      updatedStops.addAll(newDayStops);
+                      updatedStops.sort(
+                        (a, b) => a.dayOrder.compareTo(b.dayOrder),
+                      );
+
+                      _currentItinerary = _currentItinerary.copyWith(
+                        stops: updatedStops,
+                      );
+                    });
+
+                    // Call API
+                    context
+                        .read<EditStopCubit>()
+                        .updateStop(
+                          itineraryId: _currentItinerary.id,
+                          originalStop: stop,
+                          newSequence: newSequence,
+                        )
+                        .then((_) {
+                          // Refresh global state
+                          eventBus.fire(StopAddedEvent());
+                        });
+                  },
                   itemBuilder: (context, index) {
                     final stop = dayStops[index];
                     return ItineraryStopCard(
+                      key: ValueKey(stop.id),
                       stop: stop,
                       onTap: () {
                         Navigator.push(
@@ -226,8 +282,6 @@ class _EditItineraryViewState extends State<_EditItineraryView>
                                 (context) => EditStopPage(
                                   itineraryId: _currentItinerary.id,
                                   stop: stop,
-                                  // Pass day count to EditStopPage if needed,
-                                  // or just rely on it updating the backend.
                                 ),
                           ),
                         ).then((updated) {

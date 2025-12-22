@@ -5,15 +5,21 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart'
 class ItineraryStopCard extends StatelessWidget {
   final Stop stop;
   final VoidCallback onTap;
+  final EdgeInsetsGeometry? margin;
 
-  const ItineraryStopCard({super.key, required this.stop, required this.onTap});
+  const ItineraryStopCard({
+    super.key,
+    required this.stop,
+    required this.onTap,
+    this.margin,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 8.h),
+        margin: margin ?? EdgeInsets.symmetric(vertical: 8.h),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
