@@ -9,6 +9,15 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get deleteStopSuccess => 'Delete stop successfully';
+
+  @override
+  String get deleteStopConfirmTitle => 'Delete Stop';
+
+  @override
+  String get deleteStopConfirmMessage => 'Are you sure you want to delete this stop?';
+
+  @override
   String get signInNow => 'Sign in now';
 
   @override

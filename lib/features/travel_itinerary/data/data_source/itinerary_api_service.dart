@@ -57,6 +57,10 @@ abstract class ItineraryApiService {
     List<String> images,
     List<String> videos,
   );
+  Future<Either<Failure, SuccessResponse>> deleteStop(
+    int itineraryId,
+    int stopId,
+  );
 }
 
 class ItineraryApiServiceImpl extends ItineraryApiService {
@@ -333,6 +337,29 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
       );
       final stop = Stop.fromJson(response.data);
       return Right(stop);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> deleteStop(
+    int itineraryId,
+    int stopId,
+  ) async {
+    try {
+      final response = await sl<DioClient>().delete(
+        '${ApiUrls.itinerary}/$itineraryId/stops/$stopId',
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

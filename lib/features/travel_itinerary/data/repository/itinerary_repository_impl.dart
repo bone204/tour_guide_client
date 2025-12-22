@@ -115,4 +115,12 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   ) {
     return _apiService.deleteStopMedia(itineraryId, stopId, images, videos);
   }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> deleteStop(
+    int itineraryId,
+    int stopId,
+  ) {
+    return _apiService.deleteStop(itineraryId, stopId);
+  }
 }

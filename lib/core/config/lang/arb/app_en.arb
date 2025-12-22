@@ -1,4 +1,7 @@
 {
+  "deleteStopSuccess": "Delete stop successfully",
+  "deleteStopConfirmTitle": "Delete Stop",
+  "deleteStopConfirmMessage": "Are you sure you want to delete this stop?",
   "@@locale": "en",
   "signInNow": "Sign in now",
 

@@ -9,6 +9,15 @@ class AppLocalizationsVi extends AppLocalizations {
   AppLocalizationsVi([String locale = 'vi']) : super(locale);
 
   @override
+  String get deleteStopSuccess => 'Đã xóa điểm dừng';
+
+  @override
+  String get deleteStopConfirmTitle => 'Xóa điểm dừng';
+
+  @override
+  String get deleteStopConfirmMessage => 'Bạn có chắc chắn muốn xóa điểm dừng này không?';
+
+  @override
   String get signInNow => 'Đăng nhập ngay';
 
   @override

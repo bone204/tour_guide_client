@@ -63,6 +63,8 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/update_iti
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_stop_detail/get_stop_detail_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/delete_itinerary/delete_itinerary_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_itinerary_stop.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/delete_stop/delete_stop_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_stop_media.dart';
 
 final sl = GetIt.instance;
@@ -118,10 +120,14 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<EditStopReorderUseCase>(EditStopReorderUseCase());
   sl.registerSingleton<EditStopDetailsUseCase>(EditStopDetailsUseCase());
   sl.registerSingleton<CreateFeedbackUseCase>(CreateFeedbackUseCase());
+  sl.registerSingleton<DeleteItineraryStopUseCase>(
+    DeleteItineraryStopUseCase(sl()),
+  );
   sl.registerSingleton<AddStopMediaUseCase>(AddStopMediaUseCase());
   sl.registerSingleton<DeleteStopMediaUseCase>(DeleteStopMediaUseCase());
 
   // Cubits
+  sl.registerFactory<DeleteStopCubit>(() => DeleteStopCubit(sl()));
   sl.registerFactory<RegisterRentalVehicleCubit>(
     () => RegisterRentalVehicleCubit(),
   );

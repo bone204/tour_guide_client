@@ -54,4 +54,8 @@ abstract class ItineraryRepository {
     List<String> images,
     List<String> videos,
   );
+  Future<Either<Failure, SuccessResponse>> deleteStop(
+    int itineraryId,
+    int stopId,
+  );
 }
