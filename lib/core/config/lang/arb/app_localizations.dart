@@ -1094,7 +1094,7 @@ abstract class AppLocalizations {
   /// No description provided for @businessRegisterPhoto.
   ///
   /// In en, this message translates to:
-  /// **'Business Register Photo'**
+  /// **'Business Registration Photo'**
   String get businessRegisterPhoto;
 
   /// No description provided for @identificationPhoto.
@@ -1901,17 +1901,83 @@ abstract class AppLocalizations {
   /// **'Contract Information'**
   String get contractInfo;
 
-  /// No description provided for @businessInfo.
+  /// No description provided for @companyInfo.
   ///
   /// In en, this message translates to:
-  /// **'Business Information'**
-  String get businessInfo;
+  /// **'Company Information'**
+  String get companyInfo;
 
   /// No description provided for @bankingInfo.
   ///
   /// In en, this message translates to:
   /// **'Banking Information'**
   String get bankingInfo;
+
+  /// No description provided for @documents.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get documents;
+
+  /// No description provided for @citizenId.
+  ///
+  /// In en, this message translates to:
+  /// **'Citizen ID'**
+  String get citizenId;
+
+  /// No description provided for @province.
+  ///
+  /// In en, this message translates to:
+  /// **'Province'**
+  String get province;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @createdDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Created Date'**
+  String get createdDate;
+
+  /// No description provided for @updatedDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated Date'**
+  String get updatedDate;
+
+  /// No description provided for @citizenFrontPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Citizen ID Front Photo'**
+  String get citizenFrontPhoto;
+
+  /// No description provided for @citizenBackPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Citizen ID Back Photo'**
+  String get citizenBackPhoto;
+
+  /// No description provided for @registeredVehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered Vehicles'**
+  String get registeredVehicles;
+
+  /// No description provided for @businessInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Business Information'**
+  String get businessInfo;
+
+  /// No description provided for @contractDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Detail'**
+  String get contractDetail;
 
   /// No description provided for @notesAndStatus.
   ///

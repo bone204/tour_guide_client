@@ -658,12 +658,22 @@
   "vehicleColor": "Màu xe",
 
   "contractOwnerInfo": "Thông tin chủ hợp đồng",
-
   "contractInfo": "Thông tin hợp đồng",
+  "personalInfo": "Thông tin cá nhân",
+  "companyInfo": "Thông tin công ty",
+  "bankingInfo": "Thông tin ngân hàng",
+  "documents": "Tài liệu đính kèm",
+  "citizenId": "CCCD/CMND",
+  "createdDate": "Ngày tạo",
+  "updatedDate": "Ngày cập nhật",
+  "businessRegisterPhoto": "Ảnh ĐKKD",
+  "citizenFrontPhoto": "Mặt trước CCCD",
+  "citizenBackPhoto": "Mặt sau CCCD",
+  "registeredVehicles": "Xe đã đăng ký",
+  "contractDetail": "Chi tiết hợp đồng",
+
 
   "businessInfo": "Thông tin kinh doanh",
-
-  "bankingInfo": "Thông tin ngân hàng",
 
   "notesAndStatus": "Ghi chú & Trạng thái",
 

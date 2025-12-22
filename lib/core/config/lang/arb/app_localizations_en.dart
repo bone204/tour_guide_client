@@ -519,7 +519,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addVehicle => 'Add Vehicle';
 
   @override
-  String get businessRegisterPhoto => 'Business Register Photo';
+  String get businessRegisterPhoto => 'Business Registration Photo';
 
   @override
   String get identificationPhoto => 'Identification Photo';
@@ -924,10 +924,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contractInfo => 'Contract Information';
 
   @override
-  String get businessInfo => 'Business Information';
+  String get companyInfo => 'Company Information';
 
   @override
   String get bankingInfo => 'Banking Information';
+
+  @override
+  String get documents => 'Documents';
+
+  @override
+  String get citizenId => 'Citizen ID';
+
+  @override
+  String get province => 'Province';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get createdDate => 'Created Date';
+
+  @override
+  String get updatedDate => 'Updated Date';
+
+  @override
+  String get citizenFrontPhoto => 'Citizen ID Front Photo';
+
+  @override
+  String get citizenBackPhoto => 'Citizen ID Back Photo';
+
+  @override
+  String get registeredVehicles => 'Registered Vehicles';
+
+  @override
+  String get businessInfo => 'Business Information';
+
+  @override
+  String get contractDetail => 'Contract Detail';
 
   @override
   String get notesAndStatus => 'Notes & Status';

@@ -519,7 +519,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get addVehicle => 'Thêm xe';
 
   @override
-  String get businessRegisterPhoto => 'Ảnh đăng ký kinh doanh';
+  String get businessRegisterPhoto => 'Ảnh ĐKKD';
 
   @override
   String get identificationPhoto => 'Ảnh giấy tờ tùy thân';
@@ -924,10 +924,43 @@ class AppLocalizationsVi extends AppLocalizations {
   String get contractInfo => 'Thông tin hợp đồng';
 
   @override
-  String get businessInfo => 'Thông tin kinh doanh';
+  String get companyInfo => 'Thông tin công ty';
 
   @override
   String get bankingInfo => 'Thông tin ngân hàng';
+
+  @override
+  String get documents => 'Tài liệu đính kèm';
+
+  @override
+  String get citizenId => 'CCCD/CMND';
+
+  @override
+  String get province => 'Province';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get createdDate => 'Ngày tạo';
+
+  @override
+  String get updatedDate => 'Ngày cập nhật';
+
+  @override
+  String get citizenFrontPhoto => 'Mặt trước CCCD';
+
+  @override
+  String get citizenBackPhoto => 'Mặt sau CCCD';
+
+  @override
+  String get registeredVehicles => 'Xe đã đăng ký';
+
+  @override
+  String get businessInfo => 'Thông tin kinh doanh';
+
+  @override
+  String get contractDetail => 'Chi tiết hợp đồng';
 
   @override
   String get notesAndStatus => 'Ghi chú & Trạng thái';

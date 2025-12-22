@@ -646,12 +646,22 @@
   "vehicleColor": "Vehicle Color",
 
   "contractOwnerInfo": "Contract Owner Information",
-
   "contractInfo": "Contract Information",
-
-  "businessInfo": "Business Information",
-
+  "personalInfo": "Personal Information",
+  "companyInfo": "Company Information",
   "bankingInfo": "Banking Information",
+  "documents": "Documents",
+  "citizenId": "Citizen ID",
+  "province": "Province",
+  "notes": "Notes",
+  "createdDate": "Created Date",
+  "updatedDate": "Updated Date",
+  "businessRegisterPhoto": "Business Registration Photo",
+  "citizenFrontPhoto": "Citizen ID Front Photo",
+  "citizenBackPhoto": "Citizen ID Back Photo",
+  "registeredVehicles": "Registered Vehicles",
+  "businessInfo": "Business Information",
+  "contractDetail": "Contract Detail",
 
   "notesAndStatus": "Notes & Status",
 

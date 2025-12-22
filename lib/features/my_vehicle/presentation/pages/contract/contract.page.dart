@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
@@ -40,31 +41,35 @@ class ContractPage extends StatelessWidget {
 
             if (state.contracts.isEmpty) {
               return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.description_outlined,
-                      size: 64.sp,
-                      color: Colors.grey,
-                    ),
-                    SizedBox(height: 16.h),
-                    Text(
-                      AppLocalizations.of(context)!.noContracts,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    SizedBox(height: 24.h),
-                    PrimaryButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRouteConstant.vehicleRentalRegister,
-                        );
-                      },
-                      title: AppLocalizations.of(context)!.registerNow,
-                      width: 200.w,
-                    ),
-                  ],
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset(
+                          AppLotties.empty,
+                          width: 300.w,
+                          height: 200.h,
+                          fit: BoxFit.contain,
+                        ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        AppLocalizations.of(context)!.noContracts,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      SizedBox(height: 24.h),
+                      PrimaryButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRouteConstant.vehicleRentalRegister,
+                          );
+                        },
+                        title: AppLocalizations.of(context)!.registerNow,
+                        width: 200.w,
+                      ),
+                    ],
+                  ),
                 ),
               );
             }
@@ -98,8 +103,10 @@ class ContractPage extends StatelessWidget {
                   return ContractCard(
                     contract: contract,
                     onTap: () {
-                      Navigator.pushNamed(
+                      Navigator.of(
                         context,
+                        rootNavigator: true,
+                      ).pushNamed(
                         AppRouteConstant.contractDetail,
                         arguments: contract.id,
                       );
