@@ -54,6 +54,7 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/update_iti
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_stop_media.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/create_contract/create_contract_cubit.dart';
 
 import 'package:tour_guide_app/features/my_vehicle/data/data_source/my_vehicle_api_service.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/repository/my_vehicle_repository_impl.dart';
@@ -147,4 +148,5 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<DeleteItineraryCubit>(() => DeleteItineraryCubit(sl()));
   sl.registerFactory<EditStopCubit>(() => EditStopCubit(sl(), sl(), sl()));
   sl.registerFactory<StopMediaCubit>(() => StopMediaCubit(sl(), sl(), sl()));
+  sl.registerFactory<CreateContractCubit>(() => CreateContractCubit());
 }

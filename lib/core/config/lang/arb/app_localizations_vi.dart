@@ -1846,4 +1846,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get foodTypeFastFood => 'Fast Food';
+
+  @override
+  String get contractDurationPolicy => 'Hợp đồng có hiệu lực cho đến khi một trong hai bên chấm dứt hợp tác.';
 }

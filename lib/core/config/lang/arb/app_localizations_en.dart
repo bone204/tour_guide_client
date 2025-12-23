@@ -1846,4 +1846,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get foodTypeFastFood => 'Fast Food';
+
+  @override
+  String get contractDurationPolicy => 'The contract shall remain in effect until either party terminates the cooperation.';
 }

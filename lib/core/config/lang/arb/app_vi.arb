@@ -1196,5 +1196,6 @@
   "foodTypeVegetarian": "Chay",
   "foodTypeKorean": "Món Hàn",
   "foodTypeJapanese": "Món Nhật",
-  "foodTypeFastFood": "Fast Food"
+  "foodTypeFastFood": "Fast Food",
+  "contractDurationPolicy": "Hợp đồng có hiệu lực cho đến khi một trong hai bên chấm dứt hợp tác."
 }

@@ -60,9 +60,8 @@ class ContractPage extends StatelessWidget {
                       SizedBox(height: 24.h),
                       PrimaryButton(
                         onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRouteConstant.vehicleRentalRegister,
+                          Navigator.of(context, rootNavigator: true).pushNamed(
+                            AppRouteConstant.createContract,
                           );
                         },
                         title: AppLocalizations.of(context)!.registerNow,
@@ -88,9 +87,8 @@ class ContractPage extends StatelessWidget {
                         padding: EdgeInsets.only(top: 8.h),
                         child: PrimaryButton(
                           onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRouteConstant.vehicleRentalRegister,
+                            Navigator.of(context, rootNavigator: true).pushNamed(
+                              AppRouteConstant.createContract,
                             );
                           },
                           title: AppLocalizations.of(context)!.registerNow,

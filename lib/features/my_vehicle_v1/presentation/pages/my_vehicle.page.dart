@@ -539,14 +539,7 @@ class _MyVehiclePageState extends State<MyVehiclePage> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            final result = await Navigator.of(
-                              context,
-                              rootNavigator: true,
-                            ).pushNamed(AppRouteConstant.vehicleRentalRegister);
-                            if (mounted && result == true) {
-                              // Event bus giải xử lý refresh
-                            }
+                          onPressed: () {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryBlue,

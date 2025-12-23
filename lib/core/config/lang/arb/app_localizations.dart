@@ -3628,6 +3628,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fast Food'**
   String get foodTypeFastFood;
+
+  /// No description provided for @contractDurationPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'The contract shall remain in effect until either party terminates the cooperation.'**
+  String get contractDurationPolicy;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

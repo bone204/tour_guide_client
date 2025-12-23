@@ -53,6 +53,8 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/contract.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/vehicle/vehicle.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/contract_detail.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/create_contract.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/create_contract/create_contract_cubit.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -397,6 +399,16 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const ContractPage(),
+        );
+
+      case AppRouteConstant.createContract:
+        return MaterialPageRoute(
+          settings: settings,
+          builder:
+              (_) => BlocProvider(
+                create: (_) => sl<CreateContractCubit>(),
+                child: const CreateContractPage(),
+              ),
         );
 
       case AppRouteConstant.vehicle:
