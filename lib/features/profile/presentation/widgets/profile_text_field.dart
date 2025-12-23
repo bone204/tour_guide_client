@@ -6,12 +6,14 @@ class ProfileTextField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final Widget? suffixIcon;
+  final String? Function(String?)? validator;
 
   const ProfileTextField({
     Key? key,
     required this.label,
     required this.controller,
     this.suffixIcon,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -23,6 +25,7 @@ class ProfileTextField extends StatelessWidget {
         placeholder: '',
         controller: controller,
         suffixIcon: suffixIcon,
+        validator: validator,
       ),
     );
   }

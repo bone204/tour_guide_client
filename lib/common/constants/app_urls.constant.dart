@@ -5,6 +5,8 @@ class ApiUrls {
   static const signup = "$baseURL/auth/signup";
   static const login = "$baseURL/auth/login";
   static const refreshToken = "$baseURL/auth/refresh";
+  static const emailStart = "$baseURL/auth/email/start";
+  static const emailVerify = "$baseURL/auth/email/verify";
 
   //Users URLs
   static const users = "$baseURL/users";

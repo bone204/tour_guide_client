@@ -61,6 +61,25 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
     super.dispose();
   }
 
+  bool _isValidEmail(String email) {
+    if (email.isEmpty) return false;
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
+  bool _isValidPhone(String phone) {
+    if (phone.isEmpty) return false;
+    final phoneRegex = RegExp(r'^\d{10}$');
+    return phoneRegex.hasMatch(phone);
+  }
+
+  bool _isValidCitizenId(String id) {
+    if (id.isEmpty) return false;
+    // Assuming citizen ID is 9 or 12 digits
+    final idRegex = RegExp(r'^\d{9}$|^\d{12}$');
+    return idRegex.hasMatch(id);
+  }
+
   void _updateControllers(User user) {
     _usernameController.text = user.username;
     _emailController.text = user.email ?? '';
@@ -199,16 +218,50 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
           ProfileTextField(
             label: AppLocalizations.of(context)!.email,
             controller: _emailController,
-            suffixIcon: ProfileVerificationBadge(
-              isVerified: _currentUser?.isEmailVerified ?? false,
-            ),
+            validator: (value) {
+              if (value != null && value.isNotEmpty && !_isValidEmail(value)) {
+                return AppLocalizations.of(context)!.pleaseEnterValidEmail;
+              }
+              return null;
+            },
+            suffixIcon:
+                (_currentUser?.email != null && _currentUser!.email!.isNotEmpty)
+                    ? ProfileVerificationBadge(
+                      isVerified: _currentUser?.isEmailVerified ?? false,
+                      onTap: () {
+                        if (!(_currentUser?.isEmailVerified ?? false)) {
+                          Navigator.pushNamed(
+                            context,
+                            AppRouteConstant.verifyEmail,
+                          );
+                        }
+                      },
+                    )
+                    : null,
           ),
           ProfileTextField(
             label: AppLocalizations.of(context)!.phone,
             controller: _phoneController,
-            suffixIcon: ProfileVerificationBadge(
-              isVerified: _currentUser?.isPhoneVerified ?? false,
-            ),
+            validator: (value) {
+              if (value != null && value.isNotEmpty && !_isValidPhone(value)) {
+                return AppLocalizations.of(context)!.phoneNumberInvalid;
+              }
+              return null;
+            },
+            suffixIcon:
+                (_currentUser?.phone != null && _currentUser!.phone!.isNotEmpty)
+                    ? ProfileVerificationBadge(
+                      isVerified: _currentUser?.isPhoneVerified ?? false,
+                      onTap: () {
+                        if (!(_currentUser?.isPhoneVerified ?? false)) {
+                          Navigator.pushNamed(
+                            context,
+                            AppRouteConstant.verifyPhone,
+                          );
+                        }
+                      },
+                    )
+                    : null,
           ),
 
           ProfileTextField(
@@ -234,9 +287,30 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
           ProfileTextField(
             label: AppLocalizations.of(context)!.citizenId,
             controller: _citizenIdController,
-            suffixIcon: ProfileVerificationBadge(
-              isVerified: _currentUser?.isCitizenIdVerified ?? false,
-            ),
+            validator: (value) {
+              if (value != null &&
+                  value.isNotEmpty &&
+                  !_isValidCitizenId(value)) {
+                // You might need a key for Citizen ID Invalid, using generic error or adding one
+                return 'Invalid Citizen ID';
+              }
+              return null;
+            },
+            suffixIcon:
+                (_currentUser?.citizenId != null &&
+                        _currentUser!.citizenId!.isNotEmpty)
+                    ? ProfileVerificationBadge(
+                      isVerified: _currentUser?.isCitizenIdVerified ?? false,
+                      onTap: () {
+                        if (!(_currentUser?.isCitizenIdVerified ?? false)) {
+                          Navigator.pushNamed(
+                            context,
+                            AppRouteConstant.verifyCitizenId,
+                          );
+                        }
+                      },
+                    )
+                    : null,
           ),
 
           SizedBox(height: 10.h),

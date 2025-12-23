@@ -1139,6 +1139,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unverified => 'Unverified';
 
   @override
+  String get verify => 'Verify';
+
+  @override
   String contractTitle(int id) {
     return 'Contract #$id';
   }

@@ -1,7 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
+import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/local/auth_local_service.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/remote/auth_api_service.dart';
+import 'package:tour_guide_app/features/auth/data/models/email_verification.dart';
+import 'package:tour_guide_app/features/auth/data/models/email_verification_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/signin_params.dart';
 import 'package:tour_guide_app/features/auth/data/models/signin_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/signup_params.dart';
@@ -33,5 +36,15 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<bool> isLoggedIn() async {
     return await _localService.isLoggedIn();
+  }
+
+  @override
+  Future<Either<Failure, EmailVerificationResponse>> emailStart() async {
+    return await _apiService.emailStart();
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> emailVerify(EmailVerification emailVerification) async {
+    return await _apiService.emailVerify(emailVerification);
   }
 }

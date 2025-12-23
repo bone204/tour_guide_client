@@ -253,8 +253,6 @@
 
   "takePhoto": "Take photo",
 
-  "takePhoto": "Take photo",
-
   "selectFromGallery": "Select from gallery",
 
   "viewImage": "View image",
@@ -778,6 +776,7 @@
   "searchProvinceHint": "Search province/city...",
   "verified": "Verified",
   "unverified": "Unverified",
+  "verify": "Verify",
   "contractTitle": "Contract #{id}",
   "@contractTitle": {
     "placeholders": {

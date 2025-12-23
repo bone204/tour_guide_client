@@ -785,6 +785,9 @@
   "searchDestinationHint": "Tìm kiếm địa điểm...",
   "searchFavoritePlaceHint": "Tìm kiếm địa điểm yêu thích...",
   "searchProvinceHint": "Tìm kiếm tỉnh/thành phố...",
+  "verified": "Đã xác thực",
+  "unverified": "Chưa xác thực",
+  "verify": "Xác thực",
   "contractTitle": "Hợp đồng #{id}",
   "@contractTitle": {
     "placeholders": {
@@ -803,8 +806,6 @@
   },
   "flagUS": "🇺🇸",
   "flagVN": "🇻🇳",
-  "verified": "Đã xác thực",
-  "unverified": "Chưa xác thực",
   "searchResultsCount": "Tìm thấy {count} kết quả",
   "@searchResultsCount": {
     "placeholders": {

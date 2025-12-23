@@ -4,6 +4,9 @@ import 'package:tour_guide_app/features/auth/presentation/pages/sign_in.page.dar
 import 'package:tour_guide_app/features/auth/presentation/pages/sign_up.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_bill.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_detail.page.dart';
+import 'package:tour_guide_app/features/auth/presentation/pages/verify_email.page.dart';
+import 'package:tour_guide_app/features/auth/presentation/pages/verify_phone.page.dart';
+import 'package:tour_guide_app/features/auth/presentation/pages/verify_citizen_id.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_list.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_rental.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_rental.page.dart';
@@ -429,6 +432,24 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ContractDetailPage(contractId: contractId),
+        );
+
+      case AppRouteConstant.verifyEmail:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const VerifyEmailPage(),
+        );
+
+      case AppRouteConstant.verifyPhone:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const VerifyPhonePage(),
+        );
+
+      case AppRouteConstant.verifyCitizenId:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const VerifyCitizenIdPage(),
         );
 
       default:

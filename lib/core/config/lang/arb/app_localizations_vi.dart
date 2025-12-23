@@ -1139,6 +1139,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get unverified => 'Chưa xác thực';
 
   @override
+  String get verify => 'Xác thực';
+
+  @override
   String contractTitle(int id) {
     return 'Hợp đồng #$id';
   }

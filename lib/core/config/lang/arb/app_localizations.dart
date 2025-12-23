@@ -2327,6 +2327,12 @@ abstract class AppLocalizations {
   /// **'Unverified'**
   String get unverified;
 
+  /// No description provided for @verify.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get verify;
+
   /// No description provided for @contractTitle.
   ///
   /// In en, this message translates to:

@@ -57,4 +57,7 @@ class AppRouteConstant {
   static const String foodWheel = '/food_wheel';
 
   static const String splash = '/splash';
+  static const String verifyEmail = '/verify_email';
+  static const String verifyPhone = '/verify_phone';
+  static const String verifyCitizenId = '/verify_citizen_id';
 }
