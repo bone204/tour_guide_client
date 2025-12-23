@@ -369,6 +369,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get selectFromGallery => 'Chọn từ thư viện';
 
   @override
+  String get viewImage => 'Xem ảnh';
+
+  @override
   String get selectPackageImage => 'Chọn ảnh kiện hàng';
 
   @override

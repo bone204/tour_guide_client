@@ -9,7 +9,7 @@ class ProfileHeaderCard extends StatelessWidget {
     required this.createdAt,
   });
 
-  final String avatarUrl;
+  final String? avatarUrl;
   final String fullName;
   final String tier;
   final DateTime createdAt;
@@ -45,14 +45,27 @@ class ProfileHeaderCard extends StatelessWidget {
                 ),
               ],
               border: Border.all(
-                color: AppColors.primaryBlue.withOpacity(0.2),
+                color: AppColors.primaryBlue,
                 width: 3,
               ),
             ),
-            child: CircleAvatar(
-              radius: 48.r,
-              backgroundImage: NetworkImage(avatarUrl),
-              onBackgroundImageError: (_, __) {},
+            child: ClipOval(
+              child: SizedBox(
+                width: 96.r,
+                height: 96.r,
+                child:
+                    avatarUrl != null &&
+                            avatarUrl!.isNotEmpty &&
+                            !avatarUrl!.contains('default_avatar.png')
+                        ? Image.network(
+                          avatarUrl!,
+                          fit: BoxFit.cover,
+                          errorBuilder:
+                              (_, __, ___) =>
+                                  _buildFallbackAvatar(context, fullName),
+                        )
+                        : _buildFallbackAvatar(context, fullName),
+              ),
             ),
           ),
           SizedBox(width: 18.w),
@@ -102,6 +115,20 @@ class ProfileHeaderCard extends StatelessWidget {
   String _memberSinceText(BuildContext context) {
     final days = DateTime.now().difference(createdAt).inDays + 1;
     return AppLocalizations.of(context)!.memberForDays(days);
+  }
+
+  Widget _buildFallbackAvatar(BuildContext context, String text) {
+    return Container(
+      color: AppColors.primaryBlue.withOpacity(0.2),
+      alignment: Alignment.center,
+      child: Text(
+        text.isNotEmpty ? text[0].toUpperCase() : '?',
+        style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+          color: AppColors.primaryBlue,
+          fontSize: 40.sp,
+        ),
+      ),
+    );
   }
 }
 

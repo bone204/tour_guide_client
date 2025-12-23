@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
@@ -16,6 +17,7 @@ abstract class ProfileApiService {
   Future<Either<Failure, User>> updateVerificationInfo(
     UpdateVerificationInfoModel body,
   );
+  Future<Either<Failure, String>> updateAvatar(File avatar);
 }
 
 class ProfileApiServiceImpl extends ProfileApiService {
@@ -71,6 +73,34 @@ class ProfileApiServiceImpl extends ProfileApiService {
       );
       final user = User.fromJson(response.data);
       return Right(user);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: _parseErrorMessage(e.response?.data),
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> updateAvatar(File avatar) async {
+    try {
+      final formData = FormData();
+      formData.files.add(
+        MapEntry('avatar', await MultipartFile.fromFile(avatar.path)),
+      );
+
+      final response = await sl<DioClient>().patch(
+        "${ApiUrls.users}/profile/avatar",
+        data: formData,
+      );
+
+      return Right(
+        response.data['data']['avatarUrl'] ?? '',
+      ); // Assuming response structure or just return success
     } on DioException catch (e) {
       return Left(
         ServerFailure(

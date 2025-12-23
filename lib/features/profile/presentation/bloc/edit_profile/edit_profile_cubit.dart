@@ -3,51 +3,78 @@ import 'package:tour_guide_app/features/profile/data/models/update_initial_profi
 import 'package:tour_guide_app/features/profile/data/models/update_verification_info_model.dart';
 import 'package:tour_guide_app/features/profile/domain/usecases/update_initial_profile.dart';
 import 'package:tour_guide_app/features/profile/domain/usecases/update_verification_info.dart';
+import 'package:tour_guide_app/features/profile/domain/usecases/update_avatar.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/edit_profile/edit_profile_state.dart';
+import 'dart:io';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
   final UpdateInitialProfileUseCase updateInitialProfileUseCase;
   final UpdateVerificationInfoUseCase updateVerificationInfoUseCase;
+  final UpdateAvatarUseCase updateAvatarUseCase;
 
   EditProfileCubit({
     required this.updateInitialProfileUseCase,
     required this.updateVerificationInfoUseCase,
+    required this.updateAvatarUseCase,
   }) : super(EditProfileInitial());
 
   Future<void> updateProfile({
     UpdateInitialProfileModel? initialProfile,
     UpdateVerificationInfoModel? verificationInfo,
+    File? avatarFile,
   }) async {
     emit(EditProfileLoading());
 
+    // Update Initial Profile
     if (initialProfile != null) {
       final result = await updateInitialProfileUseCase(initialProfile);
       if (isClosed) return;
-      result.fold(
-        (failure) {
-          emit(EditProfileFailure(failure.message));
-          return;
-        },
-        (user) {
-          // Success for initial profile, continue to verification info if needed
-        },
-      );
+
+      final isSuccess = result.fold((failure) {
+        emit(EditProfileFailure(failure.message));
+        return false;
+      }, (_) => true);
+
+      if (!isSuccess) return;
     }
 
-    if (state is EditProfileFailure) return;
-
+    // Update Verification Info
     if (verificationInfo != null) {
       final result = await updateVerificationInfoUseCase(verificationInfo);
       if (isClosed) return;
-      result.fold(
-        (failure) => emit(EditProfileFailure(failure.message)),
-        (user) => emit(EditProfileSuccess()),
-      );
-    } else {
-      // If only initial profile was updated and it was successful
-      if (state is! EditProfileFailure) {
-        emit(EditProfileSuccess());
-      }
+
+      final isSuccess = result.fold((failure) {
+        emit(EditProfileFailure(failure.message));
+        return false;
+      }, (_) => true);
+
+      if (!isSuccess) return;
     }
+
+    // Update Avatar
+    if (avatarFile != null) {
+      final result = await updateAvatarUseCase(avatarFile);
+      if (isClosed) return;
+
+      final isSuccess = result.fold((failure) {
+        emit(EditProfileFailure(failure.message));
+        return false;
+      }, (_) => true);
+
+      if (!isSuccess) return;
+    }
+
+    // If we haven't failed yet, emit success
+    emit(EditProfileSuccess());
+  }
+
+  Future<void> updateAvatar(File avatar) async {
+    emit(EditProfileLoading());
+    final result = await updateAvatarUseCase(avatar);
+    if (isClosed) return;
+    result.fold(
+      (failure) => emit(EditProfileFailure(failure.message)),
+      (_) => emit(EditProfileSuccess()),
+    );
   }
 }

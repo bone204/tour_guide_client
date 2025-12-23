@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_state.dart';
 import 'package:tour_guide_app/features/profile/presentation/pages/favourite_destinations.page.dart';
@@ -21,17 +23,38 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-class _ProfileView extends StatelessWidget {
+class _ProfileView extends StatefulWidget {
   const _ProfileView();
+
+  @override
+  State<_ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<_ProfileView> {
+  StreamSubscription? _profileUpdatedSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _profileUpdatedSubscription = eventBus.on<ProfileUpdatedEvent>().listen((
+      _,
+    ) {
+      if (mounted) {
+        context.read<GetMyProfileCubit>().getMyProfile();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _profileUpdatedSubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final featureItems = _buildFeatureItems(context);
-
-    // Default hardcoded avatar from original file
-    const String defaultAvatarUrl =
-        'https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=200&q=60';
 
     return Scaffold(
       backgroundColor: AppColors.primaryWhite,
@@ -74,7 +97,7 @@ class _ProfileView extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
                         child: ProfileHeaderCard(
-                          avatarUrl: defaultAvatarUrl,
+                          avatarUrl: user.avatarUrl,
                           fullName: user.fullName ?? user.username,
                           tier: user.userTier,
                           createdAt: createdAt,
@@ -86,7 +109,7 @@ class _ProfileView extends StatelessWidget {
                         child: ProfileStatsRow(
                           travelPoints: user.travelPoint,
                           reviews: user.feedbackTimes,
-                          walletBalance: 0, // Placeholder as per model
+                          walletBalance: 0,
                         ),
                       ),
                       SizedBox(height: 20.h),

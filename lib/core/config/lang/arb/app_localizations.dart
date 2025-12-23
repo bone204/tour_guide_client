@@ -803,6 +803,12 @@ abstract class AppLocalizations {
   /// **'Select from gallery'**
   String get selectFromGallery;
 
+  /// No description provided for @viewImage.
+  ///
+  /// In en, this message translates to:
+  /// **'View image'**
+  String get viewImage;
+
   /// No description provided for @selectPackageImage.
   ///
   /// In en, this message translates to:

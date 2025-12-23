@@ -369,6 +369,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectFromGallery => 'Select from gallery';
 
   @override
+  String get viewImage => 'View image';
+
+  @override
   String get selectPackageImage => 'Select package image';
 
   @override

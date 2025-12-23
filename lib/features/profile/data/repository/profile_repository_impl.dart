@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'dart:io';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/features/profile/data/data_source/profile_api_service.dart';
 import 'package:tour_guide_app/features/profile/data/models/update_initial_profile_model.dart';
@@ -27,5 +28,10 @@ class ProfileRepositoryImpl extends ProfileRepository {
     UpdateVerificationInfoModel body,
   ) async {
     return _apiService.updateVerificationInfo(body);
+  }
+
+  @override
+  Future<Either<Failure, String>> updateAvatar(File avatar) async {
+    return _apiService.updateAvatar(avatar);
   }
 }

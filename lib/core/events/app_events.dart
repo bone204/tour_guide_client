@@ -29,6 +29,9 @@ class StopUpdatedEvent {
   StopUpdatedEvent(this.stopId);
 }
 
+// Event when user profile is updated
+class ProfileUpdatedEvent {}
+
 // Singleton EventBus
 class AppEventBus {
   static final AppEventBus _instance = AppEventBus._internal();
