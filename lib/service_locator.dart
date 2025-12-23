@@ -18,6 +18,9 @@ import 'package:tour_guide_app/features/destination/domain/usecases/get_favorite
 import 'package:tour_guide_app/features/destination/domain/usecases/favorite_destination.dart';
 import 'package:tour_guide_app/features/home/domain/usecases/get_destinations.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
+import 'package:tour_guide_app/features/profile/data/data_source/profile_api_service.dart';
+import 'package:tour_guide_app/features/profile/data/repository/profile_repository_impl.dart';
+import 'package:tour_guide_app/features/profile/domain/repository/profile_repository.dart';
 import 'package:tour_guide_app/features/settings/data/data_source/local/settings_local_service.dart';
 import 'package:tour_guide_app/features/settings/data/repository/settings_repository_impl.dart';
 import 'package:tour_guide_app/features/settings/domain/repository/settings_repository.dart';
@@ -80,6 +83,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<ChatApiService>(ChatApiServiceImpl());
   sl.registerSingleton<ItineraryApiService>(ItineraryApiServiceImpl());
   sl.registerSingleton<MyVehicleApiService>(MyVehicleApiServiceImpl());
+  sl.registerSingleton<ProfileApiService>(ProfileApiServiceImpl());
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
@@ -87,6 +91,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<ChatRepository>(ChatRepositoryImpl());
   sl.registerSingleton<ItineraryRepository>(ItineraryRepositoryImpl());
   sl.registerSingleton<MyVehicleRepository>(MyVehicleRepositoryImpl());
+  sl.registerSingleton<ProfileRepository>(ProfileRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());

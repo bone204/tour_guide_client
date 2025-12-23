@@ -6,6 +6,9 @@ class ApiUrls {
   static const login = "$baseURL/auth/login";
   static const refreshToken = "$baseURL/auth/refresh";
 
+  //Users URLs
+  static const users = "$baseURL/users";
+
   //Destination URLs
   static const getDestinations = "$baseURL/destinations";
   static const getFavoriteDestinations = "$baseURL/destinations/favorites";
