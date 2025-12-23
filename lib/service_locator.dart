@@ -70,6 +70,8 @@ import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_contra
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_vehicles.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_detail.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart';
+import 'package:tour_guide_app/features/profile/domain/usecases/update_initial_profile.dart';
+import 'package:tour_guide_app/features/profile/domain/usecases/update_verification_info.dart';
 
 final sl = GetIt.instance;
 
@@ -125,6 +127,12 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<AddStopMediaUseCase>(AddStopMediaUseCase());
   sl.registerSingleton<DeleteStopMediaUseCase>(DeleteStopMediaUseCase());
   sl.registerSingleton<GetMyProfileUseCase>(GetMyProfileUseCase());
+  sl.registerSingleton<UpdateInitialProfileUseCase>(
+    UpdateInitialProfileUseCase(),
+  );
+  sl.registerSingleton<UpdateVerificationInfoUseCase>(
+    UpdateVerificationInfoUseCase(),
+  );
 
   // My Vehicle
   sl.registerSingleton<AddContractUseCase>(AddContractUseCase());
