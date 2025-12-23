@@ -1094,7 +1094,7 @@ abstract class AppLocalizations {
   /// No description provided for @businessRegisterPhoto.
   ///
   /// In en, this message translates to:
-  /// **'Business Registration Photo'**
+  /// **'Business Register Photo'**
   String get businessRegisterPhoto;
 
   /// No description provided for @identificationPhoto.
@@ -2350,6 +2350,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Found {count} results'**
   String searchResultsCount(int count);
+
+  /// No description provided for @profileUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully'**
+  String get profileUpdatedSuccessfully;
+
+  /// No description provided for @unsavedChangesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes. Discard them?'**
+  String get unsavedChangesMessage;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @noChangesToUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'No changes to update'**
+  String get noChangesToUpdate;
+
+  /// No description provided for @images.
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get images;
+
+  /// No description provided for @idCard.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Card'**
+  String get idCard;
+
+  /// No description provided for @citizenFront.
+  ///
+  /// In en, this message translates to:
+  /// **'Citizen Front'**
+  String get citizenFront;
+
+  /// No description provided for @citizenBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Citizen Back'**
+  String get citizenBack;
+
+  /// No description provided for @dateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get dateOfBirth;
+
+  /// No description provided for @gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get gender;
+
+  /// No description provided for @nationality.
+  ///
+  /// In en, this message translates to:
+  /// **'Nationality'**
+  String get nationality;
 
   /// No description provided for @unknown.
   ///

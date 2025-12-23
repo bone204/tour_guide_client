@@ -6,6 +6,10 @@ import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
 import 'package:tour_guide_app/features/profile/data/models/user.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_state.dart';
+import 'package:tour_guide_app/features/profile/data/models/update_initial_profile_model.dart';
+import 'package:tour_guide_app/features/profile/data/models/update_verification_info_model.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/edit_profile/edit_profile_cubit.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/edit_profile/edit_profile_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class PersonalInformationPage extends StatefulWidget {
@@ -67,32 +71,91 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<GetMyProfileCubit>()..getMyProfile(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => sl<GetMyProfileCubit>()..getMyProfile()),
+        BlocProvider(create: (_) => sl<EditProfileCubit>()),
+      ],
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          appBar: CustomAppBar(
-            title: AppLocalizations.of(context)!.personalInfo,
-            showBackButton: true,
-            onBackPressed: () => Navigator.pop(context),
-          ),
-          body: BlocConsumer<GetMyProfileCubit, GetMyProfileState>(
-            listener: (context, state) {
-              if (state is GetMyProfileSuccess) {
-                _currentUser = state.user;
-                _updateControllers(state.user);
-              }
-            },
-            builder: (context, state) {
-              if (state is GetMyProfileLoading) {
-                return _buildShimmerLoading();
-              } else if (state is GetMyProfileFailure) {
-                return Center(child: Text('Error: ${state.message}'));
-              } else if (state is GetMyProfileSuccess || _currentUser != null) {
-                return _buildForm(context);
-              }
-              return const SizedBox.shrink();
+        child: BlocListener<EditProfileCubit, EditProfileState>(
+          listener: (context, state) {
+            if (state is EditProfileLoading) {
+              // Show loading overlay or handled by button
+            } else if (state is EditProfileSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    AppLocalizations.of(context)!.profileUpdatedSuccessfully,
+                  ),
+                ),
+              );
+              context.read<GetMyProfileCubit>().getMyProfile();
+            } else if (state is EditProfileFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    '${AppLocalizations.of(context)!.errorPrefix}${state.message}',
+                  ),
+                ),
+              );
+            }
+          },
+          child: Builder(
+            builder: (context) {
+              return WillPopScope(
+                onWillPop: () async {
+                  if (_hasChanges()) {
+                    return await _showDiscardChangesDialog(context);
+                  }
+                  return true;
+                },
+                child: Scaffold(
+                  appBar: CustomAppBar(
+                    title: AppLocalizations.of(context)!.personalInfo,
+                    showBackButton: true,
+                    onBackPressed: () async {
+                      if (_hasChanges()) {
+                        final discard = await _showDiscardChangesDialog(
+                          context,
+                        );
+                        if (discard && context.mounted) {
+                          Navigator.pop(context);
+                        }
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
+                  body: BlocConsumer<GetMyProfileCubit, GetMyProfileState>(
+                    listener: (context, state) {
+                      if (state is GetMyProfileSuccess) {
+                        _currentUser = state.user;
+                        _updateControllers(state.user);
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is GetMyProfileLoading) {
+                        return _buildShimmerLoading();
+                      } else if (state is GetMyProfileFailure) {
+                        return Center(child: Text('Error: ${state.message}'));
+                      } else if (state is GetMyProfileSuccess ||
+                          _currentUser != null) {
+                        return Stack(
+                          children: [
+                            _buildForm(context),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: _buildUpdateButton(context),
+                            ),
+                          ],
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                ),
+              );
             },
           ),
         ),
@@ -133,13 +196,22 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
             AppLocalizations.of(context)!.fullName,
             _fullNameController,
           ),
-          _buildTextField('Date of Birth', _dateOfBirthController),
-          _buildTextField('Gender', _genderController),
+          _buildTextField(
+            AppLocalizations.of(context)!.dateOfBirth,
+            _dateOfBirthController,
+          ),
+          _buildTextField(
+            AppLocalizations.of(context)!.gender,
+            _genderController,
+          ),
           _buildTextField(
             AppLocalizations.of(context)!.address,
             _addressController,
           ),
-          _buildTextField('Nationality', _nationalityController),
+          _buildTextField(
+            AppLocalizations.of(context)!.nationality,
+            _nationalityController,
+          ),
           _buildTextField(
             AppLocalizations.of(context)!.citizenId,
             _citizenIdController,
@@ -152,7 +224,10 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Images', style: Theme.of(context).textTheme.displayLarge),
+              Text(
+                AppLocalizations.of(context)!.images,
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
               SizedBox(height: 6.h),
               Container(
                 width: double.infinity,
@@ -170,7 +245,7 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
                     Expanded(
                       child: _buildImageThumbnail(
                         context,
-                        'ID Card',
+                        AppLocalizations.of(context)!.idCard,
                         _currentUser?.idCardImageUrl,
                       ),
                     ),
@@ -178,7 +253,7 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
                     Expanded(
                       child: _buildImageThumbnail(
                         context,
-                        'Citizen Front',
+                        AppLocalizations.of(context)!.citizenFront,
                         _currentUser?.citizenFrontImageUrl,
                       ),
                     ),
@@ -186,7 +261,7 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
                     Expanded(
                       child: _buildImageThumbnail(
                         context,
-                        'Citizen Back',
+                        AppLocalizations.of(context)!.citizenBack,
                         _currentUser?.citizenBackImageUrl,
                       ),
                     ),
@@ -387,5 +462,132 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
         itemCount: 10,
       ),
     );
+  }
+
+  bool _hasChanges() {
+    if (_currentUser == null) return false;
+    return _fullNameController.text != (_currentUser!.fullName ?? '') ||
+        _dateOfBirthController.text != (_currentUser!.dateOfBirth ?? '') ||
+        _genderController.text != (_currentUser!.gender ?? '') ||
+        _addressController.text != (_currentUser!.address ?? '') ||
+        _nationalityController.text != (_currentUser!.nationality ?? '') ||
+        _emailController.text != (_currentUser!.email ?? '') ||
+        _phoneController.text != (_currentUser!.phone ?? '') ||
+        _citizenIdController.text != (_currentUser!.citizenId ?? '');
+  }
+
+  Future<bool> _showDiscardChangesDialog(BuildContext context) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context)!.confirm),
+              content: Text(
+                AppLocalizations.of(context)!.unsavedChangesMessage,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: Text(AppLocalizations.of(context)!.cancel),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: Text(AppLocalizations.of(context)!.confirm),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
+
+  Widget _buildUpdateButton(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+          ),
+        ],
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () => _onUpdatePressed(context),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primaryBlue,
+            padding: EdgeInsets.symmetric(vertical: 16.h),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+          ),
+          child: Text(
+            AppLocalizations.of(context)!.update,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _onUpdatePressed(BuildContext context) {
+    if (_hasChanges()) {
+      final initialProfile = UpdateInitialProfileModel(
+        fullName:
+            _fullNameController.text != (_currentUser?.fullName ?? '')
+                ? _fullNameController.text
+                : null,
+        dateOfBirth:
+            _dateOfBirthController.text != (_currentUser?.dateOfBirth ?? '')
+                ? _dateOfBirthController.text.isNotEmpty
+                    ? _dateOfBirthController.text
+                    : null
+                : null,
+        gender:
+            _genderController.text != (_currentUser?.gender ?? '')
+                ? _genderController.text.toLowerCase()
+                : null,
+        address:
+            _addressController.text != (_currentUser?.address ?? '')
+                ? _addressController.text
+                : null,
+        nationality:
+            _nationalityController.text != (_currentUser?.nationality ?? '')
+                ? _nationalityController.text
+                : null,
+      );
+
+      final verificationInfo = UpdateVerificationInfoModel(
+        email:
+            _emailController.text != (_currentUser?.email ?? '')
+                ? _emailController.text
+                : null,
+        phone:
+            _phoneController.text != (_currentUser?.phone ?? '')
+                ? _phoneController.text
+                : null,
+        citizenId:
+            _citizenIdController.text != (_currentUser?.citizenId ?? '')
+                ? _citizenIdController.text
+                : null,
+      );
+
+      context.read<EditProfileCubit>().updateProfile(
+        initialProfile: initialProfile,
+        verificationInfo: verificationInfo,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.noChangesToUpdate),
+        ),
+      );
+    }
   }
 }

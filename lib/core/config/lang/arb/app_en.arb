@@ -647,7 +647,6 @@
 
   "contractOwnerInfo": "Contract Owner Information",
   "contractInfo": "Contract Information",
-  "personalInfo": "Personal Information",
   "companyInfo": "Company Information",
   "bankingInfo": "Banking Information",
   "documents": "Documents",
@@ -656,7 +655,6 @@
   "notes": "Notes",
   "createdDate": "Created Date",
   "updatedDate": "Updated Date",
-  "businessRegisterPhoto": "Business Registration Photo",
   "citizenFrontPhoto": "Citizen ID Front Photo",
   "citizenBackPhoto": "Citizen ID Back Photo",
   "registeredVehicles": "Registered Vehicles",
@@ -802,6 +800,17 @@
       }
     }
   },
+  "profileUpdatedSuccessfully": "Profile updated successfully",
+  "unsavedChangesMessage": "You have unsaved changes. Discard them?",
+  "update": "Update",
+  "noChangesToUpdate": "No changes to update",
+  "images": "Images",
+  "idCard": "ID Card",
+  "citizenFront": "Citizen Front",
+  "citizenBack": "Citizen Back",
+  "dateOfBirth": "Date of Birth",
+  "gender": "Gender",
+  "nationality": "Nationality",
   "unknown": "Unknown",
   "drive": "Drive",
   "walk": "Walk",

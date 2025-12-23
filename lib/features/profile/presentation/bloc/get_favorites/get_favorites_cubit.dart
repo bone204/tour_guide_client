@@ -15,18 +15,14 @@ class GetFavoritesCubit extends Cubit<GetFavoritesState> {
 
     final result = await sl<GetFavoritesUseCase>().call(NoParams());
 
-    result.fold(
-      (failure) => emit(GetFavoritesError(failure.message)),
-      (destinationResponse) {
-        emit(
-          GetFavoritesLoaded(
-            destinations: destinationResponse.items,
-          ),
-        );
-      },
-    );
+    if (isClosed) return result;
+
+    result.fold((failure) => emit(GetFavoritesError(failure.message)), (
+      destinationResponse,
+    ) {
+      emit(GetFavoritesLoaded(destinations: destinationResponse.items));
+    });
 
     return result;
   }
 }
-

@@ -11,6 +11,7 @@ class GetMyProfileCubit extends Cubit<GetMyProfileState> {
   Future<void> getMyProfile() async {
     emit(GetMyProfileLoading());
     final result = await _getMyProfileUseCase(NoParams());
+    if (isClosed) return;
     result.fold(
       (failure) => emit(GetMyProfileFailure(failure.message)),
       (user) => emit(GetMyProfileSuccess(user)),

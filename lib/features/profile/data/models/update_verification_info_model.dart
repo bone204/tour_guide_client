@@ -16,7 +16,7 @@ class UpdateVerificationInfoModel {
   });
 
   Map<String, dynamic> toJson() {
-    return {
+    final Map<String, dynamic> data = {
       'email': email,
       'phone': phone,
       'citizenId': citizenId,
@@ -24,5 +24,7 @@ class UpdateVerificationInfoModel {
       'citizenFrontImageUrl': citizenFrontImageUrl,
       'citizenBackImageUrl': citizenBackImageUrl,
     };
+    data.removeWhere((key, value) => value == null);
+    return data;
   }
 }

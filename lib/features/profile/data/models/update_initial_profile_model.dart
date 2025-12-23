@@ -16,13 +16,14 @@ class UpdateInitialProfileModel {
   });
 
   Map<String, dynamic> toJson() {
-    return {
+    final Map<String, dynamic> data = {
       'fullName': fullName,
       'dateOfBirth': dateOfBirth,
       'gender': gender,
       'address': address,
       'nationality': nationality,
-      'avatarUrl': avatarUrl,
     };
+    data.removeWhere((key, value) => value == null);
+    return data;
   }
 }

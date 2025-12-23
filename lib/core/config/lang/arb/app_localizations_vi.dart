@@ -120,7 +120,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get findRes => 'Tìm Nhà Hàng';
 
   @override
-  String get delivery => 'Fast Delivery';
+  String get delivery => 'Giao hàng nhanh';
 
   @override
   String get rentalContract => 'Hợp đồng cho thuê';
@@ -936,10 +936,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get citizenId => 'CCCD/CMND';
 
   @override
-  String get province => 'Province';
+  String get province => 'Tỉnh/Thành phố';
 
   @override
-  String get notes => 'Notes';
+  String get notes => 'Ghi chú';
 
   @override
   String get createdDate => 'Ngày tạo';
@@ -1153,8 +1153,47 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String searchResultsCount(int count) {
-    return 'Tìm thấy $count kết quả';
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+      
+    );
+    final String countString = countNumberFormat.format(count);
+
+    return 'Tìm thấy $countString kết quả';
   }
+
+  @override
+  String get profileUpdatedSuccessfully => 'Cập nhật hồ sơ thành công';
+
+  @override
+  String get unsavedChangesMessage => 'Bạn có thay đổi chưa lưu. Bạn có muốn hủy chúng?';
+
+  @override
+  String get update => 'Cập nhật';
+
+  @override
+  String get noChangesToUpdate => 'Không có thay đổi nào để cập nhật';
+
+  @override
+  String get images => 'Hình ảnh';
+
+  @override
+  String get idCard => 'Thẻ căn cước';
+
+  @override
+  String get citizenFront => 'Mặt trước CCCD';
+
+  @override
+  String get citizenBack => 'Mặt sau CCCD';
+
+  @override
+  String get dateOfBirth => 'Ngày sinh';
+
+  @override
+  String get gender => 'Giới tính';
+
+  @override
+  String get nationality => 'Quốc tịch';
 
   @override
   String get unknown => 'Không rõ';

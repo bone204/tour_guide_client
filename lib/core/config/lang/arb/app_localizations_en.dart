@@ -519,7 +519,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addVehicle => 'Add Vehicle';
 
   @override
-  String get businessRegisterPhoto => 'Business Registration Photo';
+  String get businessRegisterPhoto => 'Business Register Photo';
 
   @override
   String get identificationPhoto => 'Identification Photo';
@@ -1155,6 +1155,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String searchResultsCount(int count) {
     return 'Found $count results';
   }
+
+  @override
+  String get profileUpdatedSuccessfully => 'Profile updated successfully';
+
+  @override
+  String get unsavedChangesMessage => 'You have unsaved changes. Discard them?';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get noChangesToUpdate => 'No changes to update';
+
+  @override
+  String get images => 'Images';
+
+  @override
+  String get idCard => 'ID Card';
+
+  @override
+  String get citizenFront => 'Citizen Front';
+
+  @override
+  String get citizenBack => 'Citizen Back';
+
+  @override
+  String get dateOfBirth => 'Date of Birth';
+
+  @override
+  String get gender => 'Gender';
+
+  @override
+  String get nationality => 'Nationality';
 
   @override
   String get unknown => 'Unknown';

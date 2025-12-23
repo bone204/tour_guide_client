@@ -28,7 +28,7 @@ class ProfileApiServiceImpl extends ProfileApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: _parseErrorMessage(e.response?.data),
           statusCode: e.response?.statusCode,
         ),
       );
@@ -51,7 +51,7 @@ class ProfileApiServiceImpl extends ProfileApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: _parseErrorMessage(e.response?.data),
           statusCode: e.response?.statusCode,
         ),
       );
@@ -74,12 +74,28 @@ class ProfileApiServiceImpl extends ProfileApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: _parseErrorMessage(e.response?.data),
           statusCode: e.response?.statusCode,
         ),
       );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  String _parseErrorMessage(dynamic data) {
+    try {
+      if (data == null) return 'Unknown error';
+      if (data is Map<String, dynamic> && data['message'] != null) {
+        final message = data['message'];
+        if (message is List) {
+          return message.join('\n');
+        }
+        return message.toString();
+      }
+      return data.toString();
+    } catch (_) {
+      return 'Unknown error';
     }
   }
 }

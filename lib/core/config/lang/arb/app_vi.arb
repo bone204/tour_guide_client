@@ -657,6 +657,7 @@
 
   "vehicleColor": "Màu xe",
 
+  "delivery": "Giao hàng nhanh",
   "contractOwnerInfo": "Thông tin chủ hợp đồng",
   "contractInfo": "Thông tin hợp đồng",
   "personalInfo": "Thông tin cá nhân",
@@ -664,6 +665,8 @@
   "bankingInfo": "Thông tin ngân hàng",
   "documents": "Tài liệu đính kèm",
   "citizenId": "CCCD/CMND",
+  "province": "Tỉnh/Thành phố",
+  "notes": "Ghi chú",
   "createdDate": "Ngày tạo",
   "updatedDate": "Ngày cập nhật",
   "businessRegisterPhoto": "Ảnh ĐKKD",
@@ -804,10 +807,22 @@
   "@searchResultsCount": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "int",
+        "format": "compact"
       }
     }
   },
+  "profileUpdatedSuccessfully": "Cập nhật hồ sơ thành công",
+  "unsavedChangesMessage": "Bạn có thay đổi chưa lưu. Bạn có muốn hủy chúng?",
+  "update": "Cập nhật",
+  "noChangesToUpdate": "Không có thay đổi nào để cập nhật",
+  "images": "Hình ảnh",
+  "idCard": "Thẻ căn cước",
+  "citizenFront": "Mặt trước CCCD",
+  "citizenBack": "Mặt sau CCCD",
+  "dateOfBirth": "Ngày sinh",
+  "gender": "Giới tính",
+  "nationality": "Quốc tịch",
   "unknown": "Không rõ"
   ,
   "drive": "Lái xe",
