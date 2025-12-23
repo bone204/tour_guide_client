@@ -6,8 +6,8 @@ import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_card.widget.dart';
-import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorites_cubit.dart';
-import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorites_state.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorites/get_favorites_cubit.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorites/get_favorites_state.dart';
 
 class FavouriteDestinationsSearchPage extends StatefulWidget {
   const FavouriteDestinationsSearchPage({super.key});

@@ -4,7 +4,7 @@ import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/usecases/no_params.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination_response.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_favorites.dart';
-import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorites_state.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorites/get_favorites_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class GetFavoritesCubit extends Cubit<GetFavoritesState> {

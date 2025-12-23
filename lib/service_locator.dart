@@ -21,6 +21,7 @@ import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_c
 import 'package:tour_guide_app/features/profile/data/data_source/profile_api_service.dart';
 import 'package:tour_guide_app/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:tour_guide_app/features/profile/domain/repository/profile_repository.dart';
+import 'package:tour_guide_app/features/profile/domain/usecases/get_my_profile.dart';
 import 'package:tour_guide_app/features/settings/data/data_source/local/settings_local_service.dart';
 import 'package:tour_guide_app/features/settings/data/repository/settings_repository_impl.dart';
 import 'package:tour_guide_app/features/settings/domain/repository/settings_repository.dart';
@@ -68,6 +69,7 @@ import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_contra
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_contract_detail.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_vehicles.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_detail.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -122,6 +124,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerSingleton<AddStopMediaUseCase>(AddStopMediaUseCase());
   sl.registerSingleton<DeleteStopMediaUseCase>(DeleteStopMediaUseCase());
+  sl.registerSingleton<GetMyProfileUseCase>(GetMyProfileUseCase());
 
   // My Vehicle
   sl.registerSingleton<AddContractUseCase>(AddContractUseCase());
@@ -154,4 +157,5 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<EditStopCubit>(() => EditStopCubit(sl(), sl(), sl()));
   sl.registerFactory<StopMediaCubit>(() => StopMediaCubit(sl(), sl(), sl()));
   sl.registerFactory<CreateContractCubit>(() => CreateContractCubit());
+  sl.registerFactory<GetMyProfileCubit>(() => GetMyProfileCubit(sl()));
 }

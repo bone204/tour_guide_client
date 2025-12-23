@@ -797,8 +797,9 @@
     }
   },
   "flagUS": "🇺🇸",
-  "flagVN": "🇻🇳"
-  ,
+  "flagVN": "🇻🇳",
+  "verified": "Đã xác thực",
+  "unverified": "Chưa xác thực",
   "searchResultsCount": "Tìm thấy {count} kết quả",
   "@searchResultsCount": {
     "placeholders": {

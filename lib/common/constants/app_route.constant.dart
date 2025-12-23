@@ -37,6 +37,7 @@ class AppRouteConstant {
   static const String contract = '/contract';
   static const String vehicle = '/vehicle';
   static const String createContract = '/create_contract';
+  static const String personalInfo = '/personal_info';
   static const String itineraryProvinceSelection =
       '/itinerary_province_selection';
   static const String itineraryDestinationSelection =

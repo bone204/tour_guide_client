@@ -1130,6 +1130,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchProvinceHint => 'Search province/city...';
 
   @override
+  String get verified => 'Verified';
+
+  @override
+  String get unverified => 'Unverified';
+
+  @override
   String contractTitle(int id) {
     return 'Contract #$id';
   }

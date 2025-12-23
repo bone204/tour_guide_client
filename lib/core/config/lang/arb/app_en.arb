@@ -774,6 +774,8 @@
   "searchDestinationHint": "Search for destination...",
   "searchFavoritePlaceHint": "Search favorite places...",
   "searchProvinceHint": "Search province/city...",
+  "verified": "Verified",
+  "unverified": "Unverified",
   "contractTitle": "Contract #{id}",
   "@contractTitle": {
     "placeholders": {
