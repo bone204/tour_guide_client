@@ -3724,6 +3724,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The contract shall remain in effect until either party terminates the cooperation.'**
   String get contractDurationPolicy;
+
+  /// No description provided for @verifyEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Email'**
+  String get verifyEmail;
+
+  /// No description provided for @enterCodeSentToEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code sent to your email'**
+  String get enterCodeSentToEmail;
+
+  /// No description provided for @codeExpiresIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Code expires in: {time}'**
+  String codeExpiresIn(String time);
+
+  /// No description provided for @sendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Code'**
+  String get sendCode;
+
+  /// No description provided for @resendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get resendCode;
+
+  /// No description provided for @enterValid6DigitCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid 6-digit code'**
+  String get enterValid6DigitCode;
+
+  /// No description provided for @requestCodeFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Please request a code first'**
+  String get requestCodeFirst;
+
+  /// No description provided for @couldNotFindUserEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not find user email'**
+  String get couldNotFindUserEmail;
+
+  /// No description provided for @codeSentSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Code sent successfully'**
+  String get codeSentSuccess;
+
+  /// No description provided for @emailVerifiedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified successfully'**
+  String get emailVerifiedSuccess;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

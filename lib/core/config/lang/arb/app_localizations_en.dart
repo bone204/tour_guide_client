@@ -1894,4 +1894,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contractDurationPolicy => 'The contract shall remain in effect until either party terminates the cooperation.';
+
+  @override
+  String get verifyEmail => 'Verify Email';
+
+  @override
+  String get enterCodeSentToEmail => 'Enter the code sent to your email';
+
+  @override
+  String codeExpiresIn(String time) {
+    return 'Code expires in: $time';
+  }
+
+  @override
+  String get sendCode => 'Send Code';
+
+  @override
+  String get resendCode => 'Resend Code';
+
+  @override
+  String get enterValid6DigitCode => 'Please enter a valid 6-digit code';
+
+  @override
+  String get requestCodeFirst => 'Please request a code first';
+
+  @override
+  String get couldNotFindUserEmail => 'Could not find user email';
+
+  @override
+  String get codeSentSuccess => 'Code sent successfully';
+
+  @override
+  String get emailVerifiedSuccess => 'Email verified successfully';
 }

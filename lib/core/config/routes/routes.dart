@@ -435,9 +435,10 @@ class AppRouter {
         );
 
       case AppRouteConstant.verifyEmail:
+        final email = settings.arguments as String;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const VerifyEmailPage(),
+          builder: (_) => VerifyEmailPage(email: email),
         );
 
       case AppRouteConstant.verifyPhone:

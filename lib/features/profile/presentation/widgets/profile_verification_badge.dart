@@ -14,14 +14,20 @@ class ProfileVerificationBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isVerified) {
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8.w),
-        padding: EdgeInsets.all(4.w),
-        decoration: const BoxDecoration(
-          color: AppColors.primaryGreen,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(Icons.check, color: Colors.white, size: 12.sp),
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 8.w),
+            padding: EdgeInsets.all(4.w),
+            decoration: const BoxDecoration(
+              color: AppColors.primaryGreen,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.check, color: Colors.white, size: 16.sp),
+          ),
+        ],
       );
     }
 
@@ -47,9 +53,9 @@ class ProfileVerificationBadge extends StatelessWidget {
             ),
             child: Text(
               AppLocalizations.of(context)!.verify,
-              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                color: Colors.white,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.displayMedium?.copyWith(color: Colors.white),
             ),
           ),
         ],

@@ -8,6 +8,8 @@ import 'package:tour_guide_app/features/auth/domain/repository/auth_repository.d
 import 'package:tour_guide_app/features/auth/domain/usecases/is_logged_in.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/sign_in.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/sign_up.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/email_start.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/verify_email.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/usecases/send_chat_message.dart';
 import 'package:tour_guide_app/features/destination/data/data_source/destination_api_service.dart';
 import 'package:tour_guide_app/features/destination/data/repository/destination_repository_impl.dart';
@@ -59,6 +61,7 @@ import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/create_contract/create_contract_cubit.dart';
+import 'package:tour_guide_app/features/auth/presentation/bloc/verify_email/verify_email_cubit.dart';
 
 import 'package:tour_guide_app/features/my_vehicle/data/data_source/my_vehicle_api_service.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/repository/my_vehicle_repository_impl.dart';
@@ -104,6 +107,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<SignUpUseCase>(SignUpUseCase());
   sl.registerSingleton<IsLoggedInUseCase>(IsLoggedInUseCase());
   sl.registerSingleton<LogOutUseCase>(LogOutUseCase());
+  sl.registerSingleton<EmailStartUseCase>(EmailStartUseCase());
+  sl.registerSingleton<VerifyEmailUseCase>(VerifyEmailUseCase());
   sl.registerSingleton<GetDestinationByIdUseCase>(GetDestinationByIdUseCase());
   sl.registerSingleton<GetDestinationUseCase>(GetDestinationUseCase());
   sl.registerSingleton<GetFavoritesUseCase>(GetFavoritesUseCase());
@@ -176,4 +181,5 @@ void setUpServiceLocator(SharedPreferences prefs) {
       updateAvatarUseCase: sl(),
     ),
   );
+  sl.registerFactory<VerifyEmailCubit>(() => VerifyEmailCubit());
 }

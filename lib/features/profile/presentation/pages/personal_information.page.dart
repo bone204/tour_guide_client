@@ -228,12 +228,16 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
                 (_currentUser?.email != null && _currentUser!.email!.isNotEmpty)
                     ? ProfileVerificationBadge(
                       isVerified: _currentUser?.isEmailVerified ?? false,
-                      onTap: () {
+                      onTap: () async {
                         if (!(_currentUser?.isEmailVerified ?? false)) {
-                          Navigator.pushNamed(
+                          final result = await Navigator.pushNamed(
                             context,
                             AppRouteConstant.verifyEmail,
+                            arguments: _currentUser?.email,
                           );
+                          if (result == true && context.mounted) {
+                            context.read<GetMyProfileCubit>().getMyProfile();
+                          }
                         }
                       },
                     )

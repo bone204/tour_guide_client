@@ -1199,5 +1199,22 @@
   "foodTypeKorean": "Korean",
   "foodTypeJapanese": "Japanese",
   "foodTypeFastFood": "Fast Food",
-  "contractDurationPolicy": "The contract shall remain in effect until either party terminates the cooperation."
+  "contractDurationPolicy": "The contract shall remain in effect until either party terminates the cooperation.",
+  "verifyEmail": "Verify Email",
+  "enterCodeSentToEmail": "Enter the code sent to your email",
+  "codeExpiresIn": "Code expires in: {time}",
+  "@codeExpiresIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "sendCode": "Send Code",
+  "resendCode": "Resend Code",
+  "enterValid6DigitCode": "Please enter a valid 6-digit code",
+  "requestCodeFirst": "Please request a code first",
+  "couldNotFindUserEmail": "Could not find user email",
+  "codeSentSuccess": "Code sent successfully",
+  "emailVerifiedSuccess": "Email verified successfully"
 }

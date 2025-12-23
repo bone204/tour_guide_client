@@ -1900,4 +1900,36 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get contractDurationPolicy => 'Hợp đồng có hiệu lực cho đến khi một trong hai bên chấm dứt hợp tác.';
+
+  @override
+  String get verifyEmail => 'Xác thực Email';
+
+  @override
+  String get enterCodeSentToEmail => 'Nhập mã được gửi đến email của bạn';
+
+  @override
+  String codeExpiresIn(String time) {
+    return 'Mã hết hạn sau: $time';
+  }
+
+  @override
+  String get sendCode => 'Gửi mã';
+
+  @override
+  String get resendCode => 'Gửi lại mã';
+
+  @override
+  String get enterValid6DigitCode => 'Vui lòng nhập mã hợp lệ gồm 6 chữ số';
+
+  @override
+  String get requestCodeFirst => 'Vui lòng yêu cầu mã trước';
+
+  @override
+  String get couldNotFindUserEmail => 'Không tìm thấy email người dùng';
+
+  @override
+  String get codeSentSuccess => 'Gửi mã thành công';
+
+  @override
+  String get emailVerifiedSuccess => 'Xác thực email thành công';
 }

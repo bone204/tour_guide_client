@@ -1216,5 +1216,22 @@
   "foodTypeKorean": "Món Hàn",
   "foodTypeJapanese": "Món Nhật",
   "foodTypeFastFood": "Fast Food",
-  "contractDurationPolicy": "Hợp đồng có hiệu lực cho đến khi một trong hai bên chấm dứt hợp tác."
+  "contractDurationPolicy": "Hợp đồng có hiệu lực cho đến khi một trong hai bên chấm dứt hợp tác.",
+  "verifyEmail": "Xác thực Email",
+  "enterCodeSentToEmail": "Nhập mã được gửi đến email của bạn",
+  "codeExpiresIn": "Mã hết hạn sau: {time}",
+  "@codeExpiresIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "sendCode": "Gửi mã",
+  "resendCode": "Gửi lại mã",
+  "enterValid6DigitCode": "Vui lòng nhập mã hợp lệ gồm 6 chữ số",
+  "requestCodeFirst": "Vui lòng yêu cầu mã trước",
+  "couldNotFindUserEmail": "Không tìm thấy email người dùng",
+  "codeSentSuccess": "Gửi mã thành công",
+  "emailVerifiedSuccess": "Xác thực email thành công"
 }
