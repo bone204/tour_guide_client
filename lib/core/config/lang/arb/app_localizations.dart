@@ -3659,6 +3659,12 @@ abstract class AppLocalizations {
   /// **'people'**
   String get people;
 
+  /// No description provided for @noVehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'No Vehicles'**
+  String get noVehicles;
+
   /// No description provided for @foodTypeAll.
   ///
   /// In en, this message translates to:

@@ -1863,6 +1863,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get people => 'people';
 
   @override
+  String get noVehicles => 'No Vehicles';
+
+  @override
   String get foodTypeAll => 'All';
 
   @override

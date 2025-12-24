@@ -12,9 +12,9 @@ import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/step_indicator.widget.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/steps/create_contract_steps/citizen_info_step.page.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/steps/create_contract_steps/business_info_step.page.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/steps/create_contract_steps/banking_info_step.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/steps/citizen_info_step.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/steps/business_info_step.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/steps/banking_info_step.page.dart';
 
 class CreateContractPage extends StatefulWidget {
   const CreateContractPage({super.key});

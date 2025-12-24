@@ -1869,6 +1869,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get people => 'người';
 
   @override
+  String get noVehicles => 'Chưa có xe';
+
+  @override
   String get foodTypeAll => 'Tất cả';
 
   @override
