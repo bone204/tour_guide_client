@@ -95,6 +95,12 @@ abstract class AppLocalizations {
     Locale('vi')
   ];
 
+  /// No description provided for @youHaveNotVerifiedIdentity.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not verified your identity'**
+  String get youHaveNotVerifiedIdentity;
+
   /// No description provided for @deleteStopSuccess.
   ///
   /// In en, this message translates to:

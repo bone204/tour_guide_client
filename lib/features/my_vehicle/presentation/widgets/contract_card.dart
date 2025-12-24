@@ -48,6 +48,7 @@ class ContractCard extends StatelessWidget {
         color: Colors.transparent,
         child: GestureDetector(
           onTap: onTap,
+          behavior: HitTestBehavior.opaque,
           child: Padding(
             padding: EdgeInsets.all(16.w),
             child: Column(

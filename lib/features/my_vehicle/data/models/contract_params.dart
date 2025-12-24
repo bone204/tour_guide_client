@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 class ContractParams {
   final String fullName;
   final String email;
@@ -63,5 +65,43 @@ class ContractParams {
       'bankAccountName': bankAccountName,
       'termsAccepted': termsAccepted,
     };
+  }
+
+  Future<FormData> toFormData() async {
+    final map = toJson();
+    // Convert boolean to string if needed, or keep as is. FormData handles basic types.
+    // map['termsAccepted'] = termsAccepted.toString();
+
+    // Handle files
+    // If photos are paths (Strings) and not empty, convert to MultipartFile
+    if (businessRegisterPhoto is String &&
+        (businessRegisterPhoto as String).isNotEmpty &&
+        !(businessRegisterPhoto as String).startsWith('http')) {
+      map['businessRegisterPhoto'] = await MultipartFile.fromFile(
+        businessRegisterPhoto,
+      );
+    } else {
+      map.remove('businessRegisterPhoto');
+    }
+
+    if (citizenFrontPhoto is String &&
+        (citizenFrontPhoto as String).isNotEmpty &&
+        !(citizenFrontPhoto as String).startsWith('http')) {
+      map['citizenFrontPhoto'] = await MultipartFile.fromFile(
+        citizenFrontPhoto,
+      );
+    } else {
+      map.remove('citizenFrontPhoto');
+    }
+
+    if (citizenBackPhoto is String &&
+        (citizenBackPhoto as String).isNotEmpty &&
+        !(citizenBackPhoto as String).startsWith('http')) {
+      map['citizenBackPhoto'] = await MultipartFile.fromFile(citizenBackPhoto);
+    } else {
+      map.remove('citizenBackPhoto');
+    }
+
+    return FormData.fromMap(map);
   }
 }

@@ -1,4 +1,5 @@
 {
+  "youHaveNotVerifiedIdentity": "You have not verified your identity",
   "deleteStopSuccess": "Delete stop successfully",
   "deleteStopConfirmTitle": "Delete Stop",
   "deleteStopConfirmMessage": "Are you sure you want to delete this stop?",

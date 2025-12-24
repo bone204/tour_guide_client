@@ -9,6 +9,9 @@ class AppLocalizationsVi extends AppLocalizations {
   AppLocalizationsVi([String locale = 'vi']) : super(locale);
 
   @override
+  String get youHaveNotVerifiedIdentity => 'Bạn chưa xác thực danh tính';
+
+  @override
   String get deleteStopSuccess => 'Đã xóa điểm dừng';
 
   @override

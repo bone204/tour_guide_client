@@ -9,6 +9,9 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get youHaveNotVerifiedIdentity => 'You have not verified your identity';
+
+  @override
   String get deleteStopSuccess => 'Delete stop successfully';
 
   @override

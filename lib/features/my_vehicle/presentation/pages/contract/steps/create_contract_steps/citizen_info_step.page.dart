@@ -58,6 +58,29 @@ class _CitizenInfoStepState extends State<CitizenInfoStep> {
   }
 
   @override
+  void didUpdateWidget(covariant CitizenInfoStep oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.fullName != oldWidget.fullName) {
+      _fullNameController.text = widget.fullName;
+    }
+    if (widget.email != oldWidget.email) {
+      _emailController.text = widget.email;
+    }
+    if (widget.phone != oldWidget.phone) {
+      _phoneController.text = widget.phone;
+    }
+    if (widget.citizenNumber != oldWidget.citizenNumber) {
+      _citizenNumberController.text = widget.citizenNumber;
+    }
+    if (widget.citizenFrontPhoto != oldWidget.citizenFrontPhoto) {
+      _citizenFrontPhotoPath = widget.citizenFrontPhoto;
+    }
+    if (widget.citizenBackPhoto != oldWidget.citizenBackPhoto) {
+      _citizenBackPhotoPath = widget.citizenBackPhoto;
+    }
+  }
+
+  @override
   void dispose() {
     _fullNameController.dispose();
     _emailController.dispose();

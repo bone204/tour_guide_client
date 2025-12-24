@@ -4,9 +4,13 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
 import 'package:tour_guide_app/common/widgets/loading/dialog_loading.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/create_contract/create_contract_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/create_contract/create_contract_state.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_state.dart';
+import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/step_indicator.widget.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/steps/create_contract_steps/citizen_info_step.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/steps/create_contract_steps/business_info_step.page.dart';
@@ -17,6 +21,16 @@ class CreateContractPage extends StatefulWidget {
 
   @override
   State<CreateContractPage> createState() => _CreateContractPageState();
+
+  static Widget provider() {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => sl<CreateContractCubit>()),
+        BlocProvider(create: (_) => sl<GetMyProfileCubit>()),
+      ],
+      child: const CreateContractPage(),
+    );
+  }
 }
 
 class _CreateContractPageState extends State<CreateContractPage> {
@@ -53,6 +67,12 @@ class _CreateContractPageState extends State<CreateContractPage> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    context.read<GetMyProfileCubit>().getMyProfile();
+  }
+
   void _previousStep() {
     if (_currentStep > 0) {
       setState(() {
@@ -69,6 +89,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
           LoadingDialog.show(context);
         } else if (state is CreateContractSuccess) {
           if (mounted) {
+            eventBus.fire(ContractRegisteredEvent());
             Navigator.of(context).pop(); // Close loading dialog
             _showSuccessDialog();
           }
@@ -79,37 +100,58 @@ class _CreateContractPageState extends State<CreateContractPage> {
           }
         }
       },
-      child: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
+      child: BlocListener<GetMyProfileCubit, GetMyProfileState>(
+        listener: (context, state) {
+          if (state is GetMyProfileSuccess) {
+            setState(() {
+              _fullName = state.user.fullName ?? '';
+              _email = state.user.email ?? '';
+              _phone = state.user.phone ?? '';
+              _citizenNumber = state.user.citizenId ?? '';
+            });
+            if (state.user.citizenId == null || state.user.citizenId!.isEmpty) {
+              _showErrorDialog(
+                AppLocalizations.of(context)!.youHaveNotVerifiedIdentity,
+              );
+            }
+          } else if (state is GetMyProfileFailure) {
+            _showErrorDialog(
+              AppLocalizations.of(context)!.youHaveNotVerifiedIdentity,
+            );
+          }
         },
-        child: Scaffold(
-          backgroundColor: AppColors.backgroundColor,
-          appBar: CustomAppBar(
-            title: AppLocalizations.of(context)!.contractInfo,
-            showBackButton: true,
-            onBackPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-          ),
-          body: Column(
-            children: [
-              // Step Indicator
-              Container(
-                color: AppColors.primaryWhite,
-                child: StepIndicator(
-                  currentStep: _currentStep,
-                  totalSteps: 3,
-                  stepTitles: [
-                    AppLocalizations.of(context)!.identityInformation,
-                    AppLocalizations.of(context)!.taxInformation,
-                    AppLocalizations.of(context)!.bankingInformation,
-                  ],
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Scaffold(
+            backgroundColor: AppColors.backgroundColor,
+            appBar: CustomAppBar(
+              title: AppLocalizations.of(context)!.contractInfo,
+              showBackButton: true,
+              onBackPressed: () {
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+            ),
+            body: Column(
+              children: [
+                // Step Indicator
+                Container(
+                  color: AppColors.primaryWhite,
+                  child: StepIndicator(
+                    currentStep: _currentStep,
+                    totalSteps: 3,
+                    stepTitles: [
+                      AppLocalizations.of(context)!.identityInformation,
+                      AppLocalizations.of(context)!.taxInformation,
+                      AppLocalizations.of(context)!.bankingInformation,
+                    ],
+                  ),
                 ),
-              ),
-              // Step Content
-              Expanded(child: _buildStepContent()),
-            ],
+                // Step Content
+                Expanded(child: _buildStepContent()),
+              ],
+            ),
           ),
         ),
       ),

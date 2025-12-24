@@ -66,7 +66,7 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
                             File(widget.imagePath!),
                             width: double.infinity,
                             height: double.infinity,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                           ),
                         ),
                         Positioned(

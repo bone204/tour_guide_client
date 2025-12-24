@@ -31,7 +31,7 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
     try {
       final response = await sl<DioClient>().post(
         ApiUrls.rentalContracts,
-        data: params.toJson(),
+        data: await params.toFormData(),
       );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);
