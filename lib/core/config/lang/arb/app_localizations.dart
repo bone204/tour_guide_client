@@ -3784,6 +3784,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email verified successfully'**
   String get emailVerifiedSuccess;
+
+  /// No description provided for @verifyPhoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Phone Number'**
+  String get verifyPhoneTitle;
+
+  /// No description provided for @verifyPhoneDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'We have sent a verification code to {phone}'**
+  String verifyPhoneDescription(String phone);
+
+  /// No description provided for @enterOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter OTP Code'**
+  String get enterOtp;
+
+  /// No description provided for @phoneVerificationSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone verification successful'**
+  String get phoneVerificationSuccess;
+
+  /// No description provided for @invalidOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid OTP code'**
+  String get invalidOtp;
+
+  /// No description provided for @sendingCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending verification code...'**
+  String get sendingCode;
+
+  /// No description provided for @verifying.
+  ///
+  /// In en, this message translates to:
+  /// **'Verifying...'**
+  String get verifying;
+
+  /// No description provided for @recaptchaRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please complete the CAPTCHA verification'**
+  String get recaptchaRequired;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -64,6 +64,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contrac
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/create_contract/create_contract_cubit.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_email/verify_email_cubit.dart';
+import 'package:tour_guide_app/features/auth/presentation/bloc/verify_phone/verify_phone_cubit.dart';
 
 import 'package:tour_guide_app/features/my_vehicle/data/data_source/my_vehicle_api_service.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/repository/my_vehicle_repository_impl.dart';
@@ -186,4 +187,5 @@ void setUpServiceLocator(SharedPreferences prefs) {
     ),
   );
   sl.registerFactory<VerifyEmailCubit>(() => VerifyEmailCubit());
+  sl.registerFactory<VerifyPhoneCubit>(() => VerifyPhoneCubit());
 }

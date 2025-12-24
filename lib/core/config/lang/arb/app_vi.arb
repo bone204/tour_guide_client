@@ -1233,5 +1233,20 @@
   "requestCodeFirst": "Vui lòng yêu cầu mã trước",
   "couldNotFindUserEmail": "Không tìm thấy email người dùng",
   "codeSentSuccess": "Gửi mã thành công",
-  "emailVerifiedSuccess": "Xác thực email thành công"
+  "emailVerifiedSuccess": "Xác thực email thành công",
+  "verifyPhoneTitle": "Xác thực số điện thoại",
+  "verifyPhoneDescription": "Chúng tôi đã gửi mã xác thực đến {phone}",
+  "@verifyPhoneDescription": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "enterOtp": "Nhập mã OTP",
+  "phoneVerificationSuccess": "Xác thực số điện thoại thành công",
+  "invalidOtp": "Mã OTP không hợp lệ",
+  "sendingCode": "Đang gửi mã xác thực...",
+  "verifying": "Đang xác thực...",
+  "recaptchaRequired": "Vui lòng hoàn thành xác thực CAPTCHA"
 }

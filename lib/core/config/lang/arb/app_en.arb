@@ -1216,5 +1216,20 @@
   "requestCodeFirst": "Please request a code first",
   "couldNotFindUserEmail": "Could not find user email",
   "codeSentSuccess": "Code sent successfully",
-  "emailVerifiedSuccess": "Email verified successfully"
+  "emailVerifiedSuccess": "Email verified successfully",
+  "verifyPhoneTitle": "Verify Phone Number",
+  "verifyPhoneDescription": "We have sent a verification code to {phone}",
+  "@verifyPhoneDescription": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "enterOtp": "Enter OTP Code",
+  "phoneVerificationSuccess": "Phone verification successful",
+  "invalidOtp": "Invalid OTP code",
+  "sendingCode": "Sending verification code...",
+  "verifying": "Verifying...",
+  "recaptchaRequired": "Please complete the CAPTCHA verification"
 }

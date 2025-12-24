@@ -1932,4 +1932,30 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get emailVerifiedSuccess => 'Xác thực email thành công';
+
+  @override
+  String get verifyPhoneTitle => 'Xác thực số điện thoại';
+
+  @override
+  String verifyPhoneDescription(String phone) {
+    return 'Chúng tôi đã gửi mã xác thực đến $phone';
+  }
+
+  @override
+  String get enterOtp => 'Nhập mã OTP';
+
+  @override
+  String get phoneVerificationSuccess => 'Xác thực số điện thoại thành công';
+
+  @override
+  String get invalidOtp => 'Mã OTP không hợp lệ';
+
+  @override
+  String get sendingCode => 'Đang gửi mã xác thực...';
+
+  @override
+  String get verifying => 'Đang xác thực...';
+
+  @override
+  String get recaptchaRequired => 'Vui lòng hoàn thành xác thực CAPTCHA';
 }

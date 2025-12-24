@@ -1926,4 +1926,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emailVerifiedSuccess => 'Email verified successfully';
+
+  @override
+  String get verifyPhoneTitle => 'Verify Phone Number';
+
+  @override
+  String verifyPhoneDescription(String phone) {
+    return 'We have sent a verification code to $phone';
+  }
+
+  @override
+  String get enterOtp => 'Enter OTP Code';
+
+  @override
+  String get phoneVerificationSuccess => 'Phone verification successful';
+
+  @override
+  String get invalidOtp => 'Invalid OTP code';
+
+  @override
+  String get sendingCode => 'Sending verification code...';
+
+  @override
+  String get verifying => 'Verifying...';
+
+  @override
+  String get recaptchaRequired => 'Please complete the CAPTCHA verification';
 }

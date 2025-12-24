@@ -442,9 +442,10 @@ class AppRouter {
         );
 
       case AppRouteConstant.verifyPhone:
+        final phoneNumber = settings.arguments as String;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const VerifyPhonePage(),
+          builder: (_) => VerifyPhonePage(phoneNumber: phoneNumber),
         );
 
       case AppRouteConstant.verifyCitizenId:
