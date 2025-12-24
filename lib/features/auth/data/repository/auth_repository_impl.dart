@@ -5,6 +5,8 @@ import 'package:tour_guide_app/features/auth/data/data_sources/local/auth_local_
 import 'package:tour_guide_app/features/auth/data/data_sources/remote/auth_api_service.dart';
 import 'package:tour_guide_app/features/auth/data/models/email_verification.dart';
 import 'package:tour_guide_app/features/auth/data/models/email_verification_response.dart';
+import 'package:tour_guide_app/features/auth/data/models/phone_verification.dart';
+import 'package:tour_guide_app/features/auth/data/models/phone_verification_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/signin_params.dart';
 import 'package:tour_guide_app/features/auth/data/models/signin_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/signup_params.dart';
@@ -46,5 +48,15 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<Either<Failure, SuccessResponse>> emailVerify(EmailVerification emailVerification) async {
     return await _apiService.emailVerify(emailVerification);
+  }
+
+  @override
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(String recapchaToken) async {
+    return await _apiService.phoneStart(recapchaToken);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> phoneVerify(PhoneVerification phoneVerification) async {
+    return await _apiService.phoneVerify(phoneVerification);
   }
 }

@@ -6,10 +6,12 @@ import 'package:tour_guide_app/features/auth/data/data_sources/remote/auth_api_s
 import 'package:tour_guide_app/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:tour_guide_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/is_logged_in.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/phone_start.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/sign_in.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/sign_up.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/email_start.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/verify_email.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/verify_phone.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/usecases/send_chat_message.dart';
 import 'package:tour_guide_app/features/destination/data/data_source/destination_api_service.dart';
 import 'package:tour_guide_app/features/destination/data/repository/destination_repository_impl.dart';
@@ -141,6 +143,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
     UpdateVerificationInfoUseCase(),
   );
   sl.registerSingleton<UpdateAvatarUseCase>(UpdateAvatarUseCase());
+  sl.registerSingleton<PhoneStartUseCase>(PhoneStartUseCase());
+  sl.registerSingleton<VerifyPhoneUseCase>(VerifyPhoneUseCase());
 
   // My Vehicle
   sl.registerSingleton<AddContractUseCase>(AddContractUseCase());

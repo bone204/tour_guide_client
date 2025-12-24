@@ -7,6 +7,8 @@ class ApiUrls {
   static const refreshToken = "$baseURL/auth/refresh";
   static const emailStart = "$baseURL/auth/email/start";
   static const emailVerify = "$baseURL/auth/email/verify";
+  static const phoneStart = "$baseURL/auth/phone/start";
+  static const phoneVerify = "$baseURL/auth/phone/verify";
 
   //Users URLs
   static const users = "$baseURL/users";

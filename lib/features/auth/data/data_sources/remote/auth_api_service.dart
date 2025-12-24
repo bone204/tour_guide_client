@@ -5,6 +5,8 @@ import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/email_verification.dart';
+import 'package:tour_guide_app/features/auth/data/models/phone_verification.dart';
+import 'package:tour_guide_app/features/auth/data/models/phone_verification_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/signin_params.dart';
 import 'package:tour_guide_app/features/auth/data/models/signin_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/signup_params.dart';
@@ -17,6 +19,8 @@ abstract class AuthApiService {
   Future<Either<Failure, SignInResponse>> signIn(SignInParams signinParams);
   Future<Either<Failure, EmailVerificationResponse>> emailStart();
   Future<Either<Failure, SuccessResponse>> emailVerify(EmailVerification emailVerification);
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(String recapchaToken);
+  Future<Either<Failure, SuccessResponse>> phoneVerify(PhoneVerification phoneVerification);
 }
 
 class AuthApiServiceImpl extends AuthApiService {
@@ -93,6 +97,48 @@ class AuthApiServiceImpl extends AuthApiService {
       final response = await sl<DioClient>().post(
         ApiUrls.emailVerify,
         data: emailVerification.toMap(),
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(String recapchaToken) async {
+    try {
+      final response = await sl<DioClient>().post(
+        ApiUrls.phoneStart,
+        data: {'recapchaToken': recapchaToken},
+      );
+      final phoneVerificationResponse = PhoneVerificationResponse.fromJson(response.data);
+      return Right(phoneVerificationResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> phoneVerify(PhoneVerification phoneVerification) async {
+    try {
+      final response = await sl<DioClient>().post(
+        ApiUrls.phoneVerify,
+        data: phoneVerification.toMap(),
       );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);
