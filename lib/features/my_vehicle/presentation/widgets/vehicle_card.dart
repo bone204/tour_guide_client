@@ -91,7 +91,7 @@ class VehicleCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              vehicle.licensePlate, // Use license plate as title
+              AppLocalizations.of(context)!.vehicleTitle(vehicle.licensePlate),
               style: theme.textTheme.titleMedium?.copyWith(
                 color: AppColors.primaryBlue,
               ),

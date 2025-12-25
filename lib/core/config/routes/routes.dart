@@ -59,6 +59,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicl
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/contract_detail.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/create_contract.page.dart';
 import 'package:tour_guide_app/features/profile/presentation/pages/personal_information.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/vehicle_detail.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -434,6 +435,13 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ContractDetailPage(contractId: contractId),
+        );
+
+      case AppRouteConstant.vehicleDetail:
+        final licensePlate = settings.arguments as String;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => VehicleDetailPage(licensePlate: licensePlate),
         );
 
       case AppRouteConstant.verifyEmail:

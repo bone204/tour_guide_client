@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/add_vehicle_request.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_catalog.dart';
@@ -148,7 +149,11 @@ class AddVehicleCubit extends Cubit<AddVehicleState> {
           errorMessage: failure.message,
         ),
       ),
-      (_) => emit(state.copyWith(status: AddVehicleStatus.success)),
+      (_) {
+        // Fire event to notify vehicle list update
+        eventBus.fire(VehicleAddedEvent());
+        emit(state.copyWith(status: AddVehicleStatus.success));
+      },
     );
   }
 }

@@ -1155,6 +1155,9 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get vehicleDetail => 'Vehicle Detail';
+
+  @override
   String get flagUS => '🇺🇸';
 
   @override

@@ -2351,6 +2351,12 @@ abstract class AppLocalizations {
   /// **'Vehicle #{licensePlate}'**
   String vehicleTitle(String licensePlate);
 
+  /// No description provided for @vehicleDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Detail'**
+  String get vehicleDetail;
+
   /// No description provided for @flagUS.
   ///
   /// In en, this message translates to:

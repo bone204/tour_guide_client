@@ -61,6 +61,7 @@ import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/delete_stop/delete_stop_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_stop_media.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/create_contract/create_contract_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_my_vehicles/get_my_vehicles_cubit.dart';
@@ -171,6 +172,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory(
     () => ContractDetailCubit(getMyContractDetailUseCase: sl()),
   );
+  sl.registerFactory(() => VehicleDetailCubit(getVehicleDetailUseCase: sl()));
   sl.registerFactory(
     () => AddVehicleCubit(
       addVehicleUseCase: sl(),

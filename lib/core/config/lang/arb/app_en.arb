@@ -794,6 +794,7 @@
       }
     }
   },
+  "vehicleDetail": "Vehicle Detail",
   "flagUS": "🇺🇸",
   "flagVN": "🇻🇳",
   "searchResultsCount": "Found {count} results",

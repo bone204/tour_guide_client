@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_my_vehicles/get_my_vehicles_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_my_vehicles/get_my_vehicles_state.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/contract_shimmer.dart';
@@ -21,8 +23,31 @@ class VehiclePage extends StatelessWidget {
   }
 }
 
-class _VehicleView extends StatelessWidget {
+class _VehicleView extends StatefulWidget {
   const _VehicleView();
+
+  @override
+  State<_VehicleView> createState() => _VehicleViewState();
+}
+
+class _VehicleViewState extends State<_VehicleView> {
+  late StreamSubscription _subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _subscription = eventBus.on<VehicleAddedEvent>().listen((event) {
+      if (mounted) {
+        context.read<GetMyVehiclesCubit>().getMyVehicles();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +92,7 @@ class _VehicleView extends StatelessWidget {
                           ),
                           SizedBox(height: 16.h),
                           Text(
-                            AppLocalizations.of(
-                              context,
-                            )!.noVehicles, 
+                            AppLocalizations.of(context)!.noVehicles,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           SizedBox(height: 24.h),
@@ -122,7 +145,10 @@ class _VehicleView extends StatelessWidget {
                 return VehicleCard(
                   vehicle: vehicle,
                   onTap: () {
-                    // Navigate to detail if needed
+                    Navigator.of(context, rootNavigator: true).pushNamed(
+                      AppRouteConstant.vehicleDetail,
+                      arguments: vehicle.licensePlate,
+                    );
                   },
                 );
               },
