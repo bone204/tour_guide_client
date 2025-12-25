@@ -81,6 +81,8 @@ import 'package:tour_guide_app/features/profile/domain/usecases/update_initial_p
 import 'package:tour_guide_app/features/profile/domain/usecases/update_verification_info.dart';
 import 'package:tour_guide_app/features/profile/domain/usecases/update_avatar.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/edit_profile/edit_profile_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_catalogs.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -158,6 +160,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<AddVehicleUseCase>(AddVehicleUseCase());
   sl.registerSingleton<GetMyVehiclesUseCase>(GetMyVehiclesUseCase());
   sl.registerSingleton<GetVehicleDetailUseCase>(GetVehicleDetailUseCase());
+  sl.registerSingleton<GetVehicleCatalogsUseCase>(
+    GetVehicleCatalogsUseCase(sl()),
+  );
 
   // Cubits
   sl.registerFactory<DeleteStopCubit>(() => DeleteStopCubit(sl()));
@@ -165,6 +170,13 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory(() => GetMyVehiclesCubit(sl()));
   sl.registerFactory(
     () => ContractDetailCubit(getMyContractDetailUseCase: sl()),
+  );
+  sl.registerFactory(
+    () => AddVehicleCubit(
+      addVehicleUseCase: sl(),
+      getMyContractsUseCase: sl(),
+      getVehicleCatalogsUseCase: sl(),
+    ),
   );
   sl.registerFactory<GetDestinationCubit>(() => GetDestinationCubit());
   sl.registerFactory<CreateItineraryCubit>(

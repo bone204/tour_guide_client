@@ -1166,6 +1166,30 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get actionSuccess => 'Action successful';
+
+  @override
+  String get continueText => 'Continue';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get hour => 'hour';
+
+  @override
+  String get totalPrice => 'Total Price';
+
+  @override
+  String get contract => 'Contract';
+
+  @override
+  String get document => 'Document';
+
+  @override
+  String get register => 'Register';
+
+  @override
   String get profileUpdatedSuccessfully => 'Profile updated successfully';
 
   @override

@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 class AddVehicleRequest {
   final String licensePlate;
   final int contractId;
@@ -48,17 +50,64 @@ class AddVehicleRequest {
       'vehicleCatalogId': vehicleCatalogId,
       'pricePerHour': pricePerHour,
       'pricePerDay': pricePerDay,
-      if (priceFor4Hours != null) 'priceFor4Hours': priceFor4Hours,
-      if (priceFor8Hours != null) 'priceFor8Hours': priceFor8Hours,
-      if (priceFor12Hours != null) 'priceFor12Hours': priceFor12Hours,
-      if (priceFor2Days != null) 'priceFor2Days': priceFor2Days,
-      if (priceFor3Days != null) 'priceFor3Days': priceFor3Days,
-      if (priceFor5Days != null) 'priceFor5Days': priceFor5Days,
-      if (priceFor7Days != null) 'priceFor7Days': priceFor7Days,
-      if (requirements != null) 'requirements': requirements,
-      if (description != null) 'description': description,
+      'priceFor4Hours':
+          priceFor4Hours, // Send even if null, backend handles or omit if preferred
+      'priceFor8Hours': priceFor8Hours,
+      'priceFor12Hours': priceFor12Hours,
+      'priceFor2Days': priceFor2Days,
+      'priceFor3Days': priceFor3Days,
+      'priceFor5Days': priceFor5Days,
+      'priceFor7Days': priceFor7Days,
+      'requirements': requirements,
+      'description': description,
       'vehicleRegistrationFront': vehicleRegistrationFront,
       'vehicleRegistrationBack': vehicleRegistrationBack,
     };
+  }
+
+  Future<FormData> toFormData() async {
+    final Map<String, dynamic> map = {
+      'licensePlate': licensePlate,
+      'contractId': contractId,
+      'vehicleCatalogId': vehicleCatalogId,
+      'pricePerHour': pricePerHour,
+      'pricePerDay': pricePerDay,
+    };
+
+    if (priceFor4Hours != null) map['priceFor4Hours'] = priceFor4Hours;
+    if (priceFor8Hours != null) map['priceFor8Hours'] = priceFor8Hours;
+    if (priceFor12Hours != null) map['priceFor12Hours'] = priceFor12Hours;
+    if (priceFor2Days != null) map['priceFor2Days'] = priceFor2Days;
+    if (priceFor3Days != null) map['priceFor3Days'] = priceFor3Days;
+    if (priceFor5Days != null) map['priceFor5Days'] = priceFor5Days;
+    if (priceFor7Days != null) map['priceFor7Days'] = priceFor7Days;
+    if (requirements != null) map['requirements'] = requirements;
+    if (description != null) map['description'] = description;
+
+    final formData = FormData.fromMap(map);
+
+    if (vehicleRegistrationFront != null &&
+        vehicleRegistrationFront is String &&
+        !vehicleRegistrationFront.toString().startsWith('http')) {
+      formData.files.add(
+        MapEntry(
+          'vehicleRegistrationFront',
+          await MultipartFile.fromFile(vehicleRegistrationFront),
+        ),
+      );
+    }
+
+    if (vehicleRegistrationBack != null &&
+        vehicleRegistrationBack is String &&
+        !vehicleRegistrationBack.toString().startsWith('http')) {
+      formData.files.add(
+        MapEntry(
+          'vehicleRegistrationBack',
+          await MultipartFile.fromFile(vehicleRegistrationBack),
+        ),
+      );
+    }
+
+    return formData;
   }
 }

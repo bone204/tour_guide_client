@@ -14,6 +14,8 @@ class CustomTextField extends StatelessWidget {
   final void Function(String)? onChanged;
   final int? maxLines;
   final List<TextInputFormatter>? inputFormatters;
+  final bool enabled;
+  final bool readOnly;
 
   const CustomTextField({
     super.key,
@@ -29,6 +31,8 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.maxLines,
     this.inputFormatters,
+    this.enabled = true,
+    this.readOnly = false,
   });
 
   @override
@@ -59,10 +63,7 @@ class CustomTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null) ...[
-          Text(
-            label!,
-            style: Theme.of(context).textTheme.displayLarge,
-          ),
+          Text(label!, style: Theme.of(context).textTheme.displayLarge),
           SizedBox(height: 6.h),
         ],
         TextFormField(
@@ -72,16 +73,26 @@ class CustomTextField extends StatelessWidget {
           onChanged: onChanged,
           validator: validator,
           inputFormatters: inputFormatters,
+          enabled: enabled,
+          readOnly: readOnly,
           style: Theme.of(context).textTheme.bodyMedium,
           maxLines: maxLines ?? 1,
           decoration: InputDecoration(
             hintText: placeholder,
-            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
+            hintStyle: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
             filled: true,
             fillColor: AppColors.primaryWhite,
-            contentPadding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 12.w),
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 10.h,
+              horizontal: 12.w,
+            ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.secondaryGrey, width: 1.w),
+              borderSide: BorderSide(
+                color: AppColors.secondaryGrey,
+                width: 1.w,
+              ),
               borderRadius: BorderRadius.circular(8.r),
             ),
             focusedBorder: OutlineInputBorder(
@@ -96,6 +107,13 @@ class CustomTextField extends StatelessWidget {
               borderSide: BorderSide(color: AppColors.primaryRed, width: 2.w),
               borderRadius: BorderRadius.circular(8.r),
             ),
+            disabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.secondaryGrey,
+                width: 1.w,
+              ),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
             suffixIcon: suffixIcon,
             prefixIcon: styledPrefixIcon,
             errorMaxLines: 2,
@@ -106,4 +124,3 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
-

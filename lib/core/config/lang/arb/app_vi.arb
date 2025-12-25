@@ -663,7 +663,6 @@
   "delivery": "Giao hàng nhanh",
   "contractOwnerInfo": "Thông tin chủ hợp đồng",
   "contractInfo": "Thông tin hợp đồng",
-  "personalInfo": "Thông tin cá nhân",
   "companyInfo": "Thông tin công ty",
   "bankingInfo": "Thông tin ngân hàng",
   "documents": "Tài liệu đính kèm",
@@ -672,7 +671,6 @@
   "notes": "Ghi chú",
   "createdDate": "Ngày tạo",
   "updatedDate": "Ngày cập nhật",
-  "businessRegisterPhoto": "Ảnh ĐKKD",
   "citizenFrontPhoto": "Mặt trước CCCD",
   "citizenBackPhoto": "Mặt sau CCCD",
   "registeredVehicles": "Xe đã đăng ký",
@@ -797,7 +795,14 @@
       }
     }
   },
-  "vehicleTitle": "Xe #{licensePlate}",
+  "actionSuccess": "Thao tác thành công",
+  "continueText": "Tiếp tục",
+  "price": "Giá",
+  "hour": "giờ",
+  "totalPrice": "Tổng giá",
+  "contract": "Hợp đồng",
+  "document": "Giấy tờ",
+  "register": "Đăng ký",
   "@vehicleTitle": {
     "placeholders": {
       "licensePlate": {

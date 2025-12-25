@@ -6,6 +6,7 @@ import 'package:tour_guide_app/features/my_vehicle/data/models/contract.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/add_vehicle_request.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_catalog.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/repository/my_vehicle_repository.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -48,5 +49,10 @@ class MyVehicleRepositoryImpl extends MyVehicleRepository {
     String licensePlate,
   ) async {
     return _apiService.getVehicleDetail(licensePlate);
+  }
+
+  @override
+  Future<Either<Failure, List<VehicleCatalog>>> getVehicleCatalogs() async {
+    return _apiService.getVehicleCatalogs();
   }
 }

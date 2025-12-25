@@ -8,6 +8,7 @@ import 'package:tour_guide_app/features/my_vehicle/data/models/add_vehicle_reque
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_catalog.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class MyVehicleApiService {
@@ -19,8 +20,10 @@ abstract class MyVehicleApiService {
   Future<Either<Failure, SuccessResponse>> addVehicle(
     AddVehicleRequest request,
   );
+
   Future<Either<Failure, RentalVehicleResponse>> getMyVehicles(String? status);
   Future<Either<Failure, RentalVehicle>> getVehicleDetail(String licensePlate);
+  Future<Either<Failure, List<VehicleCatalog>>> getVehicleCatalogs();
 }
 
 class MyVehicleApiServiceImpl extends MyVehicleApiService {
@@ -95,10 +98,32 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
     try {
       final response = await sl<DioClient>().post(
         ApiUrls.rentalVehicles,
-        data: request.toJson(),
+        data: await request.toFormData(),
       );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<VehicleCatalog>>> getVehicleCatalogs() async {
+    try {
+      final response = await sl<DioClient>().get(
+        ApiUrls.vehicleCatalogs,
+      );
+      final List<dynamic> data = response.data;
+      final catalogs =
+          data.map((json) => VehicleCatalog.fromJson(json)).toList();
+      return Right(catalogs);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

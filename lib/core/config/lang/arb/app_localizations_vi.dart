@@ -525,7 +525,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get addVehicle => 'Thêm xe';
 
   @override
-  String get businessRegisterPhoto => 'Ảnh ĐKKD';
+  String get businessRegisterPhoto => 'Ảnh đăng ký kinh doanh';
 
   @override
   String get identificationPhoto => 'Ảnh giấy tờ tùy thân';
@@ -1151,7 +1151,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String vehicleTitle(String licensePlate) {
-    return 'Xe #$licensePlate';
+    return 'Vehicle #$licensePlate';
   }
 
   @override
@@ -1170,6 +1170,30 @@ class AppLocalizationsVi extends AppLocalizations {
 
     return 'Tìm thấy $countString kết quả';
   }
+
+  @override
+  String get actionSuccess => 'Thao tác thành công';
+
+  @override
+  String get continueText => 'Tiếp tục';
+
+  @override
+  String get price => 'Giá';
+
+  @override
+  String get hour => 'giờ';
+
+  @override
+  String get totalPrice => 'Tổng giá';
+
+  @override
+  String get contract => 'Hợp đồng';
+
+  @override
+  String get document => 'Giấy tờ';
+
+  @override
+  String get register => 'Đăng ký';
 
   @override
   String get profileUpdatedSuccessfully => 'Cập nhật hồ sơ thành công';

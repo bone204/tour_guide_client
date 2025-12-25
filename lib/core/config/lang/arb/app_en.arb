@@ -804,6 +804,14 @@
       }
     }
   },
+  "actionSuccess": "Action successful",
+  "continueText": "Continue",
+  "price": "Price",
+  "hour": "hour",
+  "totalPrice": "Total Price",
+  "contract": "Contract",
+  "document": "Document",
+  "register": "Register",
   "profileUpdatedSuccessfully": "Profile updated successfully",
   "unsavedChangesMessage": "You have unsaved changes. Discard them?",
   "update": "Update",

@@ -14,6 +14,7 @@ import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/moto
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_detail.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_bill.page.dart';
 import 'package:tour_guide_app/features/bus_booking/presentation/pages/bus_search.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/add_vehicle.page.dart';
 import 'package:tour_guide_app/features/splash/presentation/pages/splash_screen.page.dart';
 import 'package:tour_guide_app/features/train_booking/presentation/pages/train_search.page.dart';
 import 'package:tour_guide_app/features/flight_booking/presentation/pages/flight_search.page.dart';
@@ -54,7 +55,7 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/stop_videos.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_stop_detail/get_stop_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/contract.page.dart';
-import 'package:tour_guide_app/features/my_vehicle/presentation/pages/vehicle/vehicle.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/vehicle.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/contract_detail.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/create_contract.page.dart';
 import 'package:tour_guide_app/features/profile/presentation/pages/personal_information.page.dart';
@@ -420,6 +421,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const VehiclePage(),
+        );
+
+      case AppRouteConstant.addVehicle:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const AddVehiclePage(),
         );
 
       case AppRouteConstant.contractDetail:
