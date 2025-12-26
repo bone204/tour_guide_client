@@ -10,6 +10,8 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinera
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/widgets/shimmer_itinerary_list.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';
 
+import 'package:tour_guide_app/core/utils/date_formatter.dart';
+
 class ItineraryListPage extends StatefulWidget {
   const ItineraryListPage({super.key});
 
@@ -124,7 +126,10 @@ class _ItineraryListPageState extends State<ItineraryListPage> {
 
                     return ItineraryCard(
                       title: item.name,
-                      dateRange: '${item.startDate} - ${item.endDate}',
+                      dateRange: DateFormatter.formatDateRange(
+                        item.startDate,
+                        item.endDate,
+                      ),
                       destinationCount: item.stops.length.toString(),
                       status: item.status,
                       imageUrl: imageUrl,

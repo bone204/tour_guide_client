@@ -34,6 +34,17 @@
 
   "email": "Email",
 
+  "explore": "Khám phá",
+  "exploreItineraries": "Khám phá lộ trình",
+  "unknownUser": "Người dùng ẩn danh",
+  "destinationsCount": "{count} Điểm đến",
+  "@destinationsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
 
 
   "confirmPassword": "Xác nhận mật khẩu",

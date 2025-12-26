@@ -37,6 +37,7 @@ import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_r
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_booking_info.page.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/presentation/itinerary_explore.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/presentation/itinerary_explore_detail.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/create_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/itinerary_detail.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/add_stop.page.dart';
@@ -469,6 +470,13 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const VerifyCitizenIdPage(),
+        );
+
+      case AppRouteConstant.itineraryExploreDetail:
+        final itineraryId = settings.arguments as int;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ItineraryExploreDetailPage(itineraryId: itineraryId),
         );
 
       default:

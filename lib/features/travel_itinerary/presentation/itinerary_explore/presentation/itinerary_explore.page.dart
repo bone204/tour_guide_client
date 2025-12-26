@@ -47,7 +47,7 @@ class _ItineraryExplorePageState extends State<ItineraryExplorePage> {
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: CustomAppBar(
-          title: 'Explore Itineraries',
+          title: AppLocalizations.of(context)!.exploreItineraries,
           showBackButton: true,
           backgroundColor: AppColors.backgroundColor,
           onBackPressed: () {
@@ -145,8 +145,8 @@ class _ItineraryExplorePageState extends State<ItineraryExplorePage> {
 
                               return ExploreItineraryCard(
                                 title: item.name,
-                                dateRange:
-                                    '${item.startDate} - ${item.endDate}',
+                                authorName: item.user.username,
+                                authorAvatar: item.user.avatarUrl,
                                 destinationCount: item.stops.length.toString(),
                                 imageUrl: imageUrl,
                                 isLiked: isLiked,
@@ -161,7 +161,7 @@ class _ItineraryExplorePageState extends State<ItineraryExplorePage> {
                                 },
                                 onTap: () {
                                   Navigator.of(context).pushNamed(
-                                    AppRouteConstant.itineraryDetail,
+                                    AppRouteConstant.itineraryExploreDetail,
                                     arguments: item.id,
                                   );
                                 },

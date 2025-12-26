@@ -3713,6 +3713,30 @@ abstract class AppLocalizations {
   /// **'people'**
   String get people;
 
+  /// No description provided for @explore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get explore;
+
+  /// No description provided for @exploreItineraries.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Itineraries'**
+  String get exploreItineraries;
+
+  /// No description provided for @unknownUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown User'**
+  String get unknownUser;
+
+  /// No description provided for @destinationsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Destinations'**
+  String destinationsCount(String count);
+
   /// No description provided for @noVehicles.
   ///
   /// In en, this message translates to:

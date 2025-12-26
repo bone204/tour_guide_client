@@ -61,4 +61,5 @@ class AppRouteConstant {
   static const String verifyEmail = '/verify_email';
   static const String verifyPhone = '/verify_phone';
   static const String verifyCitizenId = '/verify_citizen_id';
+  static const String itineraryExploreDetail = '/itinerary_explore_detail';
 }

@@ -1890,6 +1890,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get people => 'people';
 
   @override
+  String get explore => 'Explore';
+
+  @override
+  String get exploreItineraries => 'Explore Itineraries';
+
+  @override
+  String get unknownUser => 'Unknown User';
+
+  @override
+  String destinationsCount(String count) {
+    return '$count Destinations';
+  }
+
+  @override
   String get noVehicles => 'No Vehicles';
 
   @override

@@ -1896,6 +1896,20 @@ class AppLocalizationsVi extends AppLocalizations {
   String get people => 'người';
 
   @override
+  String get explore => 'Khám phá';
+
+  @override
+  String get exploreItineraries => 'Khám phá lộ trình';
+
+  @override
+  String get unknownUser => 'Người dùng ẩn danh';
+
+  @override
+  String destinationsCount(String count) {
+    return '$count Điểm đến';
+  }
+
+  @override
   String get noVehicles => 'Chưa có xe';
 
   @override

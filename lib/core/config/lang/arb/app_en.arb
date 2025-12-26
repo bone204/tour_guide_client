@@ -1197,6 +1197,18 @@
   "selectedRoom": "Selected Room",
   "people": "people",
 
+  "explore": "Explore",
+  "exploreItineraries": "Explore Itineraries",
+  "unknownUser": "Unknown User",
+  "destinationsCount": "{count} Destinations",
+  "@destinationsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+
   "noVehicles": "No Vehicles",
   "foodTypeAll": "All",
   "foodTypeVietnamese": "Vietnamese",

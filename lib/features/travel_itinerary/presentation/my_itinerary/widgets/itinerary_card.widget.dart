@@ -4,8 +4,8 @@ class ItineraryCard extends StatelessWidget {
   final String title;
   final String dateRange;
   final String destinationCount;
-  final String status; // e.g., "Upcoming", "Completed"
-  final String imageUrl; // Added for visual appeal
+  final String status;
+  final String imageUrl;
   final VoidCallback? onTap;
 
   const ItineraryCard({
@@ -15,7 +15,7 @@ class ItineraryCard extends StatelessWidget {
     required this.destinationCount,
     required this.status,
     this.imageUrl =
-        'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop', // Default placeholder
+        'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop',
     this.onTap,
   });
 
@@ -24,7 +24,7 @@ class ItineraryCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 20.h),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: AppColors.primaryWhite,
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
@@ -37,9 +37,9 @@ class ItineraryCard extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(20.r),
-        child: InkWell(
+        child: GestureDetector(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(20.r),
+          behavior: HitTestBehavior.opaque,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -78,7 +78,7 @@ class ItineraryCard extends StatelessWidget {
                         vertical: 6.h,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(12.r),
                         boxShadow: [
                           BoxShadow(
@@ -111,21 +111,25 @@ class ItineraryCard extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 12.h),
-                    Row(
+                    SizedBox(height: 20.h),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
                       children: [
                         _buildInfoChip(context, AppIcons.calendar, dateRange),
-                        SizedBox(width: 16.w),
+                        SizedBox(height: 16.h),
                         _buildInfoChip(
                           context,
                           AppIcons.location,
-                          '$destinationCount Destinations',
+                          AppLocalizations.of(
+                            context,
+                          )!.destinationsCount(destinationCount),
+                          AppColors.primaryBlue,
                         ),
                       ],
                     ),
@@ -139,25 +143,30 @@ class ItineraryCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoChip(BuildContext context, String icon, String label) {
+  Widget _buildInfoChip(
+    BuildContext context,
+    String icon,
+    String label, [
+    Color? color,
+  ]) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         SvgPicture.asset(
           icon,
-          width: 16.w,
-          height: 16.h,
-          colorFilter: const ColorFilter.mode(
-            AppColors.textSubtitle,
+          width: 18.w,
+          height: 18.h,
+          colorFilter: ColorFilter.mode(
+            color ?? AppColors.textSubtitle,
             BlendMode.srcIn,
           ),
         ),
-        SizedBox(width: 6.w),
+        SizedBox(width: 8.w),
         Text(
           label,
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
+          style: Theme.of(context).textTheme.displayLarge?.copyWith(
+            color: color ?? AppColors.textPrimary,
+          ),
         ),
       ],
     );
@@ -175,11 +184,7 @@ class ItineraryCard extends StatelessWidget {
         return AppLocalizations.of(context)!.statusCancelled;
       case 'draft':
         return AppLocalizations.of(context)!.statusDraft;
-      case 'public': // Assuming 'public' maps to 'upcoming' or has its own, using 'upcoming' or similar if no specific trans exists, providing fallback or mapping to existing.
-      // Actually let's just stick to the ones we have locals for.
-      // If the user says status is not translated, likely it is uppercase or slightly different.
-      // But if there is a 'public' status, we might need a key.
-      // For now, let's stick to safe defaults and case insensitivity.
+      case 'public':
       default:
         return status;
     }

@@ -20,6 +20,15 @@ class ItineraryActionButtons extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           ItineraryActionButton(
+            title: AppLocalizations.of(context)!.explore,
+            iconAsset: AppIcons.star,
+            color: AppColors.primaryBlue,
+            onTap: () {
+              Navigator.of(context).pushNamed(AppRouteConstant.itineraryExplore);
+            },
+          ),
+          SizedBox(height: 16.h),
+          ItineraryActionButton(
             title: AppLocalizations.of(context)!.foodWheel,
             iconAsset: AppIcons.restaurant,
             color: AppColors.primaryGreen,

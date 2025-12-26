@@ -12,6 +12,7 @@ import 'package:tour_guide_app/common/widgets/menu/itinerary_action_menu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
+import 'package:tour_guide_app/core/utils/date_formatter.dart';
 
 class ItineraryDetailPage extends StatelessWidget {
   final int itineraryId;
@@ -84,7 +85,10 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
           final itinerary = state.itinerary;
           // Unpack data
           final title = itinerary.name;
-          final dateRange = '${itinerary.startDate} - ${itinerary.endDate}';
+          final dateRange = DateFormatter.formatDateRange(
+            itinerary.startDate,
+            itinerary.endDate,
+          );
           final status = itinerary.status;
           final defaultImage =
               'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop';
