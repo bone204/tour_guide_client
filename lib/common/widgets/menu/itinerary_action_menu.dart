@@ -5,11 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ItineraryActionMenu extends StatefulWidget {
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final VoidCallback? onPublicize;
+  final bool canPublicize;
 
   const ItineraryActionMenu({
     super.key,
     required this.onEdit,
     required this.onDelete,
+    this.onPublicize,
+    this.canPublicize = false,
   });
 
   @override
@@ -87,6 +91,19 @@ class _ItineraryActionMenuState extends State<ItineraryActionMenu>
             heroTag: 'delete_fab',
           ),
           SizedBox(height: 12.h),
+          if (widget.canPublicize && widget.onPublicize != null) ...[
+            _buildMenuItem(
+              onPressed: () {
+                _toggleMenu();
+                widget.onPublicize!();
+              },
+              icon: Icons.public,
+              color: Theme.of(context).colorScheme.tertiaryContainer,
+              iconColor: Theme.of(context).colorScheme.tertiary,
+              heroTag: 'publicize_fab',
+            ),
+            SizedBox(height: 12.h),
+          ],
         ],
         FloatingActionButton(
           onPressed: _toggleMenu,

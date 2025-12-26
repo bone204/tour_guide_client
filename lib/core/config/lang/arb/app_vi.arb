@@ -814,6 +814,7 @@
   "contract": "Hợp đồng",
   "document": "Giấy tờ",
   "register": "Đăng ký",
+  "vehicleTitle": "Xe #{licensePlate}",
   "@vehicleTitle": {
     "placeholders": {
       "licensePlate": {
@@ -821,9 +822,11 @@
       }
     }
   },
+  "vehicleDetail": "Chi tiết xe",
   "flagUS": "🇺🇸",
   "flagVN": "🇻🇳",
   "searchResultsCount": "Tìm thấy {count} kết quả",
+  "itineraryPublicizedSuccess": "Lộ trình đã được công khai thành công!",
   "@searchResultsCount": {
     "placeholders": {
       "count": {

@@ -1169,6 +1169,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get itineraryPublicizedSuccess => 'Itinerary publicized successfully!';
+
+  @override
   String get actionSuccess => 'Action successful';
 
   @override

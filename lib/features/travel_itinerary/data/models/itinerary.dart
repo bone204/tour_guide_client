@@ -6,57 +6,75 @@ class Itinerary {
   final User user;
   final String name;
   final String province;
-  final int numberOfDays;
   final String startDate;
   final String endDate;
-  final List<Stop> stops;
+  final String status;
   final int totalTravelPoints;
   final double averageRating;
-  final bool shared;
-  final String status;
+  final int likeCount; // Maps to favouriteTimes
+  final bool isPublic; // Renamed from shared
+  final bool isEdited; // New field
   final String createdAt;
   final String updatedAt;
-  final bool isLiked;
-  final int likeCount;
+  final List<Stop> stops;
+  final Itinerary? clonedFromRoute; // New field
+  final int numberOfDays; // Computed
 
   const Itinerary({
     required this.id,
     required this.user,
     required this.name,
     required this.province,
-    required this.numberOfDays,
     required this.startDate,
     required this.endDate,
-    required this.stops,
+    required this.status,
     required this.totalTravelPoints,
     required this.averageRating,
-    required this.shared,
-    required this.status,
+    required this.likeCount,
+    required this.isPublic,
+    required this.isEdited,
     required this.createdAt,
     required this.updatedAt,
-    this.isLiked = false,
-    this.likeCount = 0,
+    required this.stops,
+    this.clonedFromRoute,
+    required this.numberOfDays,
   });
 
   factory Itinerary.fromJson(Map<String, dynamic> json) {
+    int days = 0;
+    if (json['startDate'] != null && json['endDate'] != null) {
+      try {
+        final start = DateTime.parse(json['startDate']);
+        final end = DateTime.parse(json['endDate']);
+        days = end.difference(start).inDays + 1;
+      } catch (_) {}
+    }
+
     return Itinerary(
       id: json['id'] ?? 0,
       user: User.fromJson(json['user'] ?? {}),
       name: json['name'] ?? '',
       province: json['province'] ?? '',
-      numberOfDays: json['numberOfDays'] ?? 0,
       startDate: json['startDate'] ?? '',
       endDate: json['endDate'] ?? '',
-      stops:
-          (json['stops'] as List? ?? []).map((e) => Stop.fromJson(e)).toList(),
-      totalTravelPoints: json['totalTravelPoints'] ?? 0,
-      averageRating: (json['averageRating'] as num?)?.toDouble() ?? 0,
-      shared: json['shared'] ?? false,
       status: json['status'] ?? '',
+      totalTravelPoints: json['totalTravelPoints'] ?? 0,
+      averageRating: (json['averageRating'] ?? 0).toDouble(),
+      likeCount: json['favouriteTimes'] ?? 0,
+      isPublic: json['isPublic'] ?? false,
+      isEdited: json['isEdited'] ?? false,
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
-      isLiked: json['isLiked'] ?? false,
-      likeCount: json['favouriteTimes'] ?? 0,
+      stops:
+          (json['stops'] as List?)
+              ?.map((e) => Stop.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      clonedFromRoute:
+          json['clonedFromRoute'] != null
+              ? Itinerary.fromJson(json['clonedFromRoute'])
+              : null,
+      numberOfDays: days,
     );
   }
 
@@ -66,18 +84,18 @@ class Itinerary {
       'user': user.toJson(),
       'name': name,
       'province': province,
-      'numberOfDays': numberOfDays,
       'startDate': startDate,
       'endDate': endDate,
-      'stops': stops.map((e) => e.toJson()).toList(),
+      'status': status,
       'totalTravelPoints': totalTravelPoints,
       'averageRating': averageRating,
-      'shared': shared,
-      'status': status,
+      'favouriteTimes': likeCount,
+      'isPublic': isPublic,
+      'isEdited': isEdited,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      'isLiked': isLiked,
-      'likeCount': likeCount,
+      'stops': stops.map((e) => e.toJson()).toList(),
+      'clonedFromRoute': clonedFromRoute?.toJson(),
     };
   }
 
@@ -86,36 +104,56 @@ class Itinerary {
     User? user,
     String? name,
     String? province,
-    int? numberOfDays,
     String? startDate,
     String? endDate,
     List<Stop>? stops,
+    String? status,
     int? totalTravelPoints,
     double? averageRating,
-    bool? shared,
-    String? status,
+    int? likeCount,
+    bool? isPublic,
+    bool? isEdited,
     String? createdAt,
     String? updatedAt,
-    bool? isLiked,
-    int? likeCount,
+    Itinerary? clonedFromRoute,
   }) {
+    int days = numberOfDays;
+    if (startDate != null && endDate != null) {
+      try {
+        final start = DateTime.parse(startDate);
+        final end = DateTime.parse(endDate);
+        days = end.difference(start).inDays + 1;
+      } catch (_) {}
+    } else if ((startDate != null || endDate != null) &&
+        (this.startDate.isNotEmpty && this.endDate.isNotEmpty)) {
+      // Recompute if one of them changes
+      final s = startDate ?? this.startDate;
+      final e = endDate ?? this.endDate;
+      try {
+        final start = DateTime.parse(s);
+        final end = DateTime.parse(e);
+        days = end.difference(start).inDays + 1;
+      } catch (_) {}
+    }
+
     return Itinerary(
       id: id ?? this.id,
       user: user ?? this.user,
       name: name ?? this.name,
       province: province ?? this.province,
-      numberOfDays: numberOfDays ?? this.numberOfDays,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
-      stops: stops ?? this.stops,
+      status: status ?? this.status,
       totalTravelPoints: totalTravelPoints ?? this.totalTravelPoints,
       averageRating: averageRating ?? this.averageRating,
-      shared: shared ?? this.shared,
-      status: status ?? this.status,
+      likeCount: likeCount ?? this.likeCount,
+      isPublic: isPublic ?? this.isPublic,
+      isEdited: isEdited ?? this.isEdited,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      isLiked: isLiked ?? this.isLiked,
-      likeCount: likeCount ?? this.likeCount,
+      stops: stops ?? this.stops,
+      clonedFromRoute: clonedFromRoute ?? this.clonedFromRoute,
+      numberOfDays: days,
     );
   }
 }

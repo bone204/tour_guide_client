@@ -2375,6 +2375,12 @@ abstract class AppLocalizations {
   /// **'Found {count} results'**
   String searchResultsCount(int count);
 
+  /// No description provided for @itineraryPublicizedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary publicized successfully!'**
+  String get itineraryPublicizedSuccess;
+
   /// No description provided for @actionSuccess.
   ///
   /// In en, this message translates to:

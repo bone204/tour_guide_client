@@ -5,6 +5,8 @@ import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_itinerary_detail/get_itinerary_detail_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/delete_itinerary/delete_itinerary_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/publicize_itinerary/publicize_itinerary_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/publicize_itinerary/publicize_itinerary_state.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/widgets/itinerary_detail_shimmer.widget.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/widgets/itinerary_timeline.widget.dart';
 import 'package:tour_guide_app/service_locator.dart';
@@ -30,6 +32,7 @@ class ItineraryDetailPage extends StatelessWidget {
                     ..getItineraryDetail(itineraryId),
         ),
         BlocProvider(create: (_) => sl<DeleteItineraryCubit>()),
+        BlocProvider(create: (_) => sl<PublicizeItineraryCubit>()),
       ],
       child: _ItineraryDetailView(itineraryId: itineraryId),
     );
@@ -131,321 +134,368 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                 );
               }
             },
-            child: Scaffold(
-              backgroundColor: AppColors.backgroundColor,
-              extendBody: true,
-              body: Stack(
-                children: [
-                  CustomScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    slivers: [
-                      SliverAppBar(
-                        expandedHeight: 250.h,
-                        pinned: true,
-                        backgroundColor: AppColors.backgroundColor,
-                        leading: Padding(
-                          padding: EdgeInsets.only(
-                            left: 16.w,
-                            top: 8.h,
-                            bottom: 8.h,
-                          ),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white.withOpacity(0.9),
-                            child: IconButton(
-                              icon: SvgPicture.asset(
-                                AppIcons.arrowLeft,
-                                width: 16.w,
-                                height: 16.h,
-                                colorFilter: const ColorFilter.mode(
-                                  AppColors.primaryBlack,
-                                  BlendMode.srcIn,
+            child: BlocListener<
+              PublicizeItineraryCubit,
+              PublicizeItineraryState
+            >(
+              listener: (context, publicizeState) {
+                if (publicizeState is PublicizeItinerarySuccess) {
+                  CustomSnackbar.show(
+                    context,
+                    message:
+                        AppLocalizations.of(
+                          context,
+                        )!.itineraryPublicizedSuccess,
+                    type: SnackbarType.success,
+                  );
+                  context.read<GetItineraryDetailCubit>().getItineraryDetail(
+                    widget.itineraryId,
+                  );
+                } else if (publicizeState is PublicizeItineraryFailure) {
+                  CustomSnackbar.show(
+                    context,
+                    message: publicizeState.message,
+                    type: SnackbarType.error,
+                  );
+                }
+              },
+              child: Scaffold(
+                backgroundColor: AppColors.backgroundColor,
+                extendBody: true,
+                body: Stack(
+                  children: [
+                    CustomScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      slivers: [
+                        SliverAppBar(
+                          expandedHeight: 250.h,
+                          pinned: true,
+                          backgroundColor: AppColors.backgroundColor,
+                          leading: Padding(
+                            padding: EdgeInsets.only(
+                              left: 16.w,
+                              top: 8.h,
+                              bottom: 8.h,
+                            ),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white.withOpacity(0.9),
+                              child: IconButton(
+                                icon: SvgPicture.asset(
+                                  AppIcons.arrowLeft,
+                                  width: 16.w,
+                                  height: 16.h,
+                                  colorFilter: const ColorFilter.mode(
+                                    AppColors.primaryBlack,
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
+                                onPressed: () => Navigator.of(context).pop(),
                               ),
-                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                          ),
+                          flexibleSpace: FlexibleSpaceBar(
+                            background: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                if (images.isNotEmpty)
+                                  CarouselSlider(
+                                    options: CarouselOptions(
+                                      height: double.infinity,
+                                      viewportFraction: 1.0,
+                                      autoPlay: true,
+                                      autoPlayInterval: const Duration(
+                                        seconds: 5,
+                                      ),
+                                      autoPlayAnimationDuration: const Duration(
+                                        seconds: 1,
+                                      ),
+                                      autoPlayCurve: Curves.fastOutSlowIn,
+                                      scrollDirection: Axis.horizontal,
+                                    ),
+                                    items:
+                                        images.map((imgUrl) {
+                                          return Builder(
+                                            builder: (BuildContext context) {
+                                              return Image.network(
+                                                imgUrl,
+                                                fit: BoxFit.cover,
+                                                width: double.infinity,
+                                                errorBuilder:
+                                                    (
+                                                      context,
+                                                      error,
+                                                      stackTrace,
+                                                    ) => Container(
+                                                      color: Colors.grey,
+                                                    ),
+                                              );
+                                            },
+                                          );
+                                        }).toList(),
+                                  )
+                                else
+                                  Image.network(
+                                    defaultImage,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Container(color: Colors.grey),
+                                  ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Colors.transparent,
+                                        Colors.black.withOpacity(0.7),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 20.h,
+                                  left: 20.w,
+                                  right: 20.w,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 10.w,
+                                              vertical: 4.h,
+                                            ),
+                                            margin: EdgeInsets.only(
+                                              bottom: 8.h,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.primaryBlue,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
+                                            ),
+                                            child: Text(
+                                              _getTranslatedStatus(
+                                                context,
+                                                status,
+                                              ),
+                                              style: Theme.of(
+                                                context,
+                                              ).textTheme.labelSmall?.copyWith(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 8.w),
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 10.w,
+                                              vertical: 4.h,
+                                            ),
+                                            margin: EdgeInsets.only(
+                                              bottom: 8.h,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.primaryGreen,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
+                                            ),
+                                            child: Text(
+                                              itinerary.province,
+                                              style: Theme.of(
+                                                context,
+                                              ).textTheme.labelSmall?.copyWith(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        title,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall
+                                            ?.copyWith(color: Colors.white),
+                                      ),
+                                      SizedBox(height: 8.h),
+                                      Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            AppIcons.calendar,
+                                            width: 16.w,
+                                            height: 16.h,
+                                            colorFilter: const ColorFilter.mode(
+                                              AppColors.primaryWhite,
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                          SizedBox(width: 6.w),
+                                          Text(
+                                            dateRange,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.bodySmall?.copyWith(
+                                              color: Colors.white70,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        flexibleSpace: FlexibleSpaceBar(
-                          background: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              if (images.isNotEmpty)
-                                CarouselSlider(
-                                  options: CarouselOptions(
-                                    height: double.infinity,
-                                    viewportFraction: 1.0,
-                                    autoPlay: true,
-                                    autoPlayInterval: const Duration(
-                                      seconds: 5,
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.all(20.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (days.isNotEmpty) ...[
+                                  Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.itinerarySchedule,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.titleLarge?.copyWith(
+                                      color: AppColors.textPrimary,
                                     ),
-                                    autoPlayAnimationDuration: const Duration(
-                                      seconds: 1,
-                                    ),
-                                    autoPlayCurve: Curves.fastOutSlowIn,
-                                    scrollDirection: Axis.horizontal,
                                   ),
-                                  items:
-                                      images.map((imgUrl) {
-                                        return Builder(
-                                          builder: (BuildContext context) {
-                                            return Image.network(
-                                              imgUrl,
-                                              fit: BoxFit.cover,
-                                              width: double.infinity,
-                                              errorBuilder:
-                                                  (
-                                                    context,
-                                                    error,
-                                                    stackTrace,
-                                                  ) => Container(
-                                                    color: Colors.grey,
-                                                  ),
-                                            );
-                                          },
-                                        );
-                                      }).toList(),
-                                )
-                              else
-                                Image.network(
-                                  defaultImage,
-                                  fit: BoxFit.cover,
-                                  errorBuilder:
-                                      (context, error, stackTrace) =>
-                                          Container(color: Colors.grey),
-                                ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Colors.transparent,
-                                      Colors.black.withOpacity(0.7),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 20.h,
-                                left: 20.w,
-                                right: 20.w,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 10.w,
-                                            vertical: 4.h,
-                                          ),
-                                          margin: EdgeInsets.only(bottom: 8.h),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.primaryBlue,
-                                            borderRadius: BorderRadius.circular(
-                                              8.r,
-                                            ),
-                                          ),
-                                          child: Text(
-                                            _getTranslatedStatus(
+                                  SizedBox(height: 16.h),
+                                ],
+                                days.isNotEmpty
+                                    ? ItineraryTimeline(
+                                      timelineItems: days,
+                                      itineraryId: widget.itineraryId,
+                                    )
+                                    : Container(
+                                      width: double.infinity,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Lottie.asset(
+                                            AppLotties.empty,
+                                            width: 300.w,
+                                            height: 300.h,
+                                            fit: BoxFit.contain,
+                                            errorBuilder: (
                                               context,
-                                              status,
+                                              error,
+                                              stackTrace,
+                                            ) {
+                                              return Icon(
+                                                Icons.image_not_supported,
+                                                size: 64.sp,
+                                                color: AppColors.primaryGrey,
+                                              );
+                                            },
+                                          ),
+                                          SizedBox(height: 16.h),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 30.w,
                                             ),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelSmall
-                                                ?.copyWith(color: Colors.white),
-                                          ),
-                                        ),
-                                        SizedBox(width: 8.w),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 10.w,
-                                            vertical: 4.h,
-                                          ),
-                                          margin: EdgeInsets.only(bottom: 8.h),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.primaryGreen,
-                                            borderRadius: BorderRadius.circular(
-                                              8.r,
+                                            child: Text(
+                                              AppLocalizations.of(
+                                                context,
+                                              )!.noSchedule,
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(
+                                                context,
+                                              ).textTheme.titleMedium?.copyWith(
+                                                color: AppColors.textPrimary,
+                                              ),
                                             ),
                                           ),
-                                          child: Text(
-                                            itinerary.province,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelSmall
-                                                ?.copyWith(color: Colors.white),
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                    Text(
-                                      title,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall
-                                          ?.copyWith(color: Colors.white),
-                                    ),
-                                    SizedBox(height: 8.h),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          AppIcons.calendar,
-                                          width: 16.w,
-                                          height: 16.h,
-                                          colorFilter: const ColorFilter.mode(
-                                            AppColors.primaryWhite,
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                        SizedBox(width: 6.w),
-                                        Text(
-                                          dateRange,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall
-                                              ?.copyWith(color: Colors.white70),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                                SizedBox(height: 120.h),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SliverToBoxAdapter(
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: SafeArea(
                         child: Padding(
-                          padding: EdgeInsets.all(20.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (days.isNotEmpty) ...[
-                                Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!.itinerarySchedule,
-                                  style: Theme.of(context).textTheme.titleLarge
-                                      ?.copyWith(color: AppColors.textPrimary),
-                                ),
-                                SizedBox(height: 16.h),
-                              ],
-                              days.isNotEmpty
-                                  ? ItineraryTimeline(
-                                    timelineItems: days,
-                                    itineraryId: widget.itineraryId,
-                                  )
-                                  : Container(
-                                    width: double.infinity,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Lottie.asset(
-                                          AppLotties.empty,
-                                          width: 300.w,
-                                          height: 300.h,
-                                          fit: BoxFit.contain,
-                                          errorBuilder: (
-                                            context,
-                                            error,
-                                            stackTrace,
-                                          ) {
-                                            return Icon(
-                                              Icons.image_not_supported,
-                                              size: 64.sp,
-                                              color: AppColors.primaryGrey,
-                                            );
-                                          },
-                                        ),
-                                        SizedBox(height: 16.h),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 30.w,
-                                          ),
+                          padding: EdgeInsets.only(right: 20.w, bottom: 20.h),
+                          child: ItineraryActionMenu(
+                            onEdit: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRouteConstant.editItinerary,
+                                arguments: itinerary,
+                              );
+                            },
+                            onDelete: () {
+                              showDialog(
+                                context: context,
+                                builder:
+                                    (ctx) => AlertDialog(
+                                      title: Text(
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.confirmDelete,
+                                      ),
+                                      content: Text(
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.confirmDeleteContent,
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(ctx),
                                           child: Text(
                                             AppLocalizations.of(
                                               context,
-                                            )!.noSchedule,
-                                            textAlign: TextAlign.center,
-                                            style: Theme.of(
+                                            )!.cancel,
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(ctx);
+                                            context
+                                                .read<DeleteItineraryCubit>()
+                                                .deleteItinerary(itinerary.id);
+                                          },
+                                          child: Text(
+                                            AppLocalizations.of(
                                               context,
-                                            ).textTheme.titleMedium?.copyWith(
-                                              color: AppColors.textPrimary,
+                                            )!.delete,
+                                            style: const TextStyle(
+                                              color: Colors.red,
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                              SizedBox(height: 120.h),
-                            ],
+                              );
+                            },
+                            canPublicize:
+                                itinerary.isEdited &&
+                                itinerary.status == 'completed',
+                            onPublicize: () {
+                              context.read<PublicizeItineraryCubit>().publicize(
+                                itinerary.id,
+                              );
+                            },
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: SafeArea(
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 20.w, bottom: 20.h),
-                        child: ItineraryActionMenu(
-                          onEdit: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRouteConstant.editItinerary,
-                              arguments: itinerary,
-                            );
-                          },
-                          onDelete: () {
-                            showDialog(
-                              context: context,
-                              builder:
-                                  (ctx) => AlertDialog(
-                                    title: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!.confirmDelete,
-                                    ),
-                                    content: Text(
-                                      AppLocalizations.of(
-                                        context,
-                                      )!.confirmDeleteContent,
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(ctx),
-                                        child: Text(
-                                          AppLocalizations.of(context)!.cancel,
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(ctx);
-                                          context
-                                              .read<DeleteItineraryCubit>()
-                                              .deleteItinerary(itinerary.id);
-                                        },
-                                        child: Text(
-                                          AppLocalizations.of(context)!.delete,
-                                          style: const TextStyle(
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                            );
-                          },
-                        ),
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

@@ -798,6 +798,7 @@
   "flagUS": "🇺🇸",
   "flagVN": "🇻🇳",
   "searchResultsCount": "Found {count} results",
+  "itineraryPublicizedSuccess": "Itinerary publicized successfully!",
   "@searchResultsCount": {
     "placeholders": {
       "count": {

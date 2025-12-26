@@ -1151,11 +1151,11 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String vehicleTitle(String licensePlate) {
-    return 'Vehicle #$licensePlate';
+    return 'Xe #$licensePlate';
   }
 
   @override
-  String get vehicleDetail => 'Vehicle Detail';
+  String get vehicleDetail => 'Chi tiết xe';
 
   @override
   String get flagUS => '🇺🇸';
@@ -1173,6 +1173,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
     return 'Tìm thấy $countString kết quả';
   }
+
+  @override
+  String get itineraryPublicizedSuccess => 'Lộ trình đã được công khai thành công!';
 
   @override
   String get actionSuccess => 'Thao tác thành công';

@@ -75,6 +75,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_my_vehi
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_email/verify_email_cubit.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_phone/verify_phone_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/get_draft_itineraries/get_draft_itineraries_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/publicize_itinerary/publicize_itinerary_cubit.dart';
 import 'features/travel_itinerary/presentation/itinerary_explore/bloc/itinerary_explore_detail/itinerary_explore_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/data_source/my_vehicle_api_service.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/repository/my_vehicle_repository_impl.dart';
@@ -154,8 +155,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
     () => DeleteStopMediaUseCase(),
   );
   sl.registerLazySingleton<AddStopMediaUseCase>(() => AddStopMediaUseCase());
-  sl.registerLazySingleton<PublicizeItineraryUseCase>(
-    () => PublicizeItineraryUseCase(sl()),
+  sl.registerSingleton<PublicizeItineraryUseCase>(
+    PublicizeItineraryUseCase(sl()),
   );
 
   // Like Itinerary
@@ -163,6 +164,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<UnlikeItineraryUseCase>(UnlikeItineraryUseCase());
 
   sl.registerFactory<LikeItineraryCubit>(() => LikeItineraryCubit());
+  sl.registerFactory<PublicizeItineraryCubit>(
+    () => PublicizeItineraryCubit(sl()),
+  );
   sl.registerFactory<ItineraryExploreDetailCubit>(
     () => ItineraryExploreDetailCubit(sl()),
   );
