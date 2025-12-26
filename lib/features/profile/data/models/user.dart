@@ -27,6 +27,7 @@ class User {
 
   final List<dynamic> hobbies;
   final List<dynamic> favoriteDestinationIds;
+  final List<String> favoriteTravelRouteIds;
   final List<dynamic> favoriteEateries;
   final List<dynamic> cooperationIds;
 
@@ -66,6 +67,7 @@ class User {
     this.bankAccountName,
     required this.hobbies,
     required this.favoriteDestinationIds,
+    required this.favoriteTravelRouteIds,
     required this.favoriteEateries,
     required this.cooperationIds,
     this.avatarUrl,
@@ -108,8 +110,12 @@ class User {
       bankAccountName: json['bankAccountName'],
 
       hobbies: json['hobbies'] as List? ?? [],
-      favoriteDestinationIds:
-          json['favoriteDestinationIds'] as List? ?? [],
+      favoriteDestinationIds: json['favoriteDestinationIds'] as List? ?? [],
+      favoriteTravelRouteIds:
+          (json['favoriteTravelRouteIds'] as List?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       favoriteEateries: json['favoriteEateries'] as List? ?? [],
       cooperationIds: json['cooperationIds'] as List? ?? [],
 
@@ -152,6 +158,7 @@ class User {
       'bankAccountName': bankAccountName,
       'hobbies': hobbies,
       'favoriteDestinationIds': favoriteDestinationIds,
+      'favoriteTravelRouteIds': favoriteTravelRouteIds,
       'favoriteEateries': favoriteEateries,
       'cooperationIds': cooperationIds,
       'avatarUrl': avatarUrl,
@@ -189,6 +196,7 @@ class User {
     String? bankAccountName,
     List<dynamic>? hobbies,
     List<dynamic>? favoriteDestinationIds,
+    List<String>? favoriteTravelRouteIds,
     List<dynamic>? favoriteEateries,
     List<dynamic>? cooperationIds,
     String? avatarUrl,
@@ -209,38 +217,31 @@ class User {
       fcmToken: fcmToken ?? this.fcmToken,
       isEmailVerified: isEmailVerified ?? this.isEmailVerified,
       isPhoneVerified: isPhoneVerified ?? this.isPhoneVerified,
-      isCitizenIdVerified:
-          isCitizenIdVerified ?? this.isCitizenIdVerified,
+      isCitizenIdVerified: isCitizenIdVerified ?? this.isCitizenIdVerified,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       fullName: fullName ?? this.fullName,
       gender: gender ?? this.gender,
       address: address ?? this.address,
       nationality: nationality ?? this.nationality,
       citizenId: citizenId ?? this.citizenId,
-      idCardImageUrl:
-          idCardImageUrl ?? this.idCardImageUrl,
-      citizenFrontImageUrl:
-          citizenFrontImageUrl ?? this.citizenFrontImageUrl,
-      citizenBackImageUrl:
-          citizenBackImageUrl ?? this.citizenBackImageUrl,
+      idCardImageUrl: idCardImageUrl ?? this.idCardImageUrl,
+      citizenFrontImageUrl: citizenFrontImageUrl ?? this.citizenFrontImageUrl,
+      citizenBackImageUrl: citizenBackImageUrl ?? this.citizenBackImageUrl,
       bankName: bankName ?? this.bankName,
-      bankAccountNumber:
-          bankAccountNumber ?? this.bankAccountNumber,
-      bankAccountName:
-          bankAccountName ?? this.bankAccountName,
+      bankAccountNumber: bankAccountNumber ?? this.bankAccountNumber,
+      bankAccountName: bankAccountName ?? this.bankAccountName,
       hobbies: hobbies ?? this.hobbies,
       favoriteDestinationIds:
           favoriteDestinationIds ?? this.favoriteDestinationIds,
-      favoriteEateries:
-          favoriteEateries ?? this.favoriteEateries,
-      cooperationIds:
-          cooperationIds ?? this.cooperationIds,
+      favoriteTravelRouteIds:
+          favoriteTravelRouteIds ?? this.favoriteTravelRouteIds,
+      favoriteEateries: favoriteEateries ?? this.favoriteEateries,
+      cooperationIds: cooperationIds ?? this.cooperationIds,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       travelPoint: travelPoint ?? this.travelPoint,
       travelExp: travelExp ?? this.travelExp,
       travelTrip: travelTrip ?? this.travelTrip,
-      feedbackTimes:
-          feedbackTimes ?? this.feedbackTimes,
+      feedbackTimes: feedbackTimes ?? this.feedbackTimes,
       userTier: userTier ?? this.userTier,
       role: role ?? this.role,
       createdAt: createdAt ?? this.createdAt,

@@ -87,13 +87,19 @@ class User {
       bankName: json['bankName'] ?? '',
       bankAccountNumber: json['bankAccountNumber'] ?? '',
       bankAccountName: json['bankAccountName'] ?? '',
-      hobbies: (json['hobbies'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      hobbies:
+          (json['hobbies'] as List?)?.map((e) => e.toString()).toList() ?? [],
       favoriteDestinationIds:
-          (json['favoriteDestinationIds'] as List?)?.map((e) => e as int).toList() ?? [],
+          (json['favoriteDestinationIds'] as List?)
+              ?.map((e) => e as int)
+              .toList() ??
+          [],
       favoriteEateries:
-          (json['favoriteEateries'] as List?)?.map((e) => e as int).toList() ?? [],
+          (json['favoriteEateries'] as List?)?.map((e) => e as int).toList() ??
+          [],
       cooperationIds:
-          (json['cooperationIds'] as List?)?.map((e) => e as int).toList() ?? [],
+          (json['cooperationIds'] as List?)?.map((e) => e as int).toList() ??
+          [],
       avatarUrl: json['avatarUrl'] ?? '',
       travelPoint: json['travelPoint'] ?? 0,
       travelExp: json['travelExp'] ?? 0,
@@ -198,7 +204,8 @@ class User {
       bankAccountNumber: bankAccountNumber ?? this.bankAccountNumber,
       bankAccountName: bankAccountName ?? this.bankAccountName,
       hobbies: hobbies ?? this.hobbies,
-      favoriteDestinationIds: favoriteDestinationIds ?? this.favoriteDestinationIds,
+      favoriteDestinationIds:
+          favoriteDestinationIds ?? this.favoriteDestinationIds,
       favoriteEateries: favoriteEateries ?? this.favoriteEateries,
       cooperationIds: cooperationIds ?? this.cooperationIds,
       avatarUrl: avatarUrl ?? this.avatarUrl,

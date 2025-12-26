@@ -62,4 +62,6 @@ abstract class ItineraryRepository {
     String? province,
   );
   Future<Either<Failure, Itinerary>> publicizeItinerary(int itineraryId);
+  Future<Either<Failure, SuccessResponse>> likeItinerary(int itineraryId);
+  Future<Either<Failure, SuccessResponse>> unlikeItinerary(int itineraryId);
 }

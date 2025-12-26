@@ -1,22 +1,31 @@
+import 'package:tour_guide_app/common/widgets/button/like_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
 class ExploreItineraryCard extends StatelessWidget {
   final String title;
   final String dateRange;
   final String destinationCount;
-  final String status; // e.g., "Upcoming", "Completed"
-  final String imageUrl; // Added for visual appeal
+  final String imageUrl;
   final VoidCallback? onTap;
+  final bool isLiked;
+  final LikeButtonTapCallback? onLike;
+  final VoidCallback? onComment;
+  final int likeCount;
+  final int commentCount;
 
   const ExploreItineraryCard({
     super.key,
     required this.title,
     required this.dateRange,
     required this.destinationCount,
-    required this.status,
     this.imageUrl =
         'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop', // Default placeholder
     this.onTap,
+    this.isLiked = false,
+    this.onLike,
+    this.onComment,
+    this.likeCount = 0,
+    this.commentCount = 0,
   });
 
   @override
@@ -34,106 +43,133 @@ class ExploreItineraryCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(20.r),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(20.r),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Hero Image Section
-              Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20.r),
-                    ),
-                    child: Image.network(
-                      imageUrl,
-                      height: 150.h,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          height: 150.h,
-                          color: AppColors.primaryGrey.withOpacity(0.2),
-                          child: Center(
-                            child: Icon(
-                              Icons.image_not_supported,
-                              color: AppColors.primaryGrey,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    top: 12.h,
-                    right: 12.w,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10.w,
-                        vertical: 6.h,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Hero Image Section
+            ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+              child: Image.network(
+                imageUrl,
+                height: 180.h,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 180.h,
+                    color: AppColors.primaryGrey.withOpacity(0.2),
+                    child: Center(
+                      child: Icon(
+                        Icons.image_not_supported,
+                        color: AppColors.primaryGrey,
                       ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(12.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
+                    ),
+                  );
+                },
+              ),
+            ),
+            // Content Section
+            Padding(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 8.h),
+                  Row(
+                    children: [
+                      _buildInfoChip(context, AppIcons.calendar, dateRange),
+                      SizedBox(width: 16.w),
+                      _buildInfoChip(
+                        context,
+                        AppIcons.location,
+                        '$destinationCount Destinations',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  const Divider(),
+                  SizedBox(height: 8.h),
+                  // Social Interaction Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // Like Button
+                      Row(
+                        children: [
+                          CustomLikeButton(
+                            size: 24.r,
+                            isLiked: isLiked,
+                            likedColor: AppColors.primaryRed,
+                            unlikedColor: AppColors.textSubtitle,
+                            onTap:
+                                onLike ??
+                                (bool liked) async {
+                                  return !liked;
+                                },
+                          ),
+                          SizedBox(width: 6.w),
+                          Text(
+                            likeCount.toString(),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium?.copyWith(
+                              color:
+                                  isLiked
+                                      ? AppColors.primaryRed
+                                      : AppColors.textSubtitle,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ],
                       ),
-                      child: Text(
-                        _getTranslatedStatus(context, status),
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color:
-                              status == 'Upcoming'
-                                  ? AppColors.primaryBlue
-                                  : AppColors.primaryGreen,
-                          fontWeight: FontWeight.w700,
+                      SizedBox(width: 24.w),
+                      // Comment Button
+                      InkWell(
+                        onTap: onComment,
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 4.w,
+                            vertical: 4.h,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.chat_bubble_outline,
+                                size: 22.r,
+                                color: AppColors.textSubtitle,
+                              ),
+                              SizedBox(width: 6.w),
+                              Text(
+                                commentCount.toString(),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.textSubtitle,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
-              // Content Section
-              Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 12.h),
-                    Row(
-                      children: [
-                        _buildInfoChip(context, AppIcons.calendar, dateRange),
-                        SizedBox(width: 16.w),
-                        _buildInfoChip(
-                          context,
-                          AppIcons.location,
-                          '$destinationCount Destinations',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -161,22 +197,5 @@ class ExploreItineraryCard extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _getTranslatedStatus(BuildContext context, String status) {
-    switch (status.toLowerCase()) {
-      case 'upcoming':
-        return AppLocalizations.of(context)!.statusUpcoming;
-      case 'completed':
-        return AppLocalizations.of(context)!.statusCompleted;
-      case 'ongoing':
-        return AppLocalizations.of(context)!.statusOngoing;
-      case 'cancelled':
-        return AppLocalizations.of(context)!.statusCancelled;
-      case 'draft':
-        return AppLocalizations.of(context)!.statusDraft;
-      default:
-        return status;
-    }
   }
 }

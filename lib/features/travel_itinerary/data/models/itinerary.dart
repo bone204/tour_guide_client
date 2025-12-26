@@ -16,6 +16,8 @@ class Itinerary {
   final String status;
   final String createdAt;
   final String updatedAt;
+  final bool isLiked;
+  final int likeCount;
 
   const Itinerary({
     required this.id,
@@ -32,6 +34,8 @@ class Itinerary {
     required this.status,
     required this.createdAt,
     required this.updatedAt,
+    this.isLiked = false,
+    this.likeCount = 0,
   });
 
   factory Itinerary.fromJson(Map<String, dynamic> json) {
@@ -43,15 +47,16 @@ class Itinerary {
       numberOfDays: json['numberOfDays'] ?? 0,
       startDate: json['startDate'] ?? '',
       endDate: json['endDate'] ?? '',
-      stops: (json['stops'] as List? ?? [])
-          .map((e) => Stop.fromJson(e))
-          .toList(),
+      stops:
+          (json['stops'] as List? ?? []).map((e) => Stop.fromJson(e)).toList(),
       totalTravelPoints: json['totalTravelPoints'] ?? 0,
       averageRating: (json['averageRating'] as num?)?.toDouble() ?? 0,
       shared: json['shared'] ?? false,
       status: json['status'] ?? '',
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
+      isLiked: json['isLiked'] ?? false,
+      likeCount: json['favouriteTimes'] ?? 0,
     );
   }
 
@@ -71,6 +76,8 @@ class Itinerary {
       'status': status,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'isLiked': isLiked,
+      'likeCount': likeCount,
     };
   }
 
@@ -89,6 +96,8 @@ class Itinerary {
     String? status,
     String? createdAt,
     String? updatedAt,
+    bool? isLiked,
+    int? likeCount,
   }) {
     return Itinerary(
       id: id ?? this.id,
@@ -105,6 +114,8 @@ class Itinerary {
       status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      isLiked: isLiked ?? this.isLiked,
+      likeCount: likeCount ?? this.likeCount,
     );
   }
 }

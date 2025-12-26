@@ -26,6 +26,7 @@ import 'package:tour_guide_app/features/profile/data/data_source/profile_api_ser
 import 'package:tour_guide_app/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:tour_guide_app/features/profile/domain/repository/profile_repository.dart';
 import 'package:tour_guide_app/features/profile/domain/usecases/get_my_profile.dart';
+
 import 'package:tour_guide_app/features/settings/data/data_source/local/settings_local_service.dart';
 import 'package:tour_guide_app/features/settings/data/repository/settings_repository_impl.dart';
 import 'package:tour_guide_app/features/settings/domain/repository/settings_repository.dart';
@@ -34,14 +35,17 @@ import 'package:tour_guide_app/features/chat_bot/data/data_source/chat_api_servi
 import 'package:tour_guide_app/features/chat_bot/data/repository/chat_repository_impl.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/repository/chat_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
-import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/add_stop_media.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_draft_itineraries.dart';
+
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/like_itinerary_usecase.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/unlike_itinerary_usecase.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/stop_media/stop_media_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/edit_stop/edit_stop_cubit.dart';
 
 import 'package:tour_guide_app/features/travel_itinerary/data/repository/itinerary_repository_impl.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/repository/itinerary_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/create_itinerary.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/like_itinerary/like_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/edit_stop_details.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/edit_stop_reorder.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/edit_stop_time.dart';
@@ -143,12 +147,19 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<DeleteItineraryStopUseCase>(
     DeleteItineraryStopUseCase(sl()),
   );
-  sl.registerSingleton<AddStopMediaUseCase>(AddStopMediaUseCase());
-  sl.registerSingleton<DeleteStopMediaUseCase>(DeleteStopMediaUseCase());
-  sl.registerSingleton<PublicizeItineraryUseCase>(
-    PublicizeItineraryUseCase(sl()),
-  );
   sl.registerSingleton<GetMyProfileUseCase>(GetMyProfileUseCase());
+  sl.registerLazySingleton<DeleteStopMediaUseCase>(
+    () => DeleteStopMediaUseCase(),
+  );
+  sl.registerLazySingleton<PublicizeItineraryUseCase>(
+    () => PublicizeItineraryUseCase(sl()),
+  );
+
+  // Like Itinerary
+  sl.registerSingleton<LikeItineraryUseCase>(LikeItineraryUseCase());
+  sl.registerSingleton<UnlikeItineraryUseCase>(UnlikeItineraryUseCase());
+
+  sl.registerFactory<LikeItineraryCubit>(() => LikeItineraryCubit());
   sl.registerSingleton<UpdateInitialProfileUseCase>(
     UpdateInitialProfileUseCase(),
   );

@@ -135,4 +135,14 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   Future<Either<Failure, Itinerary>> publicizeItinerary(int itineraryId) {
     return _apiService.publicizeItinerary(itineraryId);
   }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> likeItinerary(int itineraryId) {
+    return _apiService.likeItinerary(itineraryId);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> unlikeItinerary(int itineraryId) {
+    return _apiService.unlikeItinerary(itineraryId);
+  }
 }
