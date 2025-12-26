@@ -17,7 +17,7 @@ class VehicleTypeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, String> typeLabels = {
       'car': AppLocalizations.of(context)!.car,
-      'motorbike': AppLocalizations.of(context)!.motorbike,
+      'bike': AppLocalizations.of(context)!.motorbike,
     };
 
     return Column(
@@ -74,7 +74,7 @@ class VehicleTypeSelector extends StatelessWidget {
                 ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
               ),
               items:
-                  ['car', 'motorbike'].map((type) {
+                  ['car', 'bike'].map((type) {
                     return DropdownMenuItem<String>(
                       value: type,
                       child: Text(

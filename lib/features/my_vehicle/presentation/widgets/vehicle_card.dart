@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 
@@ -139,17 +140,16 @@ class VehicleCard extends StatelessWidget {
     final locale = AppLocalizations.of(context)!;
     return Column(
       children: [
-        // Using Money icons or similar
         _buildInfoRow(
           context,
           AppIcons.calendar,
-          '${vehicle.pricePerDay} / ${locale.day}',
+          '${_formatCurrency(vehicle.pricePerDay)} / ${locale.day}',
         ),
         SizedBox(height: 6.h),
         _buildInfoRow(
           context,
-          AppIcons.star,
-          '${vehicle.averageRating} (${vehicle.totalRentals} ${locale.rentalCount})',
+          AppIcons.clock,
+          '${_formatCurrency(vehicle.pricePerHour)} / ${locale.hour}',
         ),
       ],
     );
@@ -228,5 +228,10 @@ class VehicleCard extends StatelessWidget {
     } catch (_) {
       return '';
     }
+  }
+
+  String _formatCurrency(double amount) {
+    final formatter = NumberFormat('#,###', 'vi_VN');
+    return '${formatter.format(amount)} đ';
   }
 }

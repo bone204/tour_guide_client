@@ -74,6 +74,7 @@ class _PricingStepState extends State<PricingStep> {
   }
 
   void _handleSubmit() {
+    FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
       widget.onSubmit(
         pricePerHour: double.tryParse(

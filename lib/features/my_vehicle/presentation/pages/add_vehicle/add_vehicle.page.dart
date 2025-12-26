@@ -38,7 +38,11 @@ class _AddVehicleViewState extends State<_AddVehicleView> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: CustomAppBar(title: locale.addVehicle, showBackButton: true, onBackPressed: () => Navigator.pop(context)),
+        appBar: CustomAppBar(
+          title: locale.addVehicle,
+          showBackButton: true,
+          onBackPressed: () => Navigator.pop(context),
+        ),
         body: BlocConsumer<AddVehicleCubit, AddVehicleState>(
           listener: (context, state) {
             if (state.status == AddVehicleStatus.success) {
@@ -59,7 +63,7 @@ class _AddVehicleViewState extends State<_AddVehicleView> {
                 state.approvedContracts.isEmpty) {
               return const Center(child: CircularProgressIndicator());
             }
-      
+
             return Column(
               children: [
                 Container(
@@ -69,8 +73,8 @@ class _AddVehicleViewState extends State<_AddVehicleView> {
                     totalSteps: 3,
                     stepTitles: [
                       locale.vehicleInfo,
-                      locale.document,
-                      locale.totalPrice,
+                      '${locale.document}\n',
+                      locale.totalPrice.replaceFirst(' ', '\n'),
                     ],
                   ),
                 ),

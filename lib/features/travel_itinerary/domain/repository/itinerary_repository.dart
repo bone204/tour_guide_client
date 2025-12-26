@@ -58,4 +58,8 @@ abstract class ItineraryRepository {
     int itineraryId,
     int stopId,
   );
+  Future<Either<Failure, ItineraryResponse>> getDraftItineraries(
+    String? province,
+  );
+  Future<Either<Failure, Itinerary>> cloneItinerary(int itineraryId);
 }

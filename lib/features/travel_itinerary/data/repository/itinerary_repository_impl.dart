@@ -23,10 +23,17 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   }
 
   @override
+  Future<Either<Failure, ItineraryResponse>> getDraftItineraries(
+    String? province,
+  ) {
+    return _apiService.getDraftItineraries(province);
+  }
+
+  @override
   Future<Either<Failure, ItineraryResponse>> getItineraries(
     ItineraryQuery query,
   ) {
-    return _apiService.getItineraries(query.toQuery());
+    return _apiService.getItineraries(query);
   }
 
   @override
@@ -122,5 +129,10 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
     int stopId,
   ) {
     return _apiService.deleteStop(itineraryId, stopId);
+  }
+
+  @override
+  Future<Either<Failure, Itinerary>> cloneItinerary(int itineraryId) {
+    return _apiService.cloneItinerary(itineraryId);
   }
 }

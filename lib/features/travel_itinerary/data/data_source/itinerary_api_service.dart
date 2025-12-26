@@ -10,6 +10,7 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_t
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_reorder_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_details_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary_query.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/service_locator.dart';
@@ -17,7 +18,7 @@ import 'package:tour_guide_app/service_locator.dart';
 abstract class ItineraryApiService {
   Future<Either<Failure, ItineraryResponse>> getItineraryMe();
   Future<Either<Failure, ItineraryResponse>> getItineraries(
-    Map<String, dynamic> query,
+    ItineraryQuery query,
   );
   Future<Either<Failure, Itinerary>> getItineraryDetail(int id);
   Future<Either<Failure, SuccessResponse>> deleteItinerary(int id);
@@ -61,6 +62,10 @@ abstract class ItineraryApiService {
     int itineraryId,
     int stopId,
   );
+  Future<Either<Failure, ItineraryResponse>> getDraftItineraries(
+    String? province,
+  );
+  Future<Either<Failure, Itinerary>> cloneItinerary(int itineraryId);
 }
 
 class ItineraryApiServiceImpl extends ItineraryApiService {
@@ -84,12 +89,12 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
 
   @override
   Future<Either<Failure, ItineraryResponse>> getItineraries(
-    Map<String, dynamic> query,
+    ItineraryQuery query,
   ) async {
     try {
       final response = await sl<DioClient>().get(
         ApiUrls.itinerary,
-        queryParameters: query,
+        queryParameters: query.toQuery(),
       );
       final itineraryResponse = ItineraryResponse.fromJson(response.data);
       return Right(itineraryResponse);
@@ -386,6 +391,49 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
       );
       final stop = Stop.fromJson(response.data);
       return Right(stop);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ItineraryResponse>> getDraftItineraries(
+    String? province,
+  ) async {
+    try {
+      final response = await sl<DioClient>().get(
+        '${ApiUrls.itinerary}/drafts',
+        queryParameters: province != null ? {'province': province} : null,
+      );
+      final itineraryResponse = ItineraryResponse.fromJson(response.data);
+      return Right(itineraryResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Itinerary>> cloneItinerary(int itineraryId) async {
+    try {
+      final response = await sl<DioClient>().post(
+        '${ApiUrls.itinerary}/$itineraryId/clone',
+      );
+      final itinerary = Itinerary.fromJson(response.data);
+      return Right(itinerary);
     } on DioException catch (e) {
       return Left(
         ServerFailure(
