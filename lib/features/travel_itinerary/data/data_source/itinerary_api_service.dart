@@ -65,7 +65,7 @@ abstract class ItineraryApiService {
   Future<Either<Failure, ItineraryResponse>> getDraftItineraries(
     String? province,
   );
-  Future<Either<Failure, Itinerary>> cloneItinerary(int itineraryId);
+  Future<Either<Failure, Itinerary>> publicizeItinerary(int itineraryId);
 }
 
 class ItineraryApiServiceImpl extends ItineraryApiService {
@@ -427,10 +427,10 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
   }
 
   @override
-  Future<Either<Failure, Itinerary>> cloneItinerary(int itineraryId) async {
+  Future<Either<Failure, Itinerary>> publicizeItinerary(int itineraryId) async {
     try {
       final response = await sl<DioClient>().post(
-        '${ApiUrls.itinerary}/$itineraryId/clone',
+        '${ApiUrls.itinerary}/$itineraryId/publicize',
       );
       final itinerary = Itinerary.fromJson(response.data);
       return Right(itinerary);

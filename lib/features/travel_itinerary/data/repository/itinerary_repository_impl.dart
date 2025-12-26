@@ -132,7 +132,7 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   }
 
   @override
-  Future<Either<Failure, Itinerary>> cloneItinerary(int itineraryId) {
-    return _apiService.cloneItinerary(itineraryId);
+  Future<Either<Failure, Itinerary>> publicizeItinerary(int itineraryId) {
+    return _apiService.publicizeItinerary(itineraryId);
   }
 }

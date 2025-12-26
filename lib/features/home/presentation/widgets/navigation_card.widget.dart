@@ -83,7 +83,7 @@ class _NavigationCardState extends State<NavigationCard> {
       {
         'icon': Icons.map_rounded,
         'title': AppLocalizations.of(context)!.itinerary,
-        'route': AppRouteConstant.itineraryProvinceSelection,
+        'route': AppRouteConstant.itineraryExplore,
         'color': AppColors.primaryBlue,
         'isIconData': true,
       },

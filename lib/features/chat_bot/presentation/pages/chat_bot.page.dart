@@ -269,31 +269,41 @@ class _ChatMessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isUser = message.isUser;
-    final alignment = isUser ? Alignment.centerRight : Alignment.centerLeft;
 
-    return Align(
-      alignment: alignment,
-      child: Column(
-        crossAxisAlignment:
-            isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: isUser ? 0 : 0, vertical: 4.h),
+      child: Row(
+        mainAxisAlignment:
+            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (message.content.trim().isNotEmpty)
-            _buildMessageContent(context, isUser),
-          if (message.hasSuggestions) ...[
-            if (message.content.trim().isNotEmpty) SizedBox(height: 12.h),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:
-                  message.suggestions
-                      .map(
-                        (item) => Padding(
-                          padding: EdgeInsets.only(bottom: 12.h),
-                          child: _ChatSuggestionCard(item: item),
-                        ),
-                      )
-                      .toList(),
+          if (!isUser) ...[const _BotAvatar(), SizedBox(width: 8.w)],
+          Flexible(
+            child: Column(
+              crossAxisAlignment:
+                  isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              children: [
+                if (message.content.trim().isNotEmpty)
+                  _buildMessageContent(context, isUser),
+                if (message.hasSuggestions) ...[
+                  if (message.content.trim().isNotEmpty) SizedBox(height: 12.h),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:
+                        message.suggestions
+                            .map(
+                              (item) => Padding(
+                                padding: EdgeInsets.only(bottom: 12.h),
+                                child: _ChatSuggestionCard(item: item),
+                              ),
+                            )
+                            .toList(),
+                  ),
+                ],
+              ],
             ),
-          ],
+          ),
+          if (isUser) ...[SizedBox(width: 8.w), const _UserAvatar()],
         ],
       ),
     );
@@ -313,25 +323,31 @@ class _ChatMessageBubble extends StatelessWidget {
             ? AppColors.primaryWhite
             : AppColors.textPrimary;
     final borderRadius = BorderRadius.only(
-      topLeft: Radius.circular(20.r),
-      topRight: Radius.circular(20.r),
-      bottomLeft: Radius.circular(isUser ? 20.r : 4.r),
-      bottomRight: Radius.circular(isUser ? 4.r : 20.r),
+      topLeft: Radius.circular(isUser ? 18.r : 4.r),
+      topRight: Radius.circular(isUser ? 4.r : 18.r),
+      bottomLeft: Radius.circular(18.r),
+      bottomRight: Radius.circular(18.r),
     );
 
     return Container(
-      constraints: BoxConstraints(maxWidth: 280.w),
+      constraints: BoxConstraints(maxWidth: 0.75.sw),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: borderRadius,
         boxShadow:
             message.isError || isUser
-                ? []
+                ? [
+                  BoxShadow(
+                    color: AppColors.primaryBlue.withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
                 : [
                   BoxShadow(
-                    color: AppColors.primaryBlack.withOpacity(0.06),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
+                    color: AppColors.primaryBlack.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
                 ],
       ),
@@ -340,6 +356,60 @@ class _ChatMessageBubble extends StatelessWidget {
         content: message.content,
         textColor: textColor,
         context: context,
+        isUser: isUser,
+      ),
+    );
+  }
+}
+
+class _BotAvatar extends StatelessWidget {
+  const _BotAvatar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 32.w,
+      height: 32.w,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [AppColors.primaryBlue, AppColors.primaryLightBlue],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryBlue.withOpacity(0.2),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Icon(
+        Icons.smart_toy_rounded,
+        color: AppColors.primaryWhite,
+        size: 18.sp,
+      ),
+    );
+  }
+}
+
+class _UserAvatar extends StatelessWidget {
+  const _UserAvatar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 32.w,
+      height: 32.w,
+      decoration: BoxDecoration(
+        color: AppColors.secondaryGrey.withOpacity(0.2),
+        shape: BoxShape.circle,
+      ),
+      child: Icon(
+        Icons.person_rounded,
+        color: AppColors.textSubtitle,
+        size: 18.sp,
       ),
     );
   }
@@ -386,8 +456,8 @@ class _ChatSuggestionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      width: 0.75.sw,
+      padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: AppColors.primaryWhite,
         borderRadius: BorderRadius.circular(16.r),
@@ -397,9 +467,9 @@ class _ChatSuggestionCard extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlack.withOpacity(0.06),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: AppColors.primaryBlack.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -409,7 +479,7 @@ class _ChatSuggestionCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                 decoration: BoxDecoration(
                   color: _chipColor(),
                   borderRadius: BorderRadius.circular(20.r),
@@ -419,7 +489,7 @@ class _ChatSuggestionCard extends StatelessWidget {
                   children: [
                     Icon(
                       _getIconByType(),
-                      size: 14.sp,
+                      size: 12.sp,
                       color: _chipTextColor(),
                     ),
                     SizedBox(width: 4.w),
@@ -428,6 +498,7 @@ class _ChatSuggestionCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: _chipTextColor(),
                         fontWeight: FontWeight.w700,
+                        fontSize: 10.sp,
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -436,31 +507,32 @@ class _ChatSuggestionCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          SizedBox(height: 8.h),
           Text(
             item.name,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w700,
             ),
           ),
           if ((item.address ?? '').isNotEmpty) ...[
-            SizedBox(height: 8.h),
+            SizedBox(height: 4.h),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Icon(
                   Icons.location_on_outlined,
-                  size: 16.sp,
+                  size: 14.sp,
                   color: AppColors.textSubtitle,
                 ),
-                SizedBox(width: 6.w),
+                SizedBox(width: 4.w),
                 Expanded(
                   child: Text(
                     item.address!,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSubtitle,
-                      height: 1.4,
+                      fontSize: 11.sp,
+                      height: 1.3,
                     ),
                   ),
                 ),
@@ -473,9 +545,10 @@ class _ChatSuggestionCard extends StatelessWidget {
               item.description!,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textPrimary.withOpacity(0.7),
-                height: 1.5,
+                fontSize: 12.sp,
+                height: 1.4,
               ),
-              maxLines: 3,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           ],
@@ -490,32 +563,43 @@ class _ChatTypingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.only(top: 4.h),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-        decoration: BoxDecoration(
-          color: AppColors.primaryWhite,
-          borderRadius: BorderRadius.circular(20.r),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primaryBlack.withOpacity(0.06),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          const _BotAvatar(),
+          SizedBox(width: 8.w),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+            decoration: BoxDecoration(
+              color: AppColors.primaryWhite,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(18.r),
+                topRight: Radius.circular(18.r),
+                bottomRight: Radius.circular(18.r),
+                bottomLeft: Radius.circular(4.r),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primaryBlack.withOpacity(0.05),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _TypingDot(),
-            SizedBox(width: 6.w),
-            _TypingDot(delay: Duration(milliseconds: 150)),
-            SizedBox(width: 6.w),
-            _TypingDot(delay: Duration(milliseconds: 300)),
-          ],
-        ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _TypingDot(),
+                SizedBox(width: 4.w),
+                _TypingDot(delay: Duration(milliseconds: 150)),
+                SizedBox(width: 4.w),
+                _TypingDot(delay: Duration(milliseconds: 300)),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -540,7 +624,7 @@ class _TypingDotState extends State<_TypingDot>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 600),
     );
 
     _scaleAnimation = Tween<double>(
@@ -566,10 +650,10 @@ class _TypingDotState extends State<_TypingDot>
     return ScaleTransition(
       scale: _scaleAnimation,
       child: Container(
-        width: 8.w,
-        height: 8.w,
+        width: 6.w,
+        height: 6.w,
         decoration: BoxDecoration(
-          color: AppColors.primaryBlue,
+          color: AppColors.textSubtitle,
           shape: BoxShape.circle,
         ),
       ),
@@ -585,11 +669,12 @@ class _ChatWelcomeSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        SizedBox(height: 40.h),
         Container(
-          width: 64.w,
-          height: 64.w,
+          width: 80.w,
+          height: 80.w,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [AppColors.primaryBlue, AppColors.primaryLightBlue],
@@ -599,8 +684,8 @@ class _ChatWelcomeSection extends StatelessWidget {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: AppColors.primaryBlue.withOpacity(0.3),
-                blurRadius: 20,
+                color: AppColors.primaryBlue.withOpacity(0.25),
+                blurRadius: 24,
                 offset: const Offset(0, 8),
               ),
             ],
@@ -608,42 +693,37 @@ class _ChatWelcomeSection extends StatelessWidget {
           child: Icon(
             Icons.smart_toy_rounded,
             color: AppColors.primaryWhite,
-            size: 32.sp,
+            size: 40.sp,
           ),
         ),
         SizedBox(height: 24.h),
         Text(
           'Xin chào! 👋',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w800,
           ),
         ),
         SizedBox(height: 8.h),
         Text(
           'Tôi là trợ lý du lịch AI của Traveline',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        SizedBox(height: 12.h),
-        Text(
-          'Bạn có thể hỏi tôi về điểm đến, nhà hàng, khách sạn và nhiều hơn nữa. Hãy thử các câu hỏi gợi ý bên dưới!',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: AppColors.textSubtitle,
-            height: 1.5,
+            fontWeight: FontWeight.w500,
           ),
         ),
-        SizedBox(height: 28.h),
-        Text(
-          'Câu hỏi gợi ý',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w600,
+        SizedBox(height: 40.h),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Gợi ý cho bạn',
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
-        SizedBox(height: 12.h),
+        SizedBox(height: 16.h),
         _buildQuickSuggestions(context),
       ],
     );
@@ -707,34 +787,48 @@ class _QuickSuggestionChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.08),
+            color: AppColors.primaryWhite,
             borderRadius: BorderRadius.circular(16.r),
-            border: Border.all(color: color.withOpacity(0.2), width: 1),
+            border: Border.all(
+              color: AppColors.secondaryGrey.withOpacity(0.3),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primaryBlack.withOpacity(0.02),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Row(
             children: [
               Container(
-                width: 36.w,
-                height: 36.w,
+                padding: EdgeInsets.all(10.w),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(10.r),
+                  color: color.withOpacity(0.1),
+                  shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: color, size: 20.sp),
+                child: Icon(icon, color: color, size: 18.sp),
               ),
-              SizedBox(width: 12.w),
+              SizedBox(width: 16.w),
               Expanded(
                 child: Text(
                   label,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w500,
+                    height: 1.3,
                   ),
                 ),
               ),
-              Icon(Icons.arrow_forward_ios_rounded, color: color, size: 14.sp),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: AppColors.textSubtitle.withOpacity(0.5),
+                size: 14.sp,
+              ),
             ],
           ),
         ),
@@ -749,15 +843,28 @@ class _FormattedMessageText extends StatelessWidget {
     required this.content,
     required this.textColor,
     required this.context,
+    required this.isUser,
   });
 
   final String content;
   final Color textColor;
   final BuildContext context;
+  final bool isUser;
 
   @override
   Widget build(BuildContext context) {
-    // Parse và format text
+    // Nếu là user thì hiển thị text bình thường
+    if (isUser) {
+      return Text(
+        content,
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: textColor,
+          height: 1.5,
+          fontSize: 15.sp,
+        ),
+      );
+    }
+
     final lines = _parseContent(content);
 
     return Column(
@@ -769,7 +876,7 @@ class _FormattedMessageText extends StatelessWidget {
             final isLast = index == lines.length - 1;
 
             return Padding(
-              padding: EdgeInsets.only(bottom: isLast ? 0 : 8.h),
+              padding: EdgeInsets.only(bottom: isLast ? 0 : 6.h),
               child: _buildLine(line),
             );
           }).toList(),
@@ -782,38 +889,51 @@ class _FormattedMessageText extends StatelessWidget {
 
     for (var rawLine in rawLines) {
       final trimmed = rawLine.trim();
-      if (trimmed.isEmpty) continue;
+      if (trimmed.isEmpty) {
+        // Add empty line for spacing
+        if (lines.isNotEmpty && lines.last.type != _LineType.empty) {
+          lines.add(const _MessageLine(content: '', type: _LineType.empty));
+        }
+        continue;
+      }
 
-      // Kiểm tra bullet point (*, -, •)
-      if (trimmed.startsWith('*') ||
-          trimmed.startsWith('-') ||
-          trimmed.startsWith('•')) {
+      // Check for bullet points
+      if (trimmed.startsWith('* ') ||
+          trimmed.startsWith('- ') ||
+          trimmed.startsWith('• ')) {
         final content = trimmed.substring(1).trim();
         if (content.isNotEmpty) {
           lines.add(_MessageLine(content: content, type: _LineType.bullet));
         }
       }
-      // Normal text (có thể chứa inline bold **text**)
+      // Check for numbered list (simple check for 1. 2. etc)
+      else if (RegExp(r'^\d+\.\s').hasMatch(trimmed)) {
+        lines.add(_MessageLine(content: trimmed, type: _LineType.numbered));
+      }
+      // Normal text
       else {
         lines.add(_MessageLine(content: trimmed, type: _LineType.normal));
       }
     }
-
     return lines;
   }
 
   Widget _buildLine(_MessageLine line) {
+    if (line.type == _LineType.empty) {
+      return SizedBox(height: 8.h);
+    }
+
     if (line.type == _LineType.bullet) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 6.h, right: 8.w),
+            padding: EdgeInsets.only(top: 8.h, right: 10.w),
             child: Container(
               width: 5.w,
               height: 5.w,
               decoration: BoxDecoration(
-                color: textColor.withOpacity(0.8),
+                color: AppColors.primaryBlue,
                 shape: BoxShape.circle,
               ),
             ),
@@ -823,37 +943,64 @@ class _FormattedMessageText extends StatelessWidget {
       );
     }
 
-    // Normal line
+    if (line.type == _LineType.numbered) {
+      // Split number and content
+      final match = RegExp(r'^(\d+\.)\s+(.*)').firstMatch(line.content);
+      if (match != null) {
+        final number = match.group(1) ?? '';
+        final content = match.group(2) ?? '';
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              number,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.primaryBlue,
+                height: 1.6,
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Expanded(child: _buildRichText(content)),
+          ],
+        );
+      }
+    }
+
     return _buildRichText(line.content);
   }
 
-  /// Build RichText với inline bold formatting
   Widget _buildRichText(String text) {
     final spans = _parseInlineFormatting(text);
-    final baseStyle = Theme.of(
-      context,
-    ).textTheme.bodyMedium?.copyWith(color: textColor, height: 1.5);
+    // Base style for bot text
+    final baseStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+      color: AppColors.textPrimary,
+      height: 1.6,
+      fontSize: 15.sp,
+    );
 
     return RichText(text: TextSpan(children: spans, style: baseStyle));
   }
 
-  /// Parse inline bold (**text**) trong text
   List<TextSpan> _parseInlineFormatting(String text) {
     final spans = <TextSpan>[];
+    // Pattern to match **bold** text
     final regex = RegExp(r'\*\*(.+?)\*\*');
     int lastMatchEnd = 0;
 
-    final normalStyle = Theme.of(
-      context,
-    ).textTheme.bodyMedium?.copyWith(color: textColor);
+    final normalStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+      color: AppColors.textPrimary,
+      height: 1.6,
+      fontSize: 15.sp,
+    );
 
     final boldStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-      color: textColor,
+      color: AppColors.textPrimary,
       fontWeight: FontWeight.w700,
+      height: 1.6,
+      fontSize: 15.sp,
     );
 
     for (final match in regex.allMatches(text)) {
-      // Add text trước bold
       if (match.start > lastMatchEnd) {
         spans.add(
           TextSpan(
@@ -863,25 +1010,22 @@ class _FormattedMessageText extends StatelessWidget {
         );
       }
 
-      // Add bold text
       spans.add(
         TextSpan(
-          text: match.group(1), // Text bên trong ** **
-          style: boldStyle,
+          text: match.group(1),
+          style: boldStyle, // Apply bold style
         ),
       );
 
       lastMatchEnd = match.end;
     }
 
-    // Add phần text còn lại sau match cuối cùng
     if (lastMatchEnd < text.length) {
       spans.add(
         TextSpan(text: text.substring(lastMatchEnd), style: normalStyle),
       );
     }
 
-    // Nếu không có bold nào, return toàn bộ text
     if (spans.isEmpty) {
       spans.add(TextSpan(text: text, style: normalStyle));
     }
@@ -890,7 +1034,7 @@ class _FormattedMessageText extends StatelessWidget {
   }
 }
 
-enum _LineType { normal, bullet }
+enum _LineType { normal, bullet, numbered, empty }
 
 class _MessageLine {
   final String content;

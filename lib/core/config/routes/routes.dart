@@ -36,6 +36,7 @@ import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_d
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_room_list.page.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_booking_info.page.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/presentation/itinerary_explore.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/create_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/itinerary_detail.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/add_stop.page.dart';
@@ -326,6 +327,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const TrainSearchPage(),
+        );
+
+      case AppRouteConstant.itineraryExplore:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const ItineraryExplorePage(),
         );
 
       case AppRouteConstant.itineraryProvinceSelection:

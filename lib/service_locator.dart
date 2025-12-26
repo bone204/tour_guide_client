@@ -61,7 +61,7 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_itinerary_stop.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/delete_stop/delete_stop_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_stop_media.dart';
-import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/clone_itinerary.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/publicize_itinerary.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/contract_detail/contract_detail_cubit.dart';
@@ -69,7 +69,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/create_cont
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_my_vehicles/get_my_vehicles_cubit.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_email/verify_email_cubit.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_phone/verify_phone_cubit.dart';
-
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/get_draft_itineraries/get_draft_itineraries_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/data_source/my_vehicle_api_service.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/repository/my_vehicle_repository_impl.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/repository/my_vehicle_repository.dart';
@@ -128,7 +128,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetProvincesUseCase>(GetProvincesUseCase());
   sl.registerSingleton<GetItineraryMeUseCase>(GetItineraryMeUseCase());
   sl.registerSingleton<GetItinerariesUseCase>(GetItinerariesUseCase());
-  sl.registerSingleton<GetDraftItinerariesUseCase>(GetDraftItinerariesUseCase());
+  sl.registerSingleton<GetDraftItinerariesUseCase>(
+    GetDraftItinerariesUseCase(),
+  );
   sl.registerSingleton<GetItineraryDetailUseCase>(GetItineraryDetailUseCase());
   sl.registerSingleton<CreateItineraryUseCase>(CreateItineraryUseCase());
   sl.registerSingleton<AddStopUseCase>(AddStopUseCase());
@@ -142,9 +144,10 @@ void setUpServiceLocator(SharedPreferences prefs) {
     DeleteItineraryStopUseCase(sl()),
   );
   sl.registerSingleton<AddStopMediaUseCase>(AddStopMediaUseCase());
-  sl.registerSingleton<AddStopMediaUseCase>(AddStopMediaUseCase());
   sl.registerSingleton<DeleteStopMediaUseCase>(DeleteStopMediaUseCase());
-  sl.registerSingleton<CloneItineraryUseCase>(CloneItineraryUseCase(sl()));
+  sl.registerSingleton<PublicizeItineraryUseCase>(
+    PublicizeItineraryUseCase(sl()),
+  );
   sl.registerSingleton<GetMyProfileUseCase>(GetMyProfileUseCase());
   sl.registerSingleton<UpdateInitialProfileUseCase>(
     UpdateInitialProfileUseCase(),
@@ -190,6 +193,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
     () => CreateItineraryCubit(createItineraryUseCase: sl()),
   );
   sl.registerFactory<GetItineraryMeCubit>(() => GetItineraryMeCubit(sl()));
+  sl.registerFactory<GetDraftItinerariesCubit>(
+    () => GetDraftItinerariesCubit(sl()),
+  );
   sl.registerFactory<GetItineraryDetailCubit>(
     () => GetItineraryDetailCubit(sl()),
   );
