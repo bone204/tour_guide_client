@@ -4,6 +4,7 @@ import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
+import 'package:tour_guide_app/core/services/feedback/data/models/check_content_response.dart';
 import 'package:tour_guide_app/core/services/feedback/data/models/create_feedback_request.dart';
 import 'package:tour_guide_app/core/services/feedback/data/models/feedback.dart';
 import 'package:tour_guide_app/core/services/feedback/data/models/feedback_query.dart';
@@ -15,6 +16,8 @@ abstract class FeedbackApiService {
   );
 
   Future<Either<Failure, FeedbackResponse>> getFeedback(FeedbackQuery query);
+
+  Future<Either<Failure, CheckContentResponse>> checkContent(String content);
 }
 
 class FeedbackApiServiceImpl extends FeedbackApiService {
@@ -52,6 +55,29 @@ class FeedbackApiServiceImpl extends FeedbackApiService {
       );
       final feedbackResponse = FeedbackResponse.fromJson(response.data);
       return Right(feedbackResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message']?.toString() ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CheckContentResponse>> checkContent(
+    String content,
+  ) async {
+    try {
+      final response = await sl<DioClient>().post(
+        '${ApiUrls.feedback}/check-content',
+        data: {'content': content},
+      );
+      final checkResponse = CheckContentResponse.fromJson(response.data);
+      return Right(checkResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

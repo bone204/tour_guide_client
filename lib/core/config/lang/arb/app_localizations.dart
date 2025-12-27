@@ -4090,6 +4090,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Foods & Drinks'**
   String get foodsDrinks;
+
+  /// No description provided for @feedbackContentRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Content rejected: {reason}'**
+  String feedbackContentRejected(String reason);
+
+  /// No description provided for @feedbackContentUnderReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Your comment is under review but has been posted.'**
+  String get feedbackContentUnderReview;
+
+  /// No description provided for @toxicity_high.
+  ///
+  /// In en, this message translates to:
+  /// **'High toxicity detected'**
+  String get toxicity_high;
+
+  /// No description provided for @spam_high.
+  ///
+  /// In en, this message translates to:
+  /// **'Spam detected'**
+  String get spam_high;
+
+  /// No description provided for @rule_reject.
+  ///
+  /// In en, this message translates to:
+  /// **'Violated community rules'**
+  String get rule_reject;
+
+  /// No description provided for @toxicity_manual.
+  ///
+  /// In en, this message translates to:
+  /// **'Potential toxicity'**
+  String get toxicity_manual;
+
+  /// No description provided for @spam_manual.
+  ///
+  /// In en, this message translates to:
+  /// **'Potential spam'**
+  String get spam_manual;
+
+  /// No description provided for @rule_manual.
+  ///
+  /// In en, this message translates to:
+  /// **'Potential rule violation'**
+  String get rule_manual;
+
+  /// No description provided for @too_short.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments must be at least 5 characters'**
+  String get too_short;
+
+  /// No description provided for @profanity.
+  ///
+  /// In en, this message translates to:
+  /// **'Profanity detected'**
+  String get profanity;
+
+  /// No description provided for @sexual_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Sexual content detected'**
+  String get sexual_content;
+
+  /// No description provided for @harassment.
+  ///
+  /// In en, this message translates to:
+  /// **'Harassment detected'**
+  String get harassment;
+
+  /// No description provided for @hate_speech.
+  ///
+  /// In en, this message translates to:
+  /// **'Hate speech detected'**
+  String get hate_speech;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

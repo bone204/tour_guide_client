@@ -1284,5 +1284,25 @@
   "photography": "Photography",
   "entertainment": "Entertainment",
   "mountainForest": "Mountain & Forest",
-  "foodsDrinks": "Foods & Drinks"
+  "foodsDrinks": "Foods & Drinks",
+  "feedbackContentRejected": "Content rejected: {reason}",
+  "@feedbackContentRejected": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "feedbackContentUnderReview": "Your comment is under review but has been posted.",
+  "toxicity_high": "High toxicity detected",
+  "spam_high": "Spam detected",
+  "rule_reject": "Violated community rules",
+  "toxicity_manual": "Potential toxicity",
+  "spam_manual": "Potential spam",
+  "rule_manual": "Potential rule violation",
+  "too_short": "Comments must be at least 5 characters",
+  "profanity": "Profanity detected",
+  "sexual_content": "Sexual content detected",
+  "harassment": "Harassment detected",
+  "hate_speech": "Hate speech detected"
 }

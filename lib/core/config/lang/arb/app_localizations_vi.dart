@@ -2089,4 +2089,45 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get foodsDrinks => 'Ẩm thực';
+
+  @override
+  String feedbackContentRejected(String reason) {
+    return 'Nội dung bị từ chối: $reason';
+  }
+
+  @override
+  String get feedbackContentUnderReview => 'Bình luận của bạn đang được xem xét nhưng đã được đăng.';
+
+  @override
+  String get toxicity_high => 'Phát hiện ngôn từ độc hại';
+
+  @override
+  String get spam_high => 'Phát hiện spam';
+
+  @override
+  String get rule_reject => 'Vi phạm quy tắc cộng đồng';
+
+  @override
+  String get toxicity_manual => 'Nghi ngờ độc hại';
+
+  @override
+  String get spam_manual => 'Nghi ngờ spam';
+
+  @override
+  String get rule_manual => 'Nghi ngờ vi phạm quy tắc';
+
+  @override
+  String get too_short => 'Bình luận phải có ít nhất 5 ký tự';
+
+  @override
+  String get profanity => 'Phát hiện ngôn từ tục tĩu';
+
+  @override
+  String get sexual_content => 'Nội dung khiêu dâm';
+
+  @override
+  String get harassment => 'Quấy rối';
+
+  @override
+  String get hate_speech => 'Ngôn từ thù địch';
 }

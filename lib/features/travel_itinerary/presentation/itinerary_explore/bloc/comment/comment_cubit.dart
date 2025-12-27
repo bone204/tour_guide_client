@@ -3,16 +3,19 @@ import 'package:tour_guide_app/core/services/feedback/data/models/create_feedbac
 import 'package:tour_guide_app/core/services/feedback/data/models/feedback_query.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/create_feedback.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/get_feedback.dart';
+import 'package:tour_guide_app/core/services/feedback/domain/usecases/check_content.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_state.dart';
 
 class CommentCubit extends Cubit<CommentState> {
   final GetFeedbackUseCase getFeedbackUseCase;
   final CreateFeedbackUseCase createFeedbackUseCase;
+  final CheckContentUseCase checkContentUseCase;
   static const int _limit = 10;
 
   CommentCubit({
     required this.getFeedbackUseCase,
     required this.createFeedbackUseCase,
+    required this.checkContentUseCase,
   }) : super(CommentInitial());
 
   Future<void> loadComments(int itineraryId) async {
@@ -84,23 +87,96 @@ class CommentCubit extends Cubit<CommentState> {
   }
 
   Future<void> addComment(int itineraryId, String content) async {
-    // Optimistic update or refresh? Refresh is safer for now.
-    // Or just append if successful.
+    if (content.trim().length < 5) {
+      _emitError('too_short');
+      return;
+    }
+    // 1. Check content first
+    final checkResult = await checkContentUseCase(content);
 
-    final request = CreateFeedbackRequest(
-      star: 5,
+    await checkResult.fold(
+      (failure) async {
+        _emitError(failure.message);
+      },
+      (checkResponse) async {
+        // 2. Decide based on checkResponse
+        if (checkResponse.decision == 'reject') {
+          if (!isClosed) {
+            // Map reasons to localization keys
+            final reasons = checkResponse.reasons ?? [];
+            final localizedReasons =
+                reasons.isNotEmpty ? reasons.join(',') : 'rule_reject';
+            _emitError('feedbackContentRejected:$localizedReasons');
+          }
+          return;
+        }
+
+        String? warningMsg;
+        if (checkResponse.decision == 'manual_review') {
+          warningMsg = 'feedbackContentUnderReview';
+        }
+
+        // 3. If approved or manual_review, proceed to create
+        final request = CreateFeedbackRequest(
+          star: 5,
+          travelRouteId: itineraryId,
+          comment: content,
+        );
+
+        final createResult = await createFeedbackUseCase(request);
+
+        createResult.fold(
+          (failure) {
+            _emitError(failure.message);
+          },
+          (success) {
+            _reloadAndShowWarning(itineraryId, warningMsg);
+          },
+        );
+      },
+    );
+  }
+
+  void _emitError(String message) {
+    if (isClosed) return;
+    if (state is CommentLoaded) {
+      final currentState = state as CommentLoaded;
+      emit(currentState.copyWith(errorMessage: message));
+    } else {
+      emit(CommentError(message));
+    }
+  }
+
+  Future<void> _reloadAndShowWarning(
+    int itineraryId,
+    String? warningMsg,
+  ) async {
+    if (isClosed) return;
+    emit(CommentLoading());
+
+    final query = FeedbackQuery(
       travelRouteId: itineraryId,
-      comment: content,
+      offset: 0,
+      limit: _limit,
     );
 
-    final result = await createFeedbackUseCase(request);
+    final result = await getFeedbackUseCase(query);
 
     result.fold(
       (failure) {
         if (!isClosed) emit(CommentError(failure.message));
       },
-      (success) {
-        loadComments(itineraryId);
+      (response) {
+        if (!isClosed) {
+          emit(
+            CommentLoaded(
+              comments: response.items,
+              params: query,
+              hasReachedEnd: response.items.length < _limit,
+              warningMessage: warningMsg,
+            ),
+          );
+        }
       },
     );
   }

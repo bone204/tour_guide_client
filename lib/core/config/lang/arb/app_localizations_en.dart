@@ -2083,4 +2083,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get foodsDrinks => 'Foods & Drinks';
+
+  @override
+  String feedbackContentRejected(String reason) {
+    return 'Content rejected: $reason';
+  }
+
+  @override
+  String get feedbackContentUnderReview => 'Your comment is under review but has been posted.';
+
+  @override
+  String get toxicity_high => 'High toxicity detected';
+
+  @override
+  String get spam_high => 'Spam detected';
+
+  @override
+  String get rule_reject => 'Violated community rules';
+
+  @override
+  String get toxicity_manual => 'Potential toxicity';
+
+  @override
+  String get spam_manual => 'Potential spam';
+
+  @override
+  String get rule_manual => 'Potential rule violation';
+
+  @override
+  String get too_short => 'Comments must be at least 5 characters';
+
+  @override
+  String get profanity => 'Profanity detected';
+
+  @override
+  String get sexual_content => 'Sexual content detected';
+
+  @override
+  String get harassment => 'Harassment detected';
+
+  @override
+  String get hate_speech => 'Hate speech detected';
 }

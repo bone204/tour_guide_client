@@ -39,6 +39,7 @@ import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itiner
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_draft_itineraries.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/create_feedback.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/get_feedback.dart';
+import 'package:tour_guide_app/core/services/feedback/domain/usecases/check_content.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/repositories/feedback_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/use_itinerary.dart'; // Add this
@@ -159,6 +160,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<EditStopDetailsUseCase>(EditStopDetailsUseCase());
   sl.registerSingleton<CreateFeedbackUseCase>(CreateFeedbackUseCase());
   sl.registerSingleton<GetFeedbackUseCase>(GetFeedbackUseCase());
+  sl.registerSingleton<CheckContentUseCase>(CheckContentUseCase());
   sl.registerSingleton<DeleteItineraryStopUseCase>(
     DeleteItineraryStopUseCase(sl()),
   );
@@ -255,7 +257,11 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<VerifyEmailCubit>(() => VerifyEmailCubit());
   sl.registerFactory<VerifyPhoneCubit>(() => VerifyPhoneCubit());
   sl.registerFactory<CommentCubit>(
-    () => CommentCubit(getFeedbackUseCase: sl(), createFeedbackUseCase: sl()),
+    () => CommentCubit(
+      getFeedbackUseCase: sl(),
+      createFeedbackUseCase: sl(),
+      checkContentUseCase: sl(),
+    ),
   );
   sl.registerFactory<UpdateHobbiesCubit>(
     () => UpdateHobbiesCubit(updateHobbiesUseCase: sl()),

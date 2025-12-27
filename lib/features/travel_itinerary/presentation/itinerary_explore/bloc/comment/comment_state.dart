@@ -24,24 +24,41 @@ class CommentLoaded extends CommentState {
     required this.params,
     required this.hasReachedEnd,
     this.isLoadingMore = false,
+    this.warningMessage,
+    this.errorMessage,
   });
+
+  final String? warningMessage;
+  final String? errorMessage;
 
   CommentLoaded copyWith({
     List<Feedback>? comments,
     FeedbackQuery? params,
     bool? hasReachedEnd,
     bool? isLoadingMore,
+    String? warningMessage,
+    String? errorMessage,
   }) {
     return CommentLoaded(
       comments: comments ?? this.comments,
       params: params ?? this.params,
       hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      warningMessage: warningMessage ?? this.warningMessage,
+      errorMessage:
+          errorMessage, // Do not preserve error message by default to allow clearing
     );
   }
 
   @override
-  List<Object?> get props => [comments, params, hasReachedEnd, isLoadingMore];
+  List<Object?> get props => [
+    comments,
+    params,
+    hasReachedEnd,
+    isLoadingMore,
+    warningMessage,
+    errorMessage,
+  ];
 }
 
 class CommentError extends CommentState {

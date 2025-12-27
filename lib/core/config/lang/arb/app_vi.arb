@@ -1298,5 +1298,25 @@
   "photography": "Nhiếp ảnh",
   "entertainment": "Giải trí",
   "mountainForest": "Núi & Rừng",
-  "foodsDrinks": "Ẩm thực"
+  "foodsDrinks": "Ẩm thực",
+  "feedbackContentRejected": "Nội dung bị từ chối: {reason}",
+  "@feedbackContentRejected": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "feedbackContentUnderReview": "Bình luận của bạn đang được xem xét nhưng đã được đăng.",
+  "toxicity_high": "Phát hiện ngôn từ độc hại",
+  "spam_high": "Phát hiện spam",
+  "rule_reject": "Vi phạm quy tắc cộng đồng",
+  "toxicity_manual": "Nghi ngờ độc hại",
+  "spam_manual": "Nghi ngờ spam",
+  "rule_manual": "Nghi ngờ vi phạm quy tắc",
+  "too_short": "Bình luận phải có ít nhất 5 ký tự",
+  "profanity": "Phát hiện ngôn từ tục tĩu",
+  "sexual_content": "Nội dung khiêu dâm",
+  "harassment": "Quấy rối",
+  "hate_speech": "Ngôn từ thù địch"
 }
