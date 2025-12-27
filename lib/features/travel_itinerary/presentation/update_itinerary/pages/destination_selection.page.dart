@@ -7,8 +7,8 @@ import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class DestinationSelectionPage extends StatelessWidget {

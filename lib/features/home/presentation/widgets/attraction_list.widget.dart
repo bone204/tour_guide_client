@@ -4,8 +4,8 @@ import 'package:tour_guide_app/common_libs.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_state.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_card.widget.dart';
 
 class SliverRestaurantNearbyAttractionList extends StatelessWidget {

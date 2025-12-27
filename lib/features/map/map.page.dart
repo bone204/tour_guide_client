@@ -10,7 +10,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
-import 'package:tour_guide_app/features/home/domain/usecases/get_destinations.dart';
+import 'package:tour_guide_app/features/destination/domain/usecases/get_destinations.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';

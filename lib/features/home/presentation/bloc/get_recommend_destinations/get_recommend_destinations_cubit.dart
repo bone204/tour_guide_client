@@ -3,31 +3,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination_response.dart';
-import 'package:tour_guide_app/features/home/domain/usecases/get_destinations.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
+import 'package:tour_guide_app/features/destination/domain/usecases/get_recommend_destinations.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_recommend_destinations/get_recommend_destinations_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
-class GetDestinationCubit extends Cubit<GetDestinationState> {
-  GetDestinationCubit() : super(GetDestinationInitial());
+class GetRecommendDestinationsCubit
+    extends Cubit<GetRecommendDestinationsState> {
+  GetRecommendDestinationsCubit() : super(GetRecommendDestinationsInitial());
 
-  Future<Either<Failure, DestinationResponse>> getDestinations({
+  Future<Either<Failure, DestinationResponse>> getRecommendDestinations({
     DestinationQuery? query,
   }) async {
-    if (!isClosed) emit(GetDestinationLoading());
+    if (!isClosed) emit(GetRecommendDestinationsLoading());
 
-    final params = query ?? DestinationQuery(offset: 0, limit: 10);
+    // Only offset, limit and province are used
+    final params =
+        query ??
+        DestinationQuery(offset: 0, limit: 10, province: query?.province);
 
-    final result = await sl<GetDestinationUseCase>().call(params);
+    final result = await sl<GetRecommendDestinationsUseCase>().call(params);
 
     result.fold(
       (failure) {
-        if (!isClosed) emit(GetDestinationError(failure.message));
+        if (!isClosed) emit(GetRecommendDestinationsError(failure.message));
       },
       (destinationResponse) {
         final hasReachedEnd = destinationResponse.items.length < params.limit;
         if (!isClosed) {
           emit(
-            GetDestinationLoaded(
+            GetRecommendDestinationsLoaded(
               destinations: destinationResponse.items,
               params: params,
               hasReachedEnd: hasReachedEnd,
@@ -40,9 +44,10 @@ class GetDestinationCubit extends Cubit<GetDestinationState> {
     return result;
   }
 
-  Future<Either<Failure, DestinationResponse>> loadMoreDestinations() async {
-    if (state is GetDestinationLoaded) {
-      final currentState = state as GetDestinationLoaded;
+  Future<Either<Failure, DestinationResponse>>
+  loadMoreRecommendDestinations() async {
+    if (state is GetRecommendDestinationsLoaded) {
+      final currentState = state as GetRecommendDestinationsLoaded;
 
       // Đã load hết data
       if (currentState.hasReachedEnd) {
@@ -60,25 +65,24 @@ class GetDestinationCubit extends Cubit<GetDestinationState> {
       final nextParams = DestinationQuery(
         offset: currentState.params.offset + currentState.params.limit,
         limit: currentState.params.limit,
-        q: currentState.params.q,
-        available: currentState.params.available,
         province: currentState.params.province,
       );
 
-      final result = await sl<GetDestinationUseCase>().call(nextParams);
+      final result = await sl<GetRecommendDestinationsUseCase>().call(
+        nextParams,
+      );
 
       result.fold(
         (failure) {
           // Trở về state cũ nhưng tắt loading
           if (!isClosed) emit(currentState.copyWith(isLoadingMore: false));
-          // Có thể show snackbar ở UI layer
         },
         (destinationResponse) {
           final hasReachedEnd =
               destinationResponse.items.length < nextParams.limit;
           if (!isClosed) {
             emit(
-              GetDestinationLoaded(
+              GetRecommendDestinationsLoaded(
                 destinations: [
                   ...currentState.destinations,
                   ...destinationResponse.items,

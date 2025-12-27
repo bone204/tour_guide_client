@@ -12,6 +12,7 @@ import 'package:tour_guide_app/service_locator.dart';
 
 abstract class DestinationApiService {
   Future<Either<Failure, DestinationResponse>> getDestinations(DestinationQuery destinationQuery);
+  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(DestinationQuery destinationQuery);
   Future<Either<Failure, Destination>> getDestinationById(int id);
   Future<Either<Failure, DestinationResponse>> getFavorites();
   Future<Either<Failure, Destination>> favoriteDestination(int id);
@@ -42,6 +43,28 @@ class DestinationApiServiceImpl extends DestinationApiService {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(DestinationQuery destinationQuery) async {
+    try {
+      final response = await sl<DioClient>().get(
+        "${ApiUrls.getDestinations}/recommend",
+        queryParameters: destinationQuery.toJson(),
+      );
+      final destinationResponse = DestinationResponse.fromJson(response.data);
+      return Right(destinationResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
 
   @override
   Future<Either<Failure, Destination>> getDestinationById(int id) async {

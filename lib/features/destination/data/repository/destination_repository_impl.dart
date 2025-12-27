@@ -18,6 +18,11 @@ class DestinationRepositoryImpl extends DestinationRepository {
   }
 
   @override
+  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(DestinationQuery destinationQuery) async {
+    return await _apiService.getRecommendDestinations(destinationQuery);
+  }
+
+  @override
   Future<Either<Failure, Destination>> getDestinationById(int id) async {
     return await _apiService.getDestinationById(id);
   }

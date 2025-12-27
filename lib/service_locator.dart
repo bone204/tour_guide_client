@@ -21,8 +21,8 @@ import 'package:tour_guide_app/features/destination/domain/repository/destinatio
 import 'package:tour_guide_app/features/destination/domain/usecases/get_destination_by_id.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_favorites.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/favorite_destination.dart';
-import 'package:tour_guide_app/features/home/domain/usecases/get_destinations.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
+import 'package:tour_guide_app/features/destination/domain/usecases/get_destinations.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/profile/data/data_source/profile_api_service.dart';
 import 'package:tour_guide_app/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:tour_guide_app/features/profile/domain/repository/profile_repository.dart';

@@ -5,8 +5,8 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_search_appbar.dart'
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
 import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_cubit.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destination_state.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_state.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_card.widget.dart';
 
 class HomeSearchPage extends StatefulWidget {
