@@ -156,6 +156,11 @@ class _ProfileViewState extends State<_ProfileView> {
                                     context,
                                     rootNavigator: true,
                                   ).pushNamed(AppRouteConstant.personalInfo);
+                                } else if (index == 3) {
+                                  Navigator.of(
+                                    context,
+                                    rootNavigator: true,
+                                  ).pushNamed(AppRouteConstant.rentalBillList);
                                 }
                               },
                             );
@@ -260,9 +265,9 @@ class _ProfileViewState extends State<_ProfileView> {
         title: AppLocalizations.of(context)!.myItinerary,
       ),
       _ProfileFeatureItem(
-        iconAsset: AppIcons.gift,
+        iconAsset: AppIcons.policy,
         iconColor: AppColors.primaryGreen,
-        title: AppLocalizations.of(context)!.myWallet,
+        title: AppLocalizations.of(context)!.myRentalBills,
       ),
     ];
   }

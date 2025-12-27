@@ -1,0 +1,340 @@
+import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
+
+enum RentalBillStatus {
+  pending,
+  confirmed,
+  paidPendingDelivery,
+  paid,
+  cancelled,
+  completed,
+}
+
+enum RentalBillType { hourly, daily }
+
+enum PaymentMethod { wallet, momo, qrCode }
+
+enum RentalProgressStatus {
+  pending,
+  booked,
+  delivering,
+  delivered,
+  inProgress, // in_progress
+  returnRequested, // return_requested
+  returnConfirmed, // return_confirmed
+  cancelled,
+}
+
+class RentalBillDetail {
+  final int id;
+  final int billId;
+  final String licensePlate;
+  final double price;
+  final String? note;
+  final RentalVehicle? vehicle;
+
+  RentalBillDetail({
+    required this.id,
+    required this.billId,
+    required this.licensePlate,
+    required this.price,
+    this.note,
+    this.vehicle,
+  });
+
+  factory RentalBillDetail.fromJson(Map<String, dynamic> json) {
+    return RentalBillDetail(
+      id:
+          json['id'] is int
+              ? json['id']
+              : int.tryParse(json['id'].toString()) ?? 0,
+      billId:
+          json['billId'] is int
+              ? json['billId']
+              : int.tryParse(json['billId'].toString()) ?? 0,
+      licensePlate: json['licensePlate'] ?? '',
+      price: double.tryParse(json['price']?.toString() ?? '0') ?? 0,
+      note: json['note'],
+      vehicle:
+          json['vehicle'] != null
+              ? RentalVehicle.fromJson(json['vehicle'])
+              : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'billId': billId,
+      'licensePlate': licensePlate,
+      'price': price,
+      'note': note,
+      'vehicle': vehicle?.toJson(),
+    };
+  }
+}
+
+class RentalBill {
+  final int id;
+  final String code;
+  final int userId;
+  final RentalBillType rentalType;
+  final DateTime startDate;
+  final DateTime endDate;
+  final String? location;
+  final String? durationPackage;
+  final PaymentMethod? paymentMethod;
+  final String? contactName;
+  final String? contactPhone;
+  final double total;
+  final int? voucherId;
+  final int travelPointsUsed;
+  final RentalBillStatus status;
+  final String? notes;
+  final String? cancelReason;
+  final RentalProgressStatus rentalStatus;
+  final List<RentalBillDetail> details;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  // Additional fields for workflow
+  final List<String> deliveryPhotos;
+  final String? pickupSelfiePhoto;
+  final List<String> returnPhotosUser;
+  final List<String> returnPhotosOwner;
+
+  RentalBill({
+    required this.id,
+    required this.code,
+    required this.userId,
+    required this.rentalType,
+    required this.startDate,
+    required this.endDate,
+    this.location,
+    this.durationPackage,
+    this.paymentMethod,
+    this.contactName,
+    this.contactPhone,
+    required this.total,
+    this.voucherId,
+    required this.travelPointsUsed,
+    required this.status,
+    this.notes,
+    this.cancelReason,
+    required this.rentalStatus,
+    required this.details,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deliveryPhotos = const [],
+    this.pickupSelfiePhoto,
+    this.returnPhotosUser = const [],
+    this.returnPhotosOwner = const [],
+  });
+
+  factory RentalBill.fromJson(Map<String, dynamic> json) {
+    return RentalBill(
+      id:
+          json['id'] is int
+              ? json['id']
+              : int.tryParse(json['id'].toString()) ?? 0,
+      code: json['code'] ?? '',
+      userId:
+          json['userId'] is int
+              ? json['userId']
+              : int.tryParse(json['userId'].toString()) ?? 0,
+      rentalType: _parseRentalType(json['rentalType']),
+      startDate: DateTime.tryParse(json['startDate'] ?? '') ?? DateTime.now(),
+      endDate: DateTime.tryParse(json['endDate'] ?? '') ?? DateTime.now(),
+      location: json['location'],
+      durationPackage: json['durationPackage'],
+      paymentMethod: _parsePaymentMethod(json['paymentMethod']),
+      contactName: json['contactName'],
+      contactPhone: json['contactPhone'],
+      total: double.tryParse(json['total']?.toString() ?? '0') ?? 0,
+      voucherId:
+          json['voucherId'] is int
+              ? json['voucherId']
+              : int.tryParse(json['voucherId']?.toString() ?? ''),
+      travelPointsUsed:
+          json['travelPointsUsed'] is int
+              ? json['travelPointsUsed']
+              : int.tryParse(json['travelPointsUsed']?.toString() ?? '0') ?? 0,
+      status: _parseStatus(json['status']),
+      notes: json['notes'],
+      cancelReason: json['cancelReason'],
+      rentalStatus: _parseRentalStatus(json['rentalStatus']),
+      details:
+          (json['details'] as List<dynamic>?)
+              ?.map((e) => RentalBillDetail.fromJson(e))
+              .toList() ??
+          [],
+      createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(json['updatedAt'] ?? '') ?? DateTime.now(),
+      deliveryPhotos:
+          (json['deliveryPhotos'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      pickupSelfiePhoto: json['pickupSelfiePhoto'],
+      returnPhotosUser:
+          (json['returnPhotosUser'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      returnPhotosOwner:
+          (json['returnPhotosOwner'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'code': code,
+      'userId': userId,
+      'rentalType': _rentalTypeToString(rentalType),
+      'startDate': startDate.toIso8601String(),
+      'endDate': endDate.toIso8601String(),
+      'location': location,
+      'durationPackage': durationPackage,
+      'paymentMethod': _paymentMethodToString(paymentMethod),
+      'contactName': contactName,
+      'contactPhone': contactPhone,
+      'total': total,
+      'voucherId': voucherId,
+      'travelPointsUsed': travelPointsUsed,
+      'status': _statusToString(status),
+      'notes': notes,
+      'cancelReason': cancelReason,
+      'rentalStatus': _rentalStatusToString(rentalStatus),
+      'details': details.map((e) => e.toJson()).toList(),
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'deliveryPhotos': deliveryPhotos,
+      'pickupSelfiePhoto': pickupSelfiePhoto,
+      'returnPhotosUser': returnPhotosUser,
+      'returnPhotosOwner': returnPhotosOwner,
+    };
+  }
+
+  static RentalBillType _parseRentalType(String? value) {
+    switch (value) {
+      case 'daily':
+        return RentalBillType.daily;
+      case 'hourly':
+        return RentalBillType.hourly;
+      default:
+        return RentalBillType.daily; // Default or fallback
+    }
+  }
+
+  static String _rentalTypeToString(RentalBillType type) {
+    return type.name;
+  }
+
+  static PaymentMethod? _parsePaymentMethod(String? value) {
+    switch (value) {
+      case 'wallet':
+        return PaymentMethod.wallet;
+      case 'momo':
+        return PaymentMethod.momo;
+      case 'qr_code':
+        return PaymentMethod.qrCode;
+      default:
+        return null;
+    }
+  }
+
+  static String? _paymentMethodToString(PaymentMethod? method) {
+    if (method == null) return null;
+    switch (method) {
+      case PaymentMethod.wallet:
+        return 'wallet';
+      case PaymentMethod.momo:
+        return 'momo';
+      case PaymentMethod.qrCode:
+        return 'qr_code';
+    }
+  }
+
+  static RentalBillStatus _parseStatus(String? value) {
+    switch (value) {
+      case 'pending':
+        return RentalBillStatus.pending;
+      case 'confirmed':
+        return RentalBillStatus.confirmed;
+      case 'paid_pending_delivery':
+        return RentalBillStatus.paidPendingDelivery;
+      case 'paid':
+        return RentalBillStatus.paid;
+      case 'cancelled':
+        return RentalBillStatus.cancelled;
+      case 'completed':
+        return RentalBillStatus.completed;
+      default:
+        return RentalBillStatus.pending;
+    }
+  }
+
+  static String _statusToString(RentalBillStatus status) {
+    switch (status) {
+      case RentalBillStatus.pending:
+        return 'pending';
+      case RentalBillStatus.confirmed:
+        return 'confirmed';
+      case RentalBillStatus.paidPendingDelivery:
+        return 'paid_pending_delivery';
+      case RentalBillStatus.paid:
+        return 'paid';
+      case RentalBillStatus.cancelled:
+        return 'cancelled';
+      case RentalBillStatus.completed:
+        return 'completed';
+    }
+  }
+
+  static RentalProgressStatus _parseRentalStatus(String? value) {
+    switch (value) {
+      case 'pending':
+        return RentalProgressStatus.pending;
+      case 'booked':
+        return RentalProgressStatus.booked;
+      case 'delivering':
+        return RentalProgressStatus.delivering;
+      case 'delivered':
+        return RentalProgressStatus.delivered;
+      case 'in_progress':
+        return RentalProgressStatus.inProgress;
+      case 'return_requested':
+        return RentalProgressStatus.returnRequested;
+      case 'return_confirmed':
+        return RentalProgressStatus.returnConfirmed;
+      case 'cancelled':
+        return RentalProgressStatus.cancelled;
+      default:
+        return RentalProgressStatus.pending;
+    }
+  }
+
+  static String _rentalStatusToString(RentalProgressStatus status) {
+    switch (status) {
+      case RentalProgressStatus.pending:
+        return 'pending';
+      case RentalProgressStatus.booked:
+        return 'booked';
+      case RentalProgressStatus.delivering:
+        return 'delivering';
+      case RentalProgressStatus.delivered:
+        return 'delivered';
+      case RentalProgressStatus.inProgress:
+        return 'in_progress';
+      case RentalProgressStatus.returnRequested:
+        return 'return_requested';
+      case RentalProgressStatus.returnConfirmed:
+        return 'return_confirmed';
+      case RentalProgressStatus.cancelled:
+        return 'cancelled';
+    }
+  }
+}

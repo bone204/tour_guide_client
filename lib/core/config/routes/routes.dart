@@ -63,6 +63,8 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/c
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/create_contract.page.dart';
 import 'package:tour_guide_app/features/profile/presentation/pages/personal_information.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/vehicle_detail.page.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/rental_bill_list.page.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/rental_bill_detail.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -491,6 +493,19 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const InterestSelectionPage(),
+        );
+
+      case AppRouteConstant.rentalBillList:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const RentalBillListPage(),
+        );
+
+      case AppRouteConstant.rentalBillDetail:
+        final id = settings.arguments as int;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => RentalBillDetailPage(id: id),
         );
 
       default:

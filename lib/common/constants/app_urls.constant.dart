@@ -26,6 +26,9 @@ class ApiUrls {
   static const rentalVehicles = "$baseURL/rental-vehicles";
   static const vehicleCatalogs = "$baseURL/vehicle-catalog";
 
+  //Rental Bills URLs
+  static const rentalBills = "$baseURL/rental-bills";
+
   //Chatbot URLs
   static const chatbot = "$baseURL/chat";
 

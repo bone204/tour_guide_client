@@ -14,6 +14,8 @@ import 'package:tour_guide_app/features/auth/domain/usecases/sign_up.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/email_start.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/verify_email.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/verify_phone.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_my_rental_bills/get_my_rental_bills_cubit.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_rental_bill_detail/get_rental_bill_detail_cubit.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/usecases/send_chat_message.dart';
 import 'package:tour_guide_app/features/destination/data/data_source/destination_api_service.dart';
 import 'package:tour_guide_app/features/destination/data/repository/destination_repository_impl.dart';
@@ -118,6 +120,11 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/enable_disa
 import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/search_motorbike/search_motorbike_cubit.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/motorbike_detail/motorbike_detail_cubit.dart';
 import 'package:tour_guide_app/features/motorbike_rental/domain/usecases/get_motorbike_detail_use_case.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/data_source/rental_bill_api_service.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/repository/rental_bill_repository_impl.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/repository/rental_bill_repository.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get_my_rental_bills_use_case.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get_rental_bill_detail_use_case.dart';
 
 final sl = GetIt.instance;
 
@@ -138,6 +145,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<MotorbikeRentalApiService>(
     MotorbikeRentalApiServiceImpl(),
   );
+  sl.registerSingleton<RentalBillApiService>(RentalBillApiServiceImpl());
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
@@ -150,6 +158,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<MotorbikeRentalRepository>(
     MotorbikeRentalRepositoryImpl(),
   );
+  sl.registerSingleton<RentalBillRepository>(RentalBillRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());
@@ -241,6 +250,10 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetVehicleCatalogsUseCase>(
     GetVehicleCatalogsUseCase(sl()),
   );
+  sl.registerSingleton<GetMyRentalBillsUseCase>(GetMyRentalBillsUseCase());
+  sl.registerSingleton<GetRentalBillDetailUseCase>(
+    GetRentalBillDetailUseCase(),
+  );
 
   // Cubits
   sl.registerFactory<DeleteStopCubit>(() => DeleteStopCubit(sl()));
@@ -309,6 +322,13 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerFactory<SearchMotorbikeCubit>(() => SearchMotorbikeCubit());
   sl.registerFactory<MotorbikeDetailCubit>(() => MotorbikeDetailCubit());
+
+  sl.registerFactory<GetMyRentalBillsCubit>(() => GetMyRentalBillsCubit(sl()));
+  sl.registerFactory<GetRentalBillDetailCubit>(
+    () => GetRentalBillDetailCubit(sl()),
+  );
+
+  // Feedback Replies
 
   // Feedback Replies
   sl.registerSingleton<GetFeedbackRepliesUseCase>(GetFeedbackRepliesUseCase());

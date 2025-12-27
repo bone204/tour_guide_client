@@ -2573,6 +2573,84 @@ abstract class AppLocalizations {
   /// **'Contract'**
   String get contract;
 
+  /// No description provided for @myRentalBills.
+  ///
+  /// In en, this message translates to:
+  /// **'My Rental Bills'**
+  String get myRentalBills;
+
+  /// No description provided for @rentalBillDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Bill Detail'**
+  String get rentalBillDetail;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @billCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill Code'**
+  String get billCode;
+
+  /// No description provided for @duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get paymentMethod;
+
+  /// No description provided for @cancelReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Reason'**
+  String get cancelReason;
+
+  /// No description provided for @contactInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Information'**
+  String get contactInfo;
+
+  /// No description provided for @vehicleList.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle List'**
+  String get vehicleList;
+
+  /// No description provided for @noRentalBills.
+  ///
+  /// In en, this message translates to:
+  /// **'No rental bills found'**
+  String get noRentalBills;
+
+  /// No description provided for @paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get paid;
+
+  /// No description provided for @cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get cancelled;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
   /// No description provided for @document.
   ///
   /// In en, this message translates to:

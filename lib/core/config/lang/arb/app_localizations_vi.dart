@@ -624,7 +624,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get totalPayment => 'Tổng thanh toán';
 
   @override
-  String get pickupPoint => 'Điểm lấy hàng';
+  String get pickupPoint => 'Điểm nhận xe';
 
   @override
   String get deliveryPoint => 'Điểm nhận hàng';
@@ -816,7 +816,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get fuelElectric => 'Điện';
 
   @override
-  String get totalRentals => 'Tổng lượt thuê';
+  String get totalRentals => 'Total Rentals';
 
   @override
   String get averageRating => 'Đánh giá trung bình';
@@ -1274,6 +1274,45 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get contract => 'Hợp đồng';
+
+  @override
+  String get myRentalBills => 'Hóa đơn thuê xe';
+
+  @override
+  String get rentalBillDetail => 'Chi tiết hóa đơn';
+
+  @override
+  String get status => 'Trạng thái';
+
+  @override
+  String get billCode => 'Mã hóa đơn';
+
+  @override
+  String get duration => 'Thời lượng';
+
+  @override
+  String get paymentMethod => 'Phương thức thanh toán';
+
+  @override
+  String get cancelReason => 'Lý do hủy';
+
+  @override
+  String get contactInfo => 'Thông tin liên hệ';
+
+  @override
+  String get vehicleList => 'Danh sách xe';
+
+  @override
+  String get noRentalBills => 'Không có hóa đơn nào';
+
+  @override
+  String get paid => 'Đã thanh toán';
+
+  @override
+  String get cancelled => 'Đã hủy';
+
+  @override
+  String get completed => 'Hoàn thành';
 
   @override
   String get document => 'Giấy tờ';

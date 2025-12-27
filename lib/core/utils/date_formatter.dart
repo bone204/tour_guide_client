@@ -12,4 +12,8 @@ class DateFormatter {
       return '$start - $end'; // Fallback to original string if parsing fails
     }
   }
+
+  static String formatDate(DateTime date) {
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
 }

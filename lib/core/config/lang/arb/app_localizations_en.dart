@@ -1270,6 +1270,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contract => 'Contract';
 
   @override
+  String get myRentalBills => 'My Rental Bills';
+
+  @override
+  String get rentalBillDetail => 'Rental Bill Detail';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get billCode => 'Bill Code';
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String get paymentMethod => 'Payment Method';
+
+  @override
+  String get cancelReason => 'Cancel Reason';
+
+  @override
+  String get contactInfo => 'Contact Information';
+
+  @override
+  String get vehicleList => 'Vehicle List';
+
+  @override
+  String get noRentalBills => 'No rental bills found';
+
+  @override
+  String get paid => 'Paid';
+
+  @override
+  String get cancelled => 'Cancelled';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
   String get document => 'Document';
 
   @override

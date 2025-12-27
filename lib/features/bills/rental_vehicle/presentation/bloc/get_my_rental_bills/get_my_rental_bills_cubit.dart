@@ -1,0 +1,37 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get_my_rental_bills_use_case.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_my_rental_bills/rental_bill_list_state.dart';
+
+class GetMyRentalBillsCubit extends Cubit<RentalBillListState> {
+  final GetMyRentalBillsUseCase _getMyRentalBillsUseCase;
+
+  GetMyRentalBillsCubit(this._getMyRentalBillsUseCase)
+    : super(const RentalBillListState());
+
+  Future<void> loadMyBills({RentalBillStatus? status}) async {
+    if (isClosed) return;
+    emit(
+      state.copyWith(
+        status: RentalBillListStatus.loading,
+        filterStatus: status,
+      ),
+    );
+
+    final result = await _getMyRentalBillsUseCase(status);
+
+    if (isClosed) return;
+
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: RentalBillListStatus.failure,
+          errorMessage: failure.message,
+        ),
+      ),
+      (bills) => emit(
+        state.copyWith(status: RentalBillListStatus.success, bills: bills),
+      ),
+    );
+  }
+}
