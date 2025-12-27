@@ -115,6 +115,9 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle
 import 'package:tour_guide_app/features/auth/domain/usecases/update_hobbies.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/update_hobbies/update_hobbies_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/enable_disable_vehicle/enable_disable_vehicle_cubit.dart';
+import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/search_motorbike/search_motorbike_cubit.dart';
+import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/motorbike_detail/motorbike_detail_cubit.dart';
+import 'package:tour_guide_app/features/motorbike_rental/domain/usecases/get_motorbike_detail_use_case.dart';
 
 final sl = GetIt.instance;
 
@@ -179,7 +182,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<CreateFeedbackUseCase>(CreateFeedbackUseCase());
   sl.registerSingleton<GetFeedbackUseCase>(GetFeedbackUseCase());
   sl.registerSingleton<CheckContentUseCase>(CheckContentUseCase());
-  sl.registerSingleton<SearchMotorbikesUseCase>(SearchMotorbikesUseCase());
+  sl.registerLazySingleton(() => SearchMotorbikesUseCase());
+  sl.registerLazySingleton(() => GetMotorbikeDetailUseCase());
   sl.registerSingleton<DeleteItineraryStopUseCase>(
     DeleteItineraryStopUseCase(sl()),
   );
@@ -232,7 +236,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   // Rental Vehicles
   sl.registerSingleton<AddVehicleUseCase>(AddVehicleUseCase());
-  sl.registerSingleton<GetMyVehiclesUseCase>(GetMyVehiclesUseCase());
+  sl.registerLazySingleton(() => GetMyVehiclesUseCase());
   sl.registerSingleton<GetVehicleDetailUseCase>(GetVehicleDetailUseCase());
   sl.registerSingleton<GetVehicleCatalogsUseCase>(
     GetVehicleCatalogsUseCase(sl()),
@@ -303,6 +307,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<UpdateHobbiesCubit>(
     () => UpdateHobbiesCubit(updateHobbiesUseCase: sl()),
   );
+  sl.registerFactory<SearchMotorbikeCubit>(() => SearchMotorbikeCubit());
+  sl.registerFactory<MotorbikeDetailCubit>(() => MotorbikeDetailCubit());
 
   // Feedback Replies
   sl.registerSingleton<GetFeedbackRepliesUseCase>(GetFeedbackRepliesUseCase());

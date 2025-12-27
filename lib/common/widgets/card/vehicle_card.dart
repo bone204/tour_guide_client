@@ -5,20 +5,20 @@ import 'package:tour_guide_app/core/utils/money_formatter.dart';
 
 class VehicleCard extends StatelessWidget {
   final String name;
-  final String type;
   final int seats;
   final int price;
   final String imageUrl;
+  final String? priceLabel;
   final VoidCallback? onDetail;
   final VoidCallback? onRent;
 
   VehicleCard({
     super.key,
     required this.name,
-    required this.type,
     required this.seats,
     required this.price,
     required this.imageUrl,
+    this.priceLabel,
     this.onDetail,
     this.onRent,
   });
@@ -52,7 +52,7 @@ class VehicleCard extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12.r),
-                    child: Image.asset(
+                    child: Image.network(
                       imageUrl,
                       height: 100.h,
                       width: 120.w,
@@ -73,32 +73,17 @@ class VehicleCard extends StatelessWidget {
                       ),
                       SizedBox(height: 6.h),
 
-                      Row(
-                        children: [
-                          Text(
-                            type,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
+                      Text(
+                            "$seats ${AppLocalizations.of(context)!.seats}",
+                            style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(color: AppColors.textSubtitle),
                           ),
-                          SizedBox(width: 6.w),
-                          Text(
-                            "| $seats ${AppLocalizations.of(context)!.seats}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(color: AppColors.textSubtitle),
-                          ),
-                        ],
-                      ),
                       SizedBox(height: 12.h),
 
                       Text(
-                        "${Formatter.currency(price)} / ${AppLocalizations.of(context)!.day}",
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: AppColors.primaryOrange,
-                            ),
+                        "${Formatter.currency(price)} / ${priceLabel ?? AppLocalizations.of(context)!.day}",
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(color: AppColors.primaryOrange),
                       ),
                     ],
                   ),
@@ -125,7 +110,7 @@ class VehicleCard extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

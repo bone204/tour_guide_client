@@ -1,218 +1,336 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/utils/money_formatter.dart';
+import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/motorbike_detail/motorbike_detail_cubit.dart';
+import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/motorbike_detail/motorbike_detail_state.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/widgets/motorbike_info_item.widget.dart';
-import 'package:tour_guide_app/features/car_rental/presentation/widgets/feature_chip.widget.dart';
-import 'package:tour_guide_app/features/car_rental/presentation/widgets/review_card.widget.dart';
+import 'package:tour_guide_app/service_locator.dart';
 
 class MotorbikeDetailPage extends StatelessWidget {
-  final Map<String, dynamic>? motorbike;
+  final String? licensePlate;
 
-  const MotorbikeDetailPage({Key? key, this.motorbike}) : super(key: key);
-
-  // Fake data (used when `motorbike` is not provided)
-  static final Map<String, dynamic> _fakeMotorbike = {
-    'image': AppImage.defaultCar,
-    'name': 'Honda Wave RSX 2023',
-    'type': 'Số',
-    'price': 100000,
-    'seats': 2,
-    'transmission': 'Số',
-    'fuel': 'Xăng',
-    'year': 2023,
-    'mileage': 15000,
-    'rating': 4.5,
-    'description':
-        'Honda Wave RSX 2023 - Xe máy tiết kiệm nhiên liệu, bền bỉ, phù hợp đi lại trong thành phố. Máy mạnh mẽ, khởi động nhanh, phanh an toàn. Chủ xe nhiệt tình, bảo dưỡng định kỳ đầy đủ.',
-    'features': [
-      'Phanh đĩa',
-      'Khoá điện tử',
-      'Đèn LED',
-      'Yên rộng',
-      'Giỏ hàng lớn',
-      'Chống sốc tốt'
-    ],
-    'reviews': [
-      {
-        'author': 'Nguyễn Văn A',
-        'rating': 5,
-        'text': 'Xe tốt, chạy rất tiết kiệm xăng. Chủ xe giao xe đúng giờ.'
-      },
-      {
-        'author': 'Lê Thị B',
-        'rating': 4,
-        'text': 'Xe mới, sạch sẽ. Phanh hơi cứng nhưng vẫn an toàn.'
-      }
-    ],
-    'locations': ['Hà Nội - Hoàn Kiếm', 'Hà Nội - Cầu Giấy']
-  };
+  const MotorbikeDetailPage({Key? key, this.licensePlate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final m = motorbike ?? _fakeMotorbike;
+    return BlocProvider(
+      create: (context) {
+        final cubit = sl<MotorbikeDetailCubit>();
+        if (licensePlate != null) {
+          cubit.getMotorbikeDetail(licensePlate!);
+        }
+        return cubit;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        appBar: CustomAppBar(
+          title:
+              AppLocalizations.of(context)?.mortorbikeDetails ??
+              'Chi tiết xe máy',
+          showBackButton: true,
+          onBackPressed: () => Navigator.pop(context),
+        ),
+        body: BlocBuilder<MotorbikeDetailCubit, MotorbikeDetailState>(
+          builder: (context, state) {
+            if (state.status == MotorbikeDetailStatus.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: CustomAppBar(
-        title: AppLocalizations.of(context)?.mortorbikeDetails ?? 'Chi tiết xe máy',
-        showBackButton: true,
-        onBackPressed: () => Navigator.pop(context),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 16.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 236.h,
-                  color: AppColors.primaryBlue.withOpacity(0.1),
-                  child: Image.asset(
-                    m['image'] as String,
-                    fit: BoxFit.contain,
-                  ),
+            if (state.status == MotorbikeDetailStatus.failure) {
+              return Center(
+                child: Text(
+                  state.errorMessage ??
+                      AppLocalizations.of(context)!.errorOccurred,
                 ),
-                Positioned(
-                  right: 12.w,
-                  top: 12.h,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.6),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppIcons.star,
-                          color: AppColors.primaryYellow,
-                          width: 16.w,
-                          height: 16.h,
-                        ),
-                        SizedBox(width: 8.w),
-                        Text(
-                          (m['rating'] as double).toStringAsFixed(1),
-                          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              );
+            }
+
+            final vehicle = state.vehicle;
+            if (vehicle == null) {
+              return Center(child: Text(AppLocalizations.of(context)!.noData));
+            }
+
+            return SingleChildScrollView(
+              padding: EdgeInsets.only(bottom: 24.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Stack(
                     children: [
-                      Expanded(
-                        child: Column(
+                      Container(
+                        width: double.infinity,
+                        height: 236.h,
+                        color: AppColors.primaryBlue.withOpacity(0.1),
+                        child:
+                            vehicle.vehicleCatalog?.photo != null
+                                ? Image.network(
+                                  vehicle.vehicleCatalog!.photo!,
+                                  fit: BoxFit.contain,
+                                )
+                                : vehicle.vehicleRegistrationFront != null
+                                ? Image.network(
+                                  vehicle.vehicleRegistrationFront!,
+                                  fit: BoxFit.contain,
+                                )
+                                : Image.asset(
+                                  AppImage.defaultCar,
+                                  fit: BoxFit.contain,
+                                ),
+                      ),
+                      Positioned(
+                        right: 12.w,
+                        top: 12.h,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12.w,
+                            vertical: 8.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                AppIcons.star,
+                                color: AppColors.primaryYellow,
+                                width: 16.w,
+                                height: 16.h,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                vehicle.averageRating.toStringAsFixed(1),
+                                style: Theme.of(context).textTheme.displayLarge
+                                    ?.copyWith(color: AppColors.textSecondary),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 12.h,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              m['name'] as String,
-                              style: Theme.of(context).textTheme.titleMedium,
+                              '${vehicle.vehicleCatalog?.brand ?? ''} ${vehicle.vehicleCatalog?.model ?? ''}',
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontSize: 22.sp),
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              '${m['type']} • ${m['year']}',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
+                              vehicle.vehicleCatalog?.color ?? '',
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(color: AppColors.textSubtitle),
+                            ),
+                            SizedBox(height: 16.h),
+                            Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(12.w),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12.r),
+                                border: Border.all(
+                                  color: AppColors.primaryGrey.withOpacity(0.5),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!.day,
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodySmall?.copyWith(
+                                          color: AppColors.textSubtitle,
+                                        ),
+                                      ),
+                                      Text(
+                                        Formatter.currency(vehicle.pricePerDay),
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.titleMedium?.copyWith(
+                                          color: AppColors.primaryOrange,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    width: 1.w,
+                                    height: 30.h,
+                                    color: AppColors.primaryGrey.withOpacity(
+                                      0.5,
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!.hour,
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodySmall?.copyWith(
+                                          color: AppColors.textSubtitle,
+                                        ),
+                                      ),
+                                      Text(
+                                        Formatter.currency(
+                                          vehicle.pricePerHour,
+                                        ),
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.titleMedium?.copyWith(
+                                          color: AppColors.primaryOrange,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
+                        SizedBox(height: 16.h),
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            height: 84.h,
+                            autoPlay: true,
+                            enableInfiniteScroll: true,
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            autoPlayAnimationDuration: const Duration(
+                              milliseconds: 800,
+                            ),
+                            viewportFraction: 0.4,
+                            padEnds: false,
+                          ),
+                          items: [
+                            MotorbikeInfoItem(
+                              icon: AppIcons.seat,
+                              text:
+                                  '${vehicle.vehicleCatalog?.seatingCapacity ?? 2} ${AppLocalizations.of(context)!.seats}',
+                            ),
+                            MotorbikeInfoItem(
+                              icon: AppIcons.setting,
+                              text: _getLocalizedValue(
+                                context,
+                                vehicle.vehicleCatalog?.transmission ??
+                                    'Automatic',
+                              ),
+                            ),
+                            MotorbikeInfoItem(
+                              icon: AppIcons.gasPump,
+                              text: _getLocalizedValue(
+                                context,
+                                vehicle.vehicleCatalog?.fuelType ?? 'Gasoline',
+                              ),
+                            ),
+                            MotorbikeInfoItem(
+                              icon: AppIcons.speed,
+                              text:
+                                  '${vehicle.totalRentals} ${AppLocalizations.of(context)!.rentalCount}',
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+                        Divider(height: 2.h, color: AppColors.primaryGrey),
+                        SizedBox(height: 12.h),
+                        if (vehicle.description != null &&
+                            vehicle.description!.isNotEmpty) ...[
                           Text(
-                            Formatter.currency(m['price']),
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: AppColors.primaryOrange,
+                            AppLocalizations.of(context)!.description,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          SizedBox(height: 8.h),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(12.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12.r),
+                              border: Border.all(
+                                color: AppColors.primaryGrey.withOpacity(0.5),
+                              ),
+                            ),
+                            child: Text(
+                              vehicle.description!,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.copyWith(
+                                color: AppColors.textSubtitle,
+                                height: 1.5,
+                              ),
                             ),
                           ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            "/ ${AppLocalizations.of(context)!.day}",
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textSubtitle),
-                          )
+                          SizedBox(height: 16.h),
                         ],
-                      )
-                    ],
-                  ),
-
-                  SizedBox(height: 16.h),
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      height: 84.h,
-                      autoPlay: true,
-                      enableInfiniteScroll: true,
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                      viewportFraction: 0.4,
-                      padEnds: false,
+                        SizedBox(height: 16.h),
+                        if (vehicle.requirements != null &&
+                            vehicle.requirements!.isNotEmpty) ...[
+                          Text(AppLocalizations.of(context)!.requirements),
+                          SizedBox(height: 8.h),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(12.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12.r),
+                              border: Border.all(
+                                color: AppColors.primaryGrey.withOpacity(0.5),
+                              ),
+                            ),
+                            child: Text(
+                              vehicle.requirements!,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.copyWith(
+                                color: AppColors.textSubtitle,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 16.h),
+                        ],
+                        SizedBox(height: 24.h),
+                      ],
                     ),
-                    items: [
-                      MotorbikeInfoItem(icon: AppIcons.seat, text: '${m['seats']} người'),
-                      MotorbikeInfoItem(icon: AppIcons.setting, text: m['transmission'] as String),
-                      MotorbikeInfoItem(icon: AppIcons.gasPump, text: m['fuel'] as String),
-                      MotorbikeInfoItem(icon: AppIcons.speed, text: '${m['mileage']} km'),
-                    ],
-                  ),
-
-                  SizedBox(height: 16.h),
-                  Divider(height: 2.h, color: AppColors.primaryGrey),
-                  SizedBox(height: 12.h),
-
-                  Text(AppLocalizations.of(context)!.description, style: Theme.of(context).textTheme.titleSmall),
-                  SizedBox(height: 8.h),
-                  Text(
-                    m['description'] as String,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle, height: 1.5),
-                  ),
-
-                  SizedBox(height: 16.h),
-
-                  Text(AppLocalizations.of(context)!.features, style: Theme.of(context).textTheme.titleSmall),
-                  SizedBox(height: 8.h),
-                  Wrap(
-                    spacing: 8.w,
-                    runSpacing: 6.h,
-                    children: (m['features'] as List<dynamic>)
-                        .map((f) => FeatureChip(text: f as String))
-                        .toList(),
-                  ),
-                  SizedBox(height: 16.h),
-                  Divider(),
-                  SizedBox(height: 12.h),
-
-                  Text(AppLocalizations.of(context)!.reviews, style: Theme.of(context).textTheme.titleSmall),
-                  SizedBox(height: 12.h),
-                  Column(
-                    children: (m['reviews'] as List<dynamic>)
-                      .map((r) => ReviewCard(
-                            author: r['author'] as String,
-                            rating: r['rating'] as int,
-                            text: r['text'] as String,
-                          ))
-                      .toList(),
                   ),
                 ],
               ),
-            )
-          ],
+            );
+          },
         ),
       ),
     );
   }
-}
 
+  String _getLocalizedValue(BuildContext context, String value) {
+    if (value.toLowerCase() == 'manual' || value.toLowerCase() == 'số sàn') {
+      return AppLocalizations.of(context)!.transmissionManual;
+    } else if (value.toLowerCase() == 'automatic' ||
+        value.toLowerCase() == 'tự động') {
+      return AppLocalizations.of(context)!.transmissionAutomatic;
+    } else if (value.toLowerCase() == 'gasoline' ||
+        value.toLowerCase() == 'xăng') {
+      return AppLocalizations.of(context)!.fuelGasoline;
+    } else if (value.toLowerCase() == 'electric' ||
+        value.toLowerCase() == 'điện') {
+      return AppLocalizations.of(context)!.fuelElectric;
+    }
+    return value;
+  }
+}

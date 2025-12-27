@@ -602,7 +602,12 @@
   "seatingCapacity": "Số chỗ ngồi",
   "maxSpeed": "Tốc độ tối đa",
   
+  "transmissionManual": "Số sàn",
+  "transmissionAutomatic": "Tự động",
+  "fuelGasoline": "Xăng",
+  "fuelElectric": "Điện",
   
+  "noData": "Không có dữ liệu",
   "totalRentals": "Tổng lượt thuê",
 
   "averageRating": "Đánh giá trung bình",

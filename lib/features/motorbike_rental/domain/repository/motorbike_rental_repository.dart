@@ -7,4 +7,7 @@ abstract class MotorbikeRentalRepository {
   Future<Either<Failure, List<RentalVehicle>>> searchMotorbikes(
     MotorbikeSearchRequest request,
   );
+  Future<Either<Failure, RentalVehicle>> getMotorbikeDetail(
+    String licensePlate,
+  );
 }

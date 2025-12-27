@@ -60,7 +60,6 @@ class CarListPage extends StatelessWidget {
           final car = cars[index];
           return VehicleCard(
             name: car["name"] as String,
-            type: car["type"] as String,
             price: car["price"] as int,
             imageUrl: car["image"] as String,
             seats: car["seats"] as int,

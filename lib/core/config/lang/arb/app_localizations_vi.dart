@@ -804,6 +804,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get maxSpeed => 'Tốc độ tối đa';
 
   @override
+  String get transmissionManual => 'Số sàn';
+
+  @override
+  String get transmissionAutomatic => 'Tự động';
+
+  @override
+  String get fuelGasoline => 'Xăng';
+
+  @override
+  String get fuelElectric => 'Điện';
+
+  @override
   String get totalRentals => 'Tổng lượt thuê';
 
   @override
@@ -1241,6 +1253,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get itineraryPublicizedSuccess => 'Lộ trình đã được công khai thành công!';
+
+  @override
+  String get noData => 'Không có dữ liệu';
 
   @override
   String get actionSuccess => 'Thao tác thành công';

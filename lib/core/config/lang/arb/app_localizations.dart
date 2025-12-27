@@ -1661,6 +1661,30 @@ abstract class AppLocalizations {
   /// **'Max Speed'**
   String get maxSpeed;
 
+  /// No description provided for @transmissionManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual'**
+  String get transmissionManual;
+
+  /// No description provided for @transmissionAutomatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get transmissionAutomatic;
+
+  /// No description provided for @fuelGasoline.
+  ///
+  /// In en, this message translates to:
+  /// **'Gasoline'**
+  String get fuelGasoline;
+
+  /// No description provided for @fuelElectric.
+  ///
+  /// In en, this message translates to:
+  /// **'Electric'**
+  String get fuelElectric;
+
   /// No description provided for @totalRentals.
   ///
   /// In en, this message translates to:
@@ -2506,6 +2530,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Itinerary publicized successfully!'**
   String get itineraryPublicizedSuccess;
+
+  /// No description provided for @noData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data'**
+  String get noData;
 
   /// No description provided for @actionSuccess.
   ///

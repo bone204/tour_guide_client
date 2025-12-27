@@ -15,4 +15,11 @@ class MotorbikeRentalRepositoryImpl extends MotorbikeRentalRepository {
   ) {
     return _apiService.searchMotorbikes(request);
   }
+
+  @override
+  Future<Either<Failure, RentalVehicle>> getMotorbikeDetail(
+    String licensePlate,
+  ) {
+    return _apiService.getMotorbikeDetail(licensePlate);
+  }
 }

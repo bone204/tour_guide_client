@@ -804,6 +804,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get maxSpeed => 'Max Speed';
 
   @override
+  String get transmissionManual => 'Manual';
+
+  @override
+  String get transmissionAutomatic => 'Automatic';
+
+  @override
+  String get fuelGasoline => 'Gasoline';
+
+  @override
+  String get fuelElectric => 'Electric';
+
+  @override
   String get totalRentals => 'Total Rentals';
 
   @override
@@ -1235,6 +1247,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get itineraryPublicizedSuccess => 'Itinerary publicized successfully!';
+
+  @override
+  String get noData => 'No data';
 
   @override
   String get actionSuccess => 'Action successful';

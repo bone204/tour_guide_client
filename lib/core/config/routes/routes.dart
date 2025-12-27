@@ -221,9 +221,16 @@ class AppRouter {
         );
 
       case AppRouteConstant.motorbikeDetails:
+        final args = settings.arguments;
+        String? licensePlate;
+        if (args is String) {
+          licensePlate = args;
+        } else if (args is Map<String, dynamic>) {
+          licensePlate = args['licensePlate'] as String?;
+        }
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => MotorbikeDetailPage(),
+          builder: (_) => MotorbikeDetailPage(licensePlate: licensePlate),
         );
 
       case AppRouteConstant.carBill:

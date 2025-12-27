@@ -11,6 +11,9 @@ abstract class MotorbikeRentalApiService {
   Future<Either<Failure, List<RentalVehicle>>> searchMotorbikes(
     MotorbikeSearchRequest request,
   );
+  Future<Either<Failure, RentalVehicle>> getMotorbikeDetail(
+    String licensePlate,
+  );
 }
 
 class MotorbikeRentalApiServiceImpl extends MotorbikeRentalApiService {
@@ -32,6 +35,30 @@ class MotorbikeRentalApiServiceImpl extends MotorbikeRentalApiService {
         ServerFailure(
           message:
               e.response?.data['message'] ?? 'An error occurred during search',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, RentalVehicle>> getMotorbikeDetail(
+    String licensePlate,
+  ) async {
+    try {
+      final response = await sl<DioClient>().get(
+        "${ApiUrls.rentalVehicles}/$licensePlate",
+      );
+      final vehicle = RentalVehicle.fromJson(response.data);
+      return Right(vehicle);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message:
+              e.response?.data['message'] ??
+              'An error occurred while fetching details',
           statusCode: e.response?.statusCode,
         ),
       );

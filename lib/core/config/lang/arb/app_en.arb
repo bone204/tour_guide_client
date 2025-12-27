@@ -554,6 +554,11 @@
   "transmission": "Transmission",
   "seatingCapacity": "Seating Capacity",
   "maxSpeed": "Max Speed",
+  
+  "transmissionManual": "Manual",
+  "transmissionAutomatic": "Automatic",
+  "fuelGasoline": "Gasoline",
+  "fuelElectric": "Electric",
 
   "totalRentals": "Total Rentals",
 
@@ -836,6 +841,7 @@
       }
     }
   },
+  "noData": "No data",
   "actionSuccess": "Action successful",
   "continueText": "Continue",
   "price": "Price",
