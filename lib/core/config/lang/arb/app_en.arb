@@ -801,7 +801,7 @@
   "paid": "Paid",
   "completed": "Completed",
   "cancelled": "Cancelled",
-  "billCode": "Bill Code"
+  "billCode": "Bill Code",
   "verify": "Verify",
   "contractTitle": "Contract #{id}",
   "@contractTitle": {
@@ -859,6 +859,9 @@
   "pleaseSelectPackage": "Please select a package",
   "rentalBillCreatedSuccess": "Rental Bill created successfully!",
   "enterPickupLocation": "Enter pickup location",
+  "selectStartDate": "Please select start date",
+  "selectEndDate": "Please select end date",
+  "endDateMustBeAfterStartDate": "End date must be after start date",
   "rentalType": "Rental Type",
   "noData": "No data",
   "actionSuccess": "Action successful",

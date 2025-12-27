@@ -1,17 +1,30 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/ticket_clipper.widget.dart';
+import 'package:tour_guide_app/features/voucher/data/models/voucher.dart';
 
 class VoucherCard extends StatelessWidget {
-  final String voucherText;
+  final Voucher voucher;
 
-  const VoucherCard({super.key, required this.voucherText});
+  const VoucherCard({super.key, required this.voucher});
 
   @override
   Widget build(BuildContext context) {
+    String voucherText;
+    if (voucher.discountType == VoucherDiscountType.percentage) {
+      voucherText = "${voucher.value.toInt()}% OFF";
+    } else {
+      // Assuming fixed value is in VND, format appropriately if needed.
+      // For simplicity, displaying raw value or formatted string.
+      // You might want to use NumberFormat.currency later.
+      if (voucher.value >= 1000) {
+        voucherText = "${(voucher.value / 1000).toInt()}K OFF";
+      } else {
+        voucherText = "${voucher.value.toInt()} OFF";
+      }
+    }
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       child: ClipPath(
@@ -56,13 +69,17 @@ class VoucherCard extends StatelessWidget {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              AppLocalizations.of(context)!.specialOfferForYou,
+                              voucher.description ??
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.specialOfferForYou,
                               style: Theme.of(
                                 context,
                               ).textTheme.bodySmall?.copyWith(
                                 color: AppColors.textSubtitle,
                                 overflow: TextOverflow.ellipsis,
                               ),
+                              maxLines: 2,
                             ),
                           ],
                         ),

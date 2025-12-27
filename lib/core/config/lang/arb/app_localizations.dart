@@ -2453,6 +2453,30 @@ abstract class AppLocalizations {
   /// **'Unverified'**
   String get unverified;
 
+  /// No description provided for @paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get paid;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get cancelled;
+
+  /// No description provided for @billCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill Code'**
+  String get billCode;
+
   /// No description provided for @verify.
   ///
   /// In en, this message translates to:
@@ -2615,6 +2639,24 @@ abstract class AppLocalizations {
   /// **'Enter pickup location'**
   String get enterPickupLocation;
 
+  /// No description provided for @selectStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select start date'**
+  String get selectStartDate;
+
+  /// No description provided for @selectEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select end date'**
+  String get selectEndDate;
+
+  /// No description provided for @endDateMustBeAfterStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End date must be after start date'**
+  String get endDateMustBeAfterStartDate;
+
   /// No description provided for @rentalType.
   ///
   /// In en, this message translates to:
@@ -2681,12 +2723,6 @@ abstract class AppLocalizations {
   /// **'Status'**
   String get status;
 
-  /// No description provided for @billCode.
-  ///
-  /// In en, this message translates to:
-  /// **'Bill Code'**
-  String get billCode;
-
   /// No description provided for @duration.
   ///
   /// In en, this message translates to:
@@ -2722,24 +2758,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No rental bills found'**
   String get noRentalBills;
-
-  /// No description provided for @paid.
-  ///
-  /// In en, this message translates to:
-  /// **'Paid'**
-  String get paid;
-
-  /// No description provided for @cancelled.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancelled'**
-  String get cancelled;
-
-  /// No description provided for @completed.
-  ///
-  /// In en, this message translates to:
-  /// **'Completed'**
-  String get completed;
 
   /// No description provided for @document.
   ///

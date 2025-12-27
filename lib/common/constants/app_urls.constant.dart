@@ -43,4 +43,7 @@ class ApiUrls {
 
   //Hobbies URLs
   static const hobbies = "$baseURL/users/profile/hobbies";
+
+  //Voucher URLs
+  static const vouchers = "$baseURL/vouchers";
 }

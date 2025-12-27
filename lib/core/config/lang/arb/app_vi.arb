@@ -597,6 +597,9 @@
   "pleaseSelectPackage": "Vui lòng chọn gói cước",
   "rentalBillCreatedSuccess": "Tạo hóa đơn thuê thành công!",
   "enterPickupLocation": "Nhập địa điểm nhận xe",
+  "selectStartDate": "Vui lòng chọn ngày bắt đầu",
+  "selectEndDate": "Vui lòng chọn ngày kết thúc",
+  "endDateMustBeAfterStartDate": "Ngày kết thúc phải sau ngày bắt đầu",
   "rentalType": "Loại hình thuê",
   "numberOfSeats": "Số chỗ ngồi",
 

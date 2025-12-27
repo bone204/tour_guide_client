@@ -128,6 +128,13 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/domain/repository/r
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get_my_rental_bills_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get_rental_bill_detail_use_case.dart';
 
+import 'package:tour_guide_app/features/voucher/data/data_source/voucher_api_service.dart';
+import 'package:tour_guide_app/features/voucher/data/repository/voucher_repository_impl.dart';
+import 'package:tour_guide_app/features/voucher/domain/repository/voucher_repository.dart';
+import 'package:tour_guide_app/features/voucher/domain/usecases/get_voucher_detail_use_case.dart';
+import 'package:tour_guide_app/features/voucher/domain/usecases/get_vouchers_use_case.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_vouchers_cubit.dart';
+
 final sl = GetIt.instance;
 
 void setUpServiceLocator(SharedPreferences prefs) {
@@ -346,4 +353,14 @@ void setUpServiceLocator(SharedPreferences prefs) {
       createFeedbackReplyUseCase: sl(),
     ),
   );
+
+  // Voucher
+  sl.registerSingleton<VoucherApiService>(VoucherApiServiceImpl());
+  sl.registerSingleton<VoucherRepository>(
+    VoucherRepositoryImpl(apiService: sl()),
+  );
+  sl.registerSingleton<GetVouchersUseCase>(GetVouchersUseCase(sl()));
+  sl.registerSingleton<GetVoucherDetailUseCase>(GetVoucherDetailUseCase(sl()));
+
+  sl.registerFactory<GetVouchersCubit>(() => GetVouchersCubit(sl()));
 }

@@ -1202,6 +1202,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get unverified => 'Chưa xác thực';
 
   @override
+  String get paid => 'Đã thanh toán';
+
+  @override
+  String get completed => 'Hoàn thành';
+
+  @override
+  String get cancelled => 'Đã hủy';
+
+  @override
+  String get billCode => 'Mã hóa đơn';
+
+  @override
   String get verify => 'Xác thực';
 
   @override
@@ -1297,6 +1309,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get enterPickupLocation => 'Nhập địa điểm nhận xe';
 
   @override
+  String get selectStartDate => 'Vui lòng chọn ngày bắt đầu';
+
+  @override
+  String get selectEndDate => 'Vui lòng chọn ngày kết thúc';
+
+  @override
+  String get endDateMustBeAfterStartDate => 'Ngày kết thúc phải sau ngày bắt đầu';
+
+  @override
   String get rentalType => 'Loại hình thuê';
 
   @override
@@ -1330,9 +1351,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get status => 'Trạng thái';
 
   @override
-  String get billCode => 'Mã hóa đơn';
-
-  @override
   String get duration => 'Thời lượng';
 
   @override
@@ -1349,15 +1367,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noRentalBills => 'Không có hóa đơn nào';
-
-  @override
-  String get paid => 'Đã thanh toán';
-
-  @override
-  String get cancelled => 'Đã hủy';
-
-  @override
-  String get completed => 'Hoàn thành';
 
   @override
   String get document => 'Giấy tờ';

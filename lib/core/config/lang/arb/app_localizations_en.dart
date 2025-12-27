@@ -1202,6 +1202,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unverified => 'Unverified';
 
   @override
+  String get paid => 'Paid';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get cancelled => 'Cancelled';
+
+  @override
+  String get billCode => 'Bill Code';
+
+  @override
   String get verify => 'Verify';
 
   @override
@@ -1291,6 +1303,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterPickupLocation => 'Enter pickup location';
 
   @override
+  String get selectStartDate => 'Please select start date';
+
+  @override
+  String get selectEndDate => 'Please select end date';
+
+  @override
+  String get endDateMustBeAfterStartDate => 'End date must be after start date';
+
+  @override
   String get rentalType => 'Rental Type';
 
   @override
@@ -1324,9 +1345,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get status => 'Status';
 
   @override
-  String get billCode => 'Bill Code';
-
-  @override
   String get duration => 'Duration';
 
   @override
@@ -1343,15 +1361,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noRentalBills => 'No rental bills found';
-
-  @override
-  String get paid => 'Paid';
-
-  @override
-  String get cancelled => 'Cancelled';
-
-  @override
-  String get completed => 'Completed';
 
   @override
   String get document => 'Document';

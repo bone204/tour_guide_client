@@ -63,6 +63,39 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
       return;
     }
 
+    if (startDateTime == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.selectStartDate),
+          backgroundColor: AppColors.primaryRed,
+        ),
+      );
+      return;
+    }
+
+    if (endDateTime == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.selectEndDate),
+          backgroundColor: AppColors.primaryRed,
+        ),
+      );
+      return;
+    }
+
+    if (endDateTime!.isBefore(startDateTime!) ||
+        endDateTime!.isAtSameMomentAs(startDateTime!)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.endDateMustBeAfterStartDate,
+          ),
+          backgroundColor: AppColors.primaryRed,
+        ),
+      );
+      return;
+    }
+
     final request = MotorbikeSearchRequest(
       rentalType:
           selectedRentType == RentType.hourly

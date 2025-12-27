@@ -304,7 +304,7 @@ class _CreateRentalBillPageState extends State<CreateRentalBillPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${locale.rentalType}: ${widget.rentalType == 'HOURLY' ? locale.hourlyRent : locale.dailyRent}',
+          '${locale.rentalType}: ${widget.rentalType == 'hourly' ? locale.hourlyRent : locale.dailyRent}',
           style: Theme.of(context).textTheme.titleSmall,
         ),
         SizedBox(height: 16.h),
