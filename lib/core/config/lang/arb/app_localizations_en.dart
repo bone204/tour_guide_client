@@ -1665,6 +1665,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statusDraft => 'Draft';
 
   @override
+  String get statusMissed => 'Missed';
+
+  @override
   String get edit => 'Edit';
 
   @override

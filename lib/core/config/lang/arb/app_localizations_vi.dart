@@ -1671,6 +1671,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get statusDraft => 'Bản nháp';
 
   @override
+  String get statusMissed => 'Đã bỏ lỡ';
+
+  @override
   String get edit => 'Sửa';
 
   @override

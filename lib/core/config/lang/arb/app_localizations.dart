@@ -3275,6 +3275,12 @@ abstract class AppLocalizations {
   /// **'Draft'**
   String get statusDraft;
 
+  /// No description provided for @statusMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get statusMissed;
+
   /// No description provided for @edit.
   ///
   /// In en, this message translates to:

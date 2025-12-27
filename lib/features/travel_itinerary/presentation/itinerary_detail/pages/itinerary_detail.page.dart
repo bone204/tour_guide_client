@@ -517,6 +517,8 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
         return AppLocalizations.of(context)!.statusCancelled;
       case 'draft':
         return AppLocalizations.of(context)!.statusDraft;
+      case 'missed':
+        return AppLocalizations.of(context)!.statusMissed;
       default:
         return status;
     }

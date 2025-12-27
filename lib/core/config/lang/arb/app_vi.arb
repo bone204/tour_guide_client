@@ -1124,6 +1124,7 @@
   "statusOngoing": "Đang diễn ra",
   "statusCancelled": "Đã hủy",
   "statusDraft": "Bản nháp",
+  "statusMissed": "Đã bỏ lỡ",
   "edit": "Sửa",
   "delete": "Xóa",
   "confirmDelete": "Xác nhận xóa",

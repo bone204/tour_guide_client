@@ -184,6 +184,8 @@ class ItineraryCard extends StatelessWidget {
         return AppLocalizations.of(context)!.statusCancelled;
       case 'draft':
         return AppLocalizations.of(context)!.statusDraft;
+      case 'missed':
+        return AppLocalizations.of(context)!.statusMissed;
       case 'public':
       default:
         return status;

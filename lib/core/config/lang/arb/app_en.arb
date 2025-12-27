@@ -1098,6 +1098,7 @@
   "statusOngoing": "Ongoing",
   "statusCancelled": "Cancelled",
   "statusDraft": "Draft",
+  "statusMissed": "Missed",
   "edit": "Edit",
   "delete": "Delete",
   "confirmDelete": "Confirm Delete",
