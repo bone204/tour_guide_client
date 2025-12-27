@@ -59,7 +59,18 @@ class VehicleDetailPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Status Section
+                    // Top Vehicle Photo (if approved)
+                    if (vehicle.status == 'approved' &&
+                        vehicle.vehicleCatalog?.photo != null) ...[
+                      _buildImageRow(
+                        context,
+                        AppLocalizations.of(context)!.vehiclePhoto,
+                        vehicle.vehicleCatalog!.photo!,
+                      ),
+                      SizedBox(height: 16.h),
+                    ],
+
+                    // Status & Availability Section
                     Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
@@ -108,22 +119,38 @@ class VehicleDetailPage extends StatelessWidget {
                                   vertical: 6.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _getStatusColor(
-                                    vehicle.status,
-                                  ).withOpacity(0.1),
+                                  color: (vehicle.status == 'approved'
+                                          ? _getAvailabilityColor(
+                                            vehicle.availability,
+                                          )
+                                          : _getStatusColor(vehicle.status))
+                                      .withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(20.r),
                                   border: Border.all(
-                                    color: _getStatusColor(
-                                      vehicle.status,
-                                    ).withOpacity(0.2),
+                                    color: (vehicle.status == 'approved'
+                                            ? _getAvailabilityColor(
+                                              vehicle.availability,
+                                            )
+                                            : _getStatusColor(vehicle.status))
+                                        .withOpacity(0.2),
                                   ),
                                 ),
                                 child: Text(
-                                  _getStatusText(context, vehicle.status),
+                                  vehicle.status == 'approved'
+                                      ? _getAvailabilityText(
+                                        context,
+                                        vehicle.availability,
+                                      )
+                                      : _getStatusText(context, vehicle.status),
                                   style: Theme.of(
                                     context,
                                   ).textTheme.bodySmall?.copyWith(
-                                    color: _getStatusColor(vehicle.status),
+                                    color:
+                                        vehicle.status == 'approved'
+                                            ? _getAvailabilityColor(
+                                              vehicle.availability,
+                                            )
+                                            : _getStatusColor(vehicle.status),
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -173,6 +200,32 @@ class VehicleDetailPage extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
 
+                    // Rental Information (Show if approved)
+                    if (vehicle.status == 'approved') ...[
+                      _buildSection(
+                        context,
+                        title: AppLocalizations.of(context)!.rentalInfo,
+                        children: [
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.licensePlate,
+                            vehicle.licensePlate,
+                          ),
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.totalRentals,
+                            vehicle.totalRentals.toString(),
+                          ),
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.rating,
+                            '${vehicle.averageRating} / 5.0',
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                    ],
+
                     // Pricing Info
                     _buildSection(
                       context,
@@ -183,11 +236,54 @@ class VehicleDetailPage extends StatelessWidget {
                           AppLocalizations.of(context)!.hourlyRent,
                           '${_formatCurrency(vehicle.pricePerHour)} đ',
                         ),
+                        if (vehicle.priceFor4Hours != null)
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.priceFor4Hours,
+                            '${_formatCurrency(vehicle.priceFor4Hours!)} đ',
+                          ),
+                        if (vehicle.priceFor8Hours != null)
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.priceFor8Hours,
+                            '${_formatCurrency(vehicle.priceFor8Hours!)} đ',
+                          ),
+                        if (vehicle.priceFor12Hours != null)
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.priceFor12Hours,
+                            '${_formatCurrency(vehicle.priceFor12Hours!)} đ',
+                          ),
+                        Divider(height: 24.h),
                         _buildDetailRow(
                           context,
                           AppLocalizations.of(context)!.dailyRent,
                           '${_formatCurrency(vehicle.pricePerDay)} đ',
                         ),
+                        if (vehicle.priceFor2Days != null)
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.priceFor2Days,
+                            '${_formatCurrency(vehicle.priceFor2Days!)} đ',
+                          ),
+                        if (vehicle.priceFor3Days != null)
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.priceFor3Days,
+                            '${_formatCurrency(vehicle.priceFor3Days!)} đ',
+                          ),
+                        if (vehicle.priceFor5Days != null)
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.priceFor5Days,
+                            '${_formatCurrency(vehicle.priceFor5Days!)} đ',
+                          ),
+                        if (vehicle.priceFor7Days != null)
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.priceFor7Days,
+                            '${_formatCurrency(vehicle.priceFor7Days!)} đ',
+                          ),
                       ],
                     ),
                     SizedBox(height: 16.h),
@@ -197,6 +293,40 @@ class VehicleDetailPage extends StatelessWidget {
                       context,
                       title: AppLocalizations.of(context)!.vehicleInfo,
                       children: [
+                        if (vehicle.vehicleCatalog != null) ...[
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.brand,
+                            vehicle.vehicleCatalog!.brand ?? '',
+                          ),
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.model,
+                            vehicle.vehicleCatalog!.model ?? '',
+                          ),
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.seatingCapacity,
+                            vehicle.vehicleCatalog!.seatingCapacity
+                                    ?.toString() ??
+                                '',
+                          ),
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.fuelType,
+                            vehicle.vehicleCatalog!.fuelType ?? '',
+                          ),
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.transmission,
+                            vehicle.vehicleCatalog!.transmission ?? '',
+                          ),
+                          _buildDetailRow(
+                            context,
+                            AppLocalizations.of(context)!.maxSpeed,
+                            vehicle.vehicleCatalog!.maxSpeed ?? '',
+                          ),
+                        ],
                         if (vehicle.requirements != null &&
                             vehicle.requirements!.isNotEmpty)
                           _buildDetailRow(
@@ -408,6 +538,40 @@ class VehicleDetailPage extends StatelessWidget {
         return AppLocalizations.of(context)!.pending;
       default:
         return status;
+    }
+  }
+
+  Color _getAvailabilityColor(String availability) {
+    switch (availability.toLowerCase()) {
+      case 'available':
+        return AppColors.primaryGreen;
+      case 'rented':
+        return AppColors.primaryBlue;
+      case 'maintenance':
+        return AppColors.primaryOrange;
+      case 'locked':
+        return Colors.grey;
+      case 'unavailable':
+      default:
+        return AppColors.primaryRed;
+    }
+  }
+
+  String _getAvailabilityText(BuildContext context, String availability) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (availability.toLowerCase()) {
+      case 'available':
+        return l10n.available;
+      case 'rented':
+        return l10n.rented;
+      case 'maintenance':
+        return l10n.maintenance;
+      case 'locked':
+        return l10n.locked;
+      case 'unavailable':
+        return l10n.unavailable;
+      default:
+        return availability;
     }
   }
 

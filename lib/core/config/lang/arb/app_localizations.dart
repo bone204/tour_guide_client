@@ -1631,6 +1631,36 @@ abstract class AppLocalizations {
   /// **'Price Per Day'**
   String get pricePerDay;
 
+  /// No description provided for @priceFor7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 7 Days'**
+  String get priceFor7Days;
+
+  /// No description provided for @fuelType.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel Type'**
+  String get fuelType;
+
+  /// No description provided for @transmission.
+  ///
+  /// In en, this message translates to:
+  /// **'Transmission'**
+  String get transmission;
+
+  /// No description provided for @seatingCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'Seating Capacity'**
+  String get seatingCapacity;
+
+  /// No description provided for @maxSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Speed'**
+  String get maxSpeed;
+
   /// No description provided for @totalRentals.
   ///
   /// In en, this message translates to:
@@ -4336,6 +4366,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add Lottie file\nto assets/lottie/'**
   String get addLottieFile;
+
+  /// No description provided for @vehiclePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Photo'**
+  String get vehiclePhoto;
+
+  /// No description provided for @availability.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability'**
+  String get availability;
+
+  /// No description provided for @unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get unavailable;
+
+  /// No description provided for @brand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get brand;
+
+  /// No description provided for @model.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get model;
+
+  /// No description provided for @priceFor4Hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 4 Hours'**
+  String get priceFor4Hours;
+
+  /// No description provided for @priceFor8Hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 8 Hours'**
+  String get priceFor8Hours;
+
+  /// No description provided for @priceFor12Hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 12 Hours'**
+  String get priceFor12Hours;
+
+  /// No description provided for @priceFor2Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 2 Days'**
+  String get priceFor2Days;
+
+  /// No description provided for @priceFor3Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 3 Days'**
+  String get priceFor3Days;
+
+  /// No description provided for @priceFor5Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 5 Days'**
+  String get priceFor5Days;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

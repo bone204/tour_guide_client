@@ -789,6 +789,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get pricePerDay => 'Giá theo ngày';
 
   @override
+  String get priceFor7Days => 'Giá thuê 7 ngày';
+
+  @override
+  String get fuelType => 'Loại nhiên liệu';
+
+  @override
+  String get transmission => 'Hộp số';
+
+  @override
+  String get seatingCapacity => 'Số chỗ ngồi';
+
+  @override
+  String get maxSpeed => 'Tốc độ tối đa';
+
+  @override
   String get totalRentals => 'Tổng lượt thuê';
 
   @override
@@ -1252,37 +1267,37 @@ class AppLocalizationsVi extends AppLocalizations {
   String get register => 'Đăng ký';
 
   @override
-  String get profileUpdatedSuccessfully => 'Profile updated successfully';
+  String get profileUpdatedSuccessfully => 'Cập nhật hồ sơ thành công';
 
   @override
-  String get unsavedChangesMessage => 'You have unsaved changes. Discard them?';
+  String get unsavedChangesMessage => 'Bạn có thay đổi chưa lưu. Bạn có muốn hủy không?';
 
   @override
-  String get update => 'Update';
+  String get update => 'Cập nhật';
 
   @override
-  String get noChangesToUpdate => 'No changes to update';
+  String get noChangesToUpdate => 'Không có thay đổi nào để cập nhật';
 
   @override
-  String get images => 'Images';
+  String get images => 'Hình ảnh';
 
   @override
-  String get idCard => 'ID Card';
+  String get idCard => 'CMND/CCCD';
 
   @override
-  String get citizenFront => 'Citizen Front';
+  String get citizenFront => 'Mặt trước CCCD';
 
   @override
-  String get citizenBack => 'Citizen Back';
+  String get citizenBack => 'Mặt sau CCCD';
 
   @override
-  String get dateOfBirth => 'Date of Birth';
+  String get dateOfBirth => 'Ngày sinh';
 
   @override
-  String get gender => 'Gender';
+  String get gender => 'Giới tính';
 
   @override
-  String get nationality => 'Nationality';
+  String get nationality => 'Quốc tịch';
 
   @override
   String get unknown => 'Không rõ';
@@ -2216,4 +2231,37 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get addLottieFile => 'Thêm file Lottie\nvào assets/lottie/';
+
+  @override
+  String get vehiclePhoto => 'Ảnh thực tế của xe';
+
+  @override
+  String get availability => 'Trạng thái sẵn sàng';
+
+  @override
+  String get unavailable => 'Không sẵn sàng';
+
+  @override
+  String get brand => 'Thương hiệu';
+
+  @override
+  String get model => 'Dòng xe';
+
+  @override
+  String get priceFor4Hours => 'Giá thuê 4 giờ';
+
+  @override
+  String get priceFor8Hours => 'Giá thuê 8 giờ';
+
+  @override
+  String get priceFor12Hours => 'Giá thuê 12 giờ';
+
+  @override
+  String get priceFor2Days => 'Giá thuê 2 ngày';
+
+  @override
+  String get priceFor3Days => 'Giá thuê 3 ngày';
+
+  @override
+  String get priceFor5Days => 'Giá thuê 5 ngày';
 }

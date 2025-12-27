@@ -1,8 +1,10 @@
+import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_catalog.dart';
+
 class RentalVehicle {
   final String licensePlate;
   final int contractId;
-  final int?
-  vehicleCatalogId; // Assuming VehicleCatalog model exists or primitive
+  final int? vehicleCatalogId;
+  final VehicleCatalog? vehicleCatalog;
 
   // Base prices
   final double pricePerHour;
@@ -36,6 +38,7 @@ class RentalVehicle {
     required this.licensePlate,
     required this.contractId,
     this.vehicleCatalogId,
+    this.vehicleCatalog,
     required this.pricePerHour,
     required this.pricePerDay,
     this.priceFor4Hours,
@@ -63,6 +66,10 @@ class RentalVehicle {
       licensePlate: json['licensePlate'] ?? '',
       contractId: json['contractId'] ?? 0,
       vehicleCatalogId: json['vehicleCatalogId'],
+      vehicleCatalog:
+          json['vehicleCatalog'] != null
+              ? VehicleCatalog.fromJson(json['vehicleCatalog'])
+              : null,
       pricePerHour:
           double.tryParse(json['pricePerHour']?.toString() ?? '0') ?? 0,
       pricePerDay: double.tryParse(json['pricePerDay']?.toString() ?? '0') ?? 0,
@@ -95,6 +102,7 @@ class RentalVehicle {
       'licensePlate': licensePlate,
       'contractId': contractId,
       'vehicleCatalogId': vehicleCatalogId,
+      'vehicleCatalog': vehicleCatalog?.toJson(),
       'pricePerHour': pricePerHour,
       'pricePerDay': pricePerDay,
       'priceFor4Hours': priceFor4Hours,

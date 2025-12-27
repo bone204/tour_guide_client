@@ -549,6 +549,11 @@
   "pricePerHour": "Price Per Hour",
 
   "pricePerDay": "Price Per Day",
+  "priceFor7Days": "Price for 7 Days",
+  "fuelType": "Fuel Type",
+  "transmission": "Transmission",
+  "seatingCapacity": "Seating Capacity",
+  "maxSpeed": "Max Speed",
 
   "totalRentals": "Total Rentals",
 
@@ -1339,5 +1344,16 @@
   "splashSubtitle": "Tour Guide App",
   "splashTagline": "Discover the world\nYour journey, your style",
   "splashLoading": "Starting up...",
-  "addLottieFile": "Add Lottie file\nto assets/lottie/"
+  "addLottieFile": "Add Lottie file\nto assets/lottie/",
+  "vehiclePhoto": "Vehicle Photo",
+  "availability": "Availability",
+  "unavailable": "Unavailable",
+  "brand": "Brand",
+  "model": "Model",
+  "priceFor4Hours": "Price for 4 Hours",
+  "priceFor8Hours": "Price for 8 Hours",
+  "priceFor12Hours": "Price for 12 Hours",
+  "priceFor2Days": "Price for 2 Days",
+  "priceFor3Days": "Price for 3 Days",
+  "priceFor5Days": "Price for 5 Days"
 }

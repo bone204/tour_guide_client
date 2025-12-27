@@ -789,6 +789,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pricePerDay => 'Price Per Day';
 
   @override
+  String get priceFor7Days => 'Price for 7 Days';
+
+  @override
+  String get fuelType => 'Fuel Type';
+
+  @override
+  String get transmission => 'Transmission';
+
+  @override
+  String get seatingCapacity => 'Seating Capacity';
+
+  @override
+  String get maxSpeed => 'Max Speed';
+
+  @override
   String get totalRentals => 'Total Rentals';
 
   @override
@@ -2210,4 +2225,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addLottieFile => 'Add Lottie file\nto assets/lottie/';
+
+  @override
+  String get vehiclePhoto => 'Vehicle Photo';
+
+  @override
+  String get availability => 'Availability';
+
+  @override
+  String get unavailable => 'Unavailable';
+
+  @override
+  String get brand => 'Brand';
+
+  @override
+  String get model => 'Model';
+
+  @override
+  String get priceFor4Hours => 'Price for 4 Hours';
+
+  @override
+  String get priceFor8Hours => 'Price for 8 Hours';
+
+  @override
+  String get priceFor12Hours => 'Price for 12 Hours';
+
+  @override
+  String get priceFor2Days => 'Price for 2 Days';
+
+  @override
+  String get priceFor3Days => 'Price for 3 Days';
+
+  @override
+  String get priceFor5Days => 'Price for 5 Days';
 }

@@ -19,8 +19,27 @@ class VehicleCard extends StatelessWidget {
 
     switch (vehicle.status.toLowerCase()) {
       case 'approved':
-        statusColor = Colors.green;
-        statusText = locale.approved;
+        switch (vehicle.availability.toLowerCase()) {
+          case 'available':
+            statusColor = AppColors.primaryGreen;
+            statusText = locale.available;
+            break;
+          case 'rented':
+            statusColor = AppColors.primaryBlue;
+            statusText = locale.rented;
+            break;
+          case 'maintenance':
+            statusColor = Colors.orange;
+            statusText = locale.maintenance;
+            break;
+          case 'locked':
+            statusColor = Colors.grey;
+            statusText = locale.locked;
+            break;
+          default:
+            statusColor = Colors.red;
+            statusText = locale.unavailable;
+        }
         break;
       case 'rejected':
         statusColor = Colors.red;
