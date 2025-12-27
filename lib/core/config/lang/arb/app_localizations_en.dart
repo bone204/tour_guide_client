@@ -789,6 +789,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pricePerDay => 'Price Per Day';
 
   @override
+  String get priceFor4Hours => 'Price for 4 Hours';
+
+  @override
+  String get priceFor8Hours => 'Price for 8 Hours';
+
+  @override
+  String get priceFor12Hours => 'Price for 12 Hours';
+
+  @override
+  String get priceFor2Days => 'Price for 2 Days';
+
+  @override
+  String get priceFor3Days => 'Price for 3 Days';
+
+  @override
+  String get priceFor5Days => 'Price for 5 Days';
+
+  @override
   String get priceFor7Days => 'Price for 7 Days';
 
   @override
@@ -1175,6 +1193,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchProvinceHint => 'Search province/city...';
 
   @override
+  String get selectRentType => 'Please select rental type in filter';
+
+  @override
   String get verified => 'Verified';
 
   @override
@@ -1247,6 +1268,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get itineraryPublicizedSuccess => 'Itinerary publicized successfully!';
+
+  @override
+  String get findVehicle => 'Find Vehicle';
+
+  @override
+  String get durationPackage => 'Duration Package';
+
+  @override
+  String get confirmRental => 'Confirm Rental';
+
+  @override
+  String get calculatedEndDate => 'End Date (Calculated)';
+
+  @override
+  String get pleaseSelectPackage => 'Please select a package';
+
+  @override
+  String get rentalBillCreatedSuccess => 'Rental Bill created successfully!';
+
+  @override
+  String get enterPickupLocation => 'Enter pickup location';
+
+  @override
+  String get rentalType => 'Rental Type';
 
   @override
   String get noData => 'No data';
@@ -2294,24 +2339,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get model => 'Model';
-
-  @override
-  String get priceFor4Hours => 'Price for 4 Hours';
-
-  @override
-  String get priceFor8Hours => 'Price for 8 Hours';
-
-  @override
-  String get priceFor12Hours => 'Price for 12 Hours';
-
-  @override
-  String get priceFor2Days => 'Price for 2 Days';
-
-  @override
-  String get priceFor3Days => 'Price for 3 Days';
-
-  @override
-  String get priceFor5Days => 'Price for 5 Days';
 
   @override
   String get enableRental => 'Enable Rental';

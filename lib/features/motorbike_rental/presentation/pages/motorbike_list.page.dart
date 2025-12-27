@@ -7,6 +7,7 @@ import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/searc
 import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/search_motorbike/search_motorbike_state.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/widgets/motorbike_list_shimmer.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 
 class MotorbikeListPage extends StatelessWidget {
   const MotorbikeListPage({super.key});
@@ -21,11 +22,26 @@ class MotorbikeListPage extends StatelessWidget {
     ).pushNamed(AppRouteConstant.motorbikeDetails, arguments: licensePlate);
   }
 
-  void _navigateToMotorbikeBillPage(BuildContext context) {
-    Navigator.of(
-      context,
-      rootNavigator: true,
-    ).pushNamed(AppRouteConstant.motorbikeBill);
+  void _navigateToCreateRentalBillPage(
+    BuildContext context,
+    RentalVehicle vehicle,
+    String? rentalType,
+    DateTime? startDate,
+  ) {
+    if (rentalType == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.selectRentType)),
+      );
+      return;
+    }
+    Navigator.of(context, rootNavigator: true).pushNamed(
+      AppRouteConstant.createRentalBill,
+      arguments: {
+        'vehicle': vehicle,
+        'rentalType': rentalType,
+        'initialStartDate': startDate ?? DateTime.now(),
+      },
+    );
   }
 
   @override
@@ -74,14 +90,15 @@ class MotorbikeListPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final motorbike = state.motorbikes[index];
                 return VehicleCard(
-                  name: "${motorbike.vehicleCatalog?.brand} ${motorbike.vehicleCatalog?.model}",
+                  name:
+                      "${motorbike.vehicleCatalog?.brand} ${motorbike.vehicleCatalog?.model}",
                   price:
                       (request?.rentalType == RentalType.daily
                               ? motorbike.pricePerDay
                               : motorbike.pricePerHour)
                           .toInt(),
                   imageUrl: motorbike.vehicleCatalog?.photo ?? '',
-                  seats: 2, 
+                  seats: 2,
                   priceLabel:
                       request?.rentalType == RentalType.daily
                           ? AppLocalizations.of(context)!.day
@@ -91,7 +108,13 @@ class MotorbikeListPage extends StatelessWidget {
                         context,
                         motorbike.licensePlate,
                       ),
-                  onRent: () => _navigateToMotorbikeBillPage(context),
+                  onRent:
+                      () => _navigateToCreateRentalBillPage(
+                        context,
+                        motorbike,
+                        request?.rentalType?.name,
+                        request?.startDate,
+                      ),
                 );
               },
             );

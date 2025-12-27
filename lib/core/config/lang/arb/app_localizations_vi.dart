@@ -789,6 +789,24 @@ class AppLocalizationsVi extends AppLocalizations {
   String get pricePerDay => 'Giá theo ngày';
 
   @override
+  String get priceFor4Hours => 'Giá thuê 4 giờ';
+
+  @override
+  String get priceFor8Hours => 'Giá thuê 8 giờ';
+
+  @override
+  String get priceFor12Hours => 'Giá thuê 12 giờ';
+
+  @override
+  String get priceFor2Days => 'Giá thuê 2 ngày';
+
+  @override
+  String get priceFor3Days => 'Giá thuê 3 ngày';
+
+  @override
+  String get priceFor5Days => 'Giá thuê 5 ngày';
+
+  @override
   String get priceFor7Days => 'Giá thuê 7 ngày';
 
   @override
@@ -1175,6 +1193,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get searchProvinceHint => 'Tìm kiếm tỉnh/thành phố...';
 
   @override
+  String get selectRentType => 'Vui lòng chọn loại thuê xe trong bộ lọc';
+
+  @override
   String get verified => 'Đã xác thực';
 
   @override
@@ -1253,6 +1274,30 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get itineraryPublicizedSuccess => 'Lộ trình đã được công khai thành công!';
+
+  @override
+  String get findVehicle => 'Tìm xe';
+
+  @override
+  String get durationPackage => 'Gói thời gian';
+
+  @override
+  String get confirmRental => 'Xác nhận thuê';
+
+  @override
+  String get calculatedEndDate => 'Ngày kết thúc (Tự động)';
+
+  @override
+  String get pleaseSelectPackage => 'Vui lòng chọn gói cước';
+
+  @override
+  String get rentalBillCreatedSuccess => 'Tạo hóa đơn thuê thành công!';
+
+  @override
+  String get enterPickupLocation => 'Nhập địa điểm nhận xe';
+
+  @override
+  String get rentalType => 'Loại hình thuê';
 
   @override
   String get noData => 'Không có dữ liệu';
@@ -2300,24 +2345,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get model => 'Dòng xe';
-
-  @override
-  String get priceFor4Hours => 'Giá thuê 4 giờ';
-
-  @override
-  String get priceFor8Hours => 'Giá thuê 8 giờ';
-
-  @override
-  String get priceFor12Hours => 'Giá thuê 12 giờ';
-
-  @override
-  String get priceFor2Days => 'Giá thuê 2 ngày';
-
-  @override
-  String get priceFor3Days => 'Giá thuê 3 ngày';
-
-  @override
-  String get priceFor5Days => 'Giá thuê 5 ngày';
 
   @override
   String get enableRental => 'Mở lại cho thuê';

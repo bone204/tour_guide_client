@@ -75,8 +75,30 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
       vehicleType: 'bike',
       minPrice: selectedRange.start.toInt(),
       maxPrice: selectedRange.end.toInt(),
-      startDate: selectedRentType == RentType.daily ? startDateTime : null,
-      endDate: selectedRentType == RentType.daily ? endDateTime : null,
+      startDate:
+          selectedRentType == RentType.daily
+              ? startDateTime
+              : (startHour != null
+                  ? DateTime(
+                    DateTime.now().year,
+                    DateTime.now().month,
+                    DateTime.now().day,
+                    startHour!.hour,
+                    startHour!.minute,
+                  )
+                  : null),
+      endDate:
+          selectedRentType == RentType.daily
+              ? endDateTime
+              : (endHour != null
+                  ? DateTime(
+                    DateTime.now().year,
+                    DateTime.now().month,
+                    DateTime.now().day,
+                    endHour!.hour,
+                    endHour!.minute,
+                  )
+                  : null),
       province: selectedProvince?.name,
     );
 
@@ -282,7 +304,7 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
 
             SizedBox(height: 32.h),
             PrimaryButton(
-              title: AppLocalizations.of(context)!.rent,
+              title: AppLocalizations.of(context)!.findVehicle,
               onPressed: () => _navigateToMotorbikeListPage(context),
               backgroundColor: AppColors.primaryBlue,
               textColor: AppColors.textSecondary,

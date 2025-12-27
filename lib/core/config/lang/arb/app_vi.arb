@@ -590,12 +590,25 @@
   "brandAndModel": "Thương hiệu & dòng xe",
 
   "color": "Màu sắc",
-
+  "findVehicle": "Tìm xe",
+  "durationPackage": "Gói thời gian",
+  "confirmRental": "Xác nhận thuê",
+  "calculatedEndDate": "Ngày kết thúc (Tự động)",
+  "pleaseSelectPackage": "Vui lòng chọn gói cước",
+  "rentalBillCreatedSuccess": "Tạo hóa đơn thuê thành công!",
+  "enterPickupLocation": "Nhập địa điểm nhận xe",
+  "rentalType": "Loại hình thuê",
   "numberOfSeats": "Số chỗ ngồi",
 
   "pricePerHour": "Giá theo giờ",
 
   "pricePerDay": "Giá theo ngày",
+  "priceFor4Hours": "Giá thuê 4 giờ",
+  "priceFor8Hours": "Giá thuê 8 giờ",
+  "priceFor12Hours": "Giá thuê 12 giờ",
+  "priceFor2Days": "Giá thuê 2 ngày",
+  "priceFor3Days": "Giá thuê 3 ngày",
+  "priceFor5Days": "Giá thuê 5 ngày",
   "priceFor7Days": "Giá thuê 7 ngày",
   "fuelType": "Loại nhiên liệu",
   "transmission": "Hộp số",
@@ -782,6 +795,7 @@
   "usernameMaxLength": "Tên đăng nhập không được vượt quá 20 ký tự",
 
   "usernameInvalid": "Tên đăng nhập chỉ gồm chữ, số và gạch dưới",
+  "selectRentType": "Vui lòng chọn loại thuê xe trong bộ lọc",
 
   "pleaseEnterPassword": "Vui lòng nhập mật khẩu",
 

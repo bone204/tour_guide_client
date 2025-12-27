@@ -65,6 +65,8 @@ import 'package:tour_guide_app/features/profile/presentation/pages/personal_info
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/vehicle_detail.page.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/rental_bill_list.page.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/rental_bill_detail.page.dart';
+import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/create_rental_bill.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -506,6 +508,18 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => RentalBillDetailPage(id: id),
+        );
+
+      case AppRouteConstant.createRentalBill:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          settings: settings,
+          builder:
+              (_) => CreateRentalBillPage(
+                vehicle: args['vehicle'] as RentalVehicle,
+                rentalType: args['rentalType'] as String,
+                initialStartDate: args['initialStartDate'] as DateTime,
+              ),
         );
 
       default:

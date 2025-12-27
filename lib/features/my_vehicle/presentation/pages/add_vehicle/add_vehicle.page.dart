@@ -133,19 +133,50 @@ class _AddVehicleViewState extends State<_AddVehicleView> {
         return PricingStep(
           pricePerHour: state.pricePerHour,
           pricePerDay: state.pricePerDay,
+          priceFor4Hours: state.priceFor4Hours,
+          priceFor8Hours: state.priceFor8Hours,
+          priceFor12Hours: state.priceFor12Hours,
+          priceFor2Days: state.priceFor2Days,
+          priceFor3Days: state.priceFor3Days,
+          priceFor5Days: state.priceFor5Days,
+          priceFor7Days: state.priceFor7Days,
           requirements: state.requirements,
           description: state.description,
           isSubmitting: state.status == AddVehicleStatus.loading,
           onSubmit: ({
             pricePerHour,
             pricePerDay,
+            priceFor4Hours,
+            priceFor8Hours,
+            priceFor12Hours,
+            priceFor2Days,
+            priceFor3Days,
+            priceFor5Days,
+            priceFor7Days,
             required requirements,
             required description,
           }) {
-            if (pricePerHour != null)
-              cubit.updatePricePerHour(pricePerHour.toString());
-            if (pricePerDay != null)
-              cubit.updatePricePerDay(pricePerDay.toString());
+            if (pricePerHour != null) {
+              cubit.updatePricePerHour(pricePerHour.toStringAsFixed(0));
+            }
+            if (pricePerDay != null) {
+              cubit.updatePricePerDay(pricePerDay.toStringAsFixed(0));
+            }
+            if (priceFor4Hours != null)
+              cubit.updatePriceFor4Hours(priceFor4Hours.toStringAsFixed(0));
+            if (priceFor8Hours != null)
+              cubit.updatePriceFor8Hours(priceFor8Hours.toStringAsFixed(0));
+            if (priceFor12Hours != null)
+              cubit.updatePriceFor12Hours(priceFor12Hours.toStringAsFixed(0));
+            if (priceFor2Days != null)
+              cubit.updatePriceFor2Days(priceFor2Days.toStringAsFixed(0));
+            if (priceFor3Days != null)
+              cubit.updatePriceFor3Days(priceFor3Days.toStringAsFixed(0));
+            if (priceFor5Days != null)
+              cubit.updatePriceFor5Days(priceFor5Days.toStringAsFixed(0));
+            if (priceFor7Days != null)
+              cubit.updatePriceFor7Days(priceFor7Days.toStringAsFixed(0));
+
             cubit.updateRequirements(requirements);
             cubit.updateDescription(description);
             cubit.submitVehicle();

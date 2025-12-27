@@ -1631,6 +1631,42 @@ abstract class AppLocalizations {
   /// **'Price Per Day'**
   String get pricePerDay;
 
+  /// No description provided for @priceFor4Hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 4 Hours'**
+  String get priceFor4Hours;
+
+  /// No description provided for @priceFor8Hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 8 Hours'**
+  String get priceFor8Hours;
+
+  /// No description provided for @priceFor12Hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 12 Hours'**
+  String get priceFor12Hours;
+
+  /// No description provided for @priceFor2Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 2 Days'**
+  String get priceFor2Days;
+
+  /// No description provided for @priceFor3Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 3 Days'**
+  String get priceFor3Days;
+
+  /// No description provided for @priceFor5Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 5 Days'**
+  String get priceFor5Days;
+
   /// No description provided for @priceFor7Days.
   ///
   /// In en, this message translates to:
@@ -2399,6 +2435,12 @@ abstract class AppLocalizations {
   /// **'Search province/city...'**
   String get searchProvinceHint;
 
+  /// No description provided for @selectRentType.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select rental type in filter'**
+  String get selectRentType;
+
   /// No description provided for @verified.
   ///
   /// In en, this message translates to:
@@ -2530,6 +2572,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Itinerary publicized successfully!'**
   String get itineraryPublicizedSuccess;
+
+  /// No description provided for @findVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Vehicle'**
+  String get findVehicle;
+
+  /// No description provided for @durationPackage.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration Package'**
+  String get durationPackage;
+
+  /// No description provided for @confirmRental.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Rental'**
+  String get confirmRental;
+
+  /// No description provided for @calculatedEndDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End Date (Calculated)'**
+  String get calculatedEndDate;
+
+  /// No description provided for @pleaseSelectPackage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a package'**
+  String get pleaseSelectPackage;
+
+  /// No description provided for @rentalBillCreatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Bill created successfully!'**
+  String get rentalBillCreatedSuccess;
+
+  /// No description provided for @enterPickupLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter pickup location'**
+  String get enterPickupLocation;
+
+  /// No description provided for @rentalType.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Type'**
+  String get rentalType;
 
   /// No description provided for @noData.
   ///
@@ -4504,42 +4594,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Model'**
   String get model;
-
-  /// No description provided for @priceFor4Hours.
-  ///
-  /// In en, this message translates to:
-  /// **'Price for 4 Hours'**
-  String get priceFor4Hours;
-
-  /// No description provided for @priceFor8Hours.
-  ///
-  /// In en, this message translates to:
-  /// **'Price for 8 Hours'**
-  String get priceFor8Hours;
-
-  /// No description provided for @priceFor12Hours.
-  ///
-  /// In en, this message translates to:
-  /// **'Price for 12 Hours'**
-  String get priceFor12Hours;
-
-  /// No description provided for @priceFor2Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Price for 2 Days'**
-  String get priceFor2Days;
-
-  /// No description provided for @priceFor3Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Price for 3 Days'**
-  String get priceFor3Days;
-
-  /// No description provided for @priceFor5Days.
-  ///
-  /// In en, this message translates to:
-  /// **'Price for 5 Days'**
-  String get priceFor5Days;
 
   /// No description provided for @enableRental.
   ///
