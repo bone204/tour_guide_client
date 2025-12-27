@@ -59,4 +59,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either<Failure, SuccessResponse>> phoneVerify(PhoneVerification phoneVerification) async {
     return await _apiService.phoneVerify(phoneVerification);
   }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> updateHobbies(List<String> hobbies) async {
+    return await _apiService.updateHobbies(hobbies);
+  }
 }

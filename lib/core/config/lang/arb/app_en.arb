@@ -1269,5 +1269,20 @@
   "recaptchaRequired": "Please complete the CAPTCHA verification",
   "enterItineraryName": "Enter itinerary name",
   "nameRequired": "Name is required",
-  "dateRequired": "Please select start and end dates"
+  "dateRequired": "Please select start and end dates",
+  
+  "whatFascinatesYou": "What fascinates you?",
+  "interestSubtitle": "To give you a personalized experience, let us know your interests.",
+  "getStarted": "Get Started",
+  "adventure": "Adventure",
+  "cultureHistory": "Culture & History",
+  "nature": "Nature",
+  "sports": "Sports",
+  "relaxation": "Relaxation",
+  "festival": "Festival",
+  "beachIslands": "Beach & Islands",
+  "photography": "Photography",
+  "entertainment": "Entertainment",
+  "mountainForest": "Mountain & Forest",
+  "foodsDrinks": "Foods & Drinks"
 }

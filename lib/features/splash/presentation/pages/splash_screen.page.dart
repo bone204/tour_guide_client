@@ -7,6 +7,9 @@ import 'package:tour_guide_app/common/bloc/auth/auth_state_cubit.dart';
 import 'package:tour_guide_app/common/bloc/auth/auth_state.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:lottie/lottie.dart';
+import 'package:tour_guide_app/core/usecases/no_params.dart';
+import 'package:tour_guide_app/features/profile/domain/usecases/get_my_profile.dart';
+import 'package:tour_guide_app/service_locator.dart';
 
 class SplashScreenPage extends StatefulWidget {
   const SplashScreenPage({super.key});
@@ -102,7 +105,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
-        _navigateToNextScreen();
+        await _navigateToNextScreen();
       }
     } else {
       // No network - show retry dialog
@@ -191,14 +194,54 @@ class _SplashScreenPageState extends State<SplashScreenPage>
     }
   }
 
-  void _navigateToNextScreen() {
+  Future<void> _navigateToNextScreen() async {
     final authState = context.read<AuthStateCubit>().state;
 
     debugPrint('🚀 Navigating based on auth state: ${authState.runtimeType}');
 
     if (authState is Authenticated) {
-      debugPrint('✅ User is authenticated, navigating to main screen');
-      Navigator.pushReplacementNamed(context, AppRouteConstant.mainScreen);
+      debugPrint('✅ User is authenticated, checking profile...');
+
+      try {
+        final getMyProfile = sl<GetMyProfileUseCase>();
+        final result = await getMyProfile(NoParams());
+
+        if (!mounted) return;
+
+        result.fold(
+          (failure) {
+            debugPrint(
+              '❌ Failed to fetch profile, proceeding to main screen anyway',
+            );
+            Navigator.pushReplacementNamed(
+              context,
+              AppRouteConstant.mainScreen,
+            );
+          },
+          (user) {
+            if (user.hobbies.isEmpty) {
+              debugPrint(
+                '⚠️ User has no hobbies, redirecting to interest selection',
+              );
+              Navigator.pushReplacementNamed(
+                context,
+                AppRouteConstant.interestSelection,
+              );
+            } else {
+              debugPrint('✅ User has hobbies, navigating to main screen');
+              Navigator.pushReplacementNamed(
+                context,
+                AppRouteConstant.mainScreen,
+              );
+            }
+          },
+        );
+      } catch (e) {
+        debugPrint('❌ Error checking profile: $e');
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, AppRouteConstant.mainScreen);
+        }
+      }
     } else {
       debugPrint('❌ User is not authenticated, navigating to login');
       Navigator.pushReplacementNamed(context, AppRouteConstant.signIn);
@@ -374,10 +417,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
     return AnimatedBuilder(
       animation: _logoController,
       builder: (context, child) {
-        return Opacity(
-          opacity: _logoFadeAnimation.value,
-          child: child,
-        );
+        return Opacity(opacity: _logoFadeAnimation.value, child: child);
       },
       child: SizedBox(
         width: 200.w,

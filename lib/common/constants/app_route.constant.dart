@@ -62,4 +62,5 @@ class AppRouteConstant {
   static const String verifyPhone = '/verify_phone';
   static const String verifyCitizenId = '/verify_citizen_id';
   static const String itineraryExploreDetail = '/itinerary_explore_detail';
+  static const String interestSelection = '/interest_selection';
 }

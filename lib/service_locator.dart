@@ -100,6 +100,8 @@ import 'package:tour_guide_app/features/profile/domain/usecases/update_avatar.da
 import 'package:tour_guide_app/features/profile/presentation/bloc/edit_profile/edit_profile_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_catalogs.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/update_hobbies.dart';
+import 'package:tour_guide_app/features/auth/presentation/bloc/update_hobbies/update_hobbies_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -194,6 +196,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<UpdateAvatarUseCase>(UpdateAvatarUseCase());
   sl.registerSingleton<PhoneStartUseCase>(PhoneStartUseCase());
   sl.registerSingleton<VerifyPhoneUseCase>(VerifyPhoneUseCase());
+  sl.registerSingleton<UpdateHobbiesUseCase>(UpdateHobbiesUseCase());
 
   // My Vehicle
   sl.registerSingleton<AddContractUseCase>(AddContractUseCase());
@@ -253,5 +256,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<VerifyPhoneCubit>(() => VerifyPhoneCubit());
   sl.registerFactory<CommentCubit>(
     () => CommentCubit(getFeedbackUseCase: sl(), createFeedbackUseCase: sl()),
+  );
+  sl.registerFactory<UpdateHobbiesCubit>(
+    () => UpdateHobbiesCubit(updateHobbiesUseCase: sl()),
   );
 }

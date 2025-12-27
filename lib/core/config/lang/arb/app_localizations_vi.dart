@@ -2047,4 +2047,46 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get dateRequired => 'Vui lòng chọn ngày bắt đầu và kết thúc';
+
+  @override
+  String get whatFascinatesYou => 'Bạn hứng thú với điều gì?';
+
+  @override
+  String get interestSubtitle => 'Để mang lại trải nghiệm cá nhân hóa, hãy cho chúng tôi biết sở thích của bạn.';
+
+  @override
+  String get getStarted => 'Bắt đầu';
+
+  @override
+  String get adventure => 'Phiêu lưu';
+
+  @override
+  String get cultureHistory => 'Văn hóa & Lịch sử';
+
+  @override
+  String get nature => 'Thiên nhiên';
+
+  @override
+  String get sports => 'Thể thao';
+
+  @override
+  String get relaxation => 'Thư giãn';
+
+  @override
+  String get festival => 'Lễ hội';
+
+  @override
+  String get beachIslands => 'Biển & Đảo';
+
+  @override
+  String get photography => 'Nhiếp ảnh';
+
+  @override
+  String get entertainment => 'Giải trí';
+
+  @override
+  String get mountainForest => 'Núi & Rừng';
+
+  @override
+  String get foodsDrinks => 'Ẩm thực';
 }

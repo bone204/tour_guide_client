@@ -20,4 +20,6 @@ abstract class AuthRepository {
 
   Future<Either<Failure, PhoneVerificationResponse>> phoneStart(String recapchaToken);
   Future<Either<Failure, SuccessResponse>> phoneVerify(PhoneVerification phoneVerification);
+
+  Future<Either<Failure, SuccessResponse>> updateHobbies(List<String> hobbies);
 }

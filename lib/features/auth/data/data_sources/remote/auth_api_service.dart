@@ -21,6 +21,7 @@ abstract class AuthApiService {
   Future<Either<Failure, SuccessResponse>> emailVerify(EmailVerification emailVerification);
   Future<Either<Failure, PhoneVerificationResponse>> phoneStart(String recapchaToken);
   Future<Either<Failure, SuccessResponse>> phoneVerify(PhoneVerification phoneVerification);
+  Future<Either<Failure, SuccessResponse>> updateHobbies(List<String> hobbies);
 }
 
 class AuthApiServiceImpl extends AuthApiService {
@@ -139,6 +140,27 @@ class AuthApiServiceImpl extends AuthApiService {
       final response = await sl<DioClient>().post(
         ApiUrls.phoneVerify,
         data: phoneVerification.toMap(),
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> updateHobbies(List<String> hobbies) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        ApiUrls.hobbies,
+        data: {'hobbies': hobbies},
       );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);

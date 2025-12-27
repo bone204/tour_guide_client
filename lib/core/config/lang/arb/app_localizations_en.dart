@@ -2041,4 +2041,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dateRequired => 'Please select start and end dates';
+
+  @override
+  String get whatFascinatesYou => 'What fascinates you?';
+
+  @override
+  String get interestSubtitle => 'To give you a personalized experience, let us know your interests.';
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get adventure => 'Adventure';
+
+  @override
+  String get cultureHistory => 'Culture & History';
+
+  @override
+  String get nature => 'Nature';
+
+  @override
+  String get sports => 'Sports';
+
+  @override
+  String get relaxation => 'Relaxation';
+
+  @override
+  String get festival => 'Festival';
+
+  @override
+  String get beachIslands => 'Beach & Islands';
+
+  @override
+  String get photography => 'Photography';
+
+  @override
+  String get entertainment => 'Entertainment';
+
+  @override
+  String get mountainForest => 'Mountain & Forest';
+
+  @override
+  String get foodsDrinks => 'Foods & Drinks';
 }

@@ -4006,6 +4006,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please select start and end dates'**
   String get dateRequired;
+
+  /// No description provided for @whatFascinatesYou.
+  ///
+  /// In en, this message translates to:
+  /// **'What fascinates you?'**
+  String get whatFascinatesYou;
+
+  /// No description provided for @interestSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'To give you a personalized experience, let us know your interests.'**
+  String get interestSubtitle;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @adventure.
+  ///
+  /// In en, this message translates to:
+  /// **'Adventure'**
+  String get adventure;
+
+  /// No description provided for @cultureHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Culture & History'**
+  String get cultureHistory;
+
+  /// No description provided for @nature.
+  ///
+  /// In en, this message translates to:
+  /// **'Nature'**
+  String get nature;
+
+  /// No description provided for @sports.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports'**
+  String get sports;
+
+  /// No description provided for @relaxation.
+  ///
+  /// In en, this message translates to:
+  /// **'Relaxation'**
+  String get relaxation;
+
+  /// No description provided for @festival.
+  ///
+  /// In en, this message translates to:
+  /// **'Festival'**
+  String get festival;
+
+  /// No description provided for @beachIslands.
+  ///
+  /// In en, this message translates to:
+  /// **'Beach & Islands'**
+  String get beachIslands;
+
+  /// No description provided for @photography.
+  ///
+  /// In en, this message translates to:
+  /// **'Photography'**
+  String get photography;
+
+  /// No description provided for @entertainment.
+  ///
+  /// In en, this message translates to:
+  /// **'Entertainment'**
+  String get entertainment;
+
+  /// No description provided for @mountainForest.
+  ///
+  /// In en, this message translates to:
+  /// **'Mountain & Forest'**
+  String get mountainForest;
+
+  /// No description provided for @foodsDrinks.
+  ///
+  /// In en, this message translates to:
+  /// **'Foods & Drinks'**
+  String get foodsDrinks;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -37,4 +37,7 @@ class ApiUrls {
 
   //Feedback URLs
   static const feedback = "$baseURL/feedback";
+
+  //Hobbies URLs
+  static const hobbies = "$baseURL/users/profile/hobbies";
 }

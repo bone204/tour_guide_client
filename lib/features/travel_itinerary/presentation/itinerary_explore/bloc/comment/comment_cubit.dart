@@ -88,17 +88,16 @@ class CommentCubit extends Cubit<CommentState> {
     // Or just append if successful.
 
     final request = CreateFeedbackRequest(
-      star: 5, 
+      star: 5,
       travelRouteId: itineraryId,
       comment: content,
-      status: 'pending', 
     );
 
     final result = await createFeedbackUseCase(request);
 
     result.fold(
       (failure) {
-        if (!isClosed) emit(CommentError(failure.message)); 
+        if (!isClosed) emit(CommentError(failure.message));
       },
       (success) {
         loadComments(itineraryId);

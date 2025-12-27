@@ -9,8 +9,10 @@ import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
 import 'package:tour_guide_app/common/widgets/textfield/custom_password_field.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/core/usecases/no_params.dart';
 import 'package:tour_guide_app/features/auth/data/models/signin_params.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/sign_in.dart';
+import 'package:tour_guide_app/features/profile/domain/usecases/get_my_profile.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class SignInPage extends StatefulWidget {
@@ -31,7 +33,9 @@ class _SignInPageState extends State<SignInPage> {
     if (value == null || value.isEmpty) {
       return AppLocalizations.of(context)!.pleaseEnterEmailOrUsername;
     }
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
     final usernameRegex = RegExp(r'^[a-zA-Z0-9._-]{3,}$');
     if (!emailRegex.hasMatch(value) && !usernameRegex.hasMatch(value)) {
       return AppLocalizations.of(context)!.pleaseEnterValidEmailOrUsername;
@@ -84,174 +88,209 @@ class _SignInPageState extends State<SignInPage> {
         create: (context) => ButtonStateCubit(),
         child: MultiBlocListener(
           listeners: [
-              BlocListener<ButtonStateCubit, ButtonState>(
-                listener: (context, state) {
-                  if (state is ButtonSuccessState) {
-                    Navigator.pushReplacementNamed(context, AppRouteConstant.mainScreen);
-                  }
-                  if (state is ButtonFailureState) {
-                    showAppDialog(
-                      context: context,
-                      title: AppLocalizations.of(context)!.error,
-                      content: state.errorMessage,
-                      icon: Icons.error_outline,
-                      iconColor: Colors.red,
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text(AppLocalizations.of(context)!.close),
-                        ),
-                      ],
+            BlocListener<ButtonStateCubit, ButtonState>(
+              listener: (context, state) async {
+                if (state is ButtonSuccessState) {
+                  final getMyProfileUseCase = sl<GetMyProfileUseCase>();
+                  final result = await getMyProfileUseCase(NoParams());
+
+                  if (context.mounted) {
+                    result.fold(
+                      (failure) {
+                        // Fallback to main screen if profile fetch fails
+                        Navigator.pushReplacementNamed(
+                          context,
+                          AppRouteConstant.mainScreen,
+                        );
+                      },
+                      (user) {
+                        if (user.hobbies.isEmpty) {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            AppRouteConstant.interestSelection,
+                          );
+                        } else {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            AppRouteConstant.mainScreen,
+                          );
+                        }
+                      },
                     );
                   }
-                },
-              ),
-            ],
-            child: GestureDetector(
-              onTap: _handleTapOutside,
-              child: Stack(
-                children: [
-                  SingleChildScrollView(
-                    padding: EdgeInsets.fromLTRB(20.w, 140.h, 20.w, 0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            AppLocalizations.of(context)!.signInNow,
-                            style: Theme.of(context).textTheme.headlineLarge
-                          ),
-                          SizedBox(height: 16.h),
-                          Text(
-                            AppLocalizations.of(context)!.signInDescription,
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.textSubtitle,
-                            ),
-                          ),
-                          SizedBox(height: 40.h),
-                          Container(
-                            padding: EdgeInsets.all(15.w),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CustomTextField(
-                                  label: AppLocalizations.of(context)!.usernameOrEmail,
-                                  placeholder: AppLocalizations.of(context)!.enterUsernameOrEmail,
-                                  prefixIconData: Icons.person_outline,
-                                  controller: _identifierController,
-                                  validator: _validateIdentifier,
+                }
+                if (state is ButtonFailureState) {
+                  showAppDialog(
+                    context: context,
+                    title: AppLocalizations.of(context)!.error,
+                    content: state.errorMessage,
+                    icon: Icons.error_outline,
+                    iconColor: Colors.red,
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(AppLocalizations.of(context)!.close),
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
+          ],
+          child: GestureDetector(
+            onTap: _handleTapOutside,
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(20.w, 140.h, 20.w, 0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          AppLocalizations.of(context)!.signInNow,
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          AppLocalizations.of(context)!.signInDescription,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: AppColors.textSubtitle),
+                        ),
+                        SizedBox(height: 40.h),
+                        Container(
+                          padding: EdgeInsets.all(15.w),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomTextField(
+                                label:
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.usernameOrEmail,
+                                placeholder:
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.enterUsernameOrEmail,
+                                prefixIconData: Icons.person_outline,
+                                controller: _identifierController,
+                                validator: _validateIdentifier,
+                              ),
+                              SizedBox(height: 16.h),
+                              CustomPasswordField(
+                                label: AppLocalizations.of(context)!.password,
+                                placeholder:
+                                    AppLocalizations.of(context)!.enterPassword,
+                                prefixIcon: Icon(Icons.lock_outline),
+                                controller: _passwordController,
+                                validator: _validatePassword,
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  onPressed: () {
+                                    // Navigator.pushNamed(
+                                    //   context,
+                                    //   AppRouteConstant.forgotPassword,
+                                    // );
+                                  },
+                                  child: Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.forgotPassword,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.displayLarge?.copyWith(
+                                      color: AppColors.primaryOrange,
+                                    ),
+                                  ),
                                 ),
-                                SizedBox(height: 16.h),
-                                CustomPasswordField(
-                                  label: AppLocalizations.of(context)!.password,
-                                  placeholder: AppLocalizations.of(context)!.enterPassword,
-                                  prefixIcon: Icon(Icons.lock_outline),
-                                  controller: _passwordController,
-                                  validator: _validatePassword,
-                                ),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: TextButton(
+                              ),
+                              SizedBox(height: 30.h),
+                              Builder(
+                                builder: (context) {
+                                  return PrimaryButton(
+                                    title: AppLocalizations.of(context)!.signIn,
+                                    onPressed: () => _handleSignIn(context),
+                                    backgroundColor: AppColors.primaryBlue,
+                                    textColor: AppColors.textSecondary,
+                                  );
+                                },
+                              ),
+                              SizedBox(height: 40.h),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.noAccount,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium?.copyWith(
+                                      color: AppColors.textSubtitle,
+                                    ),
+                                  ),
+                                  TextButton(
                                     onPressed: () {
-                                      // Navigator.pushNamed(
-                                      //   context,
-                                      //   AppRouteConstant.forgotPassword,
-                                      // );
+                                      Navigator.pushReplacementNamed(
+                                        context,
+                                        AppRouteConstant.signUp,
+                                      );
                                     },
                                     child: Text(
-                                      AppLocalizations.of(context)!.forgotPassword,
-                                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                                      AppLocalizations.of(context)!.signUp,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.displayLarge?.copyWith(
                                         color: AppColors.primaryOrange,
                                       ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(height: 30.h),
-                                Builder(
-                                  builder: (context) {
-                                    return PrimaryButton(
-                                      title: AppLocalizations.of(context)!.signIn,
-                                      onPressed: () => _handleSignIn(context),
-                                      backgroundColor: AppColors.primaryBlue,
-                                      textColor: AppColors.textSecondary,
-                                    );
-                                  },
-                                ),
-                                SizedBox(height: 40.h),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context)!.noAccount,
-                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                        color: AppColors.textSubtitle,
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pushReplacementNamed(
-                                            context, AppRouteConstant.signUp);
-                                      },
-                                      child: Text(
-                                        AppLocalizations.of(context)!.signUp,
-                                        style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                          color: AppColors.primaryOrange,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!.orConnect,
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.textSubtitle,
-                                  ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!.orConnect,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: AppColors.textSubtitle),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  Positioned(
-                    top: 40.h,
-                    right: 20.w,
-                    child: LanguageDropdown(),
-                  ),
-                  BlocBuilder<ButtonStateCubit, ButtonState>(
-                    builder: (context, state) {
-                      if (state is ButtonLoadingState) {
-                        FocusScope.of(context).unfocus();
-                        return Container(
-                          color: Colors.black.withOpacity(0.5),
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                  BlocBuilder<LocaleCubit, LocaleState>(
-                    builder: (context, state) {
-                      if (state is LocaleLoading) {
-                        return Container(
-                          color: Colors.black.withOpacity(0.5),
-                          child: const Center(
-                            child: CircularProgressIndicator(color: Colors.white),
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
+                ),
+                Positioned(top: 40.h, right: 20.w, child: LanguageDropdown()),
+                BlocBuilder<ButtonStateCubit, ButtonState>(
+                  builder: (context, state) {
+                    if (state is ButtonLoadingState) {
+                      FocusScope.of(context).unfocus();
+                      return Container(
+                        color: Colors.black.withOpacity(0.5),
+                        child: const Center(child: CircularProgressIndicator()),
+                      );
                     }
-                  ),
-                ],
-              ),
+                    return const SizedBox.shrink();
+                  },
+                ),
+                BlocBuilder<LocaleCubit, LocaleState>(
+                  builder: (context, state) {
+                    if (state is LocaleLoading) {
+                      return Container(
+                        color: Colors.black.withOpacity(0.5),
+                        child: const Center(
+                          child: CircularProgressIndicator(color: Colors.white),
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ],
             ),
           ),
         ),
+      ),
     );
   }
 

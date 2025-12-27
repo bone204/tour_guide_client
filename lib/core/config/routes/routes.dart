@@ -7,6 +7,7 @@ import 'package:tour_guide_app/features/car_rental/presentation/pages/car_detail
 import 'package:tour_guide_app/features/auth/presentation/pages/verify_email.page.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/verify_phone.page.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/verify_citizen_id.page.dart';
+import 'package:tour_guide_app/features/auth/presentation/pages/interest_selection.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_list.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_rental.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_rental.page.dart';
@@ -477,6 +478,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ItineraryExploreDetailPage(itineraryId: itineraryId),
+        );
+
+      case AppRouteConstant.interestSelection:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const InterestSelectionPage(),
         );
 
       default:

@@ -1283,5 +1283,20 @@
   "recaptchaRequired": "Vui lòng hoàn thành xác thực CAPTCHA",
   "enterItineraryName": "Nhập tên chuyến đi",
   "nameRequired": "Tên là bắt buộc",
-  "dateRequired": "Vui lòng chọn ngày bắt đầu và kết thúc"
+  "dateRequired": "Vui lòng chọn ngày bắt đầu và kết thúc",
+  
+  "whatFascinatesYou": "Bạn hứng thú với điều gì?",
+  "interestSubtitle": "Để mang lại trải nghiệm cá nhân hóa, hãy cho chúng tôi biết sở thích của bạn.",
+  "getStarted": "Bắt đầu",
+  "adventure": "Phiêu lưu",
+  "cultureHistory": "Văn hóa & Lịch sử",
+  "nature": "Thiên nhiên",
+  "sports": "Thể thao",
+  "relaxation": "Thư giãn",
+  "festival": "Lễ hội",
+  "beachIslands": "Biển & Đảo",
+  "photography": "Nhiếp ảnh",
+  "entertainment": "Giải trí",
+  "mountainForest": "Núi & Rừng",
+  "foodsDrinks": "Ẩm thực"
 }
