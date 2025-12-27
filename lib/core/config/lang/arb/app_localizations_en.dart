@@ -2187,4 +2187,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hate_speech => 'Hate speech detected';
+
+  @override
+  String get splashTitle => 'Traveline';
+
+  @override
+  String get splashSubtitle => 'Tour Guide App';
+
+  @override
+  String get splashTagline => 'Discover the world\nYour journey, your style';
+
+  @override
+  String get splashLoading => 'Starting up...';
+
+  @override
+  String get addLottieFile => 'Add Lottie file\nto assets/lottie/';
 }

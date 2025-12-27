@@ -4294,6 +4294,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hate speech detected'**
   String get hate_speech;
+
+  /// No description provided for @splashTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Traveline'**
+  String get splashTitle;
+
+  /// No description provided for @splashSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tour Guide App'**
+  String get splashSubtitle;
+
+  /// No description provided for @splashTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover the world\nYour journey, your style'**
+  String get splashTagline;
+
+  /// No description provided for @splashLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting up...'**
+  String get splashLoading;
+
+  /// No description provided for @addLottieFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Lottie file\nto assets/lottie/'**
+  String get addLottieFile;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

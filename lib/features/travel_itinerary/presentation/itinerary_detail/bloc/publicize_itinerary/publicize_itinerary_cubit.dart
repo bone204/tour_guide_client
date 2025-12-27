@@ -31,4 +31,11 @@ class PublicizeItineraryCubit extends Cubit<PublicizeItineraryState> {
       },
     );
   }
+
+  @override
+  void emit(PublicizeItineraryState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

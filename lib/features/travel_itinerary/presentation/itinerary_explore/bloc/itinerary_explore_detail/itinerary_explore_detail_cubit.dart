@@ -16,4 +16,11 @@ class ItineraryExploreDetailCubit extends Cubit<ItineraryExploreDetailState> {
       (itinerary) => emit(ItineraryExploreDetailSuccess(itinerary)),
     );
   }
+
+  @override
+  void emit(ItineraryExploreDetailState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

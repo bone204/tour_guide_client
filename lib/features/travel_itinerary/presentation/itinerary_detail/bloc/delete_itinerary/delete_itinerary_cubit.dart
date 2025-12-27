@@ -21,4 +21,11 @@ class DeleteItineraryCubit extends Cubit<DeleteItineraryState> {
       emit(DeleteItinerarySuccess());
     });
   }
+
+  @override
+  void emit(DeleteItineraryState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

@@ -62,4 +62,11 @@ class FavoriteDestinationsCubit extends Cubit<FavoriteDestinationsState> {
   Set<int> _mapResponseToIds(DestinationResponse response) {
     return response.items.map((destination) => destination.id).toSet();
   }
+
+  @override
+  void emit(FavoriteDestinationsState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

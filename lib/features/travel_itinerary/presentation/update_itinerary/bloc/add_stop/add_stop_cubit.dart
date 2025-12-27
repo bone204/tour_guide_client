@@ -25,4 +25,11 @@ class AddStopCubit extends Cubit<AddStopState> {
       },
     );
   }
+
+  @override
+  void emit(AddStopState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

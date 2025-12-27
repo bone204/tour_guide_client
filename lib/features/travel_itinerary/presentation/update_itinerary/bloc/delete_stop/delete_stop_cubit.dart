@@ -19,4 +19,11 @@ class DeleteStopCubit extends Cubit<DeleteStopState> {
       (_) => emit(DeleteStopSuccess()),
     );
   }
+
+  @override
+  void emit(DeleteStopState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

@@ -38,4 +38,11 @@ class GetItineraryMeCubit extends Cubit<GetItineraryMeState> {
     _subscription.cancel();
     return super.close();
   }
+
+  @override
+  void emit(GetItineraryMeState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

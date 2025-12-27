@@ -21,11 +21,21 @@ class GetProvinceCubit extends Cubit<GetProvinceState> {
       (provinceResponse) {
         if (!isClosed) {
           emit(
-            GetProvinceLoaded(provinces: provinceResponse.items, search: search),
+            GetProvinceLoaded(
+              provinces: provinceResponse.items,
+              search: search,
+            ),
           );
         }
       },
     );
     return result;
+  }
+
+  @override
+  void emit(GetProvinceState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
   }
 }

@@ -1325,5 +1325,10 @@
   "profanity": "Profanity detected",
   "sexual_content": "Sexual content detected",
   "harassment": "Harassment detected",
-  "hate_speech": "Hate speech detected"
+  "hate_speech": "Hate speech detected",
+  "splashTitle": "Traveline",
+  "splashSubtitle": "Tour Guide App",
+  "splashTagline": "Discover the world\nYour journey, your style",
+  "splashLoading": "Starting up...",
+  "addLottieFile": "Add Lottie file\nto assets/lottie/"
 }

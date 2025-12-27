@@ -64,4 +64,11 @@ class LikeItineraryCubit extends Cubit<LikeItineraryState> {
       },
     );
   }
+
+  @override
+  void emit(LikeItineraryState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

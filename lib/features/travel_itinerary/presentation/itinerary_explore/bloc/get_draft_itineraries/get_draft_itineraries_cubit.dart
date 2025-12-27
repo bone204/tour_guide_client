@@ -23,4 +23,11 @@ class GetDraftItinerariesCubit extends Cubit<GetDraftItinerariesState> {
       },
     );
   }
+
+  @override
+  void emit(GetDraftItinerariesState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

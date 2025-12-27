@@ -137,4 +137,11 @@ class EditStopCubit extends Cubit<EditStopState> {
       emit(EditStopSuccess(stop: updatedStop, message: successMessages.trim()));
     }
   }
+
+  @override
+  void emit(EditStopState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

@@ -24,4 +24,11 @@ class GetStopDetailCubit extends Cubit<GetStopDetailState> {
       },
     );
   }
+
+  @override
+  void emit(GetStopDetailState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

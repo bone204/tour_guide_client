@@ -21,4 +21,11 @@ class UseItineraryCubit extends Cubit<UseItineraryState> {
       (response) => emit(UseItinerarySuccess(response)),
     );
   }
+
+  @override
+  void emit(UseItineraryState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

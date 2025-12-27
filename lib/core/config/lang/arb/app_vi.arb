@@ -1328,5 +1328,10 @@
   "harassment": "Quấy rối",
   "hate_speech": "Ngôn từ thù địch",
   "addComment": "Thêm bình luận...",
-  "noComments": "Chưa có bình luận nào"
+  "noComments": "Chưa có bình luận nào",
+  "splashTitle": "Traveline",
+  "splashSubtitle": "Tour Guide App",
+  "splashTagline": "Khám phá thế giới\nHành trình của bạn, phong cách của bạn",
+  "splashLoading": "Đang khởi động...",
+  "addLottieFile": "Thêm file Lottie\nvào assets/lottie/"
 }

@@ -21,4 +21,11 @@ class GetDestinationByIdCubit extends Cubit<GetDestinationByIdState> {
 
     return result;
   }
+
+  @override
+  void emit(GetDestinationByIdState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

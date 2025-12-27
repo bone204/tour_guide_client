@@ -23,4 +23,11 @@ class GetItineraryDetailCubit extends Cubit<GetItineraryDetailState> {
       },
     );
   }
+
+  @override
+  void emit(GetItineraryDetailState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

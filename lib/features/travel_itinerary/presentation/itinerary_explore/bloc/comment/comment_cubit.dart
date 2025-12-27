@@ -180,4 +180,11 @@ class CommentCubit extends Cubit<CommentState> {
       },
     );
   }
+
+  @override
+  void emit(CommentState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

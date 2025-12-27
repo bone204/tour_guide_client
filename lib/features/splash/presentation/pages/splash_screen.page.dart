@@ -125,7 +125,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
           Icon(Icons.wifi_off, color: AppColors.primaryBlue, size: 28.sp),
           SizedBox(width: 12.w),
           Text(
-            'Không có kết nối',
+            AppLocalizations.of(context)!.connectionLostTitle,
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w700,
@@ -135,7 +135,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
         ],
       ),
       contentWidget: Text(
-        'Vui lòng kiểm tra kết nối mạng của bạn và thử lại.',
+        AppLocalizations.of(context)!.connectionLostContent,
         style: TextStyle(
           fontSize: 14.sp,
           fontWeight: FontWeight.w400,
@@ -158,7 +158,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
             ),
           ),
           child: Text(
-            'Thử lại',
+            AppLocalizations.of(context)!.retry,
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -369,7 +369,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
 
               // App title
               Text(
-                'Traveline',
+                AppLocalizations.of(context)!.splashTitle,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 28.sp,
@@ -383,7 +383,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
 
               // Subtitle
               Text(
-                'Tour Guide App',
+                AppLocalizations.of(context)!.splashSubtitle,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16.sp,
@@ -397,7 +397,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
 
               // Tagline
               Text(
-                'Khám phá thế giới\nHành trình của bạn, phong cách của bạn',
+                AppLocalizations.of(context)!.splashTagline,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12.sp,
@@ -440,7 +440,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    'Thêm file Lottie\nvào assets/lottie/',
+                    AppLocalizations.of(context)!.addLottieFile,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 11.sp,
@@ -466,7 +466,7 @@ class _SplashScreenPageState extends State<SplashScreenPage>
           child: Column(
             children: [
               Text(
-                'Đang khởi động...',
+                AppLocalizations.of(context)!.splashLoading,
                 style: TextStyle(
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w600,

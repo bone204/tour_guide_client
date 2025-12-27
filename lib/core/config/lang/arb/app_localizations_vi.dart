@@ -2193,4 +2193,19 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get hate_speech => 'Ngôn từ thù địch';
+
+  @override
+  String get splashTitle => 'Traveline';
+
+  @override
+  String get splashSubtitle => 'Tour Guide App';
+
+  @override
+  String get splashTagline => 'Khám phá thế giới\nHành trình của bạn, phong cách của bạn';
+
+  @override
+  String get splashLoading => 'Đang khởi động...';
+
+  @override
+  String get addLottieFile => 'Thêm file Lottie\nvào assets/lottie/';
 }

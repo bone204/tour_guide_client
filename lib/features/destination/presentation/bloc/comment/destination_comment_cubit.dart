@@ -178,4 +178,11 @@ class DestinationCommentCubit extends Cubit<DestinationCommentState> {
       },
     );
   }
+
+  @override
+  void emit(DestinationCommentState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }

@@ -85,6 +85,13 @@ class StopMediaCubit extends Cubit<StopMediaState> {
     _currentType = type;
     emit(StopMediaLoaded(stop));
   }
+
+  @override
+  void emit(StopMediaState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }
 
 enum MediaType { image, video }

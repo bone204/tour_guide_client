@@ -82,4 +82,11 @@ class CreateItineraryCubit extends Cubit<CreateItineraryState> {
       },
     );
   }
+
+  @override
+  void emit(CreateItineraryState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
 }
