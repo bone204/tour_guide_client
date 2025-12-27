@@ -112,6 +112,15 @@
   "like": "Thích",
   "liked": "Đã thích",
   "reply": "Phản hồi",
+  "replyingTo": "Đang trả lời",
+  "viewReplies": "Xem {count} phản hồi",
+  "@viewReplies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "useItinerary": "Sử dụng",
   "confirmUseItinerary": "Bạn có chắc chắn muốn sử dụng lộ trình này không?",
   "useItinerarySuccess": "Sử dụng lộ trình thành công!",

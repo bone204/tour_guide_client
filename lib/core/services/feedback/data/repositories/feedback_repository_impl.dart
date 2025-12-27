@@ -25,7 +25,24 @@ class FeedbackRepositoryImpl extends FeedbackRepository {
   }
 
   @override
-  Future<Either<Failure, CheckContentResponse>> checkContent(String content) {
-    return _apiService.checkContent(content);
+  Future<Either<Failure, CheckContentResponse>> checkContent(
+    String content,
+  ) async {
+    return await _apiService.checkContent(content);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> createReply(
+    int feedbackId,
+    String content,
+  ) async {
+    return await _apiService.createReply(feedbackId, content);
+  }
+
+  @override
+  Future<Either<Failure, FeedbackReplyResponse>> getReplies(
+    int feedbackId,
+  ) async {
+    return await _apiService.getReplies(feedbackId);
   }
 }

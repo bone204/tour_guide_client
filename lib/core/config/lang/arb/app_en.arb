@@ -809,6 +809,15 @@
   "like": "Like",
   "liked": "Liked",
   "reply": "Reply",
+  "replyingTo": "Replying to",
+  "viewReplies": "View {count} replies",
+  "@viewReplies": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "useItinerary": "Use Itinerary",
   "confirmUseItinerary": "Are you sure you want to use this itinerary?",
   "useItinerarySuccess": "Itinerary used successfully!",

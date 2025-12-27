@@ -18,6 +18,13 @@ abstract class FeedbackApiService {
   Future<Either<Failure, FeedbackResponse>> getFeedback(FeedbackQuery query);
 
   Future<Either<Failure, CheckContentResponse>> checkContent(String content);
+
+  Future<Either<Failure, SuccessResponse>> createReply(
+    int feedbackId,
+    String content,
+  );
+
+  Future<Either<Failure, FeedbackReplyResponse>> getReplies(int feedbackId);
 }
 
 class FeedbackApiServiceImpl extends FeedbackApiService {
@@ -78,6 +85,57 @@ class FeedbackApiServiceImpl extends FeedbackApiService {
       );
       final checkResponse = CheckContentResponse.fromJson(response.data);
       return Right(checkResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message']?.toString() ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> createReply(
+    int feedbackId,
+    String content,
+  ) async {
+    try {
+      final response = await sl<DioClient>().post(
+        '${ApiUrls.feedback}/$feedbackId/replies',
+        data: {'content': content},
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message']?.toString() ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, FeedbackReplyResponse>> getReplies(
+    int feedbackId,
+  ) async {
+    try {
+      final response = await sl<DioClient>().get(
+        '${ApiUrls.feedback}/$feedbackId/replies',
+      );
+      // Backend returns list of replies directly?
+      // Checking feedback.controller.ts: return this.feedbackService.listReplies(feedbackId);
+      // Service returns FeedbackReply[].
+      // FeedbackReplyResponse expects { items: [] } or List.
+      // FeedbackReplyResponse.fromJson handles List input.
+      final replyResponse = FeedbackReplyResponse.fromJson(response.data);
+      return Right(replyResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

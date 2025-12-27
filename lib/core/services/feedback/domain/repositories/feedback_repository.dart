@@ -12,4 +12,11 @@ abstract class FeedbackRepository {
     CreateFeedbackRequest request,
   );
   Future<Either<Failure, CheckContentResponse>> checkContent(String content);
+
+  Future<Either<Failure, SuccessResponse>> createReply(
+    int feedbackId,
+    String content,
+  );
+
+  Future<Either<Failure, FeedbackReplyResponse>> getReplies(int feedbackId);
 }

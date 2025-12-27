@@ -44,6 +44,9 @@ import 'package:tour_guide_app/core/services/feedback/domain/usecases/check_cont
 import 'package:tour_guide_app/core/services/feedback/domain/repositories/feedback_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/comment/destination_comment_cubit.dart';
+import 'package:tour_guide_app/core/services/feedback/domain/usecases/create_feedback_reply.dart';
+import 'package:tour_guide_app/core/services/feedback/domain/usecases/get_feedback_replies.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/reply/reply_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/use_itinerary.dart'; // Add this
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/use_itinerary/use_itinerary_cubit.dart'; // Add this
 
@@ -277,5 +280,18 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerFactory<UpdateHobbiesCubit>(
     () => UpdateHobbiesCubit(updateHobbiesUseCase: sl()),
+  );
+
+  // Feedback Replies
+  sl.registerSingleton<GetFeedbackRepliesUseCase>(GetFeedbackRepliesUseCase());
+  sl.registerSingleton<CreateFeedbackReplyUseCase>(
+    CreateFeedbackReplyUseCase(),
+  );
+  sl.registerFactory<ReplyCubit>(
+    () => ReplyCubit(
+      feedbackRepository: sl(),
+      getFeedbackRepliesUseCase: sl(),
+      createFeedbackReplyUseCase: sl(),
+    ),
   );
 }

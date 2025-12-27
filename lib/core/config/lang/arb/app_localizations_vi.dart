@@ -1208,6 +1208,14 @@ class AppLocalizationsVi extends AppLocalizations {
   String get reply => 'Phản hồi';
 
   @override
+  String get replyingTo => 'Đang trả lời';
+
+  @override
+  String viewReplies(int count) {
+    return 'Xem $count phản hồi';
+  }
+
+  @override
   String get useItinerary => 'Sử dụng';
 
   @override

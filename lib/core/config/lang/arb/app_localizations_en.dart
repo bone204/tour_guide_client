@@ -1202,6 +1202,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reply => 'Reply';
 
   @override
+  String get replyingTo => 'Replying to';
+
+  @override
+  String viewReplies(int count) {
+    return 'View $count replies';
+  }
+
+  @override
   String get useItinerary => 'Use Itinerary';
 
   @override

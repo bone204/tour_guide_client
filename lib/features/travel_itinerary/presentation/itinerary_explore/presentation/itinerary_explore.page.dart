@@ -169,10 +169,11 @@ class _ItineraryExplorePageState extends State<ItineraryExplorePage> {
                                       if (commentState is CommentLoaded) {
                                         commentCount =
                                             commentState.comments.length;
-                                        if (!commentState.hasReachedEnd &&
-                                            commentState.comments.length >=
-                                                10) {
-                                          // Optional: indicate more? For now just count.
+                                        // Sum up replies for each comment to get the total count
+                                        for (final comment
+                                            in commentState.comments) {
+                                          commentCount +=
+                                              (comment.replies?.length ?? 0);
                                         }
                                       }
 

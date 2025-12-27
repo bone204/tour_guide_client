@@ -2441,6 +2441,18 @@ abstract class AppLocalizations {
   /// **'Reply'**
   String get reply;
 
+  /// No description provided for @replyingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to'**
+  String get replyingTo;
+
+  /// No description provided for @viewReplies.
+  ///
+  /// In en, this message translates to:
+  /// **'View {count} replies'**
+  String viewReplies(int count);
+
   /// No description provided for @useItinerary.
   ///
   /// In en, this message translates to:
