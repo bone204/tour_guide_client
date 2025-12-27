@@ -2032,4 +2032,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recaptchaRequired => 'Please complete the CAPTCHA verification';
+
+  @override
+  String get enterItineraryName => 'Enter itinerary name';
+
+  @override
+  String get nameRequired => 'Name is required';
+
+  @override
+  String get dateRequired => 'Please select start and end dates';
 }

@@ -3988,6 +3988,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please complete the CAPTCHA verification'**
   String get recaptchaRequired;
+
+  /// No description provided for @enterItineraryName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter itinerary name'**
+  String get enterItineraryName;
+
+  /// No description provided for @nameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get nameRequired;
+
+  /// No description provided for @dateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select start and end dates'**
+  String get dateRequired;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1280,5 +1280,8 @@
   "invalidOtp": "Mã OTP không hợp lệ",
   "sendingCode": "Đang gửi mã xác thực...",
   "verifying": "Đang xác thực...",
-  "recaptchaRequired": "Vui lòng hoàn thành xác thực CAPTCHA"
+  "recaptchaRequired": "Vui lòng hoàn thành xác thực CAPTCHA",
+  "enterItineraryName": "Nhập tên chuyến đi",
+  "nameRequired": "Tên là bắt buộc",
+  "dateRequired": "Vui lòng chọn ngày bắt đầu và kết thúc"
 }

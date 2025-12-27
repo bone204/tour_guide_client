@@ -7,6 +7,7 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/add_stop_re
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_time_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_reorder_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_details_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/use_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary_query.dart';
@@ -137,8 +138,11 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> useItinerary(int itineraryId) {
-    return _apiService.useItinerary(itineraryId);
+  Future<Either<Failure, SuccessResponse>> useItinerary(
+    int itineraryId,
+    UseItineraryRequest request,
+  ) {
+    return _apiService.useItinerary(itineraryId, request);
   }
 
   @override

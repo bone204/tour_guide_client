@@ -1266,5 +1266,8 @@
   "invalidOtp": "Invalid OTP code",
   "sendingCode": "Sending verification code...",
   "verifying": "Verifying...",
-  "recaptchaRequired": "Please complete the CAPTCHA verification"
+  "recaptchaRequired": "Please complete the CAPTCHA verification",
+  "enterItineraryName": "Enter itinerary name",
+  "nameRequired": "Name is required",
+  "dateRequired": "Please select start and end dates"
 }

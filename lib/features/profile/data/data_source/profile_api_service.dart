@@ -99,7 +99,7 @@ class ProfileApiServiceImpl extends ProfileApiService {
       );
 
       return Right(
-        response.data['data']['avatarUrl'] ?? '',
+        response.data['avatarUrl'] ?? '',
       ); // Assuming response structure or just return success
     } on DioException catch (e) {
       return Left(

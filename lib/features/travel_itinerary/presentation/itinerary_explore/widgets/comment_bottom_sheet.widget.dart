@@ -6,6 +6,8 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_state.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/widgets/comment_shimmer.widget.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_state.dart';
 
 class CommentBottomSheet extends StatefulWidget {
   final int itineraryId;
@@ -18,6 +20,7 @@ class CommentBottomSheet extends StatefulWidget {
 
 class _CommentBottomSheetState extends State<CommentBottomSheet> {
   late CommentCubit _cubit;
+  late GetMyProfileCubit _profileCubit;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _commentController = TextEditingController();
 
@@ -25,12 +28,14 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   void initState() {
     super.initState();
     _cubit = sl<CommentCubit>()..loadComments(widget.itineraryId);
+    _profileCubit = sl<GetMyProfileCubit>()..getMyProfile();
     _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
     _cubit.close();
+    _profileCubit.close();
     _scrollController.dispose();
     _commentController.dispose();
     super.dispose();
@@ -51,8 +56,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _cubit,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _cubit),
+        BlocProvider.value(value: _profileCubit),
+      ],
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.primaryWhite,
@@ -133,7 +141,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             ),
 
             // Input Field
-            // Input Field
             Container(
               padding: EdgeInsets.only(
                 left: 16.w,
@@ -156,10 +163,31 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 8.h),
-                    child: CircleAvatar(
-                      radius: 16.r,
-                      backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
-                      child: Icon(Icons.person, color: AppColors.primaryGrey),
+                    child: BlocBuilder<GetMyProfileCubit, GetMyProfileState>(
+                      builder: (context, state) {
+                        String? avatarUrl;
+                        if (state is GetMyProfileSuccess) {
+                          avatarUrl = state.user.avatarUrl;
+                        }
+
+                        return CircleAvatar(
+                          radius: 16.r,
+                          backgroundColor: AppColors.primaryGrey.withOpacity(
+                            0.2,
+                          ),
+                          backgroundImage:
+                              avatarUrl != null && avatarUrl.isNotEmpty
+                                  ? NetworkImage(avatarUrl)
+                                  : null,
+                          child:
+                              avatarUrl == null || avatarUrl.isEmpty
+                                  ? Icon(
+                                    Icons.person,
+                                    color: AppColors.primaryGrey,
+                                  )
+                                  : null,
+                        );
+                      },
                     ),
                   ),
                   SizedBox(width: 12.w),

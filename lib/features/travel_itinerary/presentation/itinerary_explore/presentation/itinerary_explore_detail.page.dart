@@ -6,10 +6,14 @@ import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/widgets/itinerary_detail_shimmer.widget.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/itinerary_explore_detail/itinerary_explore_detail_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/itinerary_explore_detail/itinerary_explore_detail_state.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/use_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/use_itinerary/use_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/use_itinerary/use_itinerary_state.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/widgets/explore_timeline.widget.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/widgets/itinerary_date_picker.dart';
 
 class ItineraryExploreDetailPage extends StatelessWidget {
   final int itineraryId;
@@ -119,55 +123,7 @@ class _ItineraryExploreDetailView extends StatelessWidget {
                     builder:
                         (dialogContext) => BlocProvider.value(
                           value: useItineraryCubit,
-                          child: AlertDialog(
-                            title: Text(
-                              AppLocalizations.of(context)!.useItinerary,
-                            ),
-                            content: Text(
-                              AppLocalizations.of(context)!.confirmUseItinerary,
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed:
-                                    () => Navigator.of(dialogContext).pop(),
-                                child: Text(
-                                  AppLocalizations.of(context)!.cancel,
-                                  style: TextStyle(
-                                    color: AppColors.textSubtitle,
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  // Use the cubit directly
-                                  useItineraryCubit.useItinerary(itinerary.id);
-                                  Navigator.of(dialogContext).pop();
-                                },
-                                child: BlocBuilder<
-                                  UseItineraryCubit,
-                                  UseItineraryState
-                                >(
-                                  builder: (context, state) {
-                                    if (state is UseItineraryLoading) {
-                                      return SizedBox(
-                                        width: 16.w,
-                                        height: 16.w,
-                                        child: const CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                        ),
-                                      );
-                                    }
-                                    return Text(
-                                      AppLocalizations.of(context)!.confirm,
-                                      style: TextStyle(
-                                        color: AppColors.primaryBlue,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: _UseItineraryDialog(itinerary: itinerary),
                         ),
                   );
                 },
@@ -364,6 +320,140 @@ class _ItineraryExploreDetailView extends StatelessWidget {
           return const SizedBox.shrink();
         },
       ),
+    );
+  }
+}
+
+class _UseItineraryDialog extends StatefulWidget {
+  final Itinerary itinerary;
+
+  const _UseItineraryDialog({required this.itinerary});
+
+  @override
+  State<_UseItineraryDialog> createState() => _UseItineraryDialogState();
+}
+
+class _UseItineraryDialogState extends State<_UseItineraryDialog> {
+  late TextEditingController _nameController;
+  DateTime? _startDate;
+  DateTime? _endDate;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.itinerary.name);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: AppColors.primaryWhite,
+      title: Text(AppLocalizations.of(context)!.useItinerary),
+      content: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomTextField(
+                controller: _nameController,
+                label: AppLocalizations.of(context)!.enterItineraryName,
+                placeholder: '',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return AppLocalizations.of(context)!.nameRequired;
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16.h),
+              ItineraryDatePicker(
+                label: AppLocalizations.of(context)!.startDate,
+                placeholder: 'dd/mm/yyyy',
+                initialDate: _startDate,
+                firstDate: DateTime.now().add(const Duration(days: 1)),
+                onChanged: (date) {
+                  setState(() {
+                    _startDate = date;
+                    // Reset end date if it's before new start date
+                    if (_endDate != null && _endDate!.isBefore(_startDate!)) {
+                      _endDate = null;
+                    }
+                  });
+                },
+              ),
+              SizedBox(height: 16.h),
+              ItineraryDatePicker(
+                label: AppLocalizations.of(context)!.endDate,
+                placeholder: 'dd/mm/yyyy',
+                initialDate: _endDate,
+                firstDate:
+                    _startDate ?? DateTime.now().add(const Duration(days: 1)),
+                onChanged: (date) {
+                  setState(() {
+                    _endDate = date;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(
+            AppLocalizations.of(context)!.cancel,
+            style: const TextStyle(color: AppColors.textSubtitle),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (_startDate == null || _endDate == null) {
+                CustomSnackbar.show(
+                  context,
+                  message: AppLocalizations.of(context)!.dateRequired,
+                  type: SnackbarType.error,
+                );
+                return;
+              }
+              final request = UseItineraryRequest(
+                name: _nameController.text,
+                startDate: _startDate!.toIso8601String(),
+                endDate: _endDate!.toIso8601String(),
+              );
+              context.read<UseItineraryCubit>().useItinerary(
+                widget.itinerary.id,
+                request,
+              );
+              Navigator.of(context).pop();
+            }
+          },
+          child: BlocBuilder<UseItineraryCubit, UseItineraryState>(
+            builder: (context, state) {
+              if (state is UseItineraryLoading) {
+                return SizedBox(
+                  width: 16.w,
+                  height: 16.w,
+                  child: const CircularProgressIndicator(strokeWidth: 2),
+                );
+              }
+              return Text(
+                AppLocalizations.of(context)!.confirm,
+                style: const TextStyle(color: AppColors.primaryBlue),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

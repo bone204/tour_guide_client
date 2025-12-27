@@ -10,6 +10,7 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/province.da
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_time_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_reorder_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_details_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/use_itinerary_request.dart';
 
 abstract class ItineraryRepository {
   Future<Either<Failure, ItineraryResponse>> getItineraryMe();
@@ -62,7 +63,10 @@ abstract class ItineraryRepository {
     String? province,
   );
   Future<Either<Failure, Itinerary>> publicizeItinerary(int itineraryId);
-  Future<Either<Failure, SuccessResponse>> useItinerary(int itineraryId);
+  Future<Either<Failure, SuccessResponse>> useItinerary(
+    int itineraryId,
+    UseItineraryRequest request,
+  );
   Future<Either<Failure, SuccessResponse>> likeItinerary(int itineraryId);
   Future<Either<Failure, SuccessResponse>> unlikeItinerary(int itineraryId);
 }

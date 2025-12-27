@@ -2038,4 +2038,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get recaptchaRequired => 'Vui lòng hoàn thành xác thực CAPTCHA';
+
+  @override
+  String get enterItineraryName => 'Nhập tên chuyến đi';
+
+  @override
+  String get nameRequired => 'Tên là bắt buộc';
+
+  @override
+  String get dateRequired => 'Vui lòng chọn ngày bắt đầu và kết thúc';
 }

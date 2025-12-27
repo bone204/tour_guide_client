@@ -13,6 +13,7 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.d
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary_query.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/use_itinerary_request.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class ItineraryApiService {
@@ -67,7 +68,10 @@ abstract class ItineraryApiService {
   );
   Future<Either<Failure, Itinerary>> publicizeItinerary(int itineraryId);
 
-  Future<Either<Failure, SuccessResponse>> useItinerary(int itineraryId);
+  Future<Either<Failure, SuccessResponse>> useItinerary(
+    int itineraryId,
+    UseItineraryRequest request,
+  );
 
   Future<Either<Failure, SuccessResponse>> likeItinerary(int itineraryId);
 
@@ -453,12 +457,11 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> useItinerary(
-    int itineraryId,
-  ) async {
+  Future<Either<Failure, SuccessResponse>> useItinerary(int itineraryId, UseItineraryRequest request) async {
     try {
       final response = await sl<DioClient>().post(
         '${ApiUrls.itinerary}/$itineraryId/use',
+        data: request.toJson(),
       );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);
