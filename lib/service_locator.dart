@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
+import 'package:tour_guide_app/core/services/feedback/data/data_sources/feedback_api_service.dart';
+import 'package:tour_guide_app/core/services/feedback/data/repositories/feedback_repository_impl.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/local/auth_local_service.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/remote/auth_api_service.dart';
 import 'package:tour_guide_app/features/auth/data/repository/auth_repository_impl.dart';
@@ -16,7 +18,6 @@ import 'package:tour_guide_app/features/chat_bot/domain/usecases/send_chat_messa
 import 'package:tour_guide_app/features/destination/data/data_source/destination_api_service.dart';
 import 'package:tour_guide_app/features/destination/data/repository/destination_repository_impl.dart';
 import 'package:tour_guide_app/features/destination/domain/repository/destination_repository.dart';
-import 'package:tour_guide_app/features/destination/domain/usecases/create_feedback.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_destination_by_id.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_favorites.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/favorite_destination.dart';
@@ -36,6 +37,10 @@ import 'package:tour_guide_app/features/chat_bot/data/repository/chat_repository
 import 'package:tour_guide_app/features/chat_bot/domain/repository/chat_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_draft_itineraries.dart';
+import 'package:tour_guide_app/core/services/feedback/domain/usecases/create_feedback.dart';
+import 'package:tour_guide_app/core/services/feedback/domain/usecases/get_feedback.dart';
+import 'package:tour_guide_app/core/services/feedback/domain/repositories/feedback_repository.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_cubit.dart';
 
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/like_itinerary_usecase.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/unlike_itinerary_usecase.dart';
@@ -109,6 +114,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<ItineraryApiService>(ItineraryApiServiceImpl());
   sl.registerSingleton<MyVehicleApiService>(MyVehicleApiServiceImpl());
   sl.registerSingleton<ProfileApiService>(ProfileApiServiceImpl());
+  sl.registerSingleton<FeedbackApiService>(FeedbackApiServiceImpl());
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
@@ -117,6 +123,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<ItineraryRepository>(ItineraryRepositoryImpl());
   sl.registerSingleton<MyVehicleRepository>(MyVehicleRepositoryImpl());
   sl.registerSingleton<ProfileRepository>(ProfileRepositoryImpl());
+  sl.registerSingleton<FeedbackRepository>(FeedbackRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());
@@ -147,6 +154,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<EditStopReorderUseCase>(EditStopReorderUseCase());
   sl.registerSingleton<EditStopDetailsUseCase>(EditStopDetailsUseCase());
   sl.registerSingleton<CreateFeedbackUseCase>(CreateFeedbackUseCase());
+  sl.registerSingleton<GetFeedbackUseCase>(GetFeedbackUseCase());
   sl.registerSingleton<DeleteItineraryStopUseCase>(
     DeleteItineraryStopUseCase(sl()),
   );
@@ -236,4 +244,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerFactory<VerifyEmailCubit>(() => VerifyEmailCubit());
   sl.registerFactory<VerifyPhoneCubit>(() => VerifyPhoneCubit());
+  sl.registerFactory<CommentCubit>(
+    () => CommentCubit(getFeedbackUseCase: sl(), createFeedbackUseCase: sl()),
+  );
 }

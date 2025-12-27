@@ -14,9 +14,7 @@ abstract class FeedbackApiService {
     CreateFeedbackRequest request,
   );
 
-  Future<Either<Failure, FeedbackResponse>> getFeedback(
-    FeedbackQuery query,
-  );
+  Future<Either<Failure, FeedbackResponse>> getFeedback(FeedbackQuery query);
 }
 
 class FeedbackApiServiceImpl extends FeedbackApiService {
@@ -25,13 +23,16 @@ class FeedbackApiServiceImpl extends FeedbackApiService {
     CreateFeedbackRequest request,
   ) async {
     try {
-      final response = await sl<DioClient>().post(ApiUrls.feedback, data: request.toJson());
+      final response = await sl<DioClient>().post(
+        ApiUrls.feedback,
+        data: request.toJson(),
+      );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
@@ -45,13 +46,16 @@ class FeedbackApiServiceImpl extends FeedbackApiService {
     FeedbackQuery query,
   ) async {
     try {
-      final response = await sl<DioClient>().post(ApiUrls.feedback, data: query.toQuery());
+      final response = await sl<DioClient>().get(
+        ApiUrls.feedback,
+        queryParameters: query.toQuery(),
+      );
       final feedbackResponse = FeedbackResponse.fromJson(response.data);
       return Right(feedbackResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );

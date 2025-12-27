@@ -1155,6 +1155,9 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get comments => 'Bình luận';
+
+  @override
   String get vehicleDetail => 'Chi tiết xe';
 
   @override
@@ -1173,6 +1176,21 @@ class AppLocalizationsVi extends AppLocalizations {
 
     return 'Tìm thấy $countString kết quả';
   }
+
+  @override
+  String get noComments => 'Chưa có bình luận nào';
+
+  @override
+  String get addComment => 'Thêm bình luận...';
+
+  @override
+  String get like => 'Thích';
+
+  @override
+  String get liked => 'Đã thích';
+
+  @override
+  String get reply => 'Phản hồi';
 
   @override
   String get itineraryPublicizedSuccess => 'Lộ trình đã được công khai thành công!';

@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/get_draft_itineraries/get_draft_itineraries_cubit.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_state.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/widgets/explore_itinerary_card.widget.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/widgets/comment_bottom_sheet.widget.dart';
@@ -122,63 +124,112 @@ class _ItineraryExplorePageState extends State<ItineraryExplorePage> {
                           item.id.toString(),
                         );
 
-                        return BlocProvider(
+                        return MultiBlocProvider(
                           key: ValueKey('${item.id}_$initialIsLiked'),
-                          create: (_) {
-                            final cubit = sl<LikeItineraryCubit>();
-                            cubit.init(item.id, initialIsLiked, item.likeCount);
-                            return cubit;
-                          },
-                          child: BlocBuilder<
-                            LikeItineraryCubit,
-                            LikeItineraryState
-                          >(
-                            builder: (context, likeState) {
-                              bool isLiked = initialIsLiked;
-                              int likeCount = item.likeCount;
+                          providers: [
+                            BlocProvider(
+                              create: (_) {
+                                final cubit = sl<LikeItineraryCubit>();
+                                cubit.init(
+                                  item.id,
+                                  initialIsLiked,
+                                  item.likeCount,
+                                );
+                                return cubit;
+                              },
+                            ),
+                            BlocProvider(
+                              create:
+                                  (_) =>
+                                      sl<CommentCubit>()..loadComments(item.id),
+                            ),
+                          ],
+                          child: Builder(
+                            builder: (context) {
+                              return BlocBuilder<
+                                LikeItineraryCubit,
+                                LikeItineraryState
+                              >(
+                                builder: (context, likeState) {
+                                  bool isLiked = initialIsLiked;
+                                  int likeCount = item.likeCount;
 
-                              if (likeState is LikeItineraryUpdate &&
-                                  likeState.itineraryId == item.id) {
-                                isLiked = likeState.isLiked;
-                                likeCount = likeState.likeCount;
-                              }
+                                  if (likeState is LikeItineraryUpdate &&
+                                      likeState.itineraryId == item.id) {
+                                    isLiked = likeState.isLiked;
+                                    likeCount = likeState.likeCount;
+                                  }
 
-                              return ExploreItineraryCard(
-                                title: item.name,
-                                authorName: item.user.username,
-                                authorAvatar: item.user.avatarUrl,
-                                destinationCount: item.stops.length.toString(),
-                                imageUrl: imageUrl,
-                                isLiked: isLiked,
-                                likeCount: likeCount,
-                                onLike: (val) async {
-                                  context.read<LikeItineraryCubit>().toggleLike(
-                                    item.id,
-                                    isLiked,
-                                    likeCount,
-                                  );
-                                  return !isLiked;
-                                },
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(
-                                    AppRouteConstant.itineraryExploreDetail,
-                                    arguments: item.id,
-                                  );
-                                },
-                                onComment: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    builder:
-                                        (context) => SizedBox(
-                                          height:
-                                              MediaQuery.of(
-                                                context,
-                                              ).size.height *
-                                              0.75,
-                                          child: const CommentBottomSheet(),
-                                        ),
+                                  return BlocBuilder<
+                                    CommentCubit,
+                                    CommentState
+                                  >(
+                                    builder: (context, commentState) {
+                                      int commentCount = 0;
+                                      if (commentState is CommentLoaded) {
+                                        commentCount =
+                                            commentState.comments.length;
+                                        if (!commentState.hasReachedEnd &&
+                                            commentState.comments.length >=
+                                                10) {
+                                          // Optional: indicate more? For now just count.
+                                        }
+                                      }
+
+                                      return ExploreItineraryCard(
+                                        title: item.name,
+                                        authorName: item.user.username,
+                                        authorAvatar: item.user.avatarUrl,
+                                        destinationCount:
+                                            item.stops.length.toString(),
+                                        imageUrl: imageUrl,
+                                        isLiked: isLiked,
+                                        likeCount: likeCount,
+                                        commentCount: commentCount,
+                                        onLike: (val) async {
+                                          context
+                                              .read<LikeItineraryCubit>()
+                                              .toggleLike(
+                                                item.id,
+                                                isLiked,
+                                                likeCount,
+                                              );
+                                          return !isLiked;
+                                        },
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                            AppRouteConstant
+                                                .itineraryExploreDetail,
+                                            arguments: item.id,
+                                          );
+                                        },
+                                        onComment: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            builder:
+                                                (context) => SizedBox(
+                                                  height:
+                                                      MediaQuery.of(
+                                                        context,
+                                                      ).size.height *
+                                                      0.75,
+                                                  child: CommentBottomSheet(
+                                                    itineraryId: item.id,
+                                                  ),
+                                                ),
+                                          ).then((_) {
+                                            // Refresh comments count when bottom sheet closes
+                                            if (context.mounted) {
+                                              context
+                                                  .read<CommentCubit>()
+                                                  .loadComments(item.id);
+                                            }
+                                          });
+                                        },
+                                      );
+                                    },
                                   );
                                 },
                               );

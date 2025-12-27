@@ -105,6 +105,10 @@
       }
     }
   },
+  "comments": "Bình luận",
+  "like": "Thích",
+  "liked": "Đã thích",
+  "reply": "Phản hồi",
   "errorOccurred": "Đã có lỗi xảy ra",
   "noContracts": "Chưa có hợp đồng nào",
   "registerNow": "Đăng ký ngay",
@@ -835,6 +839,8 @@
       }
     }
   },
+  "noComments": "Chưa có bình luận nào",
+  "addComment": "Thêm bình luận...",
   "profileUpdatedSuccessfully": "Cập nhật hồ sơ thành công",
   "unsavedChangesMessage": "Bạn có thay đổi chưa lưu. Bạn có muốn hủy chúng?",
   "update": "Cập nhật",

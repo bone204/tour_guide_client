@@ -2351,6 +2351,12 @@ abstract class AppLocalizations {
   /// **'Vehicle #{licensePlate}'**
   String vehicleTitle(String licensePlate);
 
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments;
+
   /// No description provided for @vehicleDetail.
   ///
   /// In en, this message translates to:
@@ -2374,6 +2380,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Found {count} results'**
   String searchResultsCount(int count);
+
+  /// No description provided for @noComments.
+  ///
+  /// In en, this message translates to:
+  /// **'No comments yet'**
+  String get noComments;
+
+  /// No description provided for @addComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a comment...'**
+  String get addComment;
+
+  /// No description provided for @like.
+  ///
+  /// In en, this message translates to:
+  /// **'Like'**
+  String get like;
+
+  /// No description provided for @liked.
+  ///
+  /// In en, this message translates to:
+  /// **'Liked'**
+  String get liked;
+
+  /// No description provided for @reply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get reply;
 
   /// No description provided for @itineraryPublicizedSuccess.
   ///

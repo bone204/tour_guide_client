@@ -1155,6 +1155,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get comments => 'Comments';
+
+  @override
   String get vehicleDetail => 'Vehicle Detail';
 
   @override
@@ -1167,6 +1170,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String searchResultsCount(int count) {
     return 'Found $count results';
   }
+
+  @override
+  String get noComments => 'No comments yet';
+
+  @override
+  String get addComment => 'Add a comment...';
+
+  @override
+  String get like => 'Like';
+
+  @override
+  String get liked => 'Liked';
+
+  @override
+  String get reply => 'Reply';
 
   @override
   String get itineraryPublicizedSuccess => 'Itinerary publicized successfully!';
