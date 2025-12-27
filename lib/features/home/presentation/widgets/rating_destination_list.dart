@@ -3,21 +3,21 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_state.dart';
-import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/destination_card.widget.dart';
 
-class SliverPopularDestinationList extends StatefulWidget {
+class SliverRatingDestinationList extends StatefulWidget {
   @override
-  State<SliverPopularDestinationList> createState() =>
-      _SliverPopularDestinationListState();
+  State<SliverRatingDestinationList> createState() =>
+      _SliverRatingDestinationListState();
 }
 
-class _SliverPopularDestinationListState
-    extends State<SliverPopularDestinationList> {
+class _SliverRatingDestinationListState
+    extends State<SliverRatingDestinationList> {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -25,7 +25,7 @@ class _SliverPopularDestinationListState
         create:
             (context) =>
                 GetDestinationCubit()..getDestinations(
-                  query: DestinationQuery(sortBy: DestinationSortBy.popularity),
+                  query: DestinationQuery(sortBy: DestinationSortBy.rating),
                 ),
         child: Stack(
           clipBehavior: Clip.none,
@@ -35,8 +35,8 @@ class _SliverPopularDestinationListState
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.primaryOrange,
-                    AppColors.primaryOrange.withOpacity(0.6),
+                    AppColors.primaryRed,
+                    AppColors.primaryRed.withOpacity(0.6),
                   ],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
@@ -49,9 +49,9 @@ class _SliverPopularDestinationListState
                 children: [
                   Positioned(
                     top: -28,
-                    right: 0,
+                    right: -20,
                     child: Image.asset(
-                      AppImage.sakura,
+                      AppImage.rose,
                       width: 140.w,
                       height: 140.h,
                     ),
@@ -72,13 +72,15 @@ class _SliverPopularDestinationListState
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              AppLocalizations.of(context)!.popular,
+                              AppLocalizations.of(context)!.rating,
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(color: AppColors.textSecondary),
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              AppLocalizations.of(context)!.popularDes,
+                              AppLocalizations.of(
+                                context,
+                              )!.topRatedDestinations,
                               style: Theme.of(context).textTheme.displayMedium
                                   ?.copyWith(color: AppColors.textSecondary),
                             ),

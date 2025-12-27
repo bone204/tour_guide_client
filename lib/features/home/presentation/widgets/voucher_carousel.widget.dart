@@ -6,16 +6,16 @@ import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/voucher_card.widget.dart';
 
 class SliverVoucherCarousel extends StatelessWidget {
-  final List<String> vouchers = [
-    'Voucher 10%',
-    'Voucher Free Shipping',
-    'Voucher 50K',
-    'Voucher 20%',
-    'Voucher Buy 1 Get 1',
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<String> vouchers = [
+      AppLocalizations.of(context)!.voucher10Percent,
+      AppLocalizations.of(context)!.voucherFreeShipping,
+      AppLocalizations.of(context)!.voucher50K,
+      AppLocalizations.of(context)!.voucher20Percent,
+      AppLocalizations.of(context)!.voucherBuy1Get1,
+    ];
+
     return SliverToBoxAdapter(
       child: Stack(
         clipBehavior: Clip.none,
@@ -46,12 +46,15 @@ class SliverVoucherCarousel extends StatelessWidget {
                     height: 140.h,
                   ),
                 ),
-
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.h),
+                      padding: EdgeInsets.only(
+                        left: 16.w,
+                        right: 16.w,
+                        bottom: 16.h,
+                      ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -64,15 +67,12 @@ class SliverVoucherCarousel extends StatelessWidget {
                           SizedBox(width: 12.w),
                           Text(
                             AppLocalizations.of(context)!.exclusiveVouchers,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
+                            style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(color: AppColors.textSecondary),
                           ),
                         ],
                       ),
                     ),
-
                     // 🔹 Carousel
                     CarouselSlider.builder(
                       itemCount: vouchers.length,
@@ -84,7 +84,9 @@ class SliverVoucherCarousel extends StatelessWidget {
                         autoPlay: true,
                         enableInfiniteScroll: vouchers.length > 1,
                         autoPlayCurve: Curves.fastOutSlowIn,
-                        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                        autoPlayAnimationDuration: const Duration(
+                          milliseconds: 800,
+                        ),
                         viewportFraction: 0.8,
                         padEnds: false,
                         enlargeCenterPage: false,

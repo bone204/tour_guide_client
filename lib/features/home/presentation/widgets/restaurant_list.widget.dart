@@ -5,43 +5,43 @@ import 'package:tour_guide_app/features/destination/presentation/pages/destinati
 import 'package:tour_guide_app/features/home/presentation/widgets/destination_card.widget.dart';
 
 class SliverRestaurantNearbyDestinationList extends StatelessWidget {
-  final List<DestinationCard> fakeDestinations = [
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Le Petit Paris",
-      rating: "4.8",
-      location: "Paris, France",
-      category: "Pháp",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Sushi Master",
-      rating: "4.7",
-      location: "Tokyo, Japan",
-      category: "Nhật Bản",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Seafood Paradise",
-      rating: "4.9",
-      location: "Quang Ninh, Vietnam",
-      category: "Hải sản",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Canyon Grill",
-      rating: "4.6",
-      location: "Arizona, USA",
-      category: "BBQ",
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<DestinationCard> fakeDestinations = [
+      DestinationCard(
+        imageUrl:
+            "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
+        name: "Le Petit Paris",
+        rating: "4.8",
+        location: "Paris, France",
+        category: AppLocalizations.of(context)!.restaurantFrench,
+      ),
+      DestinationCard(
+        imageUrl:
+            "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
+        name: "Sushi Master",
+        rating: "4.7",
+        location: "Tokyo, Japan",
+        category: AppLocalizations.of(context)!.restaurantJapanese,
+      ),
+      DestinationCard(
+        imageUrl:
+            "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
+        name: "Seafood Paradise",
+        rating: "4.9",
+        location: "Quang Ninh, Vietnam",
+        category: AppLocalizations.of(context)!.restaurantSeafood,
+      ),
+      DestinationCard(
+        imageUrl:
+            "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
+        name: "Canyon Grill",
+        rating: "4.6",
+        location: "Arizona, USA",
+        category: AppLocalizations.of(context)!.restaurantBBQ,
+      ),
+    ];
+
     return SliverToBoxAdapter(
       child: Stack(
         clipBehavior: Clip.none,
@@ -69,13 +69,11 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
                   right: 56,
                   child: Image.asset(AppImage.food, width: 60.w, height: 60.h),
                 ),
-
                 Positioned(
                   top: -8,
                   right: 8,
                   child: Image.asset(AppImage.drink, width: 60.w, height: 60.h),
                 ),
-
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -103,7 +101,6 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
                         ],
                       ),
                     ),
-
                     // Carousel Destination Cards
                     Padding(
                       padding: EdgeInsets.only(left: 16.w),

@@ -82,6 +82,9 @@
   "vehicles": "Vehicles",
   "rentalCount": "Rentals",
   "rating": "Rating",
+  "topRatedDestinations": "Top rated destinations",
+  "youHaveSeenAllAttractions": "You have seen all attractions",
+  "noAttractionsFound": "No attractions found",
   "reason": "Reason: {reason}",
   "@reason": {
     "placeholders": {
@@ -807,8 +810,8 @@
   "useItinerary": "Use Itinerary",
   "confirmUseItinerary": "Are you sure you want to use this itinerary?",
   "useItinerarySuccess": "Itinerary used successfully!",
-  "cancel": "Cancel",
-  "confirm": "Confirm",
+
+
   "itineraryPublicizedSuccess": "Itinerary publicized successfully!",
   "@searchResultsCount": {
     "placeholders": {
@@ -1102,6 +1105,20 @@
   "itineraryUpdated": "Itinerary updated",
   "selectDestination": "Select Destination",
   "noDestinationsFound": "No destinations found",
+  "destination": "Destination",
+  "voucher10Percent": "Voucher 10%",
+  "voucherFreeShipping": "Voucher Free Shipping",
+  "voucher50K": "Voucher 50K",
+  "voucher20Percent": "Voucher 20%",
+  "voucherBuy1Get1": "Voucher Buy 1 Get 1",
+  "hotel5Star": "5 Star",
+  "hotelResort": "Resort",
+  "hotelSeaside": "Seaside",
+  "hotelLodge": "Lodge",
+  "restaurantFrench": "French",
+  "restaurantJapanese": "Japanese",
+  "restaurantSeafood": "Seafood",
+  "restaurantBBQ": "BBQ",
   "noSchedule": "No schedule for this trip",
   "noStop": "No stops for this trip",
   "statusUpcoming": "Upcoming",

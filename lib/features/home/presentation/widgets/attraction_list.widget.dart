@@ -1,11 +1,12 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
-import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_state.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_recommend_destinations/get_recommend_destinations_cubit.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_recommend_destinations/get_recommend_destinations_state.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_card.widget.dart';
 
 class SliverRestaurantNearbyAttractionList extends StatelessWidget {
@@ -34,20 +35,43 @@ class SliverRestaurantNearbyAttractionList extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
 
-            BlocBuilder<GetDestinationCubit, GetDestinationState>(
+            BlocBuilder<
+              GetRecommendDestinationsCubit,
+              GetRecommendDestinationsState
+            >(
               builder: (context, state) {
-                if (state is GetDestinationLoading) {
-                  return Container(
-                    height: 200.h,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.primaryBlue,
-                      ),
-                    ),
+                if (state is GetRecommendDestinationsLoading) {
+                  return MasonryGridView.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 8.h,
+                    crossAxisSpacing: 16.w,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(0),
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 4, // Show 4 shimmer items
+                    itemBuilder: (context, index) {
+                      return Shimmer.fromColors(
+                        baseColor: AppColors.secondaryGrey.withOpacity(0.3),
+                        highlightColor: AppColors.secondaryGrey.withOpacity(
+                          0.1,
+                        ),
+                        child: Container(
+                          height:
+                              (index % 2 == 0)
+                                  ? 200.h
+                                  : 250
+                                      .h, // Randomize height for masonry effect
+                          decoration: BoxDecoration(
+                            color: AppColors.secondaryGrey,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                        ),
+                      );
+                    },
                   );
                 }
 
-                if (state is GetDestinationError) {
+                if (state is GetRecommendDestinationsError) {
                   return Container(
                     height: 200.h,
                     padding: EdgeInsets.all(16.w),
@@ -60,7 +84,7 @@ class SliverRestaurantNearbyAttractionList extends StatelessWidget {
                   );
                 }
 
-                if (state is GetDestinationLoaded) {
+                if (state is GetRecommendDestinationsLoaded) {
                   final destinations = state.destinations;
 
                   if (destinations.isEmpty) {
@@ -68,7 +92,7 @@ class SliverRestaurantNearbyAttractionList extends StatelessWidget {
                       height: 200.h,
                       child: Center(
                         child: Text(
-                          'No attractions found',
+                          AppLocalizations.of(context)!.noAttractionsFound,
                           style: TextStyle(color: AppColors.textSubtitle),
                         ),
                       ),
@@ -121,10 +145,27 @@ class SliverRestaurantNearbyAttractionList extends StatelessWidget {
                       // Loading more indicator
                       if (state.isLoadingMore)
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20.h),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.primaryBlue,
+                          padding: EdgeInsets.only(top: 8.h),
+                          child: StaggeredGrid.count(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 8.h,
+                            crossAxisSpacing: 16.w,
+                            children: List.generate(
+                              2,
+                              (index) => Shimmer.fromColors(
+                                baseColor: AppColors.secondaryGrey.withOpacity(
+                                  0.3,
+                                ),
+                                highlightColor: AppColors.secondaryGrey
+                                    .withOpacity(0.1),
+                                child: Container(
+                                  height: 200.h,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.secondaryGrey,
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -135,7 +176,9 @@ class SliverRestaurantNearbyAttractionList extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           child: Center(
                             child: Text(
-                              'You have seen all attractions',
+                              AppLocalizations.of(
+                                context,
+                              )!.youHaveSeenAllAttractions,
                               style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(color: AppColors.textSubtitle),
                             ),

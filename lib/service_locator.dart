@@ -22,6 +22,7 @@ import 'package:tour_guide_app/features/destination/domain/usecases/get_destinat
 import 'package:tour_guide_app/features/destination/domain/usecases/get_favorites.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/favorite_destination.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_destinations.dart';
+import 'package:tour_guide_app/features/destination/domain/usecases/get_recommend_destinations.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/profile/data/data_source/profile_api_service.dart';
 import 'package:tour_guide_app/features/profile/data/repository/profile_repository_impl.dart';
@@ -199,6 +200,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<PhoneStartUseCase>(PhoneStartUseCase());
   sl.registerSingleton<VerifyPhoneUseCase>(VerifyPhoneUseCase());
   sl.registerSingleton<UpdateHobbiesUseCase>(UpdateHobbiesUseCase());
+  sl.registerSingleton<GetRecommendDestinationsUseCase>(GetRecommendDestinationsUseCase());
 
   // My Vehicle
   sl.registerSingleton<AddContractUseCase>(AddContractUseCase());

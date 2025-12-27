@@ -353,6 +353,24 @@ abstract class AppLocalizations {
   /// **'Rating'**
   String get rating;
 
+  /// No description provided for @topRatedDestinations.
+  ///
+  /// In en, this message translates to:
+  /// **'Top rated destinations'**
+  String get topRatedDestinations;
+
+  /// No description provided for @youHaveSeenAllAttractions.
+  ///
+  /// In en, this message translates to:
+  /// **'You have seen all attractions'**
+  String get youHaveSeenAllAttractions;
+
+  /// No description provided for @noAttractionsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No attractions found'**
+  String get noAttractionsFound;
+
   /// No description provided for @reason.
   ///
   /// In en, this message translates to:
@@ -3286,6 +3304,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No destinations found'**
   String get noDestinationsFound;
+
+  /// No description provided for @destination.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination'**
+  String get destination;
+
+  /// No description provided for @voucher10Percent.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher 10%'**
+  String get voucher10Percent;
+
+  /// No description provided for @voucherFreeShipping.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher Free Shipping'**
+  String get voucherFreeShipping;
+
+  /// No description provided for @voucher50K.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher 50K'**
+  String get voucher50K;
+
+  /// No description provided for @voucher20Percent.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher 20%'**
+  String get voucher20Percent;
+
+  /// No description provided for @voucherBuy1Get1.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher Buy 1 Get 1'**
+  String get voucherBuy1Get1;
+
+  /// No description provided for @hotel5Star.
+  ///
+  /// In en, this message translates to:
+  /// **'5 Star'**
+  String get hotel5Star;
+
+  /// No description provided for @hotelResort.
+  ///
+  /// In en, this message translates to:
+  /// **'Resort'**
+  String get hotelResort;
+
+  /// No description provided for @hotelSeaside.
+  ///
+  /// In en, this message translates to:
+  /// **'Seaside'**
+  String get hotelSeaside;
+
+  /// No description provided for @hotelLodge.
+  ///
+  /// In en, this message translates to:
+  /// **'Lodge'**
+  String get hotelLodge;
+
+  /// No description provided for @restaurantFrench.
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get restaurantFrench;
+
+  /// No description provided for @restaurantJapanese.
+  ///
+  /// In en, this message translates to:
+  /// **'Japanese'**
+  String get restaurantJapanese;
+
+  /// No description provided for @restaurantSeafood.
+  ///
+  /// In en, this message translates to:
+  /// **'Seafood'**
+  String get restaurantSeafood;
+
+  /// No description provided for @restaurantBBQ.
+  ///
+  /// In en, this message translates to:
+  /// **'BBQ'**
+  String get restaurantBBQ;
 
   /// No description provided for @noSchedule.
   ///

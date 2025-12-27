@@ -97,6 +97,9 @@
   "vehicles": "Xe",
   "rentalCount": "Lượt thuê",
   "rating": "Đánh giá",
+  "topRatedDestinations": "Điểm đến được đánh giá cao",
+  "youHaveSeenAllAttractions": "Bạn đã xem tất cả các điểm du lịch",
+  "noAttractionsFound": "Không tìm thấy điểm du lịch",
   "reason": "Lý do: {reason}",
   "@reason": {
     "placeholders": {
@@ -228,7 +231,7 @@
 
   "exitAppConfirm": "Bạn có chắc chắn muốn thoát ứng dụng?",
 
-  "cancel": "Hủy",
+
 
   "exit": "Thoát",
 
@@ -354,7 +357,7 @@
 
   "orderDetails": "Chi tiết đơn hàng",
 
-  "confirm": "Xác nhận",
+
 
   "tableBookingInfo": "Thông tin đặt bàn",
 
@@ -1128,6 +1131,20 @@
   "itineraryUpdated": "Lịch trình đã được cập nhật",
   "selectDestination": "Chọn điểm đến",
   "noDestinationsFound": "Không tìm thấy điểm đến nào",
+  "destination": "Điểm đến",
+  "voucher10Percent": "Mã giảm 10%",
+  "voucherFreeShipping": "Mã miễn phí vận chuyển",
+  "voucher50K": "Mã giảm 50K",
+  "voucher20Percent": "Mã giảm 20%",
+  "voucherBuy1Get1": "Mua 1 tặng 1",
+  "hotel5Star": "5 sao",
+  "hotelResort": "Khu nghỉ dưỡng",
+  "hotelSeaside": "Ven biển",
+  "hotelLodge": "Nhà nghỉ",
+  "restaurantFrench": "Pháp",
+  "restaurantJapanese": "Nhật Bản",
+  "restaurantSeafood": "Hải sản",
+  "restaurantBBQ": "Đồ nướng",
   "noSchedule": "Không có lịch trình cho chuyến đi này",
   "noStop": "Không có điểm dừng cho chuyến đi này",
   "statusUpcoming": "Sắp tới",

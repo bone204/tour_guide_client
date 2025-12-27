@@ -138,6 +138,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get rating => 'Đánh giá';
 
   @override
+  String get topRatedDestinations => 'Điểm đến được đánh giá cao';
+
+  @override
+  String get youHaveSeenAllAttractions => 'Bạn đã xem tất cả các điểm du lịch';
+
+  @override
+  String get noAttractionsFound => 'Không tìm thấy điểm du lịch';
+
+  @override
   String reason(String reason) {
     return 'Lý do: $reason';
   }
@@ -1675,6 +1684,48 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noDestinationsFound => 'Không tìm thấy điểm đến nào';
+
+  @override
+  String get destination => 'Điểm đến';
+
+  @override
+  String get voucher10Percent => 'Mã giảm 10%';
+
+  @override
+  String get voucherFreeShipping => 'Mã miễn phí vận chuyển';
+
+  @override
+  String get voucher50K => 'Mã giảm 50K';
+
+  @override
+  String get voucher20Percent => 'Mã giảm 20%';
+
+  @override
+  String get voucherBuy1Get1 => 'Mua 1 tặng 1';
+
+  @override
+  String get hotel5Star => '5 sao';
+
+  @override
+  String get hotelResort => 'Khu nghỉ dưỡng';
+
+  @override
+  String get hotelSeaside => 'Ven biển';
+
+  @override
+  String get hotelLodge => 'Nhà nghỉ';
+
+  @override
+  String get restaurantFrench => 'Pháp';
+
+  @override
+  String get restaurantJapanese => 'Nhật Bản';
+
+  @override
+  String get restaurantSeafood => 'Hải sản';
+
+  @override
+  String get restaurantBBQ => 'Đồ nướng';
 
   @override
   String get noSchedule => 'Không có lịch trình cho chuyến đi này';

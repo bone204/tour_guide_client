@@ -1,5 +1,4 @@
 
-import 'package:flutter_svg/svg.dart';
 import 'package:tour_guide_app/common/widgets/search_bar/custom_search_bar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/utils/typewritter_text.dart';

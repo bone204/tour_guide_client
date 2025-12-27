@@ -138,6 +138,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rating => 'Rating';
 
   @override
+  String get topRatedDestinations => 'Top rated destinations';
+
+  @override
+  String get youHaveSeenAllAttractions => 'You have seen all attractions';
+
+  @override
+  String get noAttractionsFound => 'No attractions found';
+
+  @override
   String reason(String reason) {
     return 'Reason: $reason';
   }
@@ -1669,6 +1678,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noDestinationsFound => 'No destinations found';
+
+  @override
+  String get destination => 'Destination';
+
+  @override
+  String get voucher10Percent => 'Voucher 10%';
+
+  @override
+  String get voucherFreeShipping => 'Voucher Free Shipping';
+
+  @override
+  String get voucher50K => 'Voucher 50K';
+
+  @override
+  String get voucher20Percent => 'Voucher 20%';
+
+  @override
+  String get voucherBuy1Get1 => 'Voucher Buy 1 Get 1';
+
+  @override
+  String get hotel5Star => '5 Star';
+
+  @override
+  String get hotelResort => 'Resort';
+
+  @override
+  String get hotelSeaside => 'Seaside';
+
+  @override
+  String get hotelLodge => 'Lodge';
+
+  @override
+  String get restaurantFrench => 'French';
+
+  @override
+  String get restaurantJapanese => 'Japanese';
+
+  @override
+  String get restaurantSeafood => 'Seafood';
+
+  @override
+  String get restaurantBBQ => 'BBQ';
 
   @override
   String get noSchedule => 'No schedule for this trip';

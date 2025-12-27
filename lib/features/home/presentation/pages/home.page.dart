@@ -3,13 +3,16 @@ import 'package:lottie/lottie.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/chat_bot/presentation/pages/chat_bot.page.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_cubit.dart';
+import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_state.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_recommend_destinations/get_recommend_destinations_cubit.dart';
+import 'package:tour_guide_app/features/home/presentation/bloc/get_recommend_destinations/get_recommend_destinations_state.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_header.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/hotel_list.widget.dart';
-import 'package:tour_guide_app/features/home/presentation/widgets/nearby_destination_list.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/rating_destination_list.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/popular_destination_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/restaurant_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/shimmer_widgets.dart';
@@ -27,6 +30,13 @@ class HomePage extends StatefulWidget {
         ),
         BlocProvider(
           create: (context) => FavoriteDestinationsCubit()..loadFavorites(),
+        ),
+        BlocProvider(
+          create:
+              (context) =>
+                  GetRecommendDestinationsCubit()..getRecommendDestinations(
+                    query: DestinationQuery(limit: 10, offset: 0),
+                  ),
         ),
       ],
       child: const HomePage(),
@@ -66,12 +76,22 @@ class _HomePageState extends State<HomePage> {
     }
 
     final cubit = context.read<GetDestinationCubit>();
+    final recommendCubit = context.read<GetRecommendDestinationsCubit>();
     final state = cubit.state;
 
     if (state is GetDestinationLoaded) {
       if (!state.hasReachedEnd && !state.isLoadingMore) {
         _lastLoadMoreTime = now;
         cubit.loadMoreDestinations();
+      }
+    }
+
+    // Load more for recommended destinations
+    final recommendState = recommendCubit.state;
+    if (recommendState is GetRecommendDestinationsLoaded) {
+      if (!recommendState.hasReachedEnd && !recommendState.isLoadingMore) {
+        _lastLoadMoreTime = now;
+        recommendCubit.loadMoreRecommendDestinations();
       }
     }
   }
@@ -81,13 +101,16 @@ class _HomePageState extends State<HomePage> {
     await Future.wait([
       context.read<GetDestinationCubit>().getDestinations(),
       context.read<FavoriteDestinationsCubit>().loadFavorites(),
+      context.read<GetRecommendDestinationsCubit>().getRecommendDestinations(
+        query: DestinationQuery(limit: 10, offset: 0),
+      ),
     ]);
   }
 
   List<Widget> _buildContentSlivers(GetDestinationState state) {
-    final isLoading = state is GetDestinationLoading ||
-        state is GetDestinationInitial;
-    
+    final isLoading =
+        state is GetDestinationLoading || state is GetDestinationInitial;
+
     if (isLoading) {
       return [
         SliverVoucherCarouselShimmer(),
@@ -98,17 +121,17 @@ class _HomePageState extends State<HomePage> {
         SliverRestaurantNearbyAttractionListShimmer(),
       ];
     }
-    
+
     return [
       SliverVoucherCarousel(),
       SliverPopularDestinationList(),
-      SliverNearbyDestinationList(),
+      SliverRatingDestinationList(),
       SliverHotelNearbyDestinationList(),
       SliverRestaurantNearbyDestinationList(),
       SliverRestaurantNearbyAttractionList(),
     ];
   }
-  
+
   List<Widget> _buildSlivers(GetDestinationState state) {
     return [
       SliverPersistentHeader(

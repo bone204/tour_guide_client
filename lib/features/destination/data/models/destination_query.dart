@@ -1,9 +1,12 @@
+enum DestinationSortBy { rating, popularity }
+
 class DestinationQuery {
   final String? q;
   final bool? available;
   final String? province;
   final int offset;
   final int limit;
+  final DestinationSortBy? sortBy;
 
   DestinationQuery({
     this.q,
@@ -11,6 +14,7 @@ class DestinationQuery {
     this.province,
     this.offset = 0,
     this.limit = 10,
+    this.sortBy,
   });
 
   Map<String, dynamic> toJson() {
@@ -25,6 +29,9 @@ class DestinationQuery {
     if (province != null && province!.isNotEmpty) {
       params['province'] = province;
     }
+    if (sortBy != null) {
+      params['sortBy'] = sortBy!.name;
+    }
 
     return params;
   }
@@ -35,6 +42,7 @@ class DestinationQuery {
     String? province,
     int? offset,
     int? limit,
+    DestinationSortBy? sortBy,
   }) {
     return DestinationQuery(
       q: q ?? this.q,
@@ -42,6 +50,7 @@ class DestinationQuery {
       province: province ?? this.province,
       offset: offset ?? this.offset,
       limit: limit ?? this.limit,
+      sortBy: sortBy ?? this.sortBy,
     );
   }
 }

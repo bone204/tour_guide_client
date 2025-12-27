@@ -5,43 +5,43 @@ import 'package:tour_guide_app/features/destination/presentation/pages/destinati
 import 'package:tour_guide_app/features/home/presentation/widgets/destination_card.widget.dart';
 
 class SliverHotelNearbyDestinationList extends StatelessWidget {
-  final List<DestinationCard> fakeDestinations = [
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Grand Luxury Hotel",
-      rating: "4.8",
-      location: "Paris, France",
-      category: "5 sao",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Sakura Resort",
-      rating: "4.7",
-      location: "Tokyo, Japan",
-      category: "Resort",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Ocean View Hotel",
-      rating: "4.9",
-      location: "Quang Ninh, Vietnam",
-      category: "Ven biển",
-    ),
-    DestinationCard(
-      imageUrl:
-          "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
-      name: "Mountain Lodge",
-      rating: "4.6",
-      location: "Arizona, USA",
-      category: "Lodge",
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<DestinationCard> fakeDestinations = [
+      DestinationCard(
+        imageUrl:
+            "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
+        name: "Grand Luxury Hotel",
+        rating: "4.8",
+        location: "Paris, France",
+        category: AppLocalizations.of(context)!.hotel5Star,
+      ),
+      DestinationCard(
+        imageUrl:
+            "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
+        name: "Sakura Resort",
+        rating: "4.7",
+        location: "Tokyo, Japan",
+        category: AppLocalizations.of(context)!.hotelResort,
+      ),
+      DestinationCard(
+        imageUrl:
+            "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
+        name: "Ocean View Hotel",
+        rating: "4.9",
+        location: "Quang Ninh, Vietnam",
+        category: AppLocalizations.of(context)!.hotelSeaside,
+      ),
+      DestinationCard(
+        imageUrl:
+            "https://imgcp.aacdn.jp/img-a/1440/auto/global-aaj-front/article/2017/06/595048184fa06_5950474045019_1189093891.jpg",
+        name: "Mountain Lodge",
+        rating: "4.6",
+        location: "Arizona, USA",
+        category: AppLocalizations.of(context)!.hotelLodge,
+      ),
+    ];
+
     return SliverToBoxAdapter(
       child: Stack(
         clipBehavior: Clip.none,
@@ -72,7 +72,6 @@ class SliverHotelNearbyDestinationList extends StatelessWidget {
                     height: 100.h,
                   ),
                 ),
-
                 // 🔹 Nội dung
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +100,6 @@ class SliverHotelNearbyDestinationList extends StatelessWidget {
                         ],
                       ),
                     ),
-
                     // Carousel Destination Cards
                     Padding(
                       padding: EdgeInsets.only(left: 16.w),
@@ -124,7 +122,7 @@ class SliverHotelNearbyDestinationList extends StatelessWidget {
                                           DestinationDetailPage.withProvider(
                                             destinationId:
                                                 index +
-                                                1, // Temporary: use index as ID
+                                                1, 
                                           ),
                                 ),
                               );
