@@ -798,6 +798,10 @@
   "selectRentType": "Please select rental type in filter",
   "verified": "Verified",
   "unverified": "Unverified",
+  "paid": "Paid",
+  "completed": "Completed",
+  "cancelled": "Cancelled",
+  "billCode": "Bill Code"
   "verify": "Verify",
   "contractTitle": "Contract #{id}",
   "@contractTitle": {

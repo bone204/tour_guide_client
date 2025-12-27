@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common/widgets/picker/date_and_hour_picker.dart';
-import 'package:tour_guide_app/common/widgets/picker/hour_picker.dart';
 import 'package:tour_guide_app/common/widgets/slider/price_range_slider.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/selector/rent_type.widget.dart';
@@ -25,9 +24,6 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
 
   DateTime? startDateTime;
   DateTime? endDateTime;
-
-  TimeOfDay? startHour;
-  TimeOfDay? endHour;
 
   String? pickupLocation;
   List<Province> provinces = [];
@@ -75,30 +71,8 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
       vehicleType: 'bike',
       minPrice: selectedRange.start.toInt(),
       maxPrice: selectedRange.end.toInt(),
-      startDate:
-          selectedRentType == RentType.daily
-              ? startDateTime
-              : (startHour != null
-                  ? DateTime(
-                    DateTime.now().year,
-                    DateTime.now().month,
-                    DateTime.now().day,
-                    startHour!.hour,
-                    startHour!.minute,
-                  )
-                  : null),
-      endDate:
-          selectedRentType == RentType.daily
-              ? endDateTime
-              : (endHour != null
-                  ? DateTime(
-                    DateTime.now().year,
-                    DateTime.now().month,
-                    DateTime.now().day,
-                    endHour!.hour,
-                    endHour!.minute,
-                  )
-                  : null),
+      startDate: startDateTime,
+      endDate: endDateTime,
       province: selectedProvince?.name,
     );
 
@@ -236,71 +210,37 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
               ],
             ),
             SizedBox(height: 16.h),
-            if (selectedRentType == RentType.daily) ...[
-              DateHourPickerField(
-                label: AppLocalizations.of(context)!.startDate,
-                placeholder: AppLocalizations.of(context)!.selectDateAndHour,
-                initialDateTime: startDateTime,
-                onChanged: (dateTime) {
-                  setState(() => startDateTime = dateTime);
-                  debugPrint('Selected startDateTime: $dateTime');
-                },
-                prefixIcon: SvgPicture.asset(
-                  AppIcons.calendar,
-                  width: 20.w,
-                  height: 20.h,
-                  color: AppColors.primaryBlack,
-                ),
+            DateHourPickerField(
+              label: AppLocalizations.of(context)!.startDate,
+              placeholder: AppLocalizations.of(context)!.selectDateAndHour,
+              initialDateTime: startDateTime,
+              onChanged: (dateTime) {
+                setState(() => startDateTime = dateTime);
+                debugPrint('Selected startDateTime: $dateTime');
+              },
+              prefixIcon: SvgPicture.asset(
+                AppIcons.calendar,
+                width: 20.w,
+                height: 20.h,
+                color: AppColors.primaryBlack,
               ),
-              SizedBox(height: 16.h),
-              DateHourPickerField(
-                label: AppLocalizations.of(context)!.endDate,
-                placeholder: AppLocalizations.of(context)!.selectDateAndHour,
-                initialDateTime: endDateTime,
-                onChanged: (dateTime) {
-                  setState(() => endDateTime = dateTime);
-                  debugPrint('Selected endDateTime: $dateTime');
-                },
-                prefixIcon: SvgPicture.asset(
-                  AppIcons.calendar,
-                  width: 20.w,
-                  height: 20.h,
-                  color: AppColors.primaryBlack,
-                ),
+            ),
+            SizedBox(height: 16.h),
+            DateHourPickerField(
+              label: AppLocalizations.of(context)!.endDate,
+              placeholder: AppLocalizations.of(context)!.selectDateAndHour,
+              initialDateTime: endDateTime,
+              onChanged: (dateTime) {
+                setState(() => endDateTime = dateTime);
+                debugPrint('Selected endDateTime: $dateTime');
+              },
+              prefixIcon: SvgPicture.asset(
+                AppIcons.calendar,
+                width: 20.w,
+                height: 20.h,
+                color: AppColors.primaryBlack,
               ),
-            ] else if (selectedRentType == RentType.hourly) ...[
-              HourPickerField(
-                label: AppLocalizations.of(context)!.startHour,
-                placeholder: AppLocalizations.of(context)!.selectHour,
-                initialTime: startHour,
-                onChanged: (time) {
-                  setState(() => startHour = time);
-                  debugPrint('Selected startHour: $time');
-                },
-                prefixIcon: SvgPicture.asset(
-                  AppIcons.clock,
-                  width: 20.w,
-                  height: 20.h,
-                  color: AppColors.primaryBlack,
-                ),
-              ),
-              SizedBox(height: 16.h),
-              HourPickerField(
-                label: AppLocalizations.of(context)!.endHour,
-                placeholder: AppLocalizations.of(context)!.selectHour,
-                initialTime: endHour,
-                onChanged: (time) {
-                  setState(() => endHour = time);
-                  debugPrint('Selected endHour: $time');
-                },
-                prefixIcon: SvgPicture.asset(
-                  AppIcons.clock,
-                  width: 20.w,
-                  height: 20.h,
-                  color: AppColors.primaryBlack,
-                ),
-              ),
-            ],
+            ),
 
             SizedBox(height: 32.h),
             PrimaryButton(
