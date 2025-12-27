@@ -1,12 +1,9 @@
 import 'package:tour_guide_app/common_libs.dart';
 
 class AboutTab extends StatelessWidget {
-  final String name;
+  final String description;
 
-  const AboutTab({
-    super.key,
-    required this.name,
-  });
+  const AboutTab({super.key, required this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +11,16 @@ class AboutTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Description',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: AppColors.textPrimary,
-          ),
+          AppLocalizations.of(context)!.description,
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
         ),
         SizedBox(height: 12.h),
         Text(
-          'Discover the beauty of $name. This stunning destination offers breathtaking views, rich cultural experiences, and unforgettable memories. Perfect for travelers seeking adventure and relaxation.\n\nWhether you\'re exploring historic landmarks, enjoying local cuisine, or simply taking in the scenery, this location has something special for everyone.\n\nThe destination is known for its unique charm and exceptional experiences that leave lasting impressions on every visitor. From morning till evening, there are countless activities and sights to explore.',
+          description.isEmpty
+              ? AppLocalizations.of(context)!.noDescription
+              : description,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             height: 1.6,
             color: AppColors.textSubtitle,
@@ -32,4 +31,3 @@ class AboutTab extends StatelessWidget {
     );
   }
 }
-

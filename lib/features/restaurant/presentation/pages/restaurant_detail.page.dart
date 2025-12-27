@@ -63,7 +63,12 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
         children: [
           _buildHeaderImage(displayImageUrl),
           _buildTopAppBar(),
-          _buildDraggableBottomSheet(displayName, displayLocation, displayCuisine, displayImageUrl),
+          _buildDraggableBottomSheet(
+            displayName,
+            displayLocation,
+            displayCuisine,
+            displayImageUrl,
+          ),
         ],
       ),
     );
@@ -73,10 +78,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
     return Positioned.fill(
       child: Hero(
         tag: 'restaurant_${widget.name}',
-        child: Image.asset(
-          imageUrl,
-          fit: BoxFit.cover,
-        ),
+        child: Image.asset(imageUrl, fit: BoxFit.cover),
       ),
     );
   }
@@ -149,7 +151,12 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
     );
   }
 
-  Widget _buildDraggableBottomSheet(String name, String location, String cuisine, String imageUrl) {
+  Widget _buildDraggableBottomSheet(
+    String name,
+    String location,
+    String cuisine,
+    String imageUrl,
+  ) {
     return DraggableScrollableSheet(
       controller: _sheetController,
       initialChildSize: 0.5,
@@ -162,9 +169,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
         return Container(
           decoration: BoxDecoration(
             color: AppColors.primaryWhite,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(32.r),
-            ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(32.r)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.15),
@@ -231,16 +236,13 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 20.h),
-        Text(
-          name,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        Text(name, style: Theme.of(context).textTheme.titleLarge),
         SizedBox(height: 8.h),
         Text(
           cuisine,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: AppColors.textSubtitle,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(color: AppColors.textSubtitle),
         ),
         SizedBox(height: 12.h),
         Row(
@@ -262,9 +264,9 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
             Expanded(
               child: Text(
                 location,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(color: AppColors.textSubtitle),
               ),
             ),
           ],
@@ -309,7 +311,10 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
       builder: (context, child) {
         switch (_tabController.index) {
           case 0:
-            return AboutTab(name: name);
+            return AboutTab(
+              description:
+                  'Experience the finest cuisine at $name. Our chefs prepare every dish with passion and the freshest ingredients to bring you authentic flavors and culinary excellence.\n\nWhether you are here for a romantic dinner, a family gathering, or a business lunch, we promise an unforgettable dining experience with exceptional service and a cozy atmosphere.',
+            );
           case 1:
             return ReviewsTab();
           case 2:
@@ -317,10 +322,12 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
           case 3:
             return VideosTab();
           default:
-            return AboutTab(name: name);
+            return AboutTab(
+              description:
+                  'Experience the finest cuisine at $name. Our chefs prepare every dish with passion and the freshest ingredients to bring you authentic flavors and culinary excellence.\n\nWhether you are here for a romantic dinner, a family gathering, or a business lunch, we promise an unforgettable dining experience with exceptional service and a cozy atmosphere.',
+            );
         }
       },
     );
   }
 }
-

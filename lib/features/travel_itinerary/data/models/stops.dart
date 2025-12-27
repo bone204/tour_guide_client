@@ -33,11 +33,11 @@ class Stop {
 
   factory Stop.fromJson(Map<String, dynamic> json) {
     return Stop(
-      id: json['id'] ?? 0,
-      dayOrder: json['dayOrder'] ?? 0,
-      sequence: json['sequence'] ?? 0,
+      id: int.tryParse(json['id']?.toString() ?? '0') ?? 0,
+      dayOrder: int.tryParse(json['dayOrder']?.toString() ?? '0') ?? 0,
+      sequence: int.tryParse(json['sequence']?.toString() ?? '0') ?? 0,
       status: json['status'] ?? '',
-      travelPoints: json['travelPoints'] ?? 0,
+      travelPoints: int.tryParse(json['travelPoints']?.toString() ?? '0') ?? 0,
       startTime: json['startTime'] ?? '',
       endTime: json['endTime'] ?? '',
       notes: json['notes'] ?? '',

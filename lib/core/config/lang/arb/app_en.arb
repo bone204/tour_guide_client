@@ -85,6 +85,7 @@
   "topRatedDestinations": "Top rated destinations",
   "youHaveSeenAllAttractions": "You have seen all attractions",
   "noAttractionsFound": "No attractions found",
+  "loadMore": "Load more",
   "reason": "Reason: {reason}",
   "@reason": {
     "placeholders": {
@@ -797,6 +798,7 @@
       }
     }
   },
+  "noDescription": "No description available",
   "comments": "Comments",
   "vehicleDetail": "Vehicle Detail",
   "flagUS": "🇺🇸",
@@ -1111,6 +1113,8 @@
   "voucher50K": "Voucher 50K",
   "voucher20Percent": "Voucher 20%",
   "voucherBuy1Get1": "Voucher Buy 1 Get 1",
+  "specialOfferForYou": "Special offer for you",
+  "useNowToGetOffer": "Use now to get offer",
   "hotel5Star": "5 Star",
   "hotelResort": "Resort",
   "hotelSeaside": "Seaside",

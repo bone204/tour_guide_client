@@ -1,11 +1,21 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/destination/presentation/widgets/comment/destination_comment.widget.dart';
 
 class ReviewsTab extends StatelessWidget {
-  const ReviewsTab({super.key});
+  final int? destinationId;
+
+  const ReviewsTab({super.key, this.destinationId});
 
   @override
   Widget build(BuildContext context) {
+    if (destinationId != null) {
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        child: DestinationCommentWidget(destinationId: destinationId!),
+      );
+    }
+    // Fallback Mock Data
     return Column(
       children: [
         ...List.generate(4, (index) {
@@ -80,8 +90,8 @@ class ReviewsTab extends StatelessWidget {
                   child: Text(
                     names[index][0],
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: AppColors.primaryWhite,
-                        ),
+                      color: AppColors.primaryWhite,
+                    ),
                   ),
                 ),
               ),
@@ -93,15 +103,15 @@ class ReviewsTab extends StatelessWidget {
                     Text(
                       names[index],
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: AppColors.textPrimary,
-                          ),
+                        color: AppColors.textPrimary,
+                      ),
                     ),
                     SizedBox(height: 2.h),
                     Text(
                       dates[index],
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                        color: AppColors.textSubtitle,
+                      ),
                     ),
                   ],
                 ),
@@ -134,17 +144,17 @@ class ReviewsTab extends StatelessWidget {
                     Text(
                       ratings[index],
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: AppColors.textPrimary,
-                          ),
+                        color: AppColors.textPrimary,
+                      ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          
+
           SizedBox(height: 12.h),
-          
+
           // Review Text
           Text(
             reviews[index],
@@ -157,6 +167,4 @@ class ReviewsTab extends StatelessWidget {
       ),
     );
   }
-
 }
-

@@ -147,6 +147,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noAttractionsFound => 'No attractions found';
 
   @override
+  String get loadMore => 'Load more';
+
+  @override
   String reason(String reason) {
     return 'Reason: $reason';
   }
@@ -1164,6 +1167,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get noDescription => 'No description available';
+
+  @override
   String get comments => 'Comments';
 
   @override
@@ -1696,6 +1702,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voucherBuy1Get1 => 'Voucher Buy 1 Get 1';
+
+  @override
+  String get specialOfferForYou => 'Special offer for you';
+
+  @override
+  String get useNowToGetOffer => 'Use now to get offer';
 
   @override
   String get hotel5Star => '5 Star';

@@ -69,7 +69,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] ?? 0,
+      id: int.tryParse(json['id']?.toString() ?? '0') ?? 0,
       username: json['username'] ?? '',
       name: json['name'],
       email: json['email'],
@@ -91,21 +91,27 @@ class User {
           (json['hobbies'] as List?)?.map((e) => e.toString()).toList() ?? [],
       favoriteDestinationIds:
           (json['favoriteDestinationIds'] as List?)
-              ?.map((e) => e as int)
+              ?.map((e) => int.tryParse(e.toString()) ?? 0)
               .toList() ??
           [],
       favoriteEateries:
-          (json['favoriteEateries'] as List?)?.map((e) => e as int).toList() ??
+          (json['favoriteEateries'] as List?)
+              ?.map((e) => int.tryParse(e.toString()) ?? 0)
+              .toList() ??
           [],
       cooperationIds:
-          (json['cooperationIds'] as List?)?.map((e) => e as int).toList() ??
+          (json['cooperationIds'] as List?)
+              ?.map((e) => int.tryParse(e.toString()) ?? 0)
+              .toList() ??
           [],
       avatarUrl: json['avatarUrl'] ?? '',
-      travelPoint: json['travelPoint'] ?? 0,
-      travelExp: json['travelExp'] ?? 0,
-      travelTrip: json['travelTrip'] ?? 0,
-      feedbackTimes: json['feedbackTimes'] ?? 0,
-      dayParticipation: json['dayParticipation'] ?? 0,
+      travelPoint: int.tryParse(json['travelPoint']?.toString() ?? '0') ?? 0,
+      travelExp: int.tryParse(json['travelExp']?.toString() ?? '0') ?? 0,
+      travelTrip: int.tryParse(json['travelTrip']?.toString() ?? '0') ?? 0,
+      feedbackTimes:
+          int.tryParse(json['feedbackTimes']?.toString() ?? '0') ?? 0,
+      dayParticipation:
+          int.tryParse(json['dayParticipation']?.toString() ?? '0') ?? 0,
       userTier: json['userTier'] ?? '',
       role: json['role'] ?? '',
       createdAt: json['createdAt'] ?? '',

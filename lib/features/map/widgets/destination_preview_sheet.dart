@@ -1,10 +1,7 @@
 part of map_page;
 
 class _DestinationPreviewSheet extends StatelessWidget {
-  const _DestinationPreviewSheet({
-    required this.destination,
-    this.onNavigate,
-  });
+  const _DestinationPreviewSheet({required this.destination, this.onNavigate});
 
   final Destination destination;
   final VoidCallback? onNavigate;
@@ -85,25 +82,29 @@ class _DestinationPreviewSheet extends StatelessWidget {
                                     Container(
                                       padding: EdgeInsets.all(6.r),
                                       decoration: BoxDecoration(
-                                        color: destination.isFromDatabase
-                                            ? AppColors.primaryBlue.withOpacity(0.18)
-                                            : AppColors.primaryGreen.withOpacity(0.18),
+                                        color:
+                                            destination.isFromDatabase
+                                                ? AppColors.primaryBlue
+                                                    .withOpacity(0.18)
+                                                : AppColors.primaryGreen
+                                                    .withOpacity(0.18),
                                         borderRadius: BorderRadius.circular(
                                           8.r,
                                         ),
                                       ),
-                                      child: destination.isFromDatabase
-                                          ? SvgPicture.asset(
-                                              AppIcons.location,
-                                              width: 16.w,
-                                              height: 16.h,
-                                              color: Colors.white,
-                                            )
-                                          : Icon(
-                                              Icons.location_on_rounded,
-                                              size: 16.sp,
-                                              color: Colors.white,
-                                            ),
+                                      child:
+                                          destination.isFromDatabase
+                                              ? SvgPicture.asset(
+                                                AppIcons.location,
+                                                width: 16.w,
+                                                height: 16.h,
+                                                color: Colors.white,
+                                              )
+                                              : Icon(
+                                                Icons.location_on_rounded,
+                                                size: 16.sp,
+                                                color: Colors.white,
+                                              ),
                                     ),
                                     SizedBox(width: 8.w),
                                     Expanded(
@@ -190,23 +191,25 @@ class _DestinationPreviewSheet extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(6.r),
               decoration: BoxDecoration(
-                color: destination.isFromDatabase
-                    ? AppColors.primaryBlue.withOpacity(0.1)
-                    : AppColors.primaryGreen.withOpacity(0.1),
+                color:
+                    destination.isFromDatabase
+                        ? AppColors.primaryBlue.withOpacity(0.1)
+                        : AppColors.primaryGreen.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: destination.isFromDatabase
-                  ? SvgPicture.asset(
-                      AppIcons.location,
-                      width: 16.w,
-                      height: 16.h,
-                      color: AppColors.primaryBlue,
-                    )
-                  : Icon(
-                      Icons.location_on_rounded,
-                      size: 16.sp,
-                      color: AppColors.primaryGreen,
-                    ),
+              child:
+                  destination.isFromDatabase
+                      ? SvgPicture.asset(
+                        AppIcons.location,
+                        width: 16.w,
+                        height: 16.h,
+                        color: AppColors.primaryBlue,
+                      )
+                      : Icon(
+                        Icons.location_on_rounded,
+                        size: 16.sp,
+                        color: AppColors.primaryGreen,
+                      ),
             ),
             SizedBox(width: 8.w),
             Expanded(
@@ -306,16 +309,36 @@ class _DestinationPreviewSheet extends StatelessWidget {
       builder: (context, child) {
         switch (tabController.index) {
           case 0:
-            return AboutTab(name: destination.name);
+            final isVietnamese =
+                Localizations.localeOf(context).languageCode == 'vi';
+            final description =
+                isVietnamese
+                    ? (destination.descriptionViet ??
+                        destination.descriptionEng ??
+                        '')
+                    : (destination.descriptionEng ??
+                        destination.descriptionViet ??
+                        '');
+            return AboutTab(description: description);
           case 1:
-            return const ReviewsTab();
+            return ReviewsTab(destinationId: destination.id);
           case 2:
             return PhotosTab(
               photos: destination.photos,
               defaultImage: AppImage.defaultDestination,
             );
           default:
-            return AboutTab(name: destination.name);
+            final isVietnamese =
+                Localizations.localeOf(context).languageCode == 'vi';
+            final description =
+                isVietnamese
+                    ? (destination.descriptionViet ??
+                        destination.descriptionEng ??
+                        '')
+                    : (destination.descriptionEng ??
+                        destination.descriptionViet ??
+                        '');
+            return AboutTab(description: description);
         }
       },
     );

@@ -222,7 +222,8 @@
   "train": "Đặt vé Tàu",
 
   "error": "Lỗi",
-
+  
+  "loadMore": "Tải thêm",
   "retry": "Thử lại",
 
   "close": "Đóng",
@@ -834,6 +835,7 @@
       }
     }
   },
+  "noDescription": "Chưa có mô tả",
   "vehicleDetail": "Chi tiết xe",
   "flagUS": "🇺🇸",
   "flagVN": "🇻🇳",
@@ -847,19 +849,6 @@
       }
     }
   },
-  "noComments": "Chưa có bình luận nào",
-  "addComment": "Thêm bình luận...",
-  "profileUpdatedSuccessfully": "Cập nhật hồ sơ thành công",
-  "unsavedChangesMessage": "Bạn có thay đổi chưa lưu. Bạn có muốn hủy chúng?",
-  "update": "Cập nhật",
-  "noChangesToUpdate": "Không có thay đổi nào để cập nhật",
-  "images": "Hình ảnh",
-  "idCard": "Thẻ căn cước",
-  "citizenFront": "Mặt trước CCCD",
-  "citizenBack": "Mặt sau CCCD",
-  "dateOfBirth": "Ngày sinh",
-  "gender": "Giới tính",
-  "nationality": "Quốc tịch",
   "unknown": "Không rõ"
   ,
   "drive": "Lái xe",
@@ -1137,6 +1126,8 @@
   "voucher50K": "Mã giảm 50K",
   "voucher20Percent": "Mã giảm 20%",
   "voucherBuy1Get1": "Mua 1 tặng 1",
+  "specialOfferForYou": "Ưu đãi đặc biệt cho bạn",
+  "useNowToGetOffer": "Sử dụng ngay để nhận ưu đãi",
   "hotel5Star": "5 sao",
   "hotelResort": "Khu nghỉ dưỡng",
   "hotelSeaside": "Ven biển",
@@ -1335,5 +1326,7 @@
   "profanity": "Phát hiện ngôn từ tục tĩu",
   "sexual_content": "Nội dung khiêu dâm",
   "harassment": "Quấy rối",
-  "hate_speech": "Ngôn từ thù địch"
+  "hate_speech": "Ngôn từ thù địch",
+  "addComment": "Thêm bình luận...",
+  "noComments": "Chưa có bình luận nào"
 }

@@ -17,8 +17,8 @@ class Itinerary {
   final String createdAt;
   final String updatedAt;
   final List<Stop> stops;
-  final Itinerary? clonedFromRoute; // New field
-  final int numberOfDays; // Computed
+  final Itinerary? clonedFromRoute; 
+  final int numberOfDays; 
 
   const Itinerary({
     required this.id,
@@ -51,16 +51,18 @@ class Itinerary {
     }
 
     return Itinerary(
-      id: json['id'] ?? 0,
+      id: int.tryParse(json['id']?.toString() ?? '0') ?? 0,
       user: User.fromJson(json['user'] ?? {}),
       name: json['name'] ?? '',
       province: json['province'] ?? '',
       startDate: json['startDate'] ?? '',
       endDate: json['endDate'] ?? '',
       status: json['status'] ?? '',
-      totalTravelPoints: json['totalTravelPoints'] ?? 0,
-      averageRating: (json['averageRating'] ?? 0).toDouble(),
-      likeCount: json['favouriteTimes'] ?? 0,
+      totalTravelPoints:
+          int.tryParse(json['totalTravelPoints']?.toString() ?? '0') ?? 0,
+      averageRating:
+          double.tryParse(json['averageRating']?.toString() ?? '0') ?? 0.0,
+      likeCount: int.tryParse(json['favouriteTimes']?.toString() ?? '0') ?? 0,
       isPublic: json['isPublic'] ?? false,
       isEdited: json['isEdited'] ?? false,
       createdAt: json['createdAt'] ?? '',

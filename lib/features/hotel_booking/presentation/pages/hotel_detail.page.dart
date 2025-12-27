@@ -63,7 +63,12 @@ class _HotelDetailPageState extends State<HotelDetailPage>
         children: [
           _buildHeaderImage(displayImageUrl),
           _buildTopAppBar(),
-          _buildDraggableBottomSheet(displayName, displayLocation, displayType, displayImageUrl),
+          _buildDraggableBottomSheet(
+            displayName,
+            displayLocation,
+            displayType,
+            displayImageUrl,
+          ),
         ],
       ),
     );
@@ -73,10 +78,7 @@ class _HotelDetailPageState extends State<HotelDetailPage>
     return Positioned.fill(
       child: Hero(
         tag: 'hotel_${widget.name}',
-        child: Image.asset(
-          imageUrl,
-          fit: BoxFit.cover,
-        ),
+        child: Image.asset(imageUrl, fit: BoxFit.cover),
       ),
     );
   }
@@ -149,7 +151,12 @@ class _HotelDetailPageState extends State<HotelDetailPage>
     );
   }
 
-  Widget _buildDraggableBottomSheet(String name, String location, String type, String imageUrl) {
+  Widget _buildDraggableBottomSheet(
+    String name,
+    String location,
+    String type,
+    String imageUrl,
+  ) {
     return DraggableScrollableSheet(
       controller: _sheetController,
       initialChildSize: 0.5,
@@ -162,9 +169,7 @@ class _HotelDetailPageState extends State<HotelDetailPage>
         return Container(
           decoration: BoxDecoration(
             color: AppColors.primaryWhite,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(32.r),
-            ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(32.r)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.15),
@@ -231,16 +236,13 @@ class _HotelDetailPageState extends State<HotelDetailPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 20.h),
-        Text(
-          name,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        Text(name, style: Theme.of(context).textTheme.titleLarge),
         SizedBox(height: 8.h),
         Text(
           type,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: AppColors.textSubtitle,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(color: AppColors.textSubtitle),
         ),
         SizedBox(height: 12.h),
         Row(
@@ -265,9 +267,9 @@ class _HotelDetailPageState extends State<HotelDetailPage>
             Expanded(
               child: Text(
                 location,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: AppColors.textSubtitle,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(color: AppColors.textSubtitle),
               ),
             ),
           ],
@@ -312,7 +314,10 @@ class _HotelDetailPageState extends State<HotelDetailPage>
       builder: (context, child) {
         switch (_tabController.index) {
           case 0:
-            return AboutTab(name: name);
+            return AboutTab(
+              description:
+                  'Discover the beauty of $name. This stunning destination offers breathtaking views, rich cultural experiences, and unforgettable memories. Perfect for travelers seeking adventure and relaxation.\n\nWhether you\'re exploring historic landmarks, enjoying local cuisine, or simply taking in the scenery, this location has something special for everyone.\n\nThe destination is known for its unique charm and exceptional experiences that leave lasting impressions on every visitor. From morning till evening, there are countless activities and sights to explore.',
+            );
           case 1:
             return const ReviewsTab();
           case 2:
@@ -320,10 +325,12 @@ class _HotelDetailPageState extends State<HotelDetailPage>
           case 3:
             return VideosTab();
           default:
-            return AboutTab(name: name);
+            return AboutTab(
+              description:
+                  'Discover the beauty of $name. This stunning destination offers breathtaking views, rich cultural experiences, and unforgettable memories. Perfect for travelers seeking adventure and relaxation.\n\nWhether you\'re exploring historic landmarks, enjoying local cuisine, or simply taking in the scenery, this location has something special for everyone.\n\nThe destination is known for its unique charm and exceptional experiences that leave lasting impressions on every visitor. From morning till evening, there are countless activities and sights to explore.',
+            );
         }
       },
     );
   }
 }
-

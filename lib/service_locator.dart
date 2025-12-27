@@ -43,6 +43,7 @@ import 'package:tour_guide_app/core/services/feedback/domain/usecases/get_feedba
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/check_content.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/repositories/feedback_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_cubit.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/comment/destination_comment_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/use_itinerary.dart'; // Add this
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/use_itinerary/use_itinerary_cubit.dart'; // Add this
 
@@ -200,7 +201,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<PhoneStartUseCase>(PhoneStartUseCase());
   sl.registerSingleton<VerifyPhoneUseCase>(VerifyPhoneUseCase());
   sl.registerSingleton<UpdateHobbiesUseCase>(UpdateHobbiesUseCase());
-  sl.registerSingleton<GetRecommendDestinationsUseCase>(GetRecommendDestinationsUseCase());
+  sl.registerSingleton<GetRecommendDestinationsUseCase>(
+    GetRecommendDestinationsUseCase(),
+  );
 
   // My Vehicle
   sl.registerSingleton<AddContractUseCase>(AddContractUseCase());
@@ -260,6 +263,13 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<VerifyPhoneCubit>(() => VerifyPhoneCubit());
   sl.registerFactory<CommentCubit>(
     () => CommentCubit(
+      getFeedbackUseCase: sl(),
+      createFeedbackUseCase: sl(),
+      checkContentUseCase: sl(),
+    ),
+  );
+  sl.registerFactory<DestinationCommentCubit>(
+    () => DestinationCommentCubit(
       getFeedbackUseCase: sl(),
       createFeedbackUseCase: sl(),
       checkContentUseCase: sl(),

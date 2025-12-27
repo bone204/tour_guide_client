@@ -147,6 +147,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get noAttractionsFound => 'Không tìm thấy điểm du lịch';
 
   @override
+  String get loadMore => 'Tải thêm';
+
+  @override
   String reason(String reason) {
     return 'Lý do: $reason';
   }
@@ -1164,6 +1167,9 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get noDescription => 'Chưa có mô tả';
+
+  @override
   String get comments => 'Bình luận';
 
   @override
@@ -1238,37 +1244,37 @@ class AppLocalizationsVi extends AppLocalizations {
   String get register => 'Đăng ký';
 
   @override
-  String get profileUpdatedSuccessfully => 'Cập nhật hồ sơ thành công';
+  String get profileUpdatedSuccessfully => 'Profile updated successfully';
 
   @override
-  String get unsavedChangesMessage => 'Bạn có thay đổi chưa lưu. Bạn có muốn hủy chúng?';
+  String get unsavedChangesMessage => 'You have unsaved changes. Discard them?';
 
   @override
-  String get update => 'Cập nhật';
+  String get update => 'Update';
 
   @override
-  String get noChangesToUpdate => 'Không có thay đổi nào để cập nhật';
+  String get noChangesToUpdate => 'No changes to update';
 
   @override
-  String get images => 'Hình ảnh';
+  String get images => 'Images';
 
   @override
-  String get idCard => 'Thẻ căn cước';
+  String get idCard => 'ID Card';
 
   @override
-  String get citizenFront => 'Mặt trước CCCD';
+  String get citizenFront => 'Citizen Front';
 
   @override
-  String get citizenBack => 'Mặt sau CCCD';
+  String get citizenBack => 'Citizen Back';
 
   @override
-  String get dateOfBirth => 'Ngày sinh';
+  String get dateOfBirth => 'Date of Birth';
 
   @override
-  String get gender => 'Giới tính';
+  String get gender => 'Gender';
 
   @override
-  String get nationality => 'Quốc tịch';
+  String get nationality => 'Nationality';
 
   @override
   String get unknown => 'Không rõ';
@@ -1702,6 +1708,12 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get voucherBuy1Get1 => 'Mua 1 tặng 1';
+
+  @override
+  String get specialOfferForYou => 'Ưu đãi đặc biệt cho bạn';
+
+  @override
+  String get useNowToGetOffer => 'Sử dụng ngay để nhận ưu đãi';
 
   @override
   String get hotel5Star => '5 sao';

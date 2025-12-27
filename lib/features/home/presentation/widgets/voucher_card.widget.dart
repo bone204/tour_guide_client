@@ -32,11 +32,18 @@ class VoucherCard extends StatelessWidget {
               Expanded(
                 flex: 6,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 12.h,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(Icons.card_giftcard, color: AppColors.primaryBlue, size: 36.sp),
+                      Icon(
+                        Icons.card_giftcard,
+                        color: AppColors.primaryBlue,
+                        size: 36.sp,
+                      ),
                       SizedBox(width: 12.w),
                       Expanded(
                         child: Column(
@@ -49,14 +56,13 @@ class VoucherCard extends StatelessWidget {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              "Ưu đãi đặc biệt cho bạn",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    color: AppColors.textSubtitle,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                              AppLocalizations.of(context)!.specialOfferForYou,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.copyWith(
+                                color: AppColors.textSubtitle,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),
@@ -81,13 +87,15 @@ class VoucherCard extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 8.h,
+                  ),
                   child: Row(
                     children: [
                       Expanded(
                         child: Text(
-                          'Sử dụng ngay để nhận ưu đãi',
+                          AppLocalizations.of(context)!.useNowToGetOffer,
                           style: Theme.of(context).textTheme.displayMedium,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -99,7 +107,7 @@ class VoucherCard extends StatelessWidget {
                           width: 14.w,
                           height: 14.h,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

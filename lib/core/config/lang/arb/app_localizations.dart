@@ -371,6 +371,12 @@ abstract class AppLocalizations {
   /// **'No attractions found'**
   String get noAttractionsFound;
 
+  /// No description provided for @loadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get loadMore;
+
   /// No description provided for @reason.
   ///
   /// In en, this message translates to:
@@ -2369,6 +2375,12 @@ abstract class AppLocalizations {
   /// **'Vehicle #{licensePlate}'**
   String vehicleTitle(String licensePlate);
 
+  /// No description provided for @noDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'No description available'**
+  String get noDescription;
+
   /// No description provided for @comments.
   ///
   /// In en, this message translates to:
@@ -3340,6 +3352,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Voucher Buy 1 Get 1'**
   String get voucherBuy1Get1;
+
+  /// No description provided for @specialOfferForYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Special offer for you'**
+  String get specialOfferForYou;
+
+  /// No description provided for @useNowToGetOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Use now to get offer'**
+  String get useNowToGetOffer;
 
   /// No description provided for @hotel5Star.
   ///

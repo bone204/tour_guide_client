@@ -447,16 +447,36 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
       builder: (context, child) {
         switch (_tabController.index) {
           case 0:
-            return AboutTab(name: destination.name);
+            final isVietnamese =
+                Localizations.localeOf(context).languageCode == 'vi';
+            final description =
+                isVietnamese
+                    ? (destination.descriptionViet ??
+                        destination.descriptionEng ??
+                        '')
+                    : (destination.descriptionEng ??
+                        destination.descriptionViet ??
+                        '');
+            return AboutTab(description: description);
           case 1:
-            return ReviewsTab();
+            return ReviewsTab(destinationId: destination.id);
           case 2:
             return PhotosTab(
               photos: destination.photos,
               defaultImage: AppImage.defaultDestination,
             );
           default:
-            return AboutTab(name: destination.name);
+            final isVietnamese =
+                Localizations.localeOf(context).languageCode == 'vi';
+            final description =
+                isVietnamese
+                    ? (destination.descriptionViet ??
+                        destination.descriptionEng ??
+                        '')
+                    : (destination.descriptionEng ??
+                        destination.descriptionViet ??
+                        '');
+            return AboutTab(description: description);
         }
       },
     );
