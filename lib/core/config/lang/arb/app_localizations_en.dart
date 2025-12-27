@@ -1187,6 +1187,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reply => 'Reply';
 
   @override
+  String get useItinerary => 'Use Itinerary';
+
+  @override
+  String get confirmUseItinerary => 'Are you sure you want to use this itinerary?';
+
+  @override
+  String get useItinerarySuccess => 'Itinerary used successfully!';
+
+  @override
   String get itineraryPublicizedSuccess => 'Itinerary publicized successfully!';
 
   @override

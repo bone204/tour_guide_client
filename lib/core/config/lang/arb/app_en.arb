@@ -804,6 +804,11 @@
   "like": "Like",
   "liked": "Liked",
   "reply": "Reply",
+  "useItinerary": "Use Itinerary",
+  "confirmUseItinerary": "Are you sure you want to use this itinerary?",
+  "useItinerarySuccess": "Itinerary used successfully!",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
   "itineraryPublicizedSuccess": "Itinerary publicized successfully!",
   "@searchResultsCount": {
     "placeholders": {

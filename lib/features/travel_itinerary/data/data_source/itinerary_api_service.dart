@@ -67,6 +67,8 @@ abstract class ItineraryApiService {
   );
   Future<Either<Failure, Itinerary>> publicizeItinerary(int itineraryId);
 
+  Future<Either<Failure, SuccessResponse>> useItinerary(int itineraryId);
+
   Future<Either<Failure, SuccessResponse>> likeItinerary(int itineraryId);
 
   Future<Either<Failure, SuccessResponse>> unlikeItinerary(int itineraryId);
@@ -438,6 +440,28 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
       );
       final itinerary = Itinerary.fromJson(response.data);
       return Right(itinerary);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> useItinerary(
+    int itineraryId,
+  ) async {
+    try {
+      final response = await sl<DioClient>().post(
+        '${ApiUrls.itinerary}/$itineraryId/use',
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

@@ -41,6 +41,8 @@ import 'package:tour_guide_app/core/services/feedback/domain/usecases/create_fee
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/get_feedback.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/repositories/feedback_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/use_itinerary.dart'; // Add this
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/use_itinerary/use_itinerary_cubit.dart'; // Add this
 
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/like_itinerary_usecase.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/unlike_itinerary_usecase.dart';
@@ -167,11 +169,16 @@ void setUpServiceLocator(SharedPreferences prefs) {
     PublicizeItineraryUseCase(sl()),
   );
 
+  sl.registerSingleton<UseItineraryUseCase>(UseItineraryUseCase()); // Add this
+
   // Like Itinerary
   sl.registerSingleton<LikeItineraryUseCase>(LikeItineraryUseCase());
   sl.registerSingleton<UnlikeItineraryUseCase>(UnlikeItineraryUseCase());
 
   sl.registerFactory<LikeItineraryCubit>(() => LikeItineraryCubit());
+  sl.registerFactory<UseItineraryCubit>(
+    () => UseItineraryCubit(sl()),
+  ); // Add this
   sl.registerFactory<PublicizeItineraryCubit>(
     () => PublicizeItineraryCubit(sl()),
   );

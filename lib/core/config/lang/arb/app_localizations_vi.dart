@@ -1193,6 +1193,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get reply => 'Phản hồi';
 
   @override
+  String get useItinerary => 'Sử dụng';
+
+  @override
+  String get confirmUseItinerary => 'Bạn có chắc chắn muốn sử dụng lộ trình này không?';
+
+  @override
+  String get useItinerarySuccess => 'Sử dụng lộ trình thành công!';
+
+  @override
   String get itineraryPublicizedSuccess => 'Lộ trình đã được công khai thành công!';
 
   @override

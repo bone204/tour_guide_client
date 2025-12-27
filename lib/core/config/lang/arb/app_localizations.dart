@@ -2411,6 +2411,24 @@ abstract class AppLocalizations {
   /// **'Reply'**
   String get reply;
 
+  /// No description provided for @useItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Itinerary'**
+  String get useItinerary;
+
+  /// No description provided for @confirmUseItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to use this itinerary?'**
+  String get confirmUseItinerary;
+
+  /// No description provided for @useItinerarySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary used successfully!'**
+  String get useItinerarySuccess;
+
   /// No description provided for @itineraryPublicizedSuccess.
   ///
   /// In en, this message translates to:
