@@ -127,6 +127,8 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/data/repository/ren
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/repository/rental_bill_repository.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get_my_rental_bills_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get_rental_bill_detail_use_case.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/update_rental_bill_use_case.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/pay_rental_bill_use_case.dart';
 
 import 'package:tour_guide_app/features/voucher/data/data_source/voucher_api_service.dart';
 import 'package:tour_guide_app/features/voucher/data/repository/voucher_repository_impl.dart';
@@ -264,6 +266,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetRentalBillDetailUseCase>(
     GetRentalBillDetailUseCase(),
   );
+  sl.registerSingleton<UpdateRentalBillUseCase>(UpdateRentalBillUseCase());
+  sl.registerSingleton<PayRentalBillUseCase>(PayRentalBillUseCase());
 
   // Cubits
   sl.registerFactory<DeleteStopCubit>(() => DeleteStopCubit(sl()));

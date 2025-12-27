@@ -11,7 +11,7 @@ enum RentalBillStatus {
 
 enum RentalBillType { hourly, daily }
 
-enum PaymentMethod { wallet, momo, qrCode }
+enum PaymentMethod { momo, qrCode }
 
 enum RentalProgressStatus {
   pending,
@@ -235,8 +235,6 @@ class RentalBill {
 
   static PaymentMethod? _parsePaymentMethod(String? value) {
     switch (value) {
-      case 'wallet':
-        return PaymentMethod.wallet;
       case 'momo':
         return PaymentMethod.momo;
       case 'qr_code':
@@ -249,8 +247,6 @@ class RentalBill {
   static String? _paymentMethodToString(PaymentMethod? method) {
     if (method == null) return null;
     switch (method) {
-      case PaymentMethod.wallet:
-        return 'wallet';
       case PaymentMethod.momo:
         return 'momo';
       case PaymentMethod.qrCode:

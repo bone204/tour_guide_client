@@ -864,6 +864,10 @@
   "searchProvinceHint": "Tìm kiếm tỉnh/thành phố...",
   "verified": "Đã xác thực",
   "unverified": "Chưa xác thực",
+  "selectVoucher": "Chọn Voucher",
+  "finalPrice": "Thành tiền",
+  "voucherDiscount": "Ưu đãi Voucher",
+  "pointDiscount": "Ưu đãi điểm",
   "verify": "Xác thực",
   "contractTitle": "Hợp đồng #{id}",
   "@contractTitle": {
@@ -1411,5 +1415,6 @@
   "gender": "Giới tính",
   "nationality": "Quốc tịch",
   "enableRental": "Mở lại cho thuê",
-  "disableRental": "Tạm ngưng cho thuê"
+  "disableRental": "Tạm ngưng cho thuê",
+  "updateSuccess": "Cập nhật thành công"
 }

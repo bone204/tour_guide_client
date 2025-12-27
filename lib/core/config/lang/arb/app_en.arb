@@ -798,6 +798,10 @@
   "selectRentType": "Please select rental type in filter",
   "verified": "Verified",
   "unverified": "Unverified",
+  "selectVoucher": "Select Voucher",
+  "finalPrice": "Final Price",
+  "voucherDiscount": "Voucher Discount",
+  "pointDiscount": "Points Discount",
   "paid": "Paid",
   "completed": "Completed",
   "cancelled": "Cancelled",
@@ -1403,5 +1407,6 @@
   "priceFor3Days": "Price for 3 Days",
   "priceFor5Days": "Price for 5 Days",
   "enableRental": "Enable Rental",
-  "disableRental": "Disable Rental"
+  "disableRental": "Disable Rental",
+  "updateSuccess": "Update successful"
 }

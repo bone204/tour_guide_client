@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/widgets/contact_info_form.dart';
 import 'package:tour_guide_app/core/utils/date_formatter.dart';
 import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
@@ -10,6 +11,15 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/g
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_rental_bill_detail/rental_bill_detail_state.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/widgets/rental_bill_detail_shimmer.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
+import 'package:dropdown_button2/dropdown_button2.dart'; // Add this
+import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_vouchers_cubit.dart'; // Add this
+import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_vouchers_state.dart'; // Add this
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart'; // Add this
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_state.dart'; // Add this
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_payment/rental_payment_cubit.dart'; // Add this
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_payment/rental_payment_state.dart'; // Add this
+import 'package:tour_guide_app/features/voucher/data/models/voucher.dart'; // Add this
+
 import 'package:tour_guide_app/service_locator.dart';
 
 class RentalBillDetailPage extends StatelessWidget {
@@ -19,58 +29,81 @@ class RentalBillDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<GetRentalBillDetailCubit>()..getBillDetail(id),
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        appBar: CustomAppBar(
-          title: AppLocalizations.of(context)!.rentalBillDetail,
-          showBackButton: true,
-          onBackPressed: () => Navigator.pop(context),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create:
+              (context) => sl<GetRentalBillDetailCubit>()..getBillDetail(id),
         ),
-        body: BlocBuilder<GetRentalBillDetailCubit, RentalBillDetailState>(
-          builder: (context, state) {
-            if (state.status == RentalBillDetailInitStatus.loading) {
-              return const RentalBillDetailShimmer();
-            } else if (state.status == RentalBillDetailInitStatus.failure) {
-              return Center(child: Text(state.errorMessage ?? 'Error'));
-            } else if (state.status == RentalBillDetailInitStatus.success &&
-                state.bill != null) {
-              final bill = state.bill!;
-              // Assume single vehicle flow as per user request
-              final RentalVehicle? vehicle =
-                  bill.details.isNotEmpty ? bill.details.first.vehicle : null;
-              final String licensePlate =
-                  bill.details.isNotEmpty
-                      ? bill.details.first.licensePlate
-                      : '';
-
-              return SingleChildScrollView(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  children: [
-                    // 1. Vehicle Info Card
-                    _buildVehicleInfoCard(context, vehicle, licensePlate),
-                    SizedBox(height: 16.h),
-
-                    // 2. Rental Details (Status, Dates, etc.)
-                    _buildRentalDetailsCard(context, bill),
-                    SizedBox(height: 16.h),
-
-                    // 3. Payment Details
-                    _buildPaymentDetailsCard(context, bill),
-                    SizedBox(height: 16.h),
-
-                    // 4. Contact/Notes if any
-                    if ((bill.notes != null && bill.notes!.isNotEmpty) ||
-                        bill.contactName != null)
-                      _buildAdditionalInfoCard(context, bill),
-                  ],
-                ),
-              );
-            }
-            return const SizedBox.shrink();
-          },
+        BlocProvider(
+          create: (context) => sl<GetVouchersCubit>()..getVouchers(),
+        ),
+        BlocProvider(
+          create: (context) => sl<GetMyProfileCubit>()..getMyProfile(),
+        ),
+        BlocProvider(
+          create:
+              (context) => RentalPaymentCubit(updateRentalBillUseCase: sl()),
+        ),
+      ],
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          appBar: CustomAppBar(
+            title: AppLocalizations.of(context)!.rentalBillDetail,
+            showBackButton: true,
+            onBackPressed: () => Navigator.pop(context),
+          ),
+          body: BlocConsumer<GetRentalBillDetailCubit, RentalBillDetailState>(
+            listener: (context, state) {
+              if (state.status == RentalBillDetailInitStatus.success &&
+                  state.bill != null) {
+                context.read<RentalPaymentCubit>().init(state.bill!);
+              }
+            },
+            builder: (context, state) {
+              if (state.status == RentalBillDetailInitStatus.loading) {
+                return const RentalBillDetailShimmer();
+              } else if (state.status == RentalBillDetailInitStatus.failure) {
+                return Center(child: Text(state.errorMessage ?? 'Error'));
+              } else if (state.status == RentalBillDetailInitStatus.success &&
+                  state.bill != null) {
+                final bill = state.bill!;
+                // Assume single vehicle flow as per user request
+                final RentalVehicle? vehicle =
+                    bill.details.isNotEmpty ? bill.details.first.vehicle : null;
+                final String licensePlate =
+                    bill.details.isNotEmpty
+                        ? bill.details.first.licensePlate
+                        : '';
+        
+                return SingleChildScrollView(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    children: [
+                      // 1. Vehicle Info Card
+                      _buildVehicleInfoCard(context, vehicle, licensePlate),
+                      SizedBox(height: 16.h),
+        
+                      // 2. Rental Details (Status, Dates, etc.)
+                      _buildRentalDetailsCard(context, bill),
+                      SizedBox(height: 16.h),
+        
+                      ContactInfoForm(bill: bill),
+                      SizedBox(height: 16.h),
+                      // 3. Payment Details
+                      _buildPaymentDetailsCard(context, bill),
+        
+                      // 4. Contact/Notes if any
+                      // 4. Contact Info Update
+                    ],
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ),
       ),
     );
@@ -234,66 +267,320 @@ class RentalBillDetailPage extends StatelessWidget {
             AppLocalizations.of(context)!.payment,
             style: Theme.of(context).textTheme.titleSmall,
           ),
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.totalPayment,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Text(
-                Formatter.currency(bill.total),
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(color: AppColors.primaryRed),
-              ),
-            ],
-          ),
+          if (bill.status == RentalBillStatus.paid) ...[
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.totalPayment,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  Formatter.currency(bill.total),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.primaryRed,
+                  ),
+                ),
+              ],
+            ),
+          ],
+          if (bill.status == RentalBillStatus.pending) ...[
+            const Divider(),
+            _buildPaymentForm(context),
+          ],
         ],
       ),
     );
   }
 
-  Widget _buildAdditionalInfoCard(BuildContext context, RentalBill bill) {
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryGrey.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (bill.notes != null && bill.notes!.isNotEmpty) ...[
-            Text(
-              AppLocalizations.of(context)!.notes,
-              style: Theme.of(context).textTheme.bodyMedium,
+  Widget _buildPaymentForm(BuildContext context) {
+    return BlocBuilder<RentalPaymentCubit, RentalPaymentState>(
+      builder: (context, paymentState) {
+        return Column(
+          children: [
+            // 1. Payment Method Dropdown
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.paymentMethod,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                SizedBox(height: 6.h),
+                DropdownButtonFormField2<PaymentMethod>(
+                  isExpanded: true,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                        color: AppColors.secondaryGrey,
+                        width: 1.w,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                        color: AppColors.secondaryGrey,
+                        width: 1.w,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                        color: AppColors.primaryGrey,
+                        width:
+                            1.w, // Changed to 1.w to look cleaner or match 2.w if preferred
+                      ),
+                    ),
+                  ),
+                  hint: Text(
+                    AppLocalizations.of(context)!.choosePayment,
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
+                  value: paymentState.paymentMethod,
+                  items:
+                      PaymentMethod.values
+                          .map(
+                            (item) => DropdownMenuItem<PaymentMethod>(
+                              value: item,
+                              child: Text(
+                                item.name.toUpperCase(),
+                                style: TextStyle(fontSize: 14.sp),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                  validator: (value) {
+                    if (value == null) {
+                      return AppLocalizations.of(context)!.fieldRequired(
+                        AppLocalizations.of(context)!.paymentMethod,
+                      );
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    if (value != null) {
+                      context.read<RentalPaymentCubit>().selectPaymentMethod(
+                        value,
+                      );
+                    }
+                  },
+                  onSaved: (value) {},
+                  buttonStyleData: ButtonStyleData(
+                    height: 48.h,
+                    padding: EdgeInsets.only(right: 8.w),
+                  ),
+                  iconStyleData: IconStyleData(
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      color: Colors.black54,
+                    ),
+                    iconSize: 24.sp,
+                  ),
+                  dropdownStyleData: DropdownStyleData(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                      color: Colors.white,
+                    ),
+                  ),
+                  menuItemStyleData: MenuItemStyleData(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 4.h),
-            Text(bill.notes!, style: Theme.of(context).textTheme.bodyMedium),
-            if (bill.contactName != null) SizedBox(height: 12.h),
+            SizedBox(height: 16.h),
+
+            // 2. Voucher Dropdown
+            BlocBuilder<GetVouchersCubit, GetVouchersState>(
+              builder: (context, voucherState) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Voucher", // Assuming 'Voucher' can be static or use 'exclusiveVouchers' or just 'Voucher' as key
+                      // Checking arb: 'exclusiveVouchers': 'Exclusive Vouchers'. 'voucher' key??
+                      // I added 'selectVoucher'. Let's use 'Voucher' string or add key 'voucher' = 'Voucher'.
+                      // For now I'll use "Voucher" title case, or reuse 'exclusiveVouchers' if fitting.
+                      // Better to use static "Voucher" or add specific key if strict. User didn't ask for 'Voucher' label key.
+                      // Let's use 'Voucher' text for now or 'AppLocalizations.of(context)!.exclusiveVouchers' (might be too long).
+                      // Actually I can just use "Voucher".
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    SizedBox(height: 6.h),
+                    DropdownButtonFormField2<Voucher>(
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                          borderSide: BorderSide(
+                            color: AppColors.secondaryGrey,
+                            width: 1.w,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                          borderSide: BorderSide(
+                            color: AppColors.secondaryGrey,
+                            width: 1.w,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                          borderSide: BorderSide(
+                            color: AppColors.primaryGrey,
+                            width: 1.w,
+                          ),
+                        ),
+                      ),
+                      hint: Text(
+                        AppLocalizations.of(context)!.selectVoucher,
+                        style: TextStyle(fontSize: 14.sp),
+                      ),
+                      value: paymentState.selectedVoucher,
+                      items:
+                          voucherState is GetVouchersLoaded
+                              ? voucherState.vouchers
+                                  .map(
+                                    (item) => DropdownMenuItem<Voucher>(
+                                      value: item,
+                                      child: Text(
+                                        "${item.code} - ${item.description ?? ''}",
+                                        style: TextStyle(fontSize: 14.sp),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
+                                  .toList()
+                              : [],
+                      onChanged: (value) {
+                        context.read<RentalPaymentCubit>().selectVoucher(value);
+                      },
+                      buttonStyleData: ButtonStyleData(
+                        height: 48.h,
+                        padding: EdgeInsets.only(right: 8.w),
+                      ),
+                      iconStyleData: IconStyleData(
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: Colors.black54,
+                        ),
+                        iconSize: 24.sp,
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.r),
+                          color: Colors.white,
+                        ),
+                      ),
+                      menuItemStyleData: MenuItemStyleData(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+            SizedBox(height: 16.h),
+
+            // 3. Travel Points
+            BlocBuilder<GetMyProfileCubit, GetMyProfileState>(
+              builder: (context, profileState) {
+                int points = 0;
+                if (profileState is GetMyProfileSuccess) {
+                  points = profileState.user.travelPoint;
+                }
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "${AppLocalizations.of(context)!.useRewardPoint} ($points ${AppLocalizations.of(context)!.available})", // Using 'available' key if exists?
+                        // checked arb: "available": "Available" / "Có sẵn".
+                        // Better: "useRewardPoint" ($points points)
+                        // arb: "points": "points"
+                        // "${AppLocalizations.of(context)!.useRewardPoint} ($points ${AppLocalizations.of(context)!.points})",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                    Switch(
+                      value: paymentState.useTravelPoints,
+                      onChanged: (value) {
+                        context
+                            .read<RentalPaymentCubit>()
+                            .toggleUseTravelPoints(value, points);
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+
+            SizedBox(height: 16.h),
+            // 4. Final Price
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.finalPrice,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  Formatter.currency(paymentState.finalPrice),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: AppColors.primaryGreen,
+                  ),
+                ),
+              ],
+            ),
+            if (paymentState.voucherDiscount > 0)
+              Padding(
+                padding: EdgeInsets.only(top: 4.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.voucherDiscount,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    Text(
+                      "- ${Formatter.currency(paymentState.voucherDiscount)}",
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.primaryRed,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            if (paymentState.pointDiscount > 0)
+              Padding(
+                padding: EdgeInsets.only(top: 4.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.pointDiscount,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    Text(
+                      "- ${Formatter.currency(paymentState.pointDiscount)}",
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.primaryRed,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
           ],
-          if (bill.contactName != null) ...[
-            Text(
-              AppLocalizations.of(context)!.contactInfo,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              '${bill.contactName} - ${bill.contactPhone}',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
-        ],
-      ),
+        );
+      },
     );
   }
 

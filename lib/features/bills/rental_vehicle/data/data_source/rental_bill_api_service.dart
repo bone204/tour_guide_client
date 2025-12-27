@@ -4,6 +4,8 @@ import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/update_rental_bill_request.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill_pay_response.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class RentalBillApiService {
@@ -11,6 +13,11 @@ abstract class RentalBillApiService {
     RentalBillStatus? status,
   });
   Future<Either<Failure, RentalBill>> getBillDetail(int id);
+  Future<Either<Failure, RentalBill>> updateBill(
+    int id,
+    UpdateRentalBillRequest body,
+  );
+  Future<Either<Failure, RentalBillPayResponse>> payBill(int id);
 }
 
 class RentalBillApiServiceImpl implements RentalBillApiService {
@@ -105,6 +112,52 @@ class RentalBillApiServiceImpl implements RentalBillApiService {
           message:
               e.response?.data['message'] ??
               'An error occurred fetching bill detail',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, RentalBill>> updateBill(
+    int id,
+    UpdateRentalBillRequest body,
+  ) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        "${ApiUrls.rentalBills}/$id",
+        data: body.toJson(),
+      );
+      final bill = RentalBill.fromJson(response.data);
+      return Right(bill);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message:
+              e.response?.data['message'] ?? 'An error occurred updating bill',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, RentalBillPayResponse>> payBill(int id) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        "${ApiUrls.rentalBills}/$id/pay",
+      );
+      final result = RentalBillPayResponse.fromJson(response.data);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message:
+              e.response?.data['message'] ?? 'An error occurred paying bill',
           statusCode: e.response?.statusCode,
         ),
       );

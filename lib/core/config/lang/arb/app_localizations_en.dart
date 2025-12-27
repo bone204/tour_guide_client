@@ -1202,6 +1202,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unverified => 'Unverified';
 
   @override
+  String get selectVoucher => 'Select Voucher';
+
+  @override
+  String get finalPrice => 'Final Price';
+
+  @override
+  String get voucherDiscount => 'Voucher Discount';
+
+  @override
+  String get pointDiscount => 'Points Discount';
+
+  @override
   String get paid => 'Paid';
 
   @override
@@ -2354,4 +2366,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get disableRental => 'Disable Rental';
+
+  @override
+  String get updateSuccess => 'Update successful';
 }

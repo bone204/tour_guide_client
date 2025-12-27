@@ -2453,6 +2453,30 @@ abstract class AppLocalizations {
   /// **'Unverified'**
   String get unverified;
 
+  /// No description provided for @selectVoucher.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Voucher'**
+  String get selectVoucher;
+
+  /// No description provided for @finalPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Final Price'**
+  String get finalPrice;
+
+  /// No description provided for @voucherDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher Discount'**
+  String get voucherDiscount;
+
+  /// No description provided for @pointDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Points Discount'**
+  String get pointDiscount;
+
   /// No description provided for @paid.
   ///
   /// In en, this message translates to:
@@ -4624,6 +4648,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Disable Rental'**
   String get disableRental;
+
+  /// No description provided for @updateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Update successful'**
+  String get updateSuccess;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

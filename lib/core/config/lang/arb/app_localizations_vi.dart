@@ -1202,6 +1202,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get unverified => 'Chưa xác thực';
 
   @override
+  String get selectVoucher => 'Chọn Voucher';
+
+  @override
+  String get finalPrice => 'Thành tiền';
+
+  @override
+  String get voucherDiscount => 'Ưu đãi Voucher';
+
+  @override
+  String get pointDiscount => 'Ưu đãi điểm';
+
+  @override
   String get paid => 'Đã thanh toán';
 
   @override
@@ -2360,4 +2372,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get disableRental => 'Tạm ngưng cho thuê';
+
+  @override
+  String get updateSuccess => 'Cập nhật thành công';
 }
