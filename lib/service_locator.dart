@@ -24,6 +24,8 @@ import 'package:tour_guide_app/features/destination/domain/usecases/favorite_des
 import 'package:tour_guide_app/features/destination/domain/usecases/get_destinations.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_recommend_destinations.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/disable_vehicle.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/enable_vehicle.dart';
 import 'package:tour_guide_app/features/profile/data/data_source/profile_api_service.dart';
 import 'package:tour_guide_app/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:tour_guide_app/features/profile/domain/repository/profile_repository.dart';
@@ -108,6 +110,7 @@ import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_c
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/update_hobbies.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/update_hobbies/update_hobbies_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/enable_disable_vehicle/enable_disable_vehicle_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -207,6 +210,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetRecommendDestinationsUseCase>(
     GetRecommendDestinationsUseCase(),
   );
+  sl.registerSingleton<EnableVehicleUseCase>(EnableVehicleUseCase());
+  sl.registerSingleton<DisableVehicleUseCase>(DisableVehicleUseCase());
 
   // My Vehicle
   sl.registerSingleton<AddContractUseCase>(AddContractUseCase());
@@ -260,6 +265,12 @@ void setUpServiceLocator(SharedPreferences prefs) {
       updateInitialProfileUseCase: sl(),
       updateVerificationInfoUseCase: sl(),
       updateAvatarUseCase: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => EnableDisableVehicleCubit(
+      enableVehicleUseCase: sl(),
+      disableVehicleUseCase: sl(),
     ),
   );
   sl.registerFactory<VerifyEmailCubit>(() => VerifyEmailCubit());

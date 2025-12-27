@@ -2258,4 +2258,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get priceFor5Days => 'Price for 5 Days';
+
+  @override
+  String get enableRental => 'Enable Rental';
+
+  @override
+  String get disableRental => 'Disable Rental';
 }

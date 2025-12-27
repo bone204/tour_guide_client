@@ -32,6 +32,12 @@ class StopUpdatedEvent {
 // Event when user profile is updated
 class ProfileUpdatedEvent {}
 
+// Event when vehicle status is changed (enable/disable)
+class VehicleStatusChangedEvent {
+  final String licensePlate;
+  VehicleStatusChangedEvent(this.licensePlate);
+}
+
 // Singleton EventBus
 class AppEventBus {
   static final AppEventBus _instance = AppEventBus._internal();

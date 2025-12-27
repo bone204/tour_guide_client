@@ -20,4 +20,7 @@ abstract class MyVehicleRepository {
   Future<Either<Failure, RentalVehicleResponse>> getMyVehicles(String? status);
   Future<Either<Failure, RentalVehicle>> getVehicleDetail(String licensePlate);
   Future<Either<Failure, List<VehicleCatalog>>> getVehicleCatalogs();
+
+  Future<Either<Failure, SuccessResponse>> enableVehicle(String licensePlate);
+  Future<Either<Failure, SuccessResponse>> disableVehicle(String licensePlate);
 }

@@ -55,4 +55,18 @@ class MyVehicleRepositoryImpl extends MyVehicleRepository {
   Future<Either<Failure, List<VehicleCatalog>>> getVehicleCatalogs() async {
     return _apiService.getVehicleCatalogs();
   }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> enableVehicle(
+    String licensePlate,
+  ) async {
+    return _apiService.enableVehicle(licensePlate);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> disableVehicle(
+    String licensePlate,
+  ) async {
+    return _apiService.disableVehicle(licensePlate);
+  }
 }

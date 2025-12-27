@@ -1355,5 +1355,7 @@
   "priceFor12Hours": "Price for 12 Hours",
   "priceFor2Days": "Price for 2 Days",
   "priceFor3Days": "Price for 3 Days",
-  "priceFor5Days": "Price for 5 Days"
+  "priceFor5Days": "Price for 5 Days",
+  "enableRental": "Enable Rental",
+  "disableRental": "Disable Rental"
 }

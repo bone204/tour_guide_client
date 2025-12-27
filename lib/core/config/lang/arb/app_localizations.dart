@@ -4432,6 +4432,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Price for 5 Days'**
   String get priceFor5Days;
+
+  /// No description provided for @enableRental.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Rental'**
+  String get enableRental;
+
+  /// No description provided for @disableRental.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable Rental'**
+  String get disableRental;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

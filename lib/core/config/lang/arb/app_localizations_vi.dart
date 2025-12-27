@@ -2264,4 +2264,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get priceFor5Days => 'Giá thuê 5 ngày';
+
+  @override
+  String get enableRental => 'Mở lại cho thuê';
+
+  @override
+  String get disableRental => 'Tạm ngưng cho thuê';
 }

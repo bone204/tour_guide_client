@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/vehicle_detail/vehicle_detail_state.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/enable_disable_vehicle/enable_disable_vehicle_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/enable_disable_vehicle/enable_disable_vehicle_state.dart';
 // Reuse contract detail shimmer for now or create specific one
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/contract_detail_shimmer.dart';
 import 'package:tour_guide_app/service_locator.dart';
@@ -16,360 +20,454 @@ class VehicleDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) => sl<VehicleDetailCubit>()..getVehicleDetail(licensePlate),
-      child: Scaffold(
-        appBar: CustomAppBar(
-          title: AppLocalizations.of(context)!.vehicleDetail,
-          showBackButton: true,
-          onBackPressed: () {
-            Navigator.pop(context);
-          },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create:
+              (context) =>
+                  sl<VehicleDetailCubit>()..getVehicleDetail(licensePlate),
         ),
-        body: BlocBuilder<VehicleDetailCubit, VehicleDetailState>(
-          builder: (context, state) {
-            if (state.status == VehicleDetailStatus.loading) {
-              return const ContractDetailShimmer();
-            }
+        BlocProvider(create: (context) => sl<EnableDisableVehicleCubit>()),
+      ],
+      child: _VehicleDetailView(licensePlate: licensePlate),
+    );
+  }
+}
 
-            if (state.status == VehicleDetailStatus.error) {
-              return Center(
-                child: Text(
-                  state.message ?? AppLocalizations.of(context)!.errorOccurred,
-                ),
-              );
-            }
+class _VehicleDetailView extends StatefulWidget {
+  final String licensePlate;
 
-            if (state.vehicle == null) {
-              return const ContractDetailShimmer();
-            }
+  const _VehicleDetailView({required this.licensePlate});
 
-            final vehicle = state.vehicle!;
+  @override
+  State<_VehicleDetailView> createState() => _VehicleDetailViewState();
+}
 
-            return RefreshIndicator(
-              onRefresh: () async {
-                await context.read<VehicleDetailCubit>().getVehicleDetail(
-                  licensePlate,
-                );
+class _VehicleDetailViewState extends State<_VehicleDetailView> {
+  late StreamSubscription _subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _subscription = eventBus.on<VehicleStatusChangedEvent>().listen((event) {
+      if (mounted && event.licensePlate == widget.licensePlate) {
+        context.read<VehicleDetailCubit>().getVehicleDetail(
+          widget.licensePlate,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<EnableDisableVehicleCubit, EnableDisableVehicleState>(
+      listener: (context, edState) {
+        if (edState.status == EnableDisableVehicleStatus.error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(edState.message ?? "An error occurred"),
+              backgroundColor: AppColors.primaryRed,
+            ),
+          );
+        }
+      },
+      child: BlocBuilder<VehicleDetailCubit, VehicleDetailState>(
+        builder: (context, state) {
+          final vehicle = state.vehicle;
+          final isApproved = vehicle?.status.toLowerCase() == 'approved';
+
+          return Scaffold(
+            appBar: CustomAppBar(
+              title: AppLocalizations.of(context)!.vehicleDetail,
+              showBackButton: true,
+              onBackPressed: () {
+                Navigator.pop(context);
               },
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Top Vehicle Photo (if approved)
-                    if (vehicle.status == 'approved' &&
-                        vehicle.vehicleCatalog?.photo != null) ...[
-                      _buildImageRow(
-                        context,
-                        AppLocalizations.of(context)!.vehiclePhoto,
-                        vehicle.vehicleCatalog!.photo!,
-                      ),
-                      SizedBox(height: 16.h),
-                    ],
-
-                    // Status & Availability Section
-                    Container(
-                      padding: EdgeInsets.all(16.w),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primaryGrey.withOpacity(0.25),
-                            blurRadius: 8.r,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    vehicle.licensePlate,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleMedium?.copyWith(
-                                      color: AppColors.primaryBlue,
-                                    ),
+              actions: [
+                if (isApproved && vehicle != null)
+                  BlocBuilder<
+                    EnableDisableVehicleCubit,
+                    EnableDisableVehicleState
+                  >(
+                    builder: (context, edState) {
+                      final isMaintenance =
+                          vehicle.availability.toLowerCase() == 'maintenance';
+                      return IconButton(
+                        onPressed:
+                            edState.status == EnableDisableVehicleStatus.loading
+                                ? null
+                                : () {
+                                  if (isMaintenance) {
+                                    context
+                                        .read<EnableDisableVehicleCubit>()
+                                        .enableVehicle(widget.licensePlate);
+                                  } else {
+                                    context
+                                        .read<EnableDisableVehicleCubit>()
+                                        .disableVehicle(widget.licensePlate);
+                                  }
+                                },
+                        icon:
+                            edState.status == EnableDisableVehicleStatus.loading
+                                ? SizedBox(
+                                  width: 20.w,
+                                  height: 20.w,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColors.primaryBlue,
                                   ),
-                                  if (vehicle.createdAt.isNotEmpty) ...[
-                                    SizedBox(height: 4.h),
-                                    Text(
-                                      _formatDate(vehicle.createdAt),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(color: Colors.grey[500]),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 12.w,
-                                  vertical: 6.h,
+                                )
+                                : Icon(
+                                  isMaintenance
+                                      ? Icons.play_arrow_rounded
+                                      : Icons.pause_rounded,
+                                  color:
+                                      isMaintenance
+                                          ? AppColors.primaryGreen
+                                          : AppColors.primaryRed,
                                 ),
-                                decoration: BoxDecoration(
-                                  color: (vehicle.status == 'approved'
-                                          ? _getAvailabilityColor(
-                                            vehicle.availability,
-                                          )
-                                          : _getStatusColor(vehicle.status))
-                                      .withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  border: Border.all(
-                                    color: (vehicle.status == 'approved'
-                                            ? _getAvailabilityColor(
-                                              vehicle.availability,
-                                            )
-                                            : _getStatusColor(vehicle.status))
-                                        .withOpacity(0.2),
-                                  ),
-                                ),
-                                child: Text(
-                                  vehicle.status == 'approved'
-                                      ? _getAvailabilityText(
-                                        context,
-                                        vehicle.availability,
-                                      )
-                                      : _getStatusText(context, vehicle.status),
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.bodySmall?.copyWith(
-                                    color:
-                                        vehicle.status == 'approved'
-                                            ? _getAvailabilityColor(
-                                              vehicle.availability,
-                                            )
-                                            : _getStatusColor(vehicle.status),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          if (vehicle.status == 'rejected' &&
-                              vehicle.rejectedReason != null)
-                            Padding(
-                              padding: EdgeInsets.only(top: 12.h),
-                              child: Container(
-                                padding: EdgeInsets.all(12.w),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryRed.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  border: Border.all(
-                                    color: AppColors.primaryRed.withOpacity(
-                                      0.3,
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Icon(
-                                      Icons.warning_amber_rounded,
-                                      color: AppColors.primaryRed,
-                                      size: 20.sp,
-                                    ),
-                                    SizedBox(width: 8.w),
-                                    Expanded(
-                                      child: Text(
-                                        vehicle.rejectedReason!,
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium?.copyWith(
-                                          color: AppColors.primaryRed,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-
-                    // Rental Information (Show if approved)
-                    if (vehicle.status == 'approved') ...[
-                      _buildSection(
-                        context,
-                        title: AppLocalizations.of(context)!.rentalInfo,
-                        children: [
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.licensePlate,
-                            vehicle.licensePlate,
-                          ),
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.totalRentals,
-                            vehicle.totalRentals.toString(),
-                          ),
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.rating,
-                            '${vehicle.averageRating} / 5.0',
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16.h),
-                    ],
-
-                    // Pricing Info
-                    _buildSection(
-                      context,
-                      title: AppLocalizations.of(context)!.price,
-                      children: [
-                        _buildDetailRow(
-                          context,
-                          AppLocalizations.of(context)!.hourlyRent,
-                          '${_formatCurrency(vehicle.pricePerHour)} đ',
-                        ),
-                        if (vehicle.priceFor4Hours != null)
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.priceFor4Hours,
-                            '${_formatCurrency(vehicle.priceFor4Hours!)} đ',
-                          ),
-                        if (vehicle.priceFor8Hours != null)
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.priceFor8Hours,
-                            '${_formatCurrency(vehicle.priceFor8Hours!)} đ',
-                          ),
-                        if (vehicle.priceFor12Hours != null)
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.priceFor12Hours,
-                            '${_formatCurrency(vehicle.priceFor12Hours!)} đ',
-                          ),
-                        Divider(height: 24.h),
-                        _buildDetailRow(
-                          context,
-                          AppLocalizations.of(context)!.dailyRent,
-                          '${_formatCurrency(vehicle.pricePerDay)} đ',
-                        ),
-                        if (vehicle.priceFor2Days != null)
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.priceFor2Days,
-                            '${_formatCurrency(vehicle.priceFor2Days!)} đ',
-                          ),
-                        if (vehicle.priceFor3Days != null)
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.priceFor3Days,
-                            '${_formatCurrency(vehicle.priceFor3Days!)} đ',
-                          ),
-                        if (vehicle.priceFor5Days != null)
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.priceFor5Days,
-                            '${_formatCurrency(vehicle.priceFor5Days!)} đ',
-                          ),
-                        if (vehicle.priceFor7Days != null)
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.priceFor7Days,
-                            '${_formatCurrency(vehicle.priceFor7Days!)} đ',
-                          ),
-                      ],
-                    ),
-                    SizedBox(height: 16.h),
-
-                    // Vehicle Info
-                    _buildSection(
-                      context,
-                      title: AppLocalizations.of(context)!.vehicleInfo,
-                      children: [
-                        if (vehicle.vehicleCatalog != null) ...[
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.brand,
-                            vehicle.vehicleCatalog!.brand ?? '',
-                          ),
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.model,
-                            vehicle.vehicleCatalog!.model ?? '',
-                          ),
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.seatingCapacity,
-                            vehicle.vehicleCatalog!.seatingCapacity
-                                    ?.toString() ??
-                                '',
-                          ),
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.fuelType,
-                            vehicle.vehicleCatalog!.fuelType ?? '',
-                          ),
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.transmission,
-                            vehicle.vehicleCatalog!.transmission ?? '',
-                          ),
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.maxSpeed,
-                            vehicle.vehicleCatalog!.maxSpeed ?? '',
-                          ),
-                        ],
-                        if (vehicle.requirements != null &&
-                            vehicle.requirements!.isNotEmpty)
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.requirements,
-                            vehicle.requirements!,
-                          ),
-                        if (vehicle.description != null &&
-                            vehicle.description!.isNotEmpty)
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.description,
-                            vehicle.description!,
-                          ),
-                        if (vehicle.vehicleRegistrationFront != null &&
-                            vehicle.vehicleRegistrationFront!.isNotEmpty)
-                          _buildImageRow(
-                            context,
-                            AppLocalizations.of(
-                              context,
-                            )!.vehicleRegistrationFrontPhoto,
-                            vehicle.vehicleRegistrationFront!,
-                          ),
-                        if (vehicle.vehicleRegistrationBack != null &&
-                            vehicle.vehicleRegistrationBack!.isNotEmpty)
-                          _buildImageRow(
-                            context,
-                            AppLocalizations.of(
-                              context,
-                            )!.vehicleRegistrationBackPhoto,
-                            vehicle.vehicleRegistrationBack!,
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+                        tooltip:
+                            isMaintenance
+                                ? AppLocalizations.of(context)!.enableRental
+                                : AppLocalizations.of(context)!.disableRental,
+                      );
+                    },
+                  ),
+              ],
+            ),
+            body: _buildBody(context, state),
+          );
+        },
       ),
     );
   }
+
+  Widget _buildBody(BuildContext context, VehicleDetailState state) {
+    if (state.status == VehicleDetailStatus.loading) {
+      return const ContractDetailShimmer();
+    }
+
+    if (state.status == VehicleDetailStatus.error) {
+      return Center(
+        child: Text(
+          state.message ?? AppLocalizations.of(context)!.errorOccurred,
+        ),
+      );
+    }
+
+    if (state.vehicle == null) {
+      return const ContractDetailShimmer();
+    }
+
+    final vehicle = state.vehicle!;
+
+    return RefreshIndicator(
+      onRefresh: () async {
+        await context.read<VehicleDetailCubit>().getVehicleDetail(
+          widget.licensePlate,
+        );
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Top Vehicle Photo (if approved)
+            if (vehicle.status == 'approved' &&
+                vehicle.vehicleCatalog?.photo != null) ...[
+              _buildImageRow(
+                context,
+                AppLocalizations.of(context)!.vehiclePhoto,
+                vehicle.vehicleCatalog!.photo!,
+              ),
+              SizedBox(height: 16.h),
+            ],
+
+            // Status & Availability Section
+            Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primaryGrey.withOpacity(0.25),
+                    blurRadius: 8.r,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            vehicle.licensePlate,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.primaryBlue),
+                          ),
+                          if (vehicle.createdAt.isNotEmpty) ...[
+                            SizedBox(height: 4.h),
+                            Text(
+                              _formatDate(vehicle.createdAt),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(color: Colors.grey[500]),
+                            ),
+                          ],
+                        ],
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 6.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: (vehicle.status == 'approved'
+                                  ? _getAvailabilityColor(vehicle.availability)
+                                  : _getStatusColor(vehicle.status))
+                              .withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(20.r),
+                          border: Border.all(
+                            color: (vehicle.status == 'approved'
+                                    ? _getAvailabilityColor(
+                                      vehicle.availability,
+                                    )
+                                    : _getStatusColor(vehicle.status))
+                                .withOpacity(0.2),
+                          ),
+                        ),
+                        child: Text(
+                          vehicle.status == 'approved'
+                              ? _getAvailabilityText(
+                                context,
+                                vehicle.availability,
+                              )
+                              : _getStatusText(context, vehicle.status),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(
+                            color:
+                                vehicle.status == 'approved'
+                                    ? _getAvailabilityColor(
+                                      vehicle.availability,
+                                    )
+                                    : _getStatusColor(vehicle.status),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (vehicle.status == 'rejected' &&
+                      vehicle.rejectedReason != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.h),
+                      child: Container(
+                        padding: EdgeInsets.all(12.w),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryRed.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(
+                            color: AppColors.primaryRed.withOpacity(0.3),
+                          ),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              color: AppColors.primaryRed,
+                              size: 20.sp,
+                            ),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: Text(
+                                vehicle.rejectedReason!,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: AppColors.primaryRed),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16.h),
+
+            // Rental Information (Show if approved)
+            if (vehicle.status == 'approved') ...[
+              _buildSection(
+                context,
+                title: AppLocalizations.of(context)!.rentalInfo,
+                children: [
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.licensePlate,
+                    vehicle.licensePlate,
+                  ),
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.totalRentals,
+                    vehicle.totalRentals.toString(),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.rating,
+                    '${vehicle.averageRating} / 5.0',
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.h),
+            ],
+
+            // Pricing Info
+            _buildSection(
+              context,
+              title: AppLocalizations.of(context)!.price,
+              children: [
+                _buildDetailRow(
+                  context,
+                  AppLocalizations.of(context)!.hourlyRent,
+                  '${_formatCurrency(vehicle.pricePerHour)} đ',
+                ),
+                if (vehicle.priceFor4Hours != null)
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.priceFor4Hours,
+                    '${_formatCurrency(vehicle.priceFor4Hours!)} đ',
+                  ),
+                if (vehicle.priceFor8Hours != null)
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.priceFor8Hours,
+                    '${_formatCurrency(vehicle.priceFor8Hours!)} đ',
+                  ),
+                if (vehicle.priceFor12Hours != null)
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.priceFor12Hours,
+                    '${_formatCurrency(vehicle.priceFor12Hours!)} đ',
+                  ),
+                Divider(height: 24.h),
+                _buildDetailRow(
+                  context,
+                  AppLocalizations.of(context)!.dailyRent,
+                  '${_formatCurrency(vehicle.pricePerDay)} đ',
+                ),
+                if (vehicle.priceFor2Days != null)
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.priceFor2Days,
+                    '${_formatCurrency(vehicle.priceFor2Days!)} đ',
+                  ),
+                if (vehicle.priceFor3Days != null)
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.priceFor3Days,
+                    '${_formatCurrency(vehicle.priceFor3Days!)} đ',
+                  ),
+                if (vehicle.priceFor5Days != null)
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.priceFor5Days,
+                    '${_formatCurrency(vehicle.priceFor5Days!)} đ',
+                  ),
+                if (vehicle.priceFor7Days != null)
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.priceFor7Days,
+                    '${_formatCurrency(vehicle.priceFor7Days!)} đ',
+                  ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+
+            // Vehicle Info
+            _buildSection(
+              context,
+              title: AppLocalizations.of(context)!.vehicleInfo,
+              children: [
+                if (vehicle.vehicleCatalog != null) ...[
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.brand,
+                    vehicle.vehicleCatalog!.brand ?? '',
+                  ),
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.model,
+                    vehicle.vehicleCatalog!.model ?? '',
+                  ),
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.seatingCapacity,
+                    vehicle.vehicleCatalog!.seatingCapacity?.toString() ?? '',
+                  ),
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.fuelType,
+                    vehicle.vehicleCatalog!.fuelType ?? '',
+                  ),
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.transmission,
+                    vehicle.vehicleCatalog!.transmission ?? '',
+                  ),
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.maxSpeed,
+                    vehicle.vehicleCatalog!.maxSpeed ?? '',
+                  ),
+                ],
+                if (vehicle.requirements != null &&
+                    vehicle.requirements!.isNotEmpty)
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.requirements,
+                    vehicle.requirements!,
+                  ),
+                if (vehicle.description != null &&
+                    vehicle.description!.isNotEmpty)
+                  _buildDetailRow(
+                    context,
+                    AppLocalizations.of(context)!.description,
+                    vehicle.description!,
+                  ),
+                if (vehicle.vehicleRegistrationFront != null &&
+                    vehicle.vehicleRegistrationFront!.isNotEmpty)
+                  _buildImageRow(
+                    context,
+                    AppLocalizations.of(context)!.vehicleRegistrationFrontPhoto,
+                    vehicle.vehicleRegistrationFront!,
+                  ),
+                if (vehicle.vehicleRegistrationBack != null &&
+                    vehicle.vehicleRegistrationBack!.isNotEmpty)
+                  _buildImageRow(
+                    context,
+                    AppLocalizations.of(context)!.vehicleRegistrationBackPhoto,
+                    vehicle.vehicleRegistrationBack!,
+                  ),
+              ], // Closes children list for _buildSection
+            ), // Closes _buildSection
+          ], // Closes the Column's children list
+        ), // Closes the Column
+      ), // Closes the SingleChildScrollView
+    ); // Closes the return statement
+  } // Closes the _buildBody method
 
   Widget _buildSection(
     BuildContext context, {

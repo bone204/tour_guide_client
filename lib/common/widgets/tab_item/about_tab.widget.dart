@@ -23,7 +23,7 @@ class AboutTab extends StatelessWidget {
               : description,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             height: 1.6,
-            color: AppColors.textSubtitle,
+            color: AppColors.textPrimary,
           ),
         ),
         SizedBox(height: 24.h),

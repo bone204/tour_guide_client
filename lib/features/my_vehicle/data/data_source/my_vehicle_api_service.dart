@@ -24,6 +24,9 @@ abstract class MyVehicleApiService {
   Future<Either<Failure, RentalVehicleResponse>> getMyVehicles(String? status);
   Future<Either<Failure, RentalVehicle>> getVehicleDetail(String licensePlate);
   Future<Either<Failure, List<VehicleCatalog>>> getVehicleCatalogs();
+
+  Future<Either<Failure, SuccessResponse>> enableVehicle(String licensePlate);
+  Future<Either<Failure, SuccessResponse>> disableVehicle(String licensePlate);
 }
 
 class MyVehicleApiServiceImpl extends MyVehicleApiService {
@@ -117,9 +120,7 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
   @override
   Future<Either<Failure, List<VehicleCatalog>>> getVehicleCatalogs() async {
     try {
-      final response = await sl<DioClient>().get(
-        ApiUrls.vehicleCatalogs,
-      );
+      final response = await sl<DioClient>().get(ApiUrls.vehicleCatalogs);
       final List<dynamic> data = response.data;
       final catalogs =
           data.map((json) => VehicleCatalog.fromJson(json)).toList();
@@ -169,6 +170,50 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
       );
       final vehicle = RentalVehicle.fromJson(response.data);
       return Right(vehicle);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> enableVehicle(
+    String licensePlate,
+  ) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.rentalVehicles}/$licensePlate/enable',
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> disableVehicle(
+    String licensePlate,
+  ) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.rentalVehicles}/$licensePlate/disable',
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

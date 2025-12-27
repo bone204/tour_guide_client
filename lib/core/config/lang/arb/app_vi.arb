@@ -1370,5 +1370,7 @@
   "citizenBack": "Mặt sau CCCD",
   "dateOfBirth": "Ngày sinh",
   "gender": "Giới tính",
-  "nationality": "Quốc tịch"
+  "nationality": "Quốc tịch",
+  "enableRental": "Mở lại cho thuê",
+  "disableRental": "Tạm ngưng cho thuê"
 }
