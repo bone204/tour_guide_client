@@ -20,6 +20,8 @@ class EnableDisableVehicleCubit extends Cubit<EnableDisableVehicleState> {
 
     final result = await _enableVehicleUseCase(licensePlate);
 
+    if (isClosed) return;
+
     result.fold(
       (failure) => emit(
         state.copyWith(
@@ -38,6 +40,8 @@ class EnableDisableVehicleCubit extends Cubit<EnableDisableVehicleState> {
     emit(state.copyWith(status: EnableDisableVehicleStatus.loading));
 
     final result = await _disableVehicleUseCase(licensePlate);
+
+    if (isClosed) return;
 
     result.fold(
       (failure) => emit(

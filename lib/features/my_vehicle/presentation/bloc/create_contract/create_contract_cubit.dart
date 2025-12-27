@@ -16,9 +16,10 @@ class CreateContractCubit extends Cubit<CreateContractState> {
     // Using addContract instead of registerRentalVehicle as per my_vehicle repository definition
     final result = await _repository.addContract(contractParams);
 
+    if (isClosed) return;
+
     result.fold(
-      (failure) =>
-          emit(CreateContractFailure(errorMessage: failure.message)),
+      (failure) => emit(CreateContractFailure(errorMessage: failure.message)),
       (response) {
         emit(CreateContractSuccess(message: response.message));
         // Fire event to refresh My Vehicle page

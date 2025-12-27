@@ -14,6 +14,8 @@ class VehicleDetailCubit extends Cubit<VehicleDetailState> {
 
     final result = await _getVehicleDetailUseCase(licensePlate);
 
+    if (isClosed) return;
+
     result.fold(
       (failure) => emit(
         state.copyWith(

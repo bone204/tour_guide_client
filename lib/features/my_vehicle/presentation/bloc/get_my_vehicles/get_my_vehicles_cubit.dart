@@ -13,6 +13,8 @@ class GetMyVehiclesCubit extends Cubit<GetMyVehiclesState> {
 
     final result = await _getMyVehiclesUseCase(status);
 
+    if (isClosed) return;
+
     result.fold(
       (failure) => emit(
         state.copyWith(

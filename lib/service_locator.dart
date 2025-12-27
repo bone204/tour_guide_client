@@ -30,6 +30,10 @@ import 'package:tour_guide_app/features/profile/data/data_source/profile_api_ser
 import 'package:tour_guide_app/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:tour_guide_app/features/profile/domain/repository/profile_repository.dart';
 import 'package:tour_guide_app/features/profile/domain/usecases/get_my_profile.dart';
+import 'package:tour_guide_app/features/motorbike_rental/data/data_source/motorbike_rental_api_service.dart';
+import 'package:tour_guide_app/features/motorbike_rental/data/repository/motorbike_rental_repository_impl.dart';
+import 'package:tour_guide_app/features/motorbike_rental/domain/repository/motorbike_rental_repository.dart';
+import 'package:tour_guide_app/features/motorbike_rental/domain/usecases/search_motorbikes_use_case.dart';
 
 import 'package:tour_guide_app/features/settings/data/data_source/local/settings_local_service.dart';
 import 'package:tour_guide_app/features/settings/data/repository/settings_repository_impl.dart';
@@ -128,6 +132,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<MyVehicleApiService>(MyVehicleApiServiceImpl());
   sl.registerSingleton<ProfileApiService>(ProfileApiServiceImpl());
   sl.registerSingleton<FeedbackApiService>(FeedbackApiServiceImpl());
+  sl.registerSingleton<MotorbikeRentalApiService>(
+    MotorbikeRentalApiServiceImpl(),
+  );
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
@@ -137,6 +144,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<MyVehicleRepository>(MyVehicleRepositoryImpl());
   sl.registerSingleton<ProfileRepository>(ProfileRepositoryImpl());
   sl.registerSingleton<FeedbackRepository>(FeedbackRepositoryImpl());
+  sl.registerSingleton<MotorbikeRentalRepository>(
+    MotorbikeRentalRepositoryImpl(),
+  );
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());
@@ -169,6 +179,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<CreateFeedbackUseCase>(CreateFeedbackUseCase());
   sl.registerSingleton<GetFeedbackUseCase>(GetFeedbackUseCase());
   sl.registerSingleton<CheckContentUseCase>(CheckContentUseCase());
+  sl.registerSingleton<SearchMotorbikesUseCase>(SearchMotorbikesUseCase());
   sl.registerSingleton<DeleteItineraryStopUseCase>(
     DeleteItineraryStopUseCase(sl()),
   );

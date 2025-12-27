@@ -13,6 +13,8 @@ class ContractDetailCubit extends Cubit<ContractDetailState> {
 
     final result = await getMyContractDetailUseCase(id);
 
+    if (isClosed) return;
+
     result.fold(
       (failure) => emit(
         state.copyWith(
