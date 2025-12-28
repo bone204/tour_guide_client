@@ -43,7 +43,10 @@ class CreateItineraryState extends Equatable {
 
   int get numberOfDays {
     if (startDate == null || endDate == null) return 1;
-    final diff = endDate!.difference(startDate!).inDays;
+    // Normalize dates to midnight to ensure correct day difference calculation
+    final start = DateTime(startDate!.year, startDate!.month, startDate!.day);
+    final end = DateTime(endDate!.year, endDate!.month, endDate!.day);
+    final diff = end.difference(start).inDays;
     return diff >= 0 ? diff + 1 : 1;
   }
 

@@ -30,6 +30,16 @@ class _DatePickerFieldState extends State<DatePickerField> {
     selectedDate = widget.initialDate;
   }
 
+  @override
+  void didUpdateWidget(covariant DatePickerField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialDate != oldWidget.initialDate) {
+      setState(() {
+        selectedDate = widget.initialDate;
+      });
+    }
+  }
+
   Future<void> _pickDate() async {
     final date = await showDatePicker(
       context: context,

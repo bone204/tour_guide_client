@@ -16,6 +16,7 @@ import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/core/utils/date_formatter.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/suggest_itinerary/suggest_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/suggest_itinerary/suggest_itinerary_state.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/suggest_itinerary_preview.page.dart';
 
 class CreateItineraryPage extends StatefulWidget {
   final String province;
@@ -89,10 +90,17 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
               } else if (state.status == SuggestItineraryStatus.success) {
                 LoadingDialog.hide(context);
                 if (state.suggestedItinerary != null) {
-                  Navigator.pushNamed(
+                  Navigator.push(
                     context,
-                    AppRouteConstant.suggestItineraryPreview,
-                    arguments: state.suggestedItinerary,
+                    MaterialPageRoute(
+                      builder:
+                          (_) => BlocProvider.value(
+                            value: context.read<SuggestItineraryCubit>(),
+                            child: SuggestItineraryPreviewPage(
+                              itinerary: state.suggestedItinerary!,
+                            ),
+                          ),
+                    ),
                   );
                 }
               } else if (state.status == SuggestItineraryStatus.failure) {

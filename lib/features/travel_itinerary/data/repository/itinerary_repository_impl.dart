@@ -2,7 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/data_source/itinerary_api_service.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/create_itinerary_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/claim_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/add_stop_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_time_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_reorder_request.dart';
@@ -10,7 +12,6 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_d
 import 'package:tour_guide_app/features/travel_itinerary/data/models/suggest_params.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/use_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
-import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary_query.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/repository/itinerary_repository.dart';
@@ -27,6 +28,13 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   @override
   Future<Either<Failure, Itinerary>> suggestItinerary(SuggestParams params) {
     return _apiService.suggestItinerary(params);
+  }
+
+  @override
+  Future<Either<Failure, Itinerary>> claimItinerary(
+    ClaimItineraryRequest body,
+  ) {
+    return _apiService.claimItinerary(body);
   }
 
   @override

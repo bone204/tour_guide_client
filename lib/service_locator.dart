@@ -57,6 +57,7 @@ import 'package:tour_guide_app/core/services/feedback/domain/usecases/create_fee
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/get_feedback_replies.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/reply/reply_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/use_itinerary.dart'; // Add this
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/claim_itinerary_use_case.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/use_itinerary/use_itinerary_cubit.dart'; // Add this
 
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/like_itinerary_usecase.dart';
@@ -219,6 +220,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<PublicizeItineraryUseCase>(
     PublicizeItineraryUseCase(sl()),
   );
+  sl.registerSingleton<ClaimItineraryUseCase>(ClaimItineraryUseCase(sl()));
 
   sl.registerSingleton<UseItineraryUseCase>(UseItineraryUseCase()); // Add this
 
@@ -275,7 +277,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<SuggestItineraryUseCase>(SuggestItineraryUseCase());
 
   // Cubits
-  sl.registerFactory<SuggestItineraryCubit>(() => SuggestItineraryCubit(sl()));
+  sl.registerFactory<SuggestItineraryCubit>(
+    () => SuggestItineraryCubit(sl(), sl()),
+  );
   sl.registerFactory<DeleteStopCubit>(() => DeleteStopCubit(sl()));
   sl.registerFactory(() => GetContractsCubit(sl()));
   sl.registerFactory(() => GetMyVehiclesCubit(sl()));

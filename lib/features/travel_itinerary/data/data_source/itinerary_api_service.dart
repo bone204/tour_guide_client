@@ -16,6 +16,7 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart'
 import 'package:tour_guide_app/features/travel_itinerary/data/models/suggest_params.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/use_itinerary_request.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/claim_itinerary_request.dart';
 
 abstract class ItineraryApiService {
   Future<Either<Failure, ItineraryResponse>> getItineraryMe();
@@ -24,6 +25,7 @@ abstract class ItineraryApiService {
   );
   Future<Either<Failure, Itinerary>> getItineraryDetail(int id);
   Future<Either<Failure, Itinerary>> suggestItinerary(SuggestParams params);
+  Future<Either<Failure, Itinerary>> claimItinerary(ClaimItineraryRequest body);
   Future<Either<Failure, SuccessResponse>> deleteItinerary(int id);
   Future<Either<Failure, Itinerary>> createItinerary(
     CreateItineraryRequest request,
@@ -141,9 +143,35 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
   }
 
   @override
-  Future<Either<Failure, Itinerary>> suggestItinerary(SuggestParams params) async {
+  Future<Either<Failure, Itinerary>> suggestItinerary(
+    SuggestParams params,
+  ) async {
     try {
-      final response = await sl<DioClient>().post('${ApiUrls.itinerary}/suggest/quick', data: params.toJson());
+      final response = await sl<DioClient>().post(
+        '${ApiUrls.itinerary}/suggest/quick',
+        data: params.toJson(),
+      );
+      final itinerary = Itinerary.fromJson(response.data);
+      return Right(itinerary);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, Itinerary>> claimItinerary(
+    ClaimItineraryRequest body,
+  ) async {
+    try {
+      final response = await sl<DioClient>().post(
+        '${ApiUrls.itinerary}/suggest/claim',
+        data: body.toJson(),
+      );
       final itinerary = Itinerary.fromJson(response.data);
       return Right(itinerary);
     } on DioException catch (e) {
@@ -477,7 +505,10 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> useItinerary(int itineraryId, UseItineraryRequest request) async {
+  Future<Either<Failure, SuccessResponse>> useItinerary(
+    int itineraryId,
+    UseItineraryRequest request,
+  ) async {
     try {
       final response = await sl<DioClient>().post(
         '${ApiUrls.itinerary}/$itineraryId/use',
