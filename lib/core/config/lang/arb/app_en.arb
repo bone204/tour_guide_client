@@ -1414,5 +1414,13 @@
   "payNow": "Pay Now",
   "suggest": "Suggest",
   "itineraryPreview": "Itinerary Preview",
-  "suggestItinerary": "Suggest Itinerary"
+  "suggestItinerary": "Suggest Itinerary",
+  "famousEateries": "Famous Eateries",
+  "noEateriesFound": "No eateries found",
+  "eateryDetail": "Eatery Detail",
+  "about": "About",
+  "detectingLocation": "Detecting your location...",
+  "eateryWheelTitle": "What to Eat?",
+  "eateryWheelResultTitle": "You should try:",
+  "viewDetail": "View Detail"
 }

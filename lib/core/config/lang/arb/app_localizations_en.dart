@@ -2387,4 +2387,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get suggestItinerary => 'Suggest Itinerary';
+
+  @override
+  String get famousEateries => 'Famous Eateries';
+
+  @override
+  String get noEateriesFound => 'No eateries found';
+
+  @override
+  String get eateryDetail => 'Eatery Detail';
+
+  @override
+  String get detectingLocation => 'Detecting your location...';
+
+  @override
+  String get eateryWheelTitle => 'What to Eat?';
+
+  @override
+  String get eateryWheelResultTitle => 'You should try:';
+
+  @override
+  String get viewDetail => 'View Detail';
 }

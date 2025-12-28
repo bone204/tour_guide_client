@@ -4690,6 +4690,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Suggest Itinerary'**
   String get suggestItinerary;
+
+  /// No description provided for @famousEateries.
+  ///
+  /// In en, this message translates to:
+  /// **'Famous Eateries'**
+  String get famousEateries;
+
+  /// No description provided for @noEateriesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No eateries found'**
+  String get noEateriesFound;
+
+  /// No description provided for @eateryDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Eatery Detail'**
+  String get eateryDetail;
+
+  /// No description provided for @detectingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Detecting your location...'**
+  String get detectingLocation;
+
+  /// No description provided for @eateryWheelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What to Eat?'**
+  String get eateryWheelTitle;
+
+  /// No description provided for @eateryWheelResultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You should try:'**
+  String get eateryWheelResultTitle;
+
+  /// No description provided for @viewDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'View Detail'**
+  String get viewDetail;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

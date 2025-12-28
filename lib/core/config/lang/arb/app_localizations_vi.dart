@@ -2393,4 +2393,25 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get suggestItinerary => 'Gợi ý lộ trình';
+
+  @override
+  String get famousEateries => 'Quán ăn nổi tiếng';
+
+  @override
+  String get noEateriesFound => 'Không tìm thấy quán ăn nào';
+
+  @override
+  String get eateryDetail => 'Chi tiết quán ăn';
+
+  @override
+  String get detectingLocation => 'Đang lấy vị trí của bạn...';
+
+  @override
+  String get eateryWheelTitle => 'Hôm nay ăn gì?';
+
+  @override
+  String get eateryWheelResultTitle => 'Bạn nên thử:';
+
+  @override
+  String get viewDetail => 'Xem chi tiết';
 }

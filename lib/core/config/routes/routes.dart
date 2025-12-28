@@ -68,6 +68,10 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/rental_bill_detail.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/create_rental_bill.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
+import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_list.page.dart';
+import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_detail.page.dart';
+import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_wheel.page.dart';
+import 'package:tour_guide_app/features/eatery/data/models/eatery.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -528,6 +532,26 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => SuggestItineraryPreviewPage(itinerary: itinerary),
+        );
+
+      case AppRouteConstant.eateryList:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const EateryListPage(),
+        );
+
+      case AppRouteConstant.eateryDetail:
+        final eateryId = settings.arguments as int;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => EateryDetailPage(eateryId: eateryId),
+        );
+
+      case AppRouteConstant.eateryWheel:
+        final eateries = settings.arguments as List<Eatery>;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => EateryWheelPage(eateries: eateries),
         );
 
       default:

@@ -1422,5 +1422,13 @@
   "payNow": "Thanh toán ngay",
   "suggest": "Gợi ý",
   "itineraryPreview": "Xem trước lộ trình",
-  "suggestItinerary": "Gợi ý lộ trình"
+  "suggestItinerary": "Gợi ý lộ trình",
+  "famousEateries": "Quán ăn nổi tiếng",
+  "noEateriesFound": "Không tìm thấy quán ăn nào",
+  "eateryDetail": "Chi tiết quán ăn",
+  "about": "Giới thiệu",
+  "detectingLocation": "Đang lấy vị trí của bạn...",
+  "eateryWheelTitle": "Hôm nay ăn gì?",
+  "eateryWheelResultTitle": "Bạn nên thử:",
+  "viewDetail": "Xem chi tiết"
 }

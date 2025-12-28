@@ -140,6 +140,14 @@ import 'package:tour_guide_app/features/voucher/domain/repository/voucher_reposi
 import 'package:tour_guide_app/features/voucher/domain/usecases/get_voucher_detail_use_case.dart';
 import 'package:tour_guide_app/features/voucher/domain/usecases/get_vouchers_use_case.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_vouchers_cubit.dart';
+import 'package:tour_guide_app/features/eatery/data/data_source/eatery_api_service.dart';
+import 'package:tour_guide_app/features/eatery/data/repository/eatery_repository_impl.dart';
+import 'package:tour_guide_app/features/eatery/domain/repository/eatery_repository.dart';
+import 'package:tour_guide_app/features/eatery/domain/usecases/get_eateries_use_case.dart';
+import 'package:tour_guide_app/features/eatery/domain/usecases/get_random_eatery_use_case.dart';
+import 'package:tour_guide_app/features/eatery/domain/usecases/get_eatery_detail_use_case.dart';
+import 'package:tour_guide_app/features/eatery/presentation/bloc/get_eateries/get_eateries_cubit.dart';
+import 'package:tour_guide_app/features/eatery/presentation/bloc/get_eatery_detail/get_eatery_detail_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -161,6 +169,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
     MotorbikeRentalApiServiceImpl(),
   );
   sl.registerSingleton<RentalBillApiService>(RentalBillApiServiceImpl());
+  sl.registerSingleton<EateryApiService>(EateryApiServiceImpl());
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
@@ -174,6 +183,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
     MotorbikeRentalRepositoryImpl(),
   );
   sl.registerSingleton<RentalBillRepository>(RentalBillRepositoryImpl());
+  sl.registerSingleton<EateryRepository>(EateryRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());
@@ -221,6 +231,12 @@ void setUpServiceLocator(SharedPreferences prefs) {
     PublicizeItineraryUseCase(sl()),
   );
   sl.registerSingleton<ClaimItineraryUseCase>(ClaimItineraryUseCase(sl()));
+
+
+  // Eatery
+  sl.registerSingleton<GetEateriesUseCase>(GetEateriesUseCase());
+  sl.registerSingleton<GetRandomEateryUseCase>(GetRandomEateryUseCase());
+  sl.registerSingleton<GetEateryDetailUseCase>(GetEateryDetailUseCase());
 
   sl.registerSingleton<UseItineraryUseCase>(UseItineraryUseCase()); // Add this
 
@@ -377,4 +393,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetVoucherDetailUseCase>(GetVoucherDetailUseCase(sl()));
 
   sl.registerFactory<GetVouchersCubit>(() => GetVouchersCubit(sl()));
+
+  // Eatery Cubits
+  sl.registerFactory<GetEateriesCubit>(() => GetEateriesCubit(sl()));
+  sl.registerFactory<GetEateryDetailCubit>(() => GetEateryDetailCubit(sl()));
 }
