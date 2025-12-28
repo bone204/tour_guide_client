@@ -14,8 +14,14 @@ class HotelRoomListPage extends StatefulWidget {
 }
 
 class _HotelRoomListPageState extends State<HotelRoomListPage> {
-  final List<Room> _rooms = Room.getMockRooms();
+  late List<Room> _rooms;
   final Map<String, int> _selectedRooms = {}; // roomId -> quantity
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _rooms = Room.getMockRooms(context);
+  }
 
   void _navigateToBookingInfo() {
     final selectedRoomBookings =
@@ -40,8 +46,8 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
     );
 
     final booking = HotelBooking(
-      hotelName: 'Khách sạn Continental',
-      hotelAddress: 'Quận 1, TP.HCM',
+      hotelName: AppLocalizations.of(context)!.continentalHotel,
+      hotelAddress: AppLocalizations.of(context)!.district1Hcm,
       selectedRooms: selectedRoomBookings,
       totalCost: totalCost,
       numberOfNights: 1, // Mock data
@@ -124,7 +130,7 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            '$totalRooms phòng',
+                            '$totalRooms ${AppLocalizations.of(context)!.roomsLower}',
                             style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(color: AppColors.textSubtitle),
                           ),

@@ -22,18 +22,18 @@ class _FindRestaurantPageState extends State<FindRestaurantPage> {
 
   void _showLocationPicker() {
     final locations = [
-      'Quận 1',
-      'Quận 2',
-      'Quận 3',
-      'Quận 4',
-      'Quận 5',
-      'Quận 7',
-      'Quận 10',
-      'Thủ Đức',
-      'Bình Thạnh',
-      'Phú Nhuận',
-      'Tân Bình',
-      'Gò Vấp',
+      AppLocalizations.of(context)!.district1,
+      AppLocalizations.of(context)!.district2,
+      AppLocalizations.of(context)!.district3,
+      AppLocalizations.of(context)!.district4,
+      AppLocalizations.of(context)!.district5,
+      AppLocalizations.of(context)!.district7,
+      AppLocalizations.of(context)!.district10,
+      AppLocalizations.of(context)!.thuDuc,
+      AppLocalizations.of(context)!.binhThanh,
+      AppLocalizations.of(context)!.phuNhuan,
+      AppLocalizations.of(context)!.tanBinh,
+      AppLocalizations.of(context)!.goVap,
     ];
 
     showModalBottomSheet(
@@ -63,7 +63,7 @@ class _FindRestaurantPageState extends State<FindRestaurantPage> {
                     ),
                   ),
                   Text(
-                    'Chọn vị trí',
+                    AppLocalizations.of(context)!.selectLocationTitle,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   SizedBox(height: 16.h),
@@ -186,11 +186,10 @@ class _FindRestaurantPageState extends State<FindRestaurantPage> {
               onPressed: () => _navigateToRestaurantList(context),
               backgroundColor: AppColors.primaryBlue,
               textColor: AppColors.textSecondary,
-            )
+            ),
           ],
         ),
       ),
     );
   }
 }
-

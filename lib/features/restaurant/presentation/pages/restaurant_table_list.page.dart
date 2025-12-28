@@ -16,39 +16,45 @@ class RestaurantTableListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final tables = [
       {
-        "tableName": "Bàn 01",
+        "tableName": "${AppLocalizations.of(context)!.table} 01",
         "seats": 2,
-        "location": "Tầng 1 - Gần cửa sổ",
+        "location":
+            "${AppLocalizations.of(context)!.floor1} - ${AppLocalizations.of(context)!.nearWindow}",
         "isAvailable": true,
       },
       {
-        "tableName": "Bàn 02",
+        "tableName": "${AppLocalizations.of(context)!.table} 02",
         "seats": 4,
-        "location": "Tầng 1 - Giữa phòng",
+        "location":
+            "${AppLocalizations.of(context)!.floor1} - ${AppLocalizations.of(context)!.middleOfRoom}",
         "isAvailable": true,
       },
       {
-        "tableName": "Bàn 03",
+        "tableName": "${AppLocalizations.of(context)!.table} 03",
         "seats": 6,
-        "location": "Tầng 2 - VIP",
+        "location":
+            "${AppLocalizations.of(context)!.floor2} - ${AppLocalizations.of(context)!.vip}",
         "isAvailable": false,
       },
       {
-        "tableName": "Bàn 04",
+        "tableName": "${AppLocalizations.of(context)!.table} 04",
         "seats": 4,
-        "location": "Tầng 1 - Góc phòng",
+        "location":
+            "${AppLocalizations.of(context)!.floor1} - ${AppLocalizations.of(context)!.cornerOfRoom}",
         "isAvailable": true,
       },
       {
-        "tableName": "Bàn 05",
+        "tableName": "${AppLocalizations.of(context)!.table} 05",
         "seats": 8,
-        "location": "Tầng 2 - Phòng riêng",
+        "location":
+            "${AppLocalizations.of(context)!.floor2} - ${AppLocalizations.of(context)!.privateRoom}",
         "isAvailable": true,
       },
       {
-        "tableName": "Bàn 06",
+        "tableName": "${AppLocalizations.of(context)!.table} 06",
         "seats": 2,
-        "location": "Tầng 1 - Ban công",
+        "location":
+            "${AppLocalizations.of(context)!.floor1} - ${AppLocalizations.of(context)!.balcony}",
         "isAvailable": false,
       },
     ];
@@ -83,4 +89,3 @@ class RestaurantTableListPage extends StatelessWidget {
     );
   }
 }
-

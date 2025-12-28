@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/sign_in.page.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/sign_up.page.dart';
-import 'package:tour_guide_app/features/car_rental/presentation/pages/car_bill.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_detail.page.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/verify_email.page.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/verify_phone.page.dart';
@@ -13,7 +12,6 @@ import 'package:tour_guide_app/features/car_rental/presentation/pages/car_rental
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_rental.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_list.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_detail.page.dart';
-import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_bill.page.dart';
 import 'package:tour_guide_app/features/bus_booking/presentation/pages/bus_search.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/add_vehicle.page.dart';
 import 'package:tour_guide_app/features/splash/presentation/pages/splash_screen.page.dart';
@@ -67,6 +65,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicl
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/rental_bill_list.page.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/rental_bill_detail.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/create_rental_bill.page.dart';
+import 'package:tour_guide_app/features/car_rental/presentation/pages/create_car_rental_bill.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_list.page.dart';
 import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_detail.page.dart';
@@ -224,9 +223,10 @@ class AppRouter {
         );
 
       case AppRouteConstant.carDetails:
+        final licensePlate = settings.arguments as String?;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => CarDetailPage(),
+          builder: (_) => CarDetailPage(licensePlate: licensePlate),
         );
 
       case AppRouteConstant.motorbikeDetails:
@@ -240,18 +240,6 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => MotorbikeDetailPage(licensePlate: licensePlate),
-        );
-
-      case AppRouteConstant.carBill:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => CarBillPage(),
-        );
-
-      case AppRouteConstant.motorbikeBill:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => MotorbikeBillPage(),
         );
 
       case AppRouteConstant.findRestaurant:
@@ -521,6 +509,18 @@ class AppRouter {
           settings: settings,
           builder:
               (_) => CreateRentalBillPage(
+                vehicle: args['vehicle'] as RentalVehicle,
+                rentalType: args['rentalType'] as String,
+                initialStartDate: args['initialStartDate'] as DateTime,
+              ),
+        );
+
+      case AppRouteConstant.createCarRentalBill:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          settings: settings,
+          builder:
+              (_) => CreateCarRentalBillPage(
                 vehicle: args['vehicle'] as RentalVehicle,
                 rentalType: args['rentalType'] as String,
                 initialStartDate: args['initialStartDate'] as DateTime,

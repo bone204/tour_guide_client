@@ -58,7 +58,7 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
               width: double.infinity,
               height: 236.h,
               color: AppColors.primaryBlue.withOpacity(0.1),
-              child: Image.asset(AppImage.defaultCar, fit: BoxFit.cover),
+              child: Image.asset(AppImage.defaultHotel, fit: BoxFit.cover),
             ),
 
             Padding(
@@ -73,7 +73,8 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    booking.hotelAddress ?? 'TP.HCM',
+                    booking.hotelAddress ??
+                        AppLocalizations.of(context)!.district1Hcm,
                     style: theme.bodyMedium?.copyWith(
                       color: AppColors.textSubtitle,
                     ),

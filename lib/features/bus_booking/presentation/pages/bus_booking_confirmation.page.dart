@@ -22,15 +22,17 @@ class BusBookingConfirmationPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<BusBookingConfirmationPage> createState() => _BusBookingConfirmationPageState();
+  State<BusBookingConfirmationPage> createState() =>
+      _BusBookingConfirmationPageState();
 }
 
-class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage> {
+class _BusBookingConfirmationPageState
+    extends State<BusBookingConfirmationPage> {
   String? selectedPaymentMethod = 'momo';
   String userName = '';
   String userEmail = '';
   bool isLoadingUserInfo = true;
-  
+
   final List<Map<String, String>> paymentOptions = [
     {'id': 'momo', 'image': AppImage.momo},
     {'id': 'zalopay', 'image': AppImage.zalopay},
@@ -59,14 +61,15 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
     // Navigate to ticket
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
-        builder: (context) => BusTicketPage(
-          busData: widget.busData,
-          fromLocation: widget.fromLocation,
-          toLocation: widget.toLocation,
-          date: widget.date,
-          selectedSeats: widget.selectedSeats,
-          bookingCode: 'BUS${DateTime.now().millisecondsSinceEpoch}',
-        ),
+        builder:
+            (context) => BusTicketPage(
+              busData: widget.busData,
+              fromLocation: widget.fromLocation,
+              toLocation: widget.toLocation,
+              date: widget.date,
+              selectedSeats: widget.selectedSeats,
+              bookingCode: 'BUS${DateTime.now().millisecondsSinceEpoch}',
+            ),
       ),
     );
   }
@@ -107,10 +110,10 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
 
                   // Payment Method
                   Text(
-                    'Phương thức thanh toán',
+                    AppLocalizations.of(context)!.paymentMethod,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
-                        ),
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                   SizedBox(height: 12.h),
                   PaymentMethodSelector(
@@ -180,7 +183,7 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
               ),
             ),
           ),
-          
+
           // Content
           Padding(
             padding: EdgeInsets.all(20.r),
@@ -210,16 +213,17 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                         children: [
                           Text(
                             widget.busData['company'],
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: AppColors.primaryWhite,
-                                ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: AppColors.primaryWhite),
                           ),
                           SizedBox(height: 2.h),
                           Text(
                             widget.busData['type'],
-                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                  color: AppColors.primaryWhite.withOpacity(0.85),
-                                ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.displayMedium?.copyWith(
+                              color: AppColors.primaryWhite.withOpacity(0.85),
+                            ),
                           ),
                         ],
                       ),
@@ -248,37 +252,44 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                                     color: AppColors.primaryWhite,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
                                 ),
                                 SizedBox(width: 8.w),
                                 Text(
-                                  'Điểm đi',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  AppLocalizations.of(context)!.departurePoint,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.fromLocation,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               widget.busData['departureTime'],
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(color: AppColors.primaryWhite),
                             ),
                           ],
                         ),
@@ -312,7 +323,9 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                                 borderRadius: BorderRadius.circular(10.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primaryWhite.withOpacity(0.3),
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.3,
+                                    ),
                                     blurRadius: 8,
                                     offset: Offset(0, 2),
                                   ),
@@ -328,9 +341,11 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                                   SizedBox(height: 2.h),
                                   Text(
                                     widget.busData['duration'],
-                                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                          color: AppColors.primaryBlue,
-                                        ),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.displayMedium?.copyWith(
+                                      color: AppColors.primaryBlue,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -363,10 +378,14 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
-                                  'Điểm đến',
-                                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                                        color: AppColors.primaryWhite.withOpacity(0.85),
-                                      ),
+                                  AppLocalizations.of(context)!.arrivalPoint,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge?.copyWith(
+                                    color: AppColors.primaryWhite.withOpacity(
+                                      0.85,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(width: 8.w),
                                 Container(
@@ -376,7 +395,9 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                                     color: AppColors.primaryOrange,
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: AppColors.primaryWhite.withOpacity(0.5),
+                                      color: AppColors.primaryWhite.withOpacity(
+                                        0.5,
+                                      ),
                                       width: 2,
                                     ),
                                   ),
@@ -386,11 +407,13 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.toLocation,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.3,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleMedium?.copyWith(
+                                color: AppColors.primaryWhite,
+                                fontWeight: FontWeight.w800,
+                                height: 1.3,
+                              ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.right,
@@ -398,9 +421,8 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                             SizedBox(height: 8.h),
                             Text(
                               widget.busData['arrivalTime'],
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: AppColors.primaryWhite,
-                                  ),
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(color: AppColors.primaryWhite),
                             ),
                           ],
                         ),
@@ -411,7 +433,10 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
 
                 SizedBox(height: 16.h),
 
-                Divider(color: AppColors.primaryWhite.withOpacity(0.3), thickness: 2),
+                Divider(
+                  color: AppColors.primaryWhite.withOpacity(0.3),
+                  thickness: 2,
+                ),
 
                 SizedBox(height: 16.h),
 
@@ -436,9 +461,8 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                         SizedBox(width: 8.w),
                         Text(
                           '${widget.date.day}/${widget.date.month}/${widget.date.year}',
-                          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                color: AppColors.primaryWhite,
-                              ),
+                          style: Theme.of(context).textTheme.displayMedium
+                              ?.copyWith(color: AppColors.primaryWhite),
                         ),
                       ],
                     ),
@@ -458,11 +482,13 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                         ),
                         SizedBox(width: 8.w),
                         Text(
-                          'Ghế: ${widget.selectedSeats.map((s) => s + 1).join(', ')}',
-                          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                                color: AppColors.primaryWhite,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          '${AppLocalizations.of(context)!.seats}: ${widget.selectedSeats.map((s) => s + 1).join(', ')}',
+                          style: Theme.of(
+                            context,
+                          ).textTheme.displayMedium?.copyWith(
+                            color: AppColors.primaryWhite,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ],
                     ),
@@ -484,9 +510,7 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
           color: AppColors.primaryWhite,
           borderRadius: BorderRadius.circular(12.r),
         ),
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
+        child: Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -507,13 +531,13 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Thông tin hành khách',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                ),
+            AppLocalizations.of(context)!.passengerInfo,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
           ),
           SizedBox(height: 16.h),
-          
+
           // User Info Display
           Row(
             children: [
@@ -523,7 +547,12 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                   color: AppColors.primaryBlue,
                   borderRadius: BorderRadius.circular(10.r),
                 ),
-                child: SvgPicture.asset(AppIcons.user, width: 24.w, height: 24.h, color: AppColors.primaryWhite),
+                child: SvgPicture.asset(
+                  AppIcons.user,
+                  width: 24.w,
+                  height: 24.h,
+                  color: AppColors.primaryWhite,
+                ),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -531,10 +560,9 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Họ và tên',
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                      AppLocalizations.of(context)!.fullName,
+                      style: Theme.of(context).textTheme.displayMedium
+                          ?.copyWith(color: AppColors.textSubtitle),
                     ),
                     SizedBox(height: 4.h),
                     Text(
@@ -546,9 +574,9 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
               ),
             ],
           ),
-          
+
           SizedBox(height: 16.h),
-          
+
           Row(
             children: [
               Container(
@@ -557,7 +585,12 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                   color: AppColors.primaryBlue,
                   borderRadius: BorderRadius.circular(10.r),
                 ),
-                child: SvgPicture.asset(AppIcons.user, width: 24.w, height: 24.h, color: AppColors.primaryWhite),
+                child: SvgPicture.asset(
+                  AppIcons.user,
+                  width: 24.w,
+                  height: 24.h,
+                  color: AppColors.primaryWhite,
+                ),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -565,10 +598,9 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Email',
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                      AppLocalizations.of(context)!.email,
+                      style: Theme.of(context).textTheme.displayMedium
+                          ?.copyWith(color: AppColors.textSubtitle),
                     ),
                     SizedBox(height: 4.h),
                     Text(
@@ -580,9 +612,9 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
               ),
             ],
           ),
-          
+
           SizedBox(height: 16.h),
-          
+
           Row(
             children: [
               Container(
@@ -591,7 +623,12 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                   color: AppColors.primaryBlue,
                   borderRadius: BorderRadius.circular(10.r),
                 ),
-                child: SvgPicture.asset(AppIcons.user, width: 24.w, height: 24.h, color: AppColors.primaryWhite),
+                child: SvgPicture.asset(
+                  AppIcons.user,
+                  width: 24.w,
+                  height: 24.h,
+                  color: AppColors.primaryWhite,
+                ),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -599,10 +636,9 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Ghế đã chọn',
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                      AppLocalizations.of(context)!.selectedSeats,
+                      style: Theme.of(context).textTheme.displayMedium
+                          ?.copyWith(color: AppColors.textSubtitle),
                     ),
                     SizedBox(height: 4.h),
                     Text(
@@ -641,15 +677,18 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Chi tiết giá',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                ),
+            AppLocalizations.of(context)!.priceDetails,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
           ),
           SizedBox(height: 12.h),
-          _buildPriceRow('Giá vé (${widget.selectedSeats.length} ghế)', ticketPrice),
+          _buildPriceRow(
+            '${AppLocalizations.of(context)!.ticketPrice} (${widget.selectedSeats.length} ${AppLocalizations.of(context)!.seats})',
+            ticketPrice,
+          ),
           SizedBox(height: 8.h),
-          _buildPriceRow('Phí dịch vụ', serviceFee),
+          _buildPriceRow(AppLocalizations.of(context)!.serviceFee, serviceFee),
           SizedBox(height: 12.h),
           Divider(color: AppColors.textSubtitle.withOpacity(0.2), thickness: 2),
           SizedBox(height: 12.h),
@@ -657,16 +696,16 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Tổng cộng',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
+                AppLocalizations.of(context)!.total,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
               ),
               Text(
                 '${total.toStringAsFixed(0)}đ',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: AppColors.primaryBlue,
-                    ),
+                  color: AppColors.primaryBlue,
+                ),
               ),
             ],
           ),
@@ -681,15 +720,15 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                color: AppColors.textSubtitle,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.displayLarge?.copyWith(color: AppColors.textSubtitle),
         ),
         Text(
           '${price.toStringAsFixed(0)}đ',
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: AppColors.textPrimary,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(color: AppColors.textPrimary),
         ),
       ],
     );
@@ -721,18 +760,18 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Tổng thanh toán',
+                    AppLocalizations.of(context)!.total,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtitle,
-                        ),
+                      color: AppColors.textSubtitle,
+                    ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     '${total.toStringAsFixed(0)}đ',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: AppColors.primaryBlue,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: AppColors.primaryBlue,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -750,4 +789,3 @@ class _BusBookingConfirmationPageState extends State<BusBookingConfirmationPage>
     );
   }
 }
-

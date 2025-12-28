@@ -54,7 +54,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
               width: double.infinity,
               height: 236.h,
               color: AppColors.primaryBlue.withOpacity(0.1),
-              child: Image.asset(AppImage.defaultCar, fit: BoxFit.cover),
+              child: Image.asset(AppImage.defaultFood, fit: BoxFit.cover),
             ),
 
             Padding(
@@ -65,7 +65,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                   Text('Nhà hàng Sài Gòn', style: theme.titleLarge),
                   SizedBox(height: 4.h),
                   Text(
-                    'Món Việt • Quận 1, TP.HCM',
+                    '${AppLocalizations.of(context)!.vietnameseFood} • ${AppLocalizations.of(context)!.district1}, ${AppLocalizations.of(context)!.hcmCity}',
                     style: theme.bodyMedium?.copyWith(
                       color: AppColors.textSubtitle,
                     ),
@@ -93,15 +93,16 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
 
                   BillInfo(
                     label: AppLocalizations.of(context)!.table,
-                    value: "Bàn 01",
+                    value: "${AppLocalizations.of(context)!.table} 01",
                   ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.numberOfPeople,
-                    value: "2 người",
+                    value: "2 ${AppLocalizations.of(context)!.people}",
                   ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.location,
-                    value: "Tầng 1 - Gần cửa sổ",
+                    value:
+                        "${AppLocalizations.of(context)!.floor1} - ${AppLocalizations.of(context)!.nearWindow}",
                   ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.time,

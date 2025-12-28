@@ -1,6 +1,8 @@
 class AppImage {
   static const String defaultCar = 'assets/images/img_car.png';
+  static const String defaultFood = 'assets/images/img_food.jpeg';
   static const String defaultDestination = 'assets/images/img_destination.jpg';
+  static const String defaultHotel = 'assets/images/img_hotel.jpg';
   static const String sakura = 'assets/images/gif_sakura.gif';
   static const String rose = 'assets/images/gif_rose.gif';
   static const String coin = 'assets/images/gif_coin.gif';

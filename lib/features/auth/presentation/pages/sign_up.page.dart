@@ -9,6 +9,9 @@ import 'package:tour_guide_app/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/bloc/button/button_state.dart';
 import 'package:tour_guide_app/common/bloc/button/button_state_cubit.dart';
+import 'package:tour_guide_app/common/bloc/lang/locale_cubit.dart';
+import 'package:tour_guide_app/common/bloc/lang/locale_state.dart';
+import 'package:tour_guide_app/common/widgets/dropdown/lang_dropdown.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -20,24 +23,30 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmedPasswordController = TextEditingController();
+  final TextEditingController _confirmedPasswordController =
+      TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isFormSubmitted = false;
 
   // ===== Validation =====
   String? _validateUsername(String? value) {
     if (!_isFormSubmitted) return null;
-    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.pleaseEnterUsername;
-    if (value.length < 3) return AppLocalizations.of(context)!.usernameMinLength;
-    if (value.length > 20) return AppLocalizations.of(context)!.usernameMaxLength;
+    if (value == null || value.isEmpty)
+      return AppLocalizations.of(context)!.pleaseEnterUsername;
+    if (value.length < 3)
+      return AppLocalizations.of(context)!.usernameMinLength;
+    if (value.length > 20)
+      return AppLocalizations.of(context)!.usernameMaxLength;
     final regex = RegExp(r'^[a-zA-Z0-9_]+$');
-    if (!regex.hasMatch(value)) return AppLocalizations.of(context)!.usernameInvalid;
+    if (!regex.hasMatch(value))
+      return AppLocalizations.of(context)!.usernameInvalid;
     return null;
   }
 
   String? _validatePassword(String? value) {
     if (!_isFormSubmitted) return null;
-    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.pleaseEnterPassword;
+    if (value == null || value.isEmpty)
+      return AppLocalizations.of(context)!.pleaseEnterPassword;
     // if (value.length < 8) return 'Mật khẩu phải có ít nhất 8 ký tự';
     // if (value.length > 50) return 'Mật khẩu không được vượt quá 50 ký tự';
     // if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)').hasMatch(value)) {
@@ -48,8 +57,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   String? _validateConfirmedPassword(String? value) {
     if (!_isFormSubmitted) return null;
-    if (value == null || value.isEmpty) return AppLocalizations.of(context)!.pleaseConfirmPassword;
-    if (value != _passwordController.text) return AppLocalizations.of(context)!.passwordMismatch;
+    if (value == null || value.isEmpty)
+      return AppLocalizations.of(context)!.pleaseConfirmPassword;
+    if (value != _passwordController.text)
+      return AppLocalizations.of(context)!.passwordMismatch;
     return null;
   }
 
@@ -90,7 +101,6 @@ class _SignUpPageState extends State<SignUpPage> {
             if (state is ButtonSuccessState) {
               // Navigate to sign in page after successful registration
               Navigator.pushReplacementNamed(context, AppRouteConstant.signIn);
-              
             }
             if (state is ButtonFailureState) {
               showAppDialog(
@@ -113,7 +123,7 @@ class _SignUpPageState extends State<SignUpPage> {
               GestureDetector(
                 onTap: _handleTapOutside,
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.fromLTRB(20.w, 90.h, 20.w, 0),
+                  padding: EdgeInsets.fromLTRB(20.w, 120.h, 20.w, 0),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -126,9 +136,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         SizedBox(height: 15.h),
                         Text(
                           AppLocalizations.of(context)!.signUpDescription,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: AppColors.textSubtitle),
                         ),
                         SizedBox(height: 40.h),
                         Container(
@@ -138,7 +147,8 @@ class _SignUpPageState extends State<SignUpPage> {
                             children: [
                               CustomTextField(
                                 label: AppLocalizations.of(context)!.username,
-                                placeholder: AppLocalizations.of(context)!.enterUsername,
+                                placeholder:
+                                    AppLocalizations.of(context)!.enterUsername,
                                 prefixIconData: Icons.person_outline,
                                 controller: _usernameController,
                                 validator: _validateUsername,
@@ -146,7 +156,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               SizedBox(height: 16.h),
                               CustomPasswordField(
                                 label: AppLocalizations.of(context)!.password,
-                                placeholder: AppLocalizations.of(context)!.enterPassword,
+                                placeholder:
+                                    AppLocalizations.of(context)!.enterPassword,
                                 prefixIcon: Icon(Icons.lock_outline),
                                 controller: _passwordController,
                                 validator: _validatePassword,
@@ -154,7 +165,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               SizedBox(height: 16.h),
                               CustomPasswordField(
                                 label: AppLocalizations.of(context)!.password,
-                                placeholder: AppLocalizations.of(context)!.enterPassword,
+                                placeholder:
+                                    AppLocalizations.of(context)!.enterPassword,
                                 prefixIcon: Icon(Icons.lock_outline),
                                 controller: _confirmedPasswordController,
                                 validator: _validateConfirmedPassword,
@@ -175,8 +187,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!.alreadyHaveAccount,
-                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.alreadyHaveAccount,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium?.copyWith(
                                       color: AppColors.textSubtitle,
                                     ),
                                   ),
@@ -184,18 +200,14 @@ class _SignUpPageState extends State<SignUpPage> {
                                     onPressed: _handleSignIn,
                                     child: Text(
                                       AppLocalizations.of(context)!.signIn,
-                                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.displayLarge?.copyWith(
                                         color: AppColors.primaryOrange,
                                       ),
                                     ),
                                   ),
                                 ],
-                              ),
-                              Text(
-                                AppLocalizations.of(context)!.orConnect,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.textSubtitle,
-                                ),
                               ),
                             ],
                           ),
@@ -205,6 +217,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
+              Positioned(top: 40.h, right: 20.w, child: LanguageDropdown()),
               BlocBuilder<ButtonStateCubit, ButtonState>(
                 builder: (context, state) {
                   if (state is ButtonLoadingState) {
@@ -214,10 +227,21 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Container(
                         color: Colors.black.withOpacity(0.5),
                         child: const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
+                          child: CircularProgressIndicator(color: Colors.white),
                         ),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+              BlocBuilder<LocaleCubit, LocaleState>(
+                builder: (context, state) {
+                  if (state is LocaleLoading) {
+                    return Container(
+                      color: Colors.black.withOpacity(0.5),
+                      child: const Center(
+                        child: CircularProgressIndicator(color: Colors.white),
                       ),
                     );
                   }

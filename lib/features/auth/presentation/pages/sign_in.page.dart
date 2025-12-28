@@ -248,11 +248,6 @@ class _SignInPageState extends State<SignInPage> {
                                   ),
                                 ],
                               ),
-                              Text(
-                                AppLocalizations.of(context)!.orConnect,
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(color: AppColors.textSubtitle),
-                              ),
                             ],
                           ),
                         ),

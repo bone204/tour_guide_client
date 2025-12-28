@@ -364,7 +364,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get sharingTicket => 'Chia sẻ vé...';
 
   @override
-  String get pleaseSelectAtLeastOneRoom => 'Vui lòng chọn ít nhất 1 phòng';
+  String get pleaseSelectAtLeastOneRoom => 'Vui lòng chọn ít nhất một phòng';
 
   @override
   String get pleaseSelectDeliveryCompany => 'Vui lòng chọn hãng giao hàng';
@@ -693,10 +693,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get numberOfPassengers => 'Số hành khách';
 
   @override
-  String get bookingTime => 'Thời gian đặt bàn';
+  String get bookingTime => 'Thời gian đặt';
 
   @override
-  String get foodType => 'Loại đồ ăn';
+  String get foodType => 'Loại món ăn';
 
   @override
   String get checkInDate => 'Ngày nhận phòng';
@@ -2030,7 +2030,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get serverNoResponseContent => 'Quá thời gian chờ phản hồi từ máy chủ. Vui lòng thử lại sau.';
 
   @override
-  String get discountPointsLabel => 'Giảm giá (điểm)';
+  String get discountPointsLabel => 'Điểm giảm giá';
 
   @override
   String get payWithPoints => 'Thanh toán bằng điểm';
@@ -2075,7 +2075,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get driver => 'Tài xế';
 
   @override
-  String get selectedSeats => 'Số lượng';
+  String get selectedSeats => 'Ghế đã chọn';
 
   @override
   String get roomQuantity => 'Số lượng phòng';
@@ -2084,7 +2084,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get roomNotAvailable => 'Phòng này hiện không có sẵn';
 
   @override
-  String get selectFoodType => 'Chọn loại đồ ăn';
+  String get selectFoodType => 'Chọn loại món ăn';
 
   @override
   String get continueAction => 'Tiếp tục';
@@ -2179,16 +2179,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get foodTypeBBQ => 'Nướng';
 
   @override
-  String get foodTypeVegetarian => 'Chay';
+  String get foodTypeVegetarian => 'Đồ chay';
 
   @override
-  String get foodTypeKorean => 'Món Hàn';
+  String get foodTypeKorean => 'Hàn Quốc';
 
   @override
-  String get foodTypeJapanese => 'Món Nhật';
+  String get foodTypeJapanese => 'Nhật Bản';
 
   @override
-  String get foodTypeFastFood => 'Fast Food';
+  String get foodTypeFastFood => 'Đồ ăn nhanh';
 
   @override
   String get contractDurationPolicy => 'Hợp đồng có hiệu lực cho đến khi một trong hai bên chấm dứt hợp tác.';
@@ -2413,5 +2413,218 @@ class AppLocalizationsVi extends AppLocalizations {
   String get eateryWheelResultTitle => 'Bạn nên thử:';
 
   @override
+  String get selectLocationTitle => 'Chọn vị trí';
+
+  @override
+  String get aboutTab => 'Giới thiệu';
+
+  @override
+  String get reviewsTab => 'Đánh giá';
+
+  @override
+  String get photosTab => 'Hình ảnh';
+
+  @override
+  String get videosTab => 'Video';
+
+  @override
+  String get floor1 => 'Tầng 1';
+
+  @override
+  String get floor2 => 'Tầng 2';
+
+  @override
+  String get nearWindow => 'Gần cửa sổ';
+
+  @override
+  String get middleOfRoom => 'Giữa phòng';
+
+  @override
+  String get vip => 'VIP';
+
+  @override
+  String get cornerOfRoom => 'Góc phòng';
+
+  @override
+  String get privateRoom => 'Phòng riêng';
+
+  @override
+  String get balcony => 'Ban công';
+
+  @override
+  String get vietnameseFood => 'Món Việt';
+
+  @override
+  String get thaiFood => 'Món Thái';
+
+  @override
+  String get japaneseFood => 'Món Nhật';
+
+  @override
+  String get district1 => 'Quận 1';
+
+  @override
+  String get district2 => 'Quận 2';
+
+  @override
+  String get district3 => 'Quận 3';
+
+  @override
+  String get district4 => 'Quận 4';
+
+  @override
+  String get district5 => 'Quận 5';
+
+  @override
+  String get district7 => 'Quận 7';
+
+  @override
+  String get district10 => 'Quận 10';
+
+  @override
+  String get thuDuc => 'TP. Thủ Đức';
+
+  @override
+  String get binhThanh => 'Quận Bình Thạnh';
+
+  @override
+  String get phuNhuan => 'Quận Phú Nhuận';
+
+  @override
+  String get tanBinh => 'Quận Tân Bình';
+
+  @override
+  String get goVap => 'Quận Gò Vấp';
+
+  @override
+  String get hcmCity => 'TP.HCM';
+
+  @override
   String get viewDetail => 'Xem chi tiết';
+
+  @override
+  String get totalAmountRoundTrip => 'Tổng tiền (2 chuyến)';
+
+  @override
+  String get roundTrip => 'Khứ hồi';
+
+  @override
+  String get oneWay => 'Một chiều';
+
+  @override
+  String get passengers => 'hành khách';
+
+  @override
+  String get noBusFound => 'Không tìm thấy chuyến xe';
+
+  @override
+  String get tryAgainWithDifferentFilter => 'Vui lòng thử lại với bộ lọc khác';
+
+  @override
+  String get selectSeat => 'Chọn ghế';
+
+  @override
+  String get info => 'Thông tin';
+
+  @override
+  String get pickUpPoint => 'Điểm đón';
+
+  @override
+  String get dropOffPoint => 'Điểm trả';
+
+  @override
+  String get distance => 'Quãng đường';
+
+  @override
+  String get cancelTicket => 'Hủy vé';
+
+  @override
+  String get changeTicket => 'Đổi vé';
+
+  @override
+  String get luggage => 'Hành lý';
+
+  @override
+  String get freeBefore24h => 'Miễn phí trước 24h';
+
+  @override
+  String get fee20k => 'Phí 20.000đ';
+
+  @override
+  String get max20kg => 'Tối đa 20kg';
+
+  @override
+  String get wifi => 'WiFi';
+
+  @override
+  String get water => 'Nước uống';
+
+  @override
+  String get tv => 'TV';
+
+  @override
+  String get coldTowel => 'Khăn lạnh';
+
+  @override
+  String get massage => 'Massage';
+
+  @override
+  String get blanket => 'Chăn';
+
+  @override
+  String get priceDetails => 'Chi tiết giá';
+
+  @override
+  String get selectBank => 'Chọn ngân hàng';
+
+  @override
+  String get ticketPrice => 'Giá vé';
+
+  @override
+  String get serviceFee => 'Phí dịch vụ';
+
+  @override
+  String get total => 'Tổng cộng';
+
+  @override
+  String get continentalHotel => 'Khách sạn Continental';
+
+  @override
+  String get rexHotel => 'Rex Hotel';
+
+  @override
+  String get newWorldSaigon => 'New World Saigon';
+
+  @override
+  String get fiveStarHotel => 'Khách sạn 5 sao';
+
+  @override
+  String get fourStarHotel => 'Khách sạn 4 sao';
+
+  @override
+  String get district1Hcm => 'Quận 1, TP.HCM';
+
+  @override
+  String get roomsLower => 'phòng';
+
+  @override
+  String get roomSuperior => 'Phòng Superior';
+
+  @override
+  String get roomDeluxe => 'Phòng Deluxe';
+
+  @override
+  String get roomSuite => 'Phòng Suite';
+
+  @override
+  String get roomFamily => 'Phòng Family';
+
+  @override
+  String get saigonRestaurant => 'Nhà hàng Sài Gòn';
+
+  @override
+  String get thaiHotpot => 'Lẩu Thái Tomyummmmmm';
+
+  @override
+  String get sushiWorld => 'Sushi World';
 }

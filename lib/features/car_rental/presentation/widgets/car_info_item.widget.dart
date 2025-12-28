@@ -1,15 +1,11 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
 class CarInfoItem extends StatelessWidget {
   final String icon;
   final String text;
 
-  const CarInfoItem({
-    Key? key,
-    required this.icon,
-    required this.text,
-  }) : super(key: key);
+  const CarInfoItem({Key? key, required this.icon, required this.text})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +14,7 @@ class CarInfoItem extends StatelessWidget {
       margin: EdgeInsets.only(right: 8.w, top: 6.h, bottom: 6.h),
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryWhite, 
+        color: AppColors.primaryWhite,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(color: AppColors.primaryBlue),
         boxShadow: [
@@ -42,9 +38,9 @@ class CarInfoItem extends StatelessWidget {
           Text(
             text,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-              color: AppColors.textPrimary,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.displayMedium?.copyWith(color: AppColors.textPrimary),
             overflow: TextOverflow.ellipsis,
           ),
         ],

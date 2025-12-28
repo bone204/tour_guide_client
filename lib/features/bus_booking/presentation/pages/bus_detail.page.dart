@@ -225,7 +225,7 @@ class _BusDetailPageState extends State<BusDetailPage>
                                 ),
                                 SizedBox(width: 8.w),
                                 Text(
-                                  'Điểm đi',
+                                  AppLocalizations.of(context)!.departurePoint,
                                   style: Theme.of(
                                     context,
                                   ).textTheme.displayLarge?.copyWith(
@@ -342,7 +342,7 @@ class _BusDetailPageState extends State<BusDetailPage>
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
-                                  'Điểm đến',
+                                  AppLocalizations.of(context)!.arrivalPoint,
                                   style: Theme.of(
                                     context,
                                   ).textTheme.displayLarge?.copyWith(
@@ -415,7 +415,10 @@ class _BusDetailPageState extends State<BusDetailPage>
         unselectedLabelStyle: Theme.of(context).textTheme.titleSmall,
         indicatorColor: AppColors.primaryBlue,
         indicatorWeight: 3,
-        tabs: [Tab(text: 'Chọn ghế'), Tab(text: 'Thông tin')],
+        tabs: [
+          Tab(text: AppLocalizations.of(context)!.selectSeat),
+          Tab(text: AppLocalizations.of(context)!.info),
+        ],
       ),
     );
   }
@@ -444,22 +447,22 @@ class _BusDetailPageState extends State<BusDetailPage>
             items: [
               {
                 'icon': Icons.location_on_outlined,
-                'label': 'Điểm đón',
+                'label': AppLocalizations.of(context)!.pickUpPoint,
                 'value': 'Bến xe Miền Đông',
               },
               {
                 'icon': Icons.flag_outlined,
-                'label': 'Điểm trả',
+                'label': AppLocalizations.of(context)!.dropOffPoint,
                 'value': 'Bến xe Đà Lạt',
               },
               {
                 'icon': Icons.access_time_rounded,
-                'label': 'Thời gian',
+                'label': AppLocalizations.of(context)!.time,
                 'value': widget.busData['duration'],
               },
               {
                 'icon': Icons.route_rounded,
-                'label': 'Quãng đường',
+                'label': AppLocalizations.of(context)!.distance,
                 'value': '308 km',
               },
             ],
@@ -486,18 +489,18 @@ class _BusDetailPageState extends State<BusDetailPage>
             items: [
               {
                 'icon': Icons.cancel_outlined,
-                'label': 'Hủy vé',
-                'value': 'Miễn phí trước 24h',
+                'label': AppLocalizations.of(context)!.cancelTicket,
+                'value': AppLocalizations.of(context)!.freeBefore24h,
               },
               {
                 'icon': Icons.swap_horiz_rounded,
-                'label': 'Đổi vé',
-                'value': 'Phí 20.000đ',
+                'label': AppLocalizations.of(context)!.changeTicket,
+                'value': AppLocalizations.of(context)!.fee20k,
               },
               {
                 'icon': Icons.luggage_outlined,
-                'label': 'Hành lý',
-                'value': 'Tối đa 20kg',
+                'label': AppLocalizations.of(context)!.luggage,
+                'value': AppLocalizations.of(context)!.max20kg,
               },
             ],
           ),
@@ -605,7 +608,7 @@ class _BusDetailPageState extends State<BusDetailPage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Tổng tiền',
+                    AppLocalizations.of(context)!.total,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSubtitle,
                     ),

@@ -73,8 +73,8 @@ class _AddVehicleViewState extends State<_AddVehicleView> {
                     totalSteps: 3,
                     stepTitles: [
                       locale.vehicleInfo,
-                      '${locale.document}\n',
-                      locale.totalPrice.replaceFirst(' ', '\n'),
+                      locale.document,
+                      locale.totalPrice,
                     ],
                   ),
                 ),

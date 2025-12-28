@@ -17,28 +17,31 @@ class RestaurantListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final restaurants = [
       {
-        "name": "Nhà hàng Sài Gòn",
-        "cuisine": "Món Việt",
-        "location": "Quận 1, TP.HCM",
+        "name": AppLocalizations.of(context)!.saigonRestaurant,
+        "cuisine": AppLocalizations.of(context)!.foodTypeVietnamese,
+        "location":
+            "${AppLocalizations.of(context)!.district1}, ${AppLocalizations.of(context)!.hcmCity}",
         "priceRange": 150000,
         "rating": 4.5,
-        "image": AppImage.defaultCar,
+        "image": AppImage.defaultFood,
       },
       {
-        "name": "Lẩu Thái Tomyummmmmm",
-        "cuisine": "Món Thái",
-        "location": "Quận 3, TP.HCM",
+        "name": AppLocalizations.of(context)!.thaiHotpot,
+        "cuisine": AppLocalizations.of(context)!.thaiFood,
+        "location":
+            "${AppLocalizations.of(context)!.district1}, ${AppLocalizations.of(context)!.hcmCity}",
         "priceRange": 200000,
         "rating": 4.7,
-        "image": AppImage.defaultCar,
+        "image": AppImage.defaultFood,
       },
       {
-        "name": "Sushi World",
-        "cuisine": "Món Nhật",
-        "location": "Quận 2, TP.HCM",
+        "name": AppLocalizations.of(context)!.sushiWorld,
+        "cuisine": AppLocalizations.of(context)!.foodTypeJapanese,
+        "location":
+            "${AppLocalizations.of(context)!.district1}, ${AppLocalizations.of(context)!.hcmCity}",
         "priceRange": 300000,
         "rating": 4.8,
-        "image": AppImage.defaultCar,
+        "image": AppImage.defaultFood,
       },
     ];
 
@@ -73,4 +76,3 @@ class RestaurantListPage extends StatelessWidget {
     );
   }
 }
-

@@ -364,7 +364,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sharingTicket => 'Sharing ticket...';
 
   @override
-  String get pleaseSelectAtLeastOneRoom => 'Please select at least 1 room';
+  String get pleaseSelectAtLeastOneRoom => 'Please select at least one room';
 
   @override
   String get pleaseSelectDeliveryCompany => 'Please select a delivery company';
@@ -402,7 +402,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addImage => 'Add image';
 
   @override
-  String get bookingSuccess => 'Booking successful!';
+  String get bookingSuccess => 'Booking Successful!';
 
   @override
   String get tableBookingSuccess => 'Table booking successful!';
@@ -642,13 +642,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recipientPhone => 'Recipient Phone';
 
   @override
-  String get checkIn => 'Check In';
+  String get checkIn => 'Check-in';
 
   @override
-  String get checkOut => 'Check Out';
+  String get checkOut => 'Check-out';
 
   @override
-  String get numberOfNights => 'Number of Nights';
+  String get numberOfNights => 'Number of nights';
 
   @override
   String get totalRoomPrice => 'Total Room Price';
@@ -2024,7 +2024,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get serverNoResponseContent => 'Server response timed out. Please try again later.';
 
   @override
-  String get discountPointsLabel => 'Discount (points)';
+  String get discountPointsLabel => 'Discount Points';
 
   @override
   String get payWithPoints => 'Pay with points';
@@ -2078,7 +2078,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get roomNotAvailable => 'Room not available';
 
   @override
-  String get selectFoodType => 'Select food type';
+  String get selectFoodType => 'Select Food Type';
 
   @override
   String get continueAction => 'Continue';
@@ -2407,5 +2407,218 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eateryWheelResultTitle => 'You should try:';
 
   @override
+  String get selectLocationTitle => 'Select Location';
+
+  @override
+  String get aboutTab => 'About';
+
+  @override
+  String get reviewsTab => 'Reviews';
+
+  @override
+  String get photosTab => 'Photos';
+
+  @override
+  String get videosTab => 'Videos';
+
+  @override
+  String get floor1 => 'Floor 1';
+
+  @override
+  String get floor2 => 'Floor 2';
+
+  @override
+  String get nearWindow => 'Near Window';
+
+  @override
+  String get middleOfRoom => 'Middle of Room';
+
+  @override
+  String get vip => 'VIP';
+
+  @override
+  String get cornerOfRoom => 'Corner of Room';
+
+  @override
+  String get privateRoom => 'Private Room';
+
+  @override
+  String get balcony => 'Balcony';
+
+  @override
+  String get vietnameseFood => 'Vietnamese Food';
+
+  @override
+  String get thaiFood => 'Thai Food';
+
+  @override
+  String get japaneseFood => 'Japanese Food';
+
+  @override
+  String get district1 => 'District 1';
+
+  @override
+  String get district2 => 'District 2';
+
+  @override
+  String get district3 => 'District 3';
+
+  @override
+  String get district4 => 'District 4';
+
+  @override
+  String get district5 => 'District 5';
+
+  @override
+  String get district7 => 'District 7';
+
+  @override
+  String get district10 => 'District 10';
+
+  @override
+  String get thuDuc => 'Thu Duc City';
+
+  @override
+  String get binhThanh => 'Binh Thanh District';
+
+  @override
+  String get phuNhuan => 'Phu Nhuan District';
+
+  @override
+  String get tanBinh => 'Tan Binh District';
+
+  @override
+  String get goVap => 'Go Vap District';
+
+  @override
+  String get hcmCity => 'Ho Chi Minh City';
+
+  @override
   String get viewDetail => 'View Detail';
+
+  @override
+  String get totalAmountRoundTrip => 'Total Amount (2 trips)';
+
+  @override
+  String get roundTrip => 'Round Trip';
+
+  @override
+  String get oneWay => 'One Way';
+
+  @override
+  String get passengers => 'passengers';
+
+  @override
+  String get noBusFound => 'No bus found';
+
+  @override
+  String get tryAgainWithDifferentFilter => 'Please try again with different filters';
+
+  @override
+  String get selectSeat => 'Select Seat';
+
+  @override
+  String get info => 'Info';
+
+  @override
+  String get pickUpPoint => 'Pick up point';
+
+  @override
+  String get dropOffPoint => 'Drop off point';
+
+  @override
+  String get distance => 'Distance';
+
+  @override
+  String get cancelTicket => 'Cancel Ticket';
+
+  @override
+  String get changeTicket => 'Change Ticket';
+
+  @override
+  String get luggage => 'Luggage';
+
+  @override
+  String get freeBefore24h => 'Free before 24h';
+
+  @override
+  String get fee20k => 'Fee 20.000đ';
+
+  @override
+  String get max20kg => 'Max 20kg';
+
+  @override
+  String get wifi => 'WiFi';
+
+  @override
+  String get water => 'Water';
+
+  @override
+  String get tv => 'TV';
+
+  @override
+  String get coldTowel => 'Cold Towel';
+
+  @override
+  String get massage => 'Massage';
+
+  @override
+  String get blanket => 'Blanket';
+
+  @override
+  String get priceDetails => 'Price Details';
+
+  @override
+  String get selectBank => 'Select Bank';
+
+  @override
+  String get ticketPrice => 'Ticket Price';
+
+  @override
+  String get serviceFee => 'Service Fee';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get continentalHotel => 'Hotel Continental';
+
+  @override
+  String get rexHotel => 'Rex Hotel';
+
+  @override
+  String get newWorldSaigon => 'New World Saigon';
+
+  @override
+  String get fiveStarHotel => '5 Star Hotel';
+
+  @override
+  String get fourStarHotel => '4 Star Hotel';
+
+  @override
+  String get district1Hcm => 'District 1, HCMC';
+
+  @override
+  String get roomsLower => 'rooms';
+
+  @override
+  String get roomSuperior => 'Superior Room';
+
+  @override
+  String get roomDeluxe => 'Deluxe Room';
+
+  @override
+  String get roomSuite => 'Suite Room';
+
+  @override
+  String get roomFamily => 'Family Room';
+
+  @override
+  String get saigonRestaurant => 'Saigon Restaurant';
+
+  @override
+  String get thaiHotpot => 'Thai Hotpot Tomyummmmmm';
+
+  @override
+  String get sushiWorld => 'Sushi World';
 }

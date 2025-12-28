@@ -15,30 +15,31 @@ class HotelListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     final hotels = [
       {
-        "name": "Khách sạn Continental",
-        "type": "Khách sạn 5 sao",
-        "location": "Quận 1, TP.HCM",
+        "name": localizations.continentalHotel,
+        "type": localizations.fiveStarHotel,
+        "location": localizations.district1Hcm,
         "pricePerNight": 1500000.0,
         "rating": 4.8,
-        "image": AppImage.defaultCar,
+        "image": AppImage.defaultHotel,
       },
       {
-        "name": "Rex Hotel",
-        "type": "Khách sạn 4 sao",
-        "location": "Quận 1, TP.HCM",
+        "name": localizations.rexHotel,
+        "type": localizations.fourStarHotel,
+        "location": localizations.district1Hcm,
         "pricePerNight": 1200000.0,
         "rating": 4.6,
-        "image": AppImage.defaultCar,
+        "image": AppImage.defaultHotel,
       },
       {
-        "name": "New World Saigon",
-        "type": "Khách sạn 5 sao",
-        "location": "Quận 1, TP.HCM",
+        "name": localizations.newWorldSaigon,
+        "type": localizations.fiveStarHotel,
+        "location": localizations.district1Hcm,
         "pricePerNight": 2000000.0,
         "rating": 4.9,
-        "image": AppImage.defaultCar,
+        "image": AppImage.defaultHotel,
       },
     ];
 
@@ -73,4 +74,3 @@ class HotelListPage extends StatelessWidget {
     );
   }
 }
-

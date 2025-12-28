@@ -800,7 +800,7 @@ abstract class AppLocalizations {
   /// No description provided for @pleaseSelectAtLeastOneRoom.
   ///
   /// In en, this message translates to:
-  /// **'Please select at least 1 room'**
+  /// **'Please select at least one room'**
   String get pleaseSelectAtLeastOneRoom;
 
   /// No description provided for @pleaseSelectDeliveryCompany.
@@ -872,7 +872,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookingSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Booking successful!'**
+  /// **'Booking Successful!'**
   String get bookingSuccess;
 
   /// No description provided for @tableBookingSuccess.
@@ -1340,19 +1340,19 @@ abstract class AppLocalizations {
   /// No description provided for @checkIn.
   ///
   /// In en, this message translates to:
-  /// **'Check In'**
+  /// **'Check-in'**
   String get checkIn;
 
   /// No description provided for @checkOut.
   ///
   /// In en, this message translates to:
-  /// **'Check Out'**
+  /// **'Check-out'**
   String get checkOut;
 
   /// No description provided for @numberOfNights.
   ///
   /// In en, this message translates to:
-  /// **'Number of Nights'**
+  /// **'Number of nights'**
   String get numberOfNights;
 
   /// No description provided for @totalRoomPrice.
@@ -3980,7 +3980,7 @@ abstract class AppLocalizations {
   /// No description provided for @discountPointsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Discount (points)'**
+  /// **'Discount Points'**
   String get discountPointsLabel;
 
   /// No description provided for @payWithPoints.
@@ -4088,7 +4088,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectFoodType.
   ///
   /// In en, this message translates to:
-  /// **'Select food type'**
+  /// **'Select Food Type'**
   String get selectFoodType;
 
   /// No description provided for @continueAction.
@@ -4727,11 +4727,437 @@ abstract class AppLocalizations {
   /// **'You should try:'**
   String get eateryWheelResultTitle;
 
+  /// No description provided for @selectLocationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Location'**
+  String get selectLocationTitle;
+
+  /// No description provided for @aboutTab.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get aboutTab;
+
+  /// No description provided for @reviewsTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get reviewsTab;
+
+  /// No description provided for @photosTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photosTab;
+
+  /// No description provided for @videosTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos'**
+  String get videosTab;
+
+  /// No description provided for @floor1.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor 1'**
+  String get floor1;
+
+  /// No description provided for @floor2.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor 2'**
+  String get floor2;
+
+  /// No description provided for @nearWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Near Window'**
+  String get nearWindow;
+
+  /// No description provided for @middleOfRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Middle of Room'**
+  String get middleOfRoom;
+
+  /// No description provided for @vip.
+  ///
+  /// In en, this message translates to:
+  /// **'VIP'**
+  String get vip;
+
+  /// No description provided for @cornerOfRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Corner of Room'**
+  String get cornerOfRoom;
+
+  /// No description provided for @privateRoom.
+  ///
+  /// In en, this message translates to:
+  /// **'Private Room'**
+  String get privateRoom;
+
+  /// No description provided for @balcony.
+  ///
+  /// In en, this message translates to:
+  /// **'Balcony'**
+  String get balcony;
+
+  /// No description provided for @vietnameseFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Vietnamese Food'**
+  String get vietnameseFood;
+
+  /// No description provided for @thaiFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Thai Food'**
+  String get thaiFood;
+
+  /// No description provided for @japaneseFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Japanese Food'**
+  String get japaneseFood;
+
+  /// No description provided for @district1.
+  ///
+  /// In en, this message translates to:
+  /// **'District 1'**
+  String get district1;
+
+  /// No description provided for @district2.
+  ///
+  /// In en, this message translates to:
+  /// **'District 2'**
+  String get district2;
+
+  /// No description provided for @district3.
+  ///
+  /// In en, this message translates to:
+  /// **'District 3'**
+  String get district3;
+
+  /// No description provided for @district4.
+  ///
+  /// In en, this message translates to:
+  /// **'District 4'**
+  String get district4;
+
+  /// No description provided for @district5.
+  ///
+  /// In en, this message translates to:
+  /// **'District 5'**
+  String get district5;
+
+  /// No description provided for @district7.
+  ///
+  /// In en, this message translates to:
+  /// **'District 7'**
+  String get district7;
+
+  /// No description provided for @district10.
+  ///
+  /// In en, this message translates to:
+  /// **'District 10'**
+  String get district10;
+
+  /// No description provided for @thuDuc.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu Duc City'**
+  String get thuDuc;
+
+  /// No description provided for @binhThanh.
+  ///
+  /// In en, this message translates to:
+  /// **'Binh Thanh District'**
+  String get binhThanh;
+
+  /// No description provided for @phuNhuan.
+  ///
+  /// In en, this message translates to:
+  /// **'Phu Nhuan District'**
+  String get phuNhuan;
+
+  /// No description provided for @tanBinh.
+  ///
+  /// In en, this message translates to:
+  /// **'Tan Binh District'**
+  String get tanBinh;
+
+  /// No description provided for @goVap.
+  ///
+  /// In en, this message translates to:
+  /// **'Go Vap District'**
+  String get goVap;
+
+  /// No description provided for @hcmCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Ho Chi Minh City'**
+  String get hcmCity;
+
   /// No description provided for @viewDetail.
   ///
   /// In en, this message translates to:
   /// **'View Detail'**
   String get viewDetail;
+
+  /// No description provided for @totalAmountRoundTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount (2 trips)'**
+  String get totalAmountRoundTrip;
+
+  /// No description provided for @roundTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Round Trip'**
+  String get roundTrip;
+
+  /// No description provided for @oneWay.
+  ///
+  /// In en, this message translates to:
+  /// **'One Way'**
+  String get oneWay;
+
+  /// No description provided for @passengers.
+  ///
+  /// In en, this message translates to:
+  /// **'passengers'**
+  String get passengers;
+
+  /// No description provided for @noBusFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No bus found'**
+  String get noBusFound;
+
+  /// No description provided for @tryAgainWithDifferentFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again with different filters'**
+  String get tryAgainWithDifferentFilter;
+
+  /// No description provided for @selectSeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Seat'**
+  String get selectSeat;
+
+  /// No description provided for @info.
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get info;
+
+  /// No description provided for @pickUpPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up point'**
+  String get pickUpPoint;
+
+  /// No description provided for @dropOffPoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Drop off point'**
+  String get dropOffPoint;
+
+  /// No description provided for @distance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get distance;
+
+  /// No description provided for @cancelTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Ticket'**
+  String get cancelTicket;
+
+  /// No description provided for @changeTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Ticket'**
+  String get changeTicket;
+
+  /// No description provided for @luggage.
+  ///
+  /// In en, this message translates to:
+  /// **'Luggage'**
+  String get luggage;
+
+  /// No description provided for @freeBefore24h.
+  ///
+  /// In en, this message translates to:
+  /// **'Free before 24h'**
+  String get freeBefore24h;
+
+  /// No description provided for @fee20k.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee 20.000đ'**
+  String get fee20k;
+
+  /// No description provided for @max20kg.
+  ///
+  /// In en, this message translates to:
+  /// **'Max 20kg'**
+  String get max20kg;
+
+  /// No description provided for @wifi.
+  ///
+  /// In en, this message translates to:
+  /// **'WiFi'**
+  String get wifi;
+
+  /// No description provided for @water.
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get water;
+
+  /// No description provided for @tv.
+  ///
+  /// In en, this message translates to:
+  /// **'TV'**
+  String get tv;
+
+  /// No description provided for @coldTowel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cold Towel'**
+  String get coldTowel;
+
+  /// No description provided for @massage.
+  ///
+  /// In en, this message translates to:
+  /// **'Massage'**
+  String get massage;
+
+  /// No description provided for @blanket.
+  ///
+  /// In en, this message translates to:
+  /// **'Blanket'**
+  String get blanket;
+
+  /// No description provided for @priceDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Details'**
+  String get priceDetails;
+
+  /// No description provided for @selectBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Bank'**
+  String get selectBank;
+
+  /// No description provided for @ticketPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket Price'**
+  String get ticketPrice;
+
+  /// No description provided for @serviceFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Fee'**
+  String get serviceFee;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// No description provided for @continentalHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel Continental'**
+  String get continentalHotel;
+
+  /// No description provided for @rexHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rex Hotel'**
+  String get rexHotel;
+
+  /// No description provided for @newWorldSaigon.
+  ///
+  /// In en, this message translates to:
+  /// **'New World Saigon'**
+  String get newWorldSaigon;
+
+  /// No description provided for @fiveStarHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'5 Star Hotel'**
+  String get fiveStarHotel;
+
+  /// No description provided for @fourStarHotel.
+  ///
+  /// In en, this message translates to:
+  /// **'4 Star Hotel'**
+  String get fourStarHotel;
+
+  /// No description provided for @district1Hcm.
+  ///
+  /// In en, this message translates to:
+  /// **'District 1, HCMC'**
+  String get district1Hcm;
+
+  /// No description provided for @roomsLower.
+  ///
+  /// In en, this message translates to:
+  /// **'rooms'**
+  String get roomsLower;
+
+  /// No description provided for @roomSuperior.
+  ///
+  /// In en, this message translates to:
+  /// **'Superior Room'**
+  String get roomSuperior;
+
+  /// No description provided for @roomDeluxe.
+  ///
+  /// In en, this message translates to:
+  /// **'Deluxe Room'**
+  String get roomDeluxe;
+
+  /// No description provided for @roomSuite.
+  ///
+  /// In en, this message translates to:
+  /// **'Suite Room'**
+  String get roomSuite;
+
+  /// No description provided for @roomFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Room'**
+  String get roomFamily;
+
+  /// No description provided for @saigonRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Saigon Restaurant'**
+  String get saigonRestaurant;
+
+  /// No description provided for @thaiHotpot.
+  ///
+  /// In en, this message translates to:
+  /// **'Thai Hotpot Tomyummmmmm'**
+  String get thaiHotpot;
+
+  /// No description provided for @sushiWorld.
+  ///
+  /// In en, this message translates to:
+  /// **'Sushi World'**
+  String get sushiWorld;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

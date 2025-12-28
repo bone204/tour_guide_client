@@ -269,7 +269,7 @@ class _BusListPageState extends State<BusListPage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Tổng tiền (2 chuyến)',
+                    AppLocalizations.of(context)!.totalAmountRoundTrip,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSubtitle,
                     ),
@@ -296,7 +296,7 @@ class _BusListPageState extends State<BusListPage>
                   ),
                 ),
                 child: Text(
-                  'Tiếp tục',
+                  AppLocalizations.of(context)!.continueButton,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.primaryWhite,
                   ),
@@ -412,7 +412,9 @@ class _BusListPageState extends State<BusListPage>
                           ),
                           SizedBox(width: 6.w),
                           Text(
-                            widget.isRoundTrip ? 'Khứ hồi' : 'Một chiều',
+                            widget.isRoundTrip
+                                ? AppLocalizations.of(context)!.roundTrip
+                                : AppLocalizations.of(context)!.oneWay,
                             style: Theme.of(context).textTheme.titleSmall
                                 ?.copyWith(color: AppColors.primaryWhite),
                           ),
@@ -439,7 +441,7 @@ class _BusListPageState extends State<BusListPage>
                           ),
                           SizedBox(width: 6.w),
                           Text(
-                            '${widget.passengerCount} người',
+                            '${widget.passengerCount} ${AppLocalizations.of(context)!.passengers}',
                             style: Theme.of(context).textTheme.titleSmall
                                 ?.copyWith(color: AppColors.primaryWhite),
                           ),
@@ -479,7 +481,7 @@ class _BusListPageState extends State<BusListPage>
                                 ),
                                 SizedBox(width: 8.w),
                                 Text(
-                                  'Điểm đi',
+                                  AppLocalizations.of(context)!.departurePoint,
                                   style: Theme.of(
                                     context,
                                   ).textTheme.displayLarge?.copyWith(
@@ -588,7 +590,7 @@ class _BusListPageState extends State<BusListPage>
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Text(
-                                  'Điểm đến',
+                                  AppLocalizations.of(context)!.arrivalPoint,
                                   style: Theme.of(
                                     context,
                                   ).textTheme.displayLarge?.copyWith(
@@ -668,14 +670,14 @@ class _BusListPageState extends State<BusListPage>
           ),
           SizedBox(height: 16.h),
           Text(
-            'Không tìm thấy chuyến xe',
+            AppLocalizations.of(context)!.noBusFound,
             style: Theme.of(
               context,
             ).textTheme.titleLarge?.copyWith(color: AppColors.textSubtitle),
           ),
           SizedBox(height: 8.h),
           Text(
-            'Vui lòng thử lại với bộ lọc khác',
+            AppLocalizations.of(context)!.tryAgainWithDifferentFilter,
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),

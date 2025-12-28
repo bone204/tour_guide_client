@@ -53,10 +53,11 @@ class _HotelDetailPageState extends State<HotelDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    final displayImageUrl = widget.imageUrl ?? AppImage.defaultCar;
-    final displayName = widget.name ?? 'Khách sạn Continental';
-    final displayLocation = widget.location ?? 'Quận 1, TP.HCM';
-    final displayType = widget.type ?? 'Khách sạn 5 sao';
+    final localizations = AppLocalizations.of(context)!;
+    final displayImageUrl = widget.imageUrl ?? AppImage.defaultHotel;
+    final displayName = widget.name ?? localizations.continentalHotel;
+    final displayLocation = widget.location ?? localizations.district1Hcm;
+    final displayType = widget.type ?? localizations.fiveStarHotel;
 
     return Scaffold(
       body: Stack(
@@ -298,11 +299,11 @@ class _HotelDetailPageState extends State<HotelDetailPage>
         unselectedLabelStyle: Theme.of(context).textTheme.displayMedium,
         indicatorSize: TabBarIndicatorSize.tab,
         dividerColor: Colors.transparent,
-        tabs: const [
-          Tab(text: 'About'),
-          Tab(text: 'Reviews'),
-          Tab(text: 'Photos'),
-          Tab(text: 'Videos'),
+        tabs: [
+          Tab(text: AppLocalizations.of(context)!.aboutTab),
+          Tab(text: AppLocalizations.of(context)!.reviewsTab),
+          Tab(text: AppLocalizations.of(context)!.photosTab),
+          Tab(text: AppLocalizations.of(context)!.videosTab),
         ],
       ),
     );

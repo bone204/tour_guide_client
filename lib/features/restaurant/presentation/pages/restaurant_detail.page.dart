@@ -53,10 +53,14 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    final displayImageUrl = widget.imageUrl ?? AppImage.defaultCar;
-    final displayName = widget.name ?? 'Nhà hàng Sài Gòn';
-    final displayLocation = widget.location ?? 'Quận 1, TP.HCM';
-    final displayCuisine = widget.cuisine ?? 'Món Việt';
+    final displayImageUrl = widget.imageUrl ?? AppImage.defaultFood;
+    final displayName =
+        widget.name ?? AppLocalizations.of(context)!.saigonRestaurant;
+    final displayLocation =
+        widget.location ??
+        '${AppLocalizations.of(context)!.district1}, ${AppLocalizations.of(context)!.hcmCity}';
+    final displayCuisine =
+        widget.cuisine ?? AppLocalizations.of(context)!.foodTypeVietnamese;
 
     return Scaffold(
       body: Stack(
@@ -296,10 +300,10 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
         indicatorSize: TabBarIndicatorSize.tab,
         dividerColor: Colors.transparent,
         tabs: [
-          Tab(text: 'About'),
-          Tab(text: 'Reviews'),
-          Tab(text: 'Photos'),
-          Tab(text: 'Videos'),
+          Tab(text: AppLocalizations.of(context)!.aboutTab),
+          Tab(text: AppLocalizations.of(context)!.reviewsTab),
+          Tab(text: AppLocalizations.of(context)!.photosTab),
+          Tab(text: AppLocalizations.of(context)!.videosTab),
         ],
       ),
     );

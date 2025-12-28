@@ -51,7 +51,7 @@ class BankDropdown extends StatelessWidget {
               value: selectedBank,
               isExpanded: true,
               hint: Text(
-                'Select bank',
+                AppLocalizations.of(context)!.selectBank,
                 style: Theme.of(
                   context,
                 ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
