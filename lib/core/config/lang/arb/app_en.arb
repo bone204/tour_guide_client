@@ -1409,5 +1409,8 @@
   "enableRental": "Enable Rental",
   "disableRental": "Disable Rental",
   "updateSuccess": "Update successful",
-  "payNow": "Pay Now"
+  "payNow": "Pay Now",
+  "suggest": "Suggest",
+  "itineraryPreview": "Itinerary Preview",
+  "suggestItinerary": "Suggest Itinerary"
 }

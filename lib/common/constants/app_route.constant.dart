@@ -66,4 +66,5 @@ class AppRouteConstant {
   static const String rentalBillList = '/rental_bill_list';
   static const String rentalBillDetail = '/rental_bill_detail';
   static const String createRentalBill = '/create_rental_bill';
+  static const String suggestItineraryPreview = '/suggest_itinerary_preview';
 }

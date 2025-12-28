@@ -52,6 +52,7 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinera
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/food_wheel.page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/suggest_itinerary_preview.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/stop_detail.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/stop_images.page.dart';
@@ -520,6 +521,13 @@ class AppRouter {
                 rentalType: args['rentalType'] as String,
                 initialStartDate: args['initialStartDate'] as DateTime,
               ),
+        );
+
+      case AppRouteConstant.suggestItineraryPreview:
+        final itinerary = settings.arguments as Itinerary;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => SuggestItineraryPreviewPage(itinerary: itinerary),
         );
 
       default:

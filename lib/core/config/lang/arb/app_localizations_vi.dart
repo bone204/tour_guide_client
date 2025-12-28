@@ -2378,4 +2378,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get payNow => 'Thanh toán ngay';
+
+  @override
+  String get suggest => 'Gợi ý';
+
+  @override
+  String get itineraryPreview => 'Xem trước lộ trình';
+
+  @override
+  String get suggestItinerary => 'Gợi ý lộ trình';
 }

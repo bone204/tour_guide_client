@@ -4660,6 +4660,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pay Now'**
   String get payNow;
+
+  /// No description provided for @suggest.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest'**
+  String get suggest;
+
+  /// No description provided for @itineraryPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary Preview'**
+  String get itineraryPreview;
+
+  /// No description provided for @suggestItinerary.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest Itinerary'**
+  String get suggestItinerary;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

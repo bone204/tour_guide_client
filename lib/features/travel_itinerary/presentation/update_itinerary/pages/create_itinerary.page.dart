@@ -13,6 +13,9 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/update_iti
 import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
+import 'package:tour_guide_app/core/utils/date_formatter.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/suggest_itinerary/suggest_itinerary_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/suggest_itinerary/suggest_itinerary_state.dart';
 
 class CreateItineraryPage extends StatefulWidget {
   final String province;
@@ -34,42 +37,77 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) => sl<CreateItineraryCubit>()..initialize(widget.province),
-      child: BlocListener<CreateItineraryCubit, CreateItineraryState>(
-        listener: (context, state) {
-          if (state.status == CreateItineraryStatus.loading) {
-            LoadingDialog.show(context);
-          } else if (state.status == CreateItineraryStatus.success) {
-            LoadingDialog.hide(context);
-            eventBus.fire(CreateItinerarySuccessEvent());
-            CustomSnackbar.show(
-              context,
-              message: AppLocalizations.of(context)!.createItinerarySuccess,
-              type: SnackbarType.success,
-            );
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRouteConstant.itineraryDetail,
-              (route) =>
-                  route.isFirst ||
-                  route.settings.name == AppRouteConstant.itineraryList ||
-                  route.settings.name == AppRouteConstant.myItinerary ||
-                  route.settings.name == AppRouteConstant.mainScreen,
-              arguments: state.createdItinerary!.id,
-            );
-          } else if (state.status == CreateItineraryStatus.failure) {
-            LoadingDialog.hide(context);
-            CustomSnackbar.show(
-              context,
-              message:
-                  state.errorMessage ??
-                  AppLocalizations.of(context)!.somethingWentWrong,
-              type: SnackbarType.error,
-            );
-          }
-        },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create:
+              (context) =>
+                  sl<CreateItineraryCubit>()..initialize(widget.province),
+        ),
+        BlocProvider(create: (context) => sl<SuggestItineraryCubit>()),
+      ],
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<CreateItineraryCubit, CreateItineraryState>(
+            listener: (context, state) {
+              if (state.status == CreateItineraryStatus.loading) {
+                LoadingDialog.show(context);
+              } else if (state.status == CreateItineraryStatus.success) {
+                LoadingDialog.hide(context);
+                eventBus.fire(CreateItinerarySuccessEvent());
+                CustomSnackbar.show(
+                  context,
+                  message: AppLocalizations.of(context)!.createItinerarySuccess,
+                  type: SnackbarType.success,
+                );
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRouteConstant.itineraryDetail,
+                  (route) =>
+                      route.isFirst ||
+                      route.settings.name == AppRouteConstant.itineraryList ||
+                      route.settings.name == AppRouteConstant.myItinerary ||
+                      route.settings.name == AppRouteConstant.mainScreen,
+                  arguments: state.createdItinerary!.id,
+                );
+              } else if (state.status == CreateItineraryStatus.failure) {
+                LoadingDialog.hide(context);
+                CustomSnackbar.show(
+                  context,
+                  message:
+                      state.errorMessage ??
+                      AppLocalizations.of(context)!.somethingWentWrong,
+                  type: SnackbarType.error,
+                );
+              }
+            },
+          ),
+          BlocListener<SuggestItineraryCubit, SuggestItineraryState>(
+            listener: (context, state) {
+              if (state.status == SuggestItineraryStatus.loading) {
+                LoadingDialog.show(context);
+              } else if (state.status == SuggestItineraryStatus.success) {
+                LoadingDialog.hide(context);
+                if (state.suggestedItinerary != null) {
+                  Navigator.pushNamed(
+                    context,
+                    AppRouteConstant.suggestItineraryPreview,
+                    arguments: state.suggestedItinerary,
+                  );
+                }
+              } else if (state.status == SuggestItineraryStatus.failure) {
+                LoadingDialog.hide(context);
+                CustomSnackbar.show(
+                  context,
+                  message:
+                      state.errorMessage ??
+                      AppLocalizations.of(context)!.somethingWentWrong,
+                  type: SnackbarType.error,
+                );
+              }
+            },
+          ),
+        ],
         child: BlocBuilder<CreateItineraryCubit, CreateItineraryState>(
           builder: (context, state) {
             return GestureDetector(
@@ -157,20 +195,57 @@ class _CreateItineraryPageState extends State<CreateItineraryPage> {
                         value: state.numberOfDays.toString(),
                       ),
                       SizedBox(height: 32.h),
-                      PrimaryButton(
-                        title: AppLocalizations.of(context)!.createItinerary,
-                        onPressed:
-                            state.isValid
-                                ? () =>
-                                    context
-                                        .read<CreateItineraryCubit>()
-                                        .submitted()
-                                : null,
-                        backgroundColor:
-                            state.isValid
-                                ? AppColors.primaryBlue
-                                : AppColors.primaryGrey,
-                        textColor: AppColors.textSecondary,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: PrimaryButton(
+                              title:
+                                  AppLocalizations.of(context)!.createItinerary,
+                              onPressed:
+                                  state.isValid
+                                      ? () =>
+                                          context
+                                              .read<CreateItineraryCubit>()
+                                              .submitted()
+                                      : null,
+                              backgroundColor:
+                                  state.isValid
+                                      ? AppColors.primaryBlue
+                                      : AppColors.primaryGrey,
+                              textColor: AppColors.textSecondary,
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: PrimaryButton(
+                              title: AppLocalizations.of(context)!.suggest,
+                              onPressed:
+                                  state.startDate != null &&
+                                          state.endDate != null
+                                      ? () {
+                                        context
+                                            .read<SuggestItineraryCubit>()
+                                            .suggestItinerary(
+                                              province: widget.province,
+                                              startDate:
+                                                  DateFormatter.formatDate(
+                                                    state.startDate!,
+                                                  ),
+                                              endDate: DateFormatter.formatDate(
+                                                state.endDate!,
+                                              ),
+                                            );
+                                      }
+                                      : null,
+                              backgroundColor:
+                                  state.startDate != null &&
+                                          state.endDate != null
+                                      ? AppColors.primaryGreen
+                                      : AppColors.primaryGrey,
+                              textColor: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

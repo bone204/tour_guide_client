@@ -2372,4 +2372,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get payNow => 'Pay Now';
+
+  @override
+  String get suggest => 'Suggest';
+
+  @override
+  String get itineraryPreview => 'Itinerary Preview';
+
+  @override
+  String get suggestItinerary => 'Suggest Itinerary';
 }

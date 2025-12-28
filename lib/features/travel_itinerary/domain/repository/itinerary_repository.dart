@@ -10,10 +10,12 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/province.da
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_time_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_reorder_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/edit_stop_details_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/suggest_params.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/use_itinerary_request.dart';
 
 abstract class ItineraryRepository {
   Future<Either<Failure, ItineraryResponse>> getItineraryMe();
+  Future<Either<Failure, Itinerary>> suggestItinerary(SuggestParams params);
   Future<Either<Failure, ItineraryResponse>> getItineraries(
     ItineraryQuery query,
   );

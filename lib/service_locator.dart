@@ -50,6 +50,7 @@ import 'package:tour_guide_app/core/services/feedback/domain/usecases/create_fee
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/get_feedback.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/check_content.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/repositories/feedback_repository.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/suggest_itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/comment/destination_comment_cubit.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/create_feedback_reply.dart';
@@ -80,6 +81,7 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/update_iti
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/bloc/get_itinerary_me/get_itinerary_me_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_itinerary_detail/get_itinerary_detail_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/add_stop/add_stop_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/suggest_itinerary/suggest_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_stop_detail/get_stop_detail_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/delete_itinerary/delete_itinerary_cubit.dart';
@@ -268,8 +270,10 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerSingleton<UpdateRentalBillUseCase>(UpdateRentalBillUseCase());
   sl.registerSingleton<PayRentalBillUseCase>(PayRentalBillUseCase());
+  sl.registerSingleton<SuggestItineraryUseCase>(SuggestItineraryUseCase());
 
   // Cubits
+  sl.registerFactory<SuggestItineraryCubit>(() => SuggestItineraryCubit(sl()));
   sl.registerFactory<DeleteStopCubit>(() => DeleteStopCubit(sl()));
   sl.registerFactory(() => GetContractsCubit(sl()));
   sl.registerFactory(() => GetMyVehiclesCubit(sl()));
