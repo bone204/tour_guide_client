@@ -4654,6 +4654,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Update successful'**
   String get updateSuccess;
+
+  /// No description provided for @payNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now'**
+  String get payNow;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

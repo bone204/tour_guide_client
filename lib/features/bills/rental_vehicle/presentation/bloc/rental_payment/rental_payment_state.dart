@@ -2,8 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:tour_guide_app/features/voucher/data/models/voucher.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
 
+enum RentalPaymentStatus { initial, loading, success, failure }
+
 class RentalPaymentState extends Equatable {
   final int? billId;
+  final RentalPaymentStatus status;
+  final String? errorMessage;
+  final String? payUrl; // Added to store payment URL from response
   final PaymentMethod? paymentMethod;
   final Voucher? selectedVoucher;
   final bool useTravelPoints;
@@ -17,6 +22,9 @@ class RentalPaymentState extends Equatable {
 
   const RentalPaymentState({
     this.billId,
+    this.status = RentalPaymentStatus.initial,
+    this.errorMessage,
+    this.payUrl,
     this.paymentMethod,
     this.selectedVoucher,
     this.useTravelPoints = false,
@@ -31,6 +39,9 @@ class RentalPaymentState extends Equatable {
 
   RentalPaymentState copyWith({
     int? billId,
+    RentalPaymentStatus? status,
+    String? errorMessage,
+    String? payUrl,
     PaymentMethod? paymentMethod,
     Voucher? selectedVoucher,
     bool? useTravelPoints,
@@ -44,6 +55,9 @@ class RentalPaymentState extends Equatable {
   }) {
     return RentalPaymentState(
       billId: billId ?? this.billId,
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
+      payUrl: payUrl ?? this.payUrl,
       paymentMethod: paymentMethod ?? this.paymentMethod,
       selectedVoucher: selectedVoucher ?? this.selectedVoucher,
       useTravelPoints: useTravelPoints ?? this.useTravelPoints,
@@ -64,6 +78,9 @@ class RentalPaymentState extends Equatable {
   @override
   List<Object?> get props => [
     billId,
+    status,
+    errorMessage,
+    payUrl,
     paymentMethod,
     selectedVoucher,
     useTravelPoints,

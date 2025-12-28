@@ -2375,4 +2375,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get updateSuccess => 'Cập nhật thành công';
+
+  @override
+  String get payNow => 'Thanh toán ngay';
 }

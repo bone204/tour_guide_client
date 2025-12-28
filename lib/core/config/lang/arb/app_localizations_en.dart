@@ -2369,4 +2369,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updateSuccess => 'Update successful';
+
+  @override
+  String get payNow => 'Pay Now';
 }

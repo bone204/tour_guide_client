@@ -1416,5 +1416,6 @@
   "nationality": "Quốc tịch",
   "enableRental": "Mở lại cho thuê",
   "disableRental": "Tạm ngưng cho thuê",
-  "updateSuccess": "Cập nhật thành công"
+  "updateSuccess": "Cập nhật thành công",
+  "payNow": "Thanh toán ngay"
 }

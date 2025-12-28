@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/widgets/contact_info_form.dart';
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/core/utils/date_formatter.dart';
 import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
@@ -22,10 +24,23 @@ import 'package:tour_guide_app/features/voucher/data/models/voucher.dart'; // Ad
 
 import 'package:tour_guide_app/service_locator.dart';
 
-class RentalBillDetailPage extends StatelessWidget {
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+class RentalBillDetailPage extends StatefulWidget {
   final int id;
 
   const RentalBillDetailPage({super.key, required this.id});
+
+  @override
+  State<RentalBillDetailPage> createState() => _RentalBillDetailPageState();
+}
+
+class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
+  final RefreshController _refreshController = RefreshController();
+
+  void _onRefresh(BuildContext context) {
+    context.read<GetRentalBillDetailCubit>().getBillDetail(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +48,8 @@ class RentalBillDetailPage extends StatelessWidget {
       providers: [
         BlocProvider(
           create:
-              (context) => sl<GetRentalBillDetailCubit>()..getBillDetail(id),
+              (context) =>
+                  sl<GetRentalBillDetailCubit>()..getBillDetail(widget.id),
         ),
         BlocProvider(
           create: (context) => sl<GetVouchersCubit>()..getVouchers(),
@@ -43,7 +59,10 @@ class RentalBillDetailPage extends StatelessWidget {
         ),
         BlocProvider(
           create:
-              (context) => RentalPaymentCubit(updateRentalBillUseCase: sl()),
+              (context) => RentalPaymentCubit(
+                updateRentalBillUseCase: sl(),
+                payRentalBillUseCase: sl(),
+              ),
         ),
       ],
       child: GestureDetector(
@@ -55,54 +74,71 @@ class RentalBillDetailPage extends StatelessWidget {
             showBackButton: true,
             onBackPressed: () => Navigator.pop(context),
           ),
-          body: BlocConsumer<GetRentalBillDetailCubit, RentalBillDetailState>(
+          body: BlocListener<GetRentalBillDetailCubit, RentalBillDetailState>(
             listener: (context, state) {
-              if (state.status == RentalBillDetailInitStatus.success &&
-                  state.bill != null) {
-                context.read<RentalPaymentCubit>().init(state.bill!);
+              if (state.status == RentalBillDetailInitStatus.success ||
+                  state.status == RentalBillDetailInitStatus.failure) {
+                _refreshController.refreshCompleted();
               }
             },
-            builder: (context, state) {
-              if (state.status == RentalBillDetailInitStatus.loading) {
-                return const RentalBillDetailShimmer();
-              } else if (state.status == RentalBillDetailInitStatus.failure) {
-                return Center(child: Text(state.errorMessage ?? 'Error'));
-              } else if (state.status == RentalBillDetailInitStatus.success &&
-                  state.bill != null) {
-                final bill = state.bill!;
-                // Assume single vehicle flow as per user request
-                final RentalVehicle? vehicle =
-                    bill.details.isNotEmpty ? bill.details.first.vehicle : null;
-                final String licensePlate =
-                    bill.details.isNotEmpty
-                        ? bill.details.first.licensePlate
-                        : '';
-        
-                return SingleChildScrollView(
-                  padding: EdgeInsets.all(16.w),
-                  child: Column(
-                    children: [
-                      // 1. Vehicle Info Card
-                      _buildVehicleInfoCard(context, vehicle, licensePlate),
-                      SizedBox(height: 16.h),
-        
-                      // 2. Rental Details (Status, Dates, etc.)
-                      _buildRentalDetailsCard(context, bill),
-                      SizedBox(height: 16.h),
-        
-                      ContactInfoForm(bill: bill),
-                      SizedBox(height: 16.h),
-                      // 3. Payment Details
-                      _buildPaymentDetailsCard(context, bill),
-        
-                      // 4. Contact/Notes if any
-                      // 4. Contact Info Update
-                    ],
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            },
+            child: BlocConsumer<
+              GetRentalBillDetailCubit,
+              RentalBillDetailState
+            >(
+              listener: (context, state) {
+                if (state.status == RentalBillDetailInitStatus.success &&
+                    state.bill != null) {
+                  context.read<RentalPaymentCubit>().init(state.bill!);
+                }
+              },
+              builder: (context, state) {
+                if (state.status == RentalBillDetailInitStatus.loading) {
+                  return const RentalBillDetailShimmer();
+                } else if (state.status == RentalBillDetailInitStatus.failure &&
+                    state.bill == null) {
+                  return Center(child: Text(state.errorMessage ?? 'Error'));
+                } else if (state.bill != null) {
+                  final bill = state.bill!;
+                  // Assume single vehicle flow as per user request
+                  final RentalVehicle? vehicle =
+                      bill.details.isNotEmpty
+                          ? bill.details.first.vehicle
+                          : null;
+                  final String licensePlate =
+                      bill.details.isNotEmpty
+                          ? bill.details.first.licensePlate
+                          : '';
+
+                  return SmartRefresher(
+                    controller: _refreshController,
+                    onRefresh: () => _onRefresh(context),
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.all(16.w),
+                      child: Column(
+                        children: [
+                          // 1. Vehicle Info Card
+                          _buildVehicleInfoCard(context, vehicle, licensePlate),
+                          SizedBox(height: 16.h),
+
+                          // 2. Rental Details (Status, Dates, etc.)
+                          _buildRentalDetailsCard(context, bill),
+                          SizedBox(height: 16.h),
+
+                          ContactInfoForm(bill: bill),
+                          SizedBox(height: 16.h),
+                          // 3. Payment Details
+                          _buildPaymentDetailsCard(context, bill),
+
+                          // 4. Contact/Notes if any
+                          // 4. Contact Info Update
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
           ),
         ),
       ),
@@ -578,10 +614,65 @@ class RentalBillDetailPage extends StatelessWidget {
                   ],
                 ),
               ),
+            SizedBox(height: 24.h),
+            _buildPayButton(context, paymentState),
           ],
         );
       },
     );
+  }
+
+  Widget _buildPayButton(BuildContext context, RentalPaymentState state) {
+    final bool isInfoComplete =
+        state.contactName != null &&
+        state.contactName!.isNotEmpty &&
+        state.contactPhone != null &&
+        state.contactPhone!.isNotEmpty &&
+        state.paymentMethod != null;
+
+    return BlocConsumer<RentalPaymentCubit, RentalPaymentState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        if (state.status == RentalPaymentStatus.success &&
+            state.payUrl != null) {
+          _launchUrl(context, state.payUrl!);
+        } else if (state.status == RentalPaymentStatus.failure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errorMessage ?? 'Payment failed'),
+              backgroundColor: AppColors.primaryRed,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        return PrimaryButton(
+          title:
+              AppLocalizations.of(
+                context,
+              )!.payNow, // Ensure "payNow" key exists
+          isLoading: state.status == RentalPaymentStatus.loading,
+          onPressed:
+              isInfoComplete
+                  ? () => context.read<RentalPaymentCubit>().payBill()
+                  : null,
+        );
+      },
+    );
+  }
+
+  Future<void> _launchUrl(BuildContext context, String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not launch payment gateway'),
+            backgroundColor: AppColors.primaryRed,
+          ),
+        );
+      }
+    }
   }
 
   Widget _buildDetailRow(

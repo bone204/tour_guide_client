@@ -1408,5 +1408,6 @@
   "priceFor5Days": "Price for 5 Days",
   "enableRental": "Enable Rental",
   "disableRental": "Disable Rental",
-  "updateSuccess": "Update successful"
+  "updateSuccess": "Update successful",
+  "payNow": "Pay Now"
 }

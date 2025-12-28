@@ -2,16 +2,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/features/voucher/data/models/voucher.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_payment/rental_payment_state.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/pay_rental_bill_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/update_rental_bill_use_case.dart';
 
 class RentalPaymentCubit extends Cubit<RentalPaymentState> {
   // Assuming 1 point = 1 unit of currency (e.g. VND)
   static const double pointToCurrencyRate = 1.0;
   final UpdateRentalBillUseCase _updateRentalBillUseCase;
+  final PayRentalBillUseCase _payRentalBillUseCase;
 
-  RentalPaymentCubit({required UpdateRentalBillUseCase updateRentalBillUseCase})
-    : _updateRentalBillUseCase = updateRentalBillUseCase,
-      super(const RentalPaymentState());
+  RentalPaymentCubit({
+    required UpdateRentalBillUseCase updateRentalBillUseCase,
+    required PayRentalBillUseCase payRentalBillUseCase,
+  }) : _updateRentalBillUseCase = updateRentalBillUseCase,
+       _payRentalBillUseCase = payRentalBillUseCase,
+       super(const RentalPaymentState());
 
   void init(RentalBill bill) {
     double subTotal = 0;
@@ -98,6 +103,29 @@ class RentalPaymentCubit extends Cubit<RentalPaymentState> {
     await _updateRentalBillUseCase(params);
     // We could handle result here (update state with returned bill)
     // result.fold((l) => print(l), (r) => emit(...));
+  }
+
+  Future<void> payBill() async {
+    if (state.billId == null) return;
+
+    emit(state.copyWith(status: RentalPaymentStatus.loading));
+
+    final result = await _payRentalBillUseCase(state.billId!);
+
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: RentalPaymentStatus.failure,
+          errorMessage: failure.message,
+        ),
+      ),
+      (response) => emit(
+        state.copyWith(
+          status: RentalPaymentStatus.success,
+          payUrl: response.payUrl,
+        ),
+      ),
+    );
   }
 
   String _getPaymentMethodString(PaymentMethod method) {
