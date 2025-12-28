@@ -4,18 +4,23 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_payment/rental_payment_state.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/pay_rental_bill_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/update_rental_bill_use_case.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/confirm_qr_payment_use_case.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/confirm_qr_payment_request.dart';
 
 class RentalPaymentCubit extends Cubit<RentalPaymentState> {
   // Assuming 1 point = 1 unit of currency (e.g. VND)
   static const double pointToCurrencyRate = 1.0;
   final UpdateRentalBillUseCase _updateRentalBillUseCase;
   final PayRentalBillUseCase _payRentalBillUseCase;
+  final ConfirmQrPaymentUseCase _confirmQrPaymentUseCase;
 
   RentalPaymentCubit({
     required UpdateRentalBillUseCase updateRentalBillUseCase,
     required PayRentalBillUseCase payRentalBillUseCase,
+    required ConfirmQrPaymentUseCase confirmQrPaymentUseCase,
   }) : _updateRentalBillUseCase = updateRentalBillUseCase,
        _payRentalBillUseCase = payRentalBillUseCase,
+       _confirmQrPaymentUseCase = confirmQrPaymentUseCase,
        super(const RentalPaymentState());
 
   void init(RentalBill bill) {
@@ -119,12 +124,19 @@ class RentalPaymentCubit extends Cubit<RentalPaymentState> {
           errorMessage: failure.message,
         ),
       ),
-      (response) => emit(
-        state.copyWith(
-          status: RentalPaymentStatus.success,
-          payUrl: response.payUrl,
-        ),
-      ),
+      (response) async {
+        if (state.paymentMethod == PaymentMethod.qrCode) {
+          await _confirmQrPaymentUseCase(
+            ConfirmQrPaymentRequest(rentalId: state.billId!),
+          );
+        }
+        emit(
+          state.copyWith(
+            status: RentalPaymentStatus.success,
+            payUrl: response.payUrl,
+          ),
+        );
+      },
     );
   }
 

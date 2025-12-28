@@ -47,7 +47,7 @@ class RentalBillCard extends StatelessWidget {
                     vehicle?.vehicleCatalog?.photo ?? AppImage.defaultCar,
                     width: 70.w,
                     height: 70.w,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     errorBuilder:
                         (context, error, stackTrace) => Container(
                           width: 70.w,
@@ -75,6 +75,7 @@ class RentalBillCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
+                          SizedBox(width: 8.w),
                           _buildStatusBadge(context),
                         ],
                       ),

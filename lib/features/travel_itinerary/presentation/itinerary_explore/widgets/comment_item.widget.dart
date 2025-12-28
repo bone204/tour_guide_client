@@ -25,6 +25,8 @@ class _CommentItemState extends State<CommentItem> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
+        // Ensure vi messages are loaded (hot fix for hot reload)
+        timeago.setLocaleMessages('vi', timeago.ViMessages());
         context.read<ReplyCubit>().loadReplies(widget.feedback.id);
       }
     });
@@ -89,7 +91,10 @@ class _CommentItemState extends State<CommentItem> {
                 child: Row(
                   children: [
                     Text(
-                      timeago.format(widget.feedback.createdAt),
+                      timeago.format(
+                        widget.feedback.createdAt,
+                        locale: Localizations.localeOf(context).languageCode,
+                      ),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textSubtitle,
                         fontWeight: FontWeight.w500,
@@ -283,7 +288,15 @@ class _CommentItemState extends State<CommentItem> {
                                               top: 2.h,
                                             ),
                                             child: Text(
-                                              timeago.format(reply.createdAt),
+                                              timeago.format(
+                                                reply.createdAt.add(
+                                                  const Duration(hours: 7),
+                                                ),
+                                                locale:
+                                                    Localizations.localeOf(
+                                                      context,
+                                                    ).languageCode,
+                                              ),
                                               style: Theme.of(
                                                 context,
                                               ).textTheme.bodySmall?.copyWith(

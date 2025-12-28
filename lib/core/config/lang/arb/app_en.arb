@@ -173,6 +173,8 @@
   "discountPoint": "Reward points discount",
 
   "choosePayment": "Choose payment method",
+  "paymentQRCode": "Payment QR Code",
+  "scanToPay": "Please scan the QR code to complete the payment.",
 
 
 

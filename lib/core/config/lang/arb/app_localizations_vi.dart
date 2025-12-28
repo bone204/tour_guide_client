@@ -278,6 +278,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get choosePayment => 'Chọn phương thức thanh toán';
 
   @override
+  String get paymentQRCode => 'Mã QR thanh toán';
+
+  @override
+  String get scanToPay => 'Vui lòng quét mã QR để hoàn tất thanh toán.';
+
+  @override
   String get useRewardPoint => 'Sử dụng điểm thưởng';
 
   @override

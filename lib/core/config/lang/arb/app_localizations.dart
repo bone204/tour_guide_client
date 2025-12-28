@@ -629,6 +629,18 @@ abstract class AppLocalizations {
   /// **'Choose payment method'**
   String get choosePayment;
 
+  /// No description provided for @paymentQRCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment QR Code'**
+  String get paymentQRCode;
+
+  /// No description provided for @scanToPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Please scan the QR code to complete the payment.'**
+  String get scanToPay;
+
   /// No description provided for @useRewardPoint.
   ///
   /// In en, this message translates to:

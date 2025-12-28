@@ -46,4 +46,7 @@ class ApiUrls {
 
   //Voucher URLs
   static const vouchers = "$baseURL/vouchers";
+
+  //Payment URLs
+  static const payments = "$baseURL/payments";
 }

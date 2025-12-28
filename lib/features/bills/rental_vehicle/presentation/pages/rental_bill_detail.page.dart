@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,6 +63,7 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
               (context) => RentalPaymentCubit(
                 updateRentalBillUseCase: sl(),
                 payRentalBillUseCase: sl(),
+                confirmQrPaymentUseCase: sl(),
               ),
         ),
       ],
@@ -171,7 +173,7 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
               vehicle?.vehicleCatalog?.photo ?? AppImage.defaultCar,
               width: 80.w,
               height: 80.w,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
               errorBuilder:
                   (context, error, stackTrace) => Container(
                     width: 80.w,
@@ -635,7 +637,11 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
       listener: (context, state) {
         if (state.status == RentalPaymentStatus.success &&
             state.payUrl != null) {
-          _launchUrl(context, state.payUrl!);
+          if (state.payUrl!.startsWith('data:image')) {
+            _showQRCodeDialog(context, state.payUrl!);
+          } else {
+            _launchUrl(context, state.payUrl!);
+          }
         } else if (state.status == RentalPaymentStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -673,6 +679,56 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
         );
       }
     }
+  }
+
+  void _showQRCodeDialog(BuildContext context, String base64Image) {
+    // Extract base64 part
+    final String base64Str = base64Image.split(',').last;
+    final bytes = base64Decode(base64Str);
+
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Center(
+              child: Text(
+                AppLocalizations.of(context)!.paymentQRCode,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.primaryGrey),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Image.memory(
+                      bytes,
+                      width: 250.w,
+                      height: 250.w,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  AppLocalizations.of(context)!.scanToPay,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(AppLocalizations.of(context)!.close),
+              ),
+            ],
+          ),
+    );
   }
 
   Widget _buildDetailRow(

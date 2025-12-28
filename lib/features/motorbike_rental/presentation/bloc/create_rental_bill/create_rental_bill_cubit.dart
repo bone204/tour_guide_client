@@ -19,7 +19,18 @@ class CreateRentalBillCubit extends Cubit<CreateRentalBillState> {
     if (isClosed) return;
     emit(CreateRentalBillLoading());
 
-    final result = await _createRentalBillUseCase(request);
+    // Add 7 hours to startDate and endDate as per user request to handle timezone/API expectations
+    final modifiedRequest = CreateRentalBillRequest(
+      rentalType: request.rentalType,
+      vehicleType: request.vehicleType,
+      durationPackage: request.durationPackage,
+      startDate: request.startDate.add(const Duration(hours: 7)),
+      endDate: request.endDate.add(const Duration(hours: 7)),
+      location: request.location,
+      details: request.details,
+    );
+
+    final result = await _createRentalBillUseCase(modifiedRequest);
 
     if (isClosed) return;
 

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
+import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/data_source/rental_bill_api_service.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/update_rental_bill_request.dart';
@@ -7,6 +8,7 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/domain/repository/r
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/update_rental_bill_use_case.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill_pay_response.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/confirm_qr_payment_request.dart';
 
 class RentalBillRepositoryImpl implements RentalBillRepository {
   final RentalBillApiService _apiService = sl<RentalBillApiService>();
@@ -41,5 +43,12 @@ class RentalBillRepositoryImpl implements RentalBillRepository {
   @override
   Future<Either<Failure, RentalBillPayResponse>> payBill(int id) async {
     return await _apiService.payBill(id);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> confirmQrPayment(
+    ConfirmQrPaymentRequest params,
+  ) async {
+    return await _apiService.confirmQrPayment(params);
   }
 }

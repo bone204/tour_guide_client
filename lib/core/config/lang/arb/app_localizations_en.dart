@@ -278,6 +278,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get choosePayment => 'Choose payment method';
 
   @override
+  String get paymentQRCode => 'Payment QR Code';
+
+  @override
+  String get scanToPay => 'Please scan the QR code to complete the payment.';
+
+  @override
   String get useRewardPoint => 'Use reward points';
 
   @override

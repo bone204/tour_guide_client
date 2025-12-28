@@ -131,6 +131,7 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get_rental_bill_detail_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/update_rental_bill_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/pay_rental_bill_use_case.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/confirm_qr_payment_use_case.dart';
 
 import 'package:tour_guide_app/features/voucher/data/data_source/voucher_api_service.dart';
 import 'package:tour_guide_app/features/voucher/data/repository/voucher_repository_impl.dart';
@@ -270,6 +271,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerSingleton<UpdateRentalBillUseCase>(UpdateRentalBillUseCase());
   sl.registerSingleton<PayRentalBillUseCase>(PayRentalBillUseCase());
+  sl.registerSingleton<ConfirmQrPaymentUseCase>(ConfirmQrPaymentUseCase(sl()));
   sl.registerSingleton<SuggestItineraryUseCase>(SuggestItineraryUseCase());
 
   // Cubits
