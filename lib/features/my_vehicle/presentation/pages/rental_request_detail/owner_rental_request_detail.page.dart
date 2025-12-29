@@ -37,8 +37,7 @@ class _OwnerRentalRequestDetailPageState
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: CustomAppBar(
-          title:
-              AppLocalizations.of(context)!.rentalRequestDetail,
+          title: AppLocalizations.of(context)!.rentalRequestDetail,
           showBackButton: true,
           onBackPressed: () => Navigator.pop(context),
         ),
@@ -78,11 +77,15 @@ class _OwnerRentalRequestDetailPageState
                     child: Column(
                       children: [
                         // 1. Renter Info
-                        _buildVehicleInfoCard(context, vehicle, licensePlate),
+                        _buildVehicleInfoCard(
+                          context,
+                          vehicle,
+                          licensePlate,
+                          bill.rentalStatus,
+                        ),
                         SizedBox(height: 16.h),
 
                         // 2. Vehicle Info
-                        
                         _buildRenterInfoCard(context, bill),
                         SizedBox(height: 16.h),
 
@@ -123,9 +126,9 @@ class _OwnerRentalRequestDetailPageState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-                AppLocalizations.of(context)!.renterInfo,
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
+            AppLocalizations.of(context)!.renterInfo,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
           const Divider(),
           _buildDetailRow(
             context,
@@ -146,6 +149,7 @@ class _OwnerRentalRequestDetailPageState
     BuildContext context,
     RentalVehicle? vehicle,
     String licensePlate,
+    RentalProgressStatus status,
   ) {
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -161,6 +165,7 @@ class _OwnerRentalRequestDetailPageState
         ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12.r),
@@ -183,11 +188,21 @@ class _OwnerRentalRequestDetailPageState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  vehicle != null
-                      ? "${vehicle.vehicleCatalog?.brand} ${vehicle.vehicleCatalog?.model}"
-                      : AppLocalizations.of(context)!.rentalVehicle,
-                  style: Theme.of(context).textTheme.titleMedium,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        vehicle != null
+                            ? "${vehicle.vehicleCatalog?.brand} ${vehicle.vehicleCatalog?.model}"
+                            : AppLocalizations.of(context)!.rentalVehicle,
+                        style: Theme.of(context).textTheme.titleMedium,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    _buildStatusBadge(context, status),
+                  ],
                 ),
                 SizedBox(height: 8.h),
                 Container(
@@ -211,6 +226,28 @@ class _OwnerRentalRequestDetailPageState
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildStatusBadge(BuildContext context, RentalProgressStatus status) {
+    final color = _getRentalStatusColor(status);
+    final text = _getRentalStatusText(context, status);
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(6.r),
+        border: Border.all(color: color.withOpacity(0.2)),
+      ),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: color,
+          fontWeight: FontWeight.w700,
+          fontSize: 10.sp,
+        ),
       ),
     );
   }
@@ -348,6 +385,51 @@ class _OwnerRentalRequestDetailPageState
         ],
       ),
     );
+  }
+
+  String _getRentalStatusText(
+    BuildContext context,
+    RentalProgressStatus status,
+  ) {
+    switch (status) {
+      case RentalProgressStatus.pending:
+        return AppLocalizations.of(context)!.pending;
+      case RentalProgressStatus.booked:
+        return AppLocalizations.of(context)!.statusBooked;
+      case RentalProgressStatus.delivering:
+        return AppLocalizations.of(context)!.statusDelivering;
+      case RentalProgressStatus.delivered:
+        return AppLocalizations.of(context)!.statusDelivered;
+      case RentalProgressStatus.inProgress:
+        return AppLocalizations.of(context)!.statusInProgress;
+      case RentalProgressStatus.returnRequested:
+        return AppLocalizations.of(context)!.statusReturnRequested;
+      case RentalProgressStatus.returnConfirmed:
+        return AppLocalizations.of(context)!.statusReturnConfirmed;
+      case RentalProgressStatus.cancelled:
+        return AppLocalizations.of(context)!.cancelled;
+    }
+  }
+
+  Color _getRentalStatusColor(RentalProgressStatus status) {
+    switch (status) {
+      case RentalProgressStatus.pending:
+        return Colors.orange;
+      case RentalProgressStatus.booked:
+        return AppColors.primaryBlue;
+      case RentalProgressStatus.delivering:
+        return Colors.blueAccent;
+      case RentalProgressStatus.delivered:
+        return Colors.lightGreen;
+      case RentalProgressStatus.inProgress:
+        return Colors.green;
+      case RentalProgressStatus.returnRequested:
+        return Colors.purple;
+      case RentalProgressStatus.returnConfirmed:
+        return Colors.indigo;
+      case RentalProgressStatus.cancelled:
+        return AppColors.primaryRed;
+    }
   }
 
   String _getStatusText(BuildContext context, RentalBillStatus status) {

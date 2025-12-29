@@ -1835,6 +1835,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get travelTrips => 'Travel Trips';
 
   @override
+  String get statusBooked => 'Booked';
+
+  @override
+  String get statusDelivering => 'Delivering';
+
+  @override
+  String get statusDelivered => 'Delivered';
+
+  @override
+  String get statusInProgress => 'In Progress';
+
+  @override
+  String get statusReturnRequested => 'Return Requested';
+
+  @override
+  String get statusReturnConfirmed => 'Return Confirmed';
+
+  @override
   String get enterPoints => 'Enter points';
 
   @override
@@ -2052,9 +2070,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statusAvailable => 'Available';
-
-  @override
-  String get statusBooked => 'Booked';
 
   @override
   String get statusSoldOut => 'Sold Out';

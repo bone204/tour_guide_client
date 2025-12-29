@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
@@ -50,5 +51,23 @@ class RentalBillRepositoryImpl implements RentalBillRepository {
     ConfirmQrPaymentRequest params,
   ) async {
     return await _apiService.confirmQrPayment(params);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> userPickup(
+    int id,
+    File selfie,
+  ) async {
+    return await _apiService.userPickup(id, selfie);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> userReturnRequest(
+    int id,
+    List<File> photos,
+    double latitude,
+    double longitude,
+  ) async {
+    return await _apiService.userReturnRequest(id, photos, latitude, longitude);
   }
 }

@@ -1841,6 +1841,24 @@ class AppLocalizationsVi extends AppLocalizations {
   String get travelTrips => 'Chuyến đi';
 
   @override
+  String get statusBooked => 'Đã đặt';
+
+  @override
+  String get statusDelivering => 'Đang giao xe';
+
+  @override
+  String get statusDelivered => 'Đã giao xe';
+
+  @override
+  String get statusInProgress => 'Đang thuê';
+
+  @override
+  String get statusReturnRequested => 'Yêu cầu trả';
+
+  @override
+  String get statusReturnConfirmed => 'Đã xác nhận trả';
+
+  @override
   String get enterPoints => 'Nhập điểm';
 
   @override
@@ -2058,9 +2076,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get statusAvailable => 'Còn chỗ';
-
-  @override
-  String get statusBooked => 'Đã đặt';
 
   @override
   String get statusSoldOut => 'Hết chỗ';

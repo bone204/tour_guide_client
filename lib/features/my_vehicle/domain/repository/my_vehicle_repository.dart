@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
@@ -27,4 +28,18 @@ abstract class MyVehicleRepository {
 
   // Rental Bills
   Future<Either<Failure, List<RentalBill>>> getOwnerRentalBills(String? status);
+
+  // Workflow
+  Future<Either<Failure, SuccessResponse>> ownerDelivering(int id);
+  Future<Either<Failure, SuccessResponse>> ownerDelivered(
+    int id,
+    List<File> photos,
+  );
+  Future<Either<Failure, SuccessResponse>> ownerConfirmReturn(
+    int id,
+    List<File> photos,
+    double latitude,
+    double longitude,
+    bool? overtimeFeeAccepted,
+  );
 }

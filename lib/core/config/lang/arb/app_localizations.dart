@@ -3611,6 +3611,42 @@ abstract class AppLocalizations {
   /// **'Travel Trips'**
   String get travelTrips;
 
+  /// No description provided for @statusBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get statusBooked;
+
+  /// No description provided for @statusDelivering.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivering'**
+  String get statusDelivering;
+
+  /// No description provided for @statusDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get statusDelivered;
+
+  /// No description provided for @statusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get statusInProgress;
+
+  /// No description provided for @statusReturnRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Requested'**
+  String get statusReturnRequested;
+
+  /// No description provided for @statusReturnConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Confirmed'**
+  String get statusReturnConfirmed;
+
   /// No description provided for @enterPoints.
   ///
   /// In en, this message translates to:
@@ -4036,12 +4072,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Available'**
   String get statusAvailable;
-
-  /// No description provided for @statusBooked.
-  ///
-  /// In en, this message translates to:
-  /// **'Booked'**
-  String get statusBooked;
 
   /// No description provided for @statusSoldOut.
   ///

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
@@ -15,5 +16,14 @@ abstract class RentalBillRepository {
   Future<Either<Failure, RentalBillPayResponse>> payBill(int id);
   Future<Either<Failure, SuccessResponse>> confirmQrPayment(
     ConfirmQrPaymentRequest params,
+  );
+
+  // Workflow
+  Future<Either<Failure, SuccessResponse>> userPickup(int id, File selfie);
+  Future<Either<Failure, SuccessResponse>> userReturnRequest(
+    int id,
+    List<File> photos,
+    double latitude,
+    double longitude,
   );
 }

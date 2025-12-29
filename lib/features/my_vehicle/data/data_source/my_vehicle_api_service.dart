@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
@@ -31,6 +32,20 @@ abstract class MyVehicleApiService {
 
   // Rental Bills
   Future<Either<Failure, List<RentalBill>>> getOwnerRentalBills(String? status);
+
+  // Workflow
+  Future<Either<Failure, SuccessResponse>> ownerDelivering(int id);
+  Future<Either<Failure, SuccessResponse>> ownerDelivered(
+    int id,
+    List<File> photos,
+  );
+  Future<Either<Failure, SuccessResponse>> ownerConfirmReturn(
+    int id,
+    List<File> photos,
+    double latitude,
+    double longitude,
+    bool? overtimeFeeAccepted,
+  );
 }
 
 class MyVehicleApiServiceImpl extends MyVehicleApiService {
@@ -242,6 +257,111 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
       final List<dynamic> data = response.data;
       final bills = data.map((json) => RentalBill.fromJson(json)).toList();
       return Right(bills);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> ownerDelivering(int id) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.rentalBills}/$id/delivering',
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> ownerDelivered(
+    int id,
+    List<File> photos,
+  ) async {
+    try {
+      final formData = FormData();
+      for (var file in photos) {
+        formData.files.add(
+          MapEntry(
+            'photos',
+            await MultipartFile.fromFile(
+              file.path,
+              filename: file.path.split('/').last,
+            ),
+          ),
+        );
+      }
+
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.rentalBills}/$id/delivered',
+        data: formData,
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> ownerConfirmReturn(
+    int id,
+    List<File> photos,
+    double latitude,
+    double longitude,
+    bool? overtimeFeeAccepted,
+  ) async {
+    try {
+      final formData = FormData();
+      formData.fields.add(MapEntry('latitude', latitude.toString()));
+      formData.fields.add(MapEntry('longitude', longitude.toString()));
+      if (overtimeFeeAccepted != null) {
+        formData.fields.add(
+          MapEntry('overtimeFeeAccepted', overtimeFeeAccepted.toString()),
+        );
+      }
+
+      for (var file in photos) {
+        formData.files.add(
+          MapEntry(
+            'photos',
+            await MultipartFile.fromFile(
+              file.path,
+              filename: file.path.split('/').last,
+            ),
+          ),
+        );
+      }
+
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.rentalBills}/$id/confirm-return',
+        data: formData,
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

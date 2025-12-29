@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
@@ -76,5 +77,35 @@ class MyVehicleRepositoryImpl extends MyVehicleRepository {
     String? status,
   ) async {
     return _apiService.getOwnerRentalBills(status);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> ownerDelivering(int id) async {
+    return _apiService.ownerDelivering(id);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> ownerDelivered(
+    int id,
+    List<File> photos,
+  ) async {
+    return _apiService.ownerDelivered(id, photos);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> ownerConfirmReturn(
+    int id,
+    List<File> photos,
+    double latitude,
+    double longitude,
+    bool? overtimeFeeAccepted,
+  ) async {
+    return _apiService.ownerConfirmReturn(
+      id,
+      photos,
+      latitude,
+      longitude,
+      overtimeFeeAccepted,
+    );
   }
 }

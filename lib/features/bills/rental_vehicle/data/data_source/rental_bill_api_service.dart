@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
@@ -22,6 +23,15 @@ abstract class RentalBillApiService {
   Future<Either<Failure, RentalBillPayResponse>> payBill(int id);
   Future<Either<Failure, SuccessResponse>> confirmQrPayment(
     ConfirmQrPaymentRequest body,
+  );
+
+  // Workflow
+  Future<Either<Failure, SuccessResponse>> userPickup(int id, File selfie);
+  Future<Either<Failure, SuccessResponse>> userReturnRequest(
+    int id,
+    List<File> photos,
+    double latitude,
+    double longitude,
   );
 }
 
@@ -188,6 +198,82 @@ class RentalBillApiServiceImpl implements RentalBillApiService {
           message:
               e.response?.data['message'] ??
               'An error occurred confirming QR payment',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> userPickup(
+    int id,
+    File selfie,
+  ) async {
+    try {
+      final formData = FormData();
+      formData.files.add(
+        MapEntry(
+          'selfiePhoto',
+          await MultipartFile.fromFile(
+            selfie.path,
+            filename: selfie.path.split('/').last,
+          ),
+        ),
+      );
+
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.rentalBills}/$id/pickup',
+        data: formData,
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> userReturnRequest(
+    int id,
+    List<File> photos,
+    double latitude,
+    double longitude,
+  ) async {
+    try {
+      final formData = FormData();
+      formData.fields.add(MapEntry('latitude', latitude.toString()));
+      formData.fields.add(MapEntry('longitude', longitude.toString()));
+      for (var file in photos) {
+        formData.files.add(
+          MapEntry(
+            'photos',
+            await MultipartFile.fromFile(
+              file.path,
+              filename: file.path.split('/').last,
+            ),
+          ),
+        );
+      }
+
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.rentalBills}/$id/return-request',
+        data: formData,
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
