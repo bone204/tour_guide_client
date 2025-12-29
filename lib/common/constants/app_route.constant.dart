@@ -64,7 +64,9 @@ class AppRouteConstant {
   static const String itineraryExploreDetail = '/itinerary_explore_detail';
   static const String interestSelection = '/interest_selection';
   static const String rentalBillList = '/rental_bill_list';
-  static const String rentalBillDetail = '/rental_bill_detail';
+  static const String rentalBillDetail = "/rental_bill_detail";
+  static const String cooperationDetail = "/cooperation_detail";
+  static const String paymentWebView = "/payment_web_view";
   static const String createRentalBill = '/create_rental_bill';
   static const String createCarRentalBill = '/create_car_rental_bill';
 

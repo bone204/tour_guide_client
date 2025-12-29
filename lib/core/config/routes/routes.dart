@@ -62,6 +62,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/c
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/create_contract.page.dart';
 import 'package:tour_guide_app/features/profile/presentation/pages/personal_information.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/vehicle_detail.page.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/pages/cooperation_detail.page.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/rental_bill_list.page.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/rental_bill_detail.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/create_rental_bill.page.dart';
@@ -501,6 +502,13 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => RentalBillDetailPage(id: id),
+        );
+
+      case AppRouteConstant.cooperationDetail:
+        final id = settings.arguments as int;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => CooperationDetailPage.withProvider(id: id),
         );
 
       case AppRouteConstant.createRentalBill:

@@ -9,8 +9,10 @@ import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/
 import 'package:tour_guide_app/features/home/presentation/bloc/get_recommend_destinations/get_recommend_destinations_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_recommend_destinations/get_recommend_destinations_state.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_vouchers_cubit.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_list/cooperation_list_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.widget.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_header.widget.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/hotel_list.widget.dart';
@@ -42,6 +44,12 @@ class HomePage extends StatefulWidget {
         ),
         BlocProvider(
           create: (context) => sl<GetVouchersCubit>()..getVouchers(),
+        ),
+        BlocProvider(
+          create: (context) => sl<CooperationListCubit>()..getCooperations(),
+        ),
+        BlocProvider(
+          create: (context) => sl<FavoriteCooperationsCubit>()..loadFavorites(),
         ),
       ],
       child: const HomePage(),
@@ -110,6 +118,8 @@ class _HomePageState extends State<HomePage> {
         query: DestinationQuery(limit: 10, offset: 0),
       ),
       context.read<GetVouchersCubit>().getVouchers(),
+      context.read<CooperationListCubit>().getCooperations(),
+      context.read<FavoriteCooperationsCubit>().loadFavorites(),
     ]);
   }
 

@@ -26,6 +26,10 @@ import 'package:tour_guide_app/features/cooperations/domain/usecases/get_coopera
 import 'package:tour_guide_app/features/cooperations/domain/usecases/get_cooperations.dart';
 import 'package:tour_guide_app/features/cooperations/domain/usecases/get_favorite_cooperations.dart';
 import 'package:tour_guide_app/features/cooperations/domain/usecases/unfavorite_cooperation.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_detail/cooperation_detail_cubit.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/bloc/comment/cooperation_comment_cubit.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_list/cooperation_list_cubit.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
 import 'package:tour_guide_app/features/destination/data/data_source/destination_api_service.dart';
 import 'package:tour_guide_app/features/destination/data/repository/destination_repository_impl.dart';
 import 'package:tour_guide_app/features/destination/domain/repository/destination_repository.dart';
@@ -49,6 +53,7 @@ import 'package:tour_guide_app/features/car_rental/data/data_source/car_rental_a
 import 'package:tour_guide_app/features/car_rental/data/repository/car_rental_repository_impl.dart';
 import 'package:tour_guide_app/features/car_rental/domain/repository/car_rental_repository.dart';
 import 'package:tour_guide_app/features/car_rental/domain/usecases/search_cars_use_case.dart';
+import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorite_cooperations/get_favorite_cooperations_cubit.dart';
 
 import 'package:tour_guide_app/features/settings/data/data_source/local/settings_local_service.dart';
 import 'package:tour_guide_app/features/settings/data/repository/settings_repository_impl.dart';
@@ -189,8 +194,6 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<CarRentalApiService>(CarRentalApiServiceImpl());
   sl.registerSingleton<RentalBillApiService>(RentalBillApiServiceImpl());
   sl.registerSingleton<EateryApiService>(EateryApiServiceImpl());
-  sl.registerSingleton<RentalBillApiService>(RentalBillApiServiceImpl());
-  sl.registerSingleton<EateryApiService>(EateryApiServiceImpl());
   sl.registerSingleton<CooperationApiService>(CooperationApiServiceImpl());
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
@@ -206,8 +209,6 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerSingleton<CarRentalRepository>(CarRentalRepositoryImpl());
   sl.registerSingleton<RentalBillRepository>(RentalBillRepositoryImpl());
-  sl.registerSingleton<EateryRepository>(EateryRepositoryImpl());
-
   sl.registerSingleton<EateryRepository>(EateryRepositoryImpl());
   sl.registerSingleton<CooperationRepository>(CooperationRepositoryImpl());
 
@@ -320,8 +321,6 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<ConfirmQrPaymentUseCase>(ConfirmQrPaymentUseCase(sl()));
   sl.registerSingleton<SuggestItineraryUseCase>(SuggestItineraryUseCase());
 
-  sl.registerSingleton<SuggestItineraryUseCase>(SuggestItineraryUseCase());
-
   // Cooperation
   sl.registerSingleton<GetCooperationsUseCase>(GetCooperationsUseCase());
   sl.registerSingleton<GetCooperationDetailUseCase>(
@@ -338,6 +337,25 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
 
   // Cubits
+  sl.registerFactory<CooperationDetailCubit>(
+    () => CooperationDetailCubit(sl()),
+  );
+  sl.registerFactory<CooperationCommentCubit>(
+    () => CooperationCommentCubit(
+      getFeedbackUseCase: sl(),
+      createFeedbackUseCase: sl(),
+      checkContentUseCase: sl(),
+    ),
+  );
+  sl.registerFactory<CooperationListCubit>(
+    () => CooperationListCubit(getCooperationsUseCase: sl()),
+  );
+  sl.registerFactory<FavoriteCooperationsCubit>(
+    () => FavoriteCooperationsCubit(),
+  );
+  sl.registerFactory<GetFavoriteCooperationsCubit>(
+    () => GetFavoriteCooperationsCubit(),
+  );
   sl.registerFactory<SuggestItineraryCubit>(
     () => SuggestItineraryCubit(sl(), sl()),
   );
