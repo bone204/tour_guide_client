@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/stop_media/stop_media_cubit.dart';
@@ -86,28 +88,29 @@ class _StopImagesPageState extends State<StopImagesPage> {
                       physics: const AlwaysScrollableScrollPhysics(),
                       slivers: [
                         SliverFillRemaining(
-                          child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 30.w),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.photo_library_outlined,
-                                  size: 64.sp,
-                                  color: Colors.grey[400],
+                                Lottie.asset(
+                                  AppLotties.empty,
+                                  width: 300.w,
+                                  height: 200.h,
+                                  fit: BoxFit.contain,
                                 ),
                                 SizedBox(height: 16.h),
                                 Text(
                                   AppLocalizations.of(context)!.noPhotosYet,
-                                  style: Theme.of(context).textTheme.bodyLarge
-                                      ?.copyWith(color: Colors.grey[600]),
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
                                 SizedBox(height: 24.h),
-                                ElevatedButton.icon(
+                                PrimaryButton(
                                   onPressed: () => _pickImages(context),
-                                  icon: const Icon(Icons.add),
-                                  label: Text(
-                                    AppLocalizations.of(context)!.addPhotos,
-                                  ),
+                                  title:
+                                      AppLocalizations.of(context)!.addPhotos,
+                                  width: 200.w,
                                 ),
                               ],
                             ),

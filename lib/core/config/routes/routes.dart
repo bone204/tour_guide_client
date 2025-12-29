@@ -72,6 +72,7 @@ import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_list.pa
 import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_detail.page.dart';
 import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_wheel.page.dart';
 import 'package:tour_guide_app/features/eatery/data/models/eatery.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/pages/rental_process.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -560,6 +561,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => EateryWheelPage(eateries: eateries),
+        );
+
+      case AppRouteConstant.rentalProcess:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const RentalProcessPage(),
         );
 
       default:

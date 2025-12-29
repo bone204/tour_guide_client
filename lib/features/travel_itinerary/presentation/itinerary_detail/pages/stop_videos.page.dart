@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/stop_media/stop_media_cubit.dart';
@@ -91,29 +92,32 @@ class _StopVideosPageState extends State<StopVideosPage> {
                       slivers: [
                         SliverFillRemaining(
                           child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.videocam_outlined,
-                                  size: 64.sp,
-                                  color: Colors.grey[400],
-                                ),
-                                SizedBox(height: 16.h),
-                                Text(
-                                  AppLocalizations.of(context)!.noVideosYet,
-                                  style: Theme.of(context).textTheme.bodyLarge
-                                      ?.copyWith(color: Colors.grey[600]),
-                                ),
-                                SizedBox(height: 24.h),
-                                ElevatedButton.icon(
-                                  onPressed: () => _pickVideo(context),
-                                  icon: const Icon(Icons.add),
-                                  label: Text(
-                                    AppLocalizations.of(context)!.addVideo,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 30.w),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Lottie.asset(
+                                    AppLotties.empty,
+                                    width: 300.w,
+                                    height: 200.h,
+                                    fit: BoxFit.contain,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(height: 16.h),
+                                  Text(
+                                    AppLocalizations.of(context)!.noVideosYet,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                  SizedBox(height: 24.h),
+                                  PrimaryButton(
+                                    onPressed: () => _pickVideo(context),
+                                    title:
+                                        AppLocalizations.of(context)!.addVideo,
+                                    width: 200.w,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
