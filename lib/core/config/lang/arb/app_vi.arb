@@ -217,9 +217,13 @@
   "choosePayment": "Chọn phương thức thanh toán",
   "paymentQRCode": "Mã QR thanh toán",
   "scanToPay": "Vui lòng quét mã QR để hoàn tất thanh toán.",
-
-
-
+  "myVehicles": "Xe của tôi",
+  "rentalRequests": "Yêu cầu thuê xe",
+  "noRentalRequests": "Chưa có yêu cầu thuê xe nào",
+  "renterInfo": "Thông tin người thuê",
+  "rentalRequestDetail": "Chi tiết yêu cầu thuê",
+  "totalRevenue": "Tổng doanh thu",
+  "travelTrips": "Chuyến đi",
   "useRewardPoint": "Sử dụng điểm thưởng",
 
   "availablePoints": "Điểm hiện có",
@@ -1172,6 +1176,10 @@
   "addStop": "Thêm điểm dừng",
   "startTime": "Thời gian bắt đầu",
   "endTime": "Thời gian kết thúc",
+  "renterInfo": "Thông tin người thuê",
+  "rentalRequestDetail": "Chi tiết yêu cầu thuê",
+  "totalRevenue": "Tổng tiền",
+  "payment": "Thanh toán",
   "travelPoints": "Điểm du lịch",
   "travelTrips": "Chuyến đi",
   "enterPoints": "Nhập điểm",

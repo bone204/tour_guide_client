@@ -9,6 +9,7 @@ import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.da
 import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_catalog.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/repository/my_vehicle_repository.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
 
 class MyVehicleRepositoryImpl extends MyVehicleRepository {
   final _apiService = sl<MyVehicleApiService>();
@@ -68,5 +69,12 @@ class MyVehicleRepositoryImpl extends MyVehicleRepository {
     String licensePlate,
   ) async {
     return _apiService.disableVehicle(licensePlate);
+  }
+
+  @override
+  Future<Either<Failure, List<RentalBill>>> getOwnerRentalBills(
+    String? status,
+  ) async {
+    return _apiService.getOwnerRentalBills(status);
   }
 }

@@ -284,6 +284,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get scanToPay => 'Vui lòng quét mã QR để hoàn tất thanh toán.';
 
   @override
+  String get myVehicles => 'Xe của tôi';
+
+  @override
+  String get rentalRequests => 'Yêu cầu thuê xe';
+
+  @override
+  String get noRentalRequests => 'Chưa có yêu cầu thuê xe nào';
+
+  @override
   String get useRewardPoint => 'Sử dụng điểm thưởng';
 
   @override
@@ -1815,6 +1824,15 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get endTime => 'Thời gian kết thúc';
+
+  @override
+  String get renterInfo => 'Thông tin người thuê';
+
+  @override
+  String get rentalRequestDetail => 'Chi tiết yêu cầu thuê';
+
+  @override
+  String get totalRevenue => 'Tổng tiền';
 
   @override
   String get travelPoints => 'Điểm du lịch';

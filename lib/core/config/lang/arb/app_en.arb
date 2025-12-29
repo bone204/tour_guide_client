@@ -175,6 +175,9 @@
   "choosePayment": "Choose payment method",
   "paymentQRCode": "Payment QR Code",
   "scanToPay": "Please scan the QR code to complete the payment.",
+  "myVehicles": "My Vehicles",
+  "rentalRequests": "Rental Requests",
+  "noRentalRequests": "No rental requests found",
 
 
 
@@ -1165,6 +1168,11 @@
   "addStop": "Add Stop",
   "startTime": "Start Time",
   "endTime": "End Time",
+  "noRentalRequests": "No rental requests",
+  "renterInfo": "Renter Info",
+  "rentalRequestDetail": "Rental Request Detail",
+  "totalRevenue": "Total Amount",
+  "payment": "Payment",
   "travelPoints": "Travel Points",
   "travelTrips": "Travel Trips",
   "enterPoints": "Enter points",

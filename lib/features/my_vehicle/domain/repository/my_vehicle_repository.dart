@@ -7,6 +7,7 @@ import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.d
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 
 import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_catalog.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
 
 abstract class MyVehicleRepository {
   Future<Either<Failure, SuccessResponse>> addContract(ContractParams params);
@@ -23,4 +24,7 @@ abstract class MyVehicleRepository {
 
   Future<Either<Failure, SuccessResponse>> enableVehicle(String licensePlate);
   Future<Either<Failure, SuccessResponse>> disableVehicle(String licensePlate);
+
+  // Rental Bills
+  Future<Either<Failure, List<RentalBill>>> getOwnerRentalBills(String? status);
 }

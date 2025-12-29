@@ -284,6 +284,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanToPay => 'Please scan the QR code to complete the payment.';
 
   @override
+  String get myVehicles => 'My Vehicles';
+
+  @override
+  String get rentalRequests => 'Rental Requests';
+
+  @override
+  String get noRentalRequests => 'No rental requests';
+
+  @override
   String get useRewardPoint => 'Use reward points';
 
   @override
@@ -1809,6 +1818,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get endTime => 'End Time';
+
+  @override
+  String get renterInfo => 'Renter Info';
+
+  @override
+  String get rentalRequestDetail => 'Rental Request Detail';
+
+  @override
+  String get totalRevenue => 'Total Amount';
 
   @override
   String get travelPoints => 'Travel Points';

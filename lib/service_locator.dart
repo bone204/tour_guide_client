@@ -138,6 +138,8 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle
 import 'package:tour_guide_app/features/auth/domain/usecases/update_hobbies.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/update_hobbies/update_hobbies_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/enable_disable_vehicle/enable_disable_vehicle_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_owner_rental_bills.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_owner_rental_bills/get_owner_rental_bills_cubit.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/search_motorbike/search_motorbike_cubit.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/create_rental_bill/create_rental_bill_cubit.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/motorbike_detail/motorbike_detail_cubit.dart';
@@ -267,7 +269,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetRandomEateryUseCase>(GetRandomEateryUseCase());
   sl.registerSingleton<GetEateryDetailUseCase>(GetEateryDetailUseCase());
 
-  sl.registerSingleton<UseItineraryUseCase>(UseItineraryUseCase()); // Add this
+  sl.registerSingleton<UseItineraryUseCase>(UseItineraryUseCase());
 
   // Like Itinerary
   sl.registerSingleton<LikeItineraryUseCase>(LikeItineraryUseCase());
@@ -311,6 +313,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetVehicleDetailUseCase>(GetVehicleDetailUseCase());
   sl.registerSingleton<GetVehicleCatalogsUseCase>(
     GetVehicleCatalogsUseCase(sl()),
+  );
+  sl.registerSingleton<GetOwnerRentalBillsUseCase>(
+    GetOwnerRentalBillsUseCase(),
   );
   sl.registerSingleton<GetMyRentalBillsUseCase>(GetMyRentalBillsUseCase());
   sl.registerSingleton<GetRentalBillDetailUseCase>(
@@ -373,6 +378,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
       getVehicleCatalogsUseCase: sl(),
     ),
   );
+  sl.registerFactory(() => GetOwnerRentalBillsCubit(sl()));
   sl.registerFactory<GetDestinationCubit>(() => GetDestinationCubit());
   sl.registerFactory<CreateItineraryCubit>(
     () => CreateItineraryCubit(createItineraryUseCase: sl()),

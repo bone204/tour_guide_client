@@ -641,6 +641,24 @@ abstract class AppLocalizations {
   /// **'Please scan the QR code to complete the payment.'**
   String get scanToPay;
 
+  /// No description provided for @myVehicles.
+  ///
+  /// In en, this message translates to:
+  /// **'My Vehicles'**
+  String get myVehicles;
+
+  /// No description provided for @rentalRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Requests'**
+  String get rentalRequests;
+
+  /// No description provided for @noRentalRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No rental requests'**
+  String get noRentalRequests;
+
   /// No description provided for @useRewardPoint.
   ///
   /// In en, this message translates to:
@@ -3562,6 +3580,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'End Time'**
   String get endTime;
+
+  /// No description provided for @renterInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Renter Info'**
+  String get renterInfo;
+
+  /// No description provided for @rentalRequestDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Request Detail'**
+  String get rentalRequestDetail;
+
+  /// No description provided for @totalRevenue.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get totalRevenue;
 
   /// No description provided for @travelPoints.
   ///

@@ -8,6 +8,7 @@ import 'package:tour_guide_app/features/my_vehicle/data/models/add_vehicle_reque
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_catalog.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -27,6 +28,9 @@ abstract class MyVehicleApiService {
 
   Future<Either<Failure, SuccessResponse>> enableVehicle(String licensePlate);
   Future<Either<Failure, SuccessResponse>> disableVehicle(String licensePlate);
+
+  // Rental Bills
+  Future<Either<Failure, List<RentalBill>>> getOwnerRentalBills(String? status);
 }
 
 class MyVehicleApiServiceImpl extends MyVehicleApiService {
@@ -214,6 +218,30 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
       );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<RentalBill>>> getOwnerRentalBills(
+    String? status,
+  ) async {
+    try {
+      final response = await sl<DioClient>().get(
+        '${ApiUrls.rentalBills}/owner/me',
+        queryParameters: {if (status != null) 'status': status},
+      );
+      final List<dynamic> data = response.data;
+      final bills = data.map((json) => RentalBill.fromJson(json)).toList();
+      return Right(bills);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

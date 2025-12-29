@@ -75,4 +75,5 @@ class AppRouteConstant {
   static const String eateryDetail = '/eatery_detail';
   static const String eateryWheel = '/eatery_wheel';
   static const String rentalProcess = '/rental_process';
+  static const String ownerRentalRequestDetail = '/owner_rental_request_detail';
 }

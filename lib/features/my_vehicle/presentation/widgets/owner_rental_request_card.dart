@@ -1,19 +1,20 @@
-
+import 'package:flutter/material.dart';
+import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/utils/date_formatter.dart';
 import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 
-class RentalBillCard extends StatelessWidget {
+class OwnerRentalRequestCard extends StatelessWidget {
   final RentalBill bill;
   final VoidCallback? onTap;
 
-  const RentalBillCard({super.key, required this.bill, this.onTap});
+  const OwnerRentalRequestCard({super.key, required this.bill, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    // Get primary vehicle info (assuming first device in list for card display)
+    // Get primary vehicle info
     RentalVehicle? vehicle;
     if (bill.details.isNotEmpty) {
       vehicle = bill.details.first.vehicle;
@@ -27,32 +28,65 @@ class RentalBillCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryGrey.withOpacity(0.25),
-            blurRadius: 8.r,
-            offset: const Offset(0, 2),
-          ),
-        ],
+            BoxShadow(
+              color: AppColors.primaryGrey.withOpacity(0.25),
+              blurRadius: 8.r,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Column(
           children: [
-            // Header: Image + Name + License Plate + Status
+            // Renter Info Header
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 20.r,
+                  backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
+                  backgroundImage: const NetworkImage(AppImage.defaultAvatar),
+                  // TODO: Use actual user avatar if available in future
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        bill.contactName ?? 'Unknown Renter',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      if (bill.contactPhone != null)
+                        Text(
+                          bill.contactPhone!,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: AppColors.textSubtitle),
+                        ),
+                    ],
+                  ),
+                ),
+                _buildStatusBadge(context),
+              ],
+            ),
+            SizedBox(height: 12.h),
+            const Divider(height: 1, color: AppColors.primaryGrey),
+            SizedBox(height: 12.h),
+
+            // Vehicle Info
+            Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(8.r),
                   child: Image.network(
                     vehicle?.vehicleCatalog?.photo ?? AppImage.defaultCar,
-                    width: 70.w,
-                    height: 70.w,
+                    width: 50.w,
+                    height: 50.w,
                     fit: BoxFit.contain,
                     errorBuilder:
                         (context, error, stackTrace) => Container(
-                          width: 70.w,
-                          height: 70.w,
+                          width: 50.w,
+                          height: 50.w,
                           color: AppColors.primaryGrey.withOpacity(0.2),
-                          child: const Icon(Icons.broken_image),
+                          child: const Icon(Icons.broken_image, size: 20),
                         ),
                   ),
                 ),
@@ -61,24 +95,14 @@ class RentalBillCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              vehicle != null
-                                  ? "${vehicle.vehicleCatalog?.brand} ${vehicle.vehicleCatalog?.model}"
-                                  : AppLocalizations.of(context)!.rentalVehicle,
-                              style: Theme.of(context).textTheme.titleSmall,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          SizedBox(width: 8.w),
-                          _buildStatusBadge(context),
-                        ],
+                      Text(
+                        vehicle != null
+                            ? "${vehicle.vehicleCatalog?.brand} ${vehicle.vehicleCatalog?.model}"
+                            : AppLocalizations.of(context)!.rentalVehicle,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleSmall?.copyWith(fontSize: 14.sp),
                       ),
-                      SizedBox(height: 4.h),
                       Text(
                         vehicle?.licensePlate ??
                             bill.details.firstOrNull?.licensePlate ??
@@ -88,30 +112,15 @@ class RentalBillCard extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        '${AppLocalizations.of(context)!.billCode}: ${bill.code}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSubtitle,
-                          fontSize: 10.sp,
-                        ),
-                      ),
                     ],
                   ),
                 ),
               ],
             ),
+
             SizedBox(height: 12.h),
-            const Divider(height: 1, color: AppColors.primaryGrey),
-            SizedBox(height: 12.h),
-            // Info Row
-            _buildInfoRow(
-              context,
-              icon: AppIcons.clock,
-              label: AppLocalizations.of(context)!.duration,
-              value: bill.durationPackage ?? '',
-            ),
-            SizedBox(height: 8.h),
+
+            // Dates and Price
             _buildInfoRow(
               context,
               icon: AppIcons.calendar,
@@ -131,15 +140,16 @@ class RentalBillCard extends StatelessWidget {
                       ? DateFormatter.formatDateTime(bill.endDate)
                       : DateFormatter.formatDate(bill.endDate),
             ),
+
             SizedBox(height: 12.h),
             const Divider(height: 1, color: AppColors.primaryGrey),
             SizedBox(height: 12.h),
-            // Total Price
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.totalPayment,
+                  AppLocalizations.of(context)!.totalRevenue, 
                   style: Theme.of(
                     context,
                   ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
@@ -147,7 +157,7 @@ class RentalBillCard extends StatelessWidget {
                 Text(
                   Formatter.currency(bill.total),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryRed,
+                    color: AppColors.primaryGreen,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
