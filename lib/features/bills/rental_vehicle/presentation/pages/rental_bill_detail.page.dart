@@ -14,6 +14,7 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/g
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_rental_bill_detail/rental_bill_detail_state.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/widgets/rental_bill_detail_shimmer.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
+import 'package:tour_guide_app/features/my_vehicle/data/models/contract.dart';
 import 'package:dropdown_button2/dropdown_button2.dart'; // Add this
 import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_vouchers_cubit.dart'; // Add this
 import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_vouchers_state.dart'; // Add this
@@ -122,13 +123,25 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
                           _buildVehicleInfoCard(context, vehicle, licensePlate),
                           SizedBox(height: 16.h),
 
-                          // 2. Rental Details (Status, Dates, etc.)
+                          // 2. Owner Info Card
+                          if (vehicle?.contract != null)
+                            Column(
+                              children: [
+                                _buildOwnerInfoCard(
+                                  context,
+                                  vehicle!.contract!,
+                                ),
+                                SizedBox(height: 16.h),
+                              ],
+                            ),
+
+                          // 3. Rental Details (Status, Dates, etc.)
                           _buildRentalDetailsCard(context, bill),
                           SizedBox(height: 16.h),
 
                           ContactInfoForm(bill: bill),
                           SizedBox(height: 16.h),
-                          // 3. Payment Details
+                          // 4. Payment Details
                           _buildPaymentDetailsCard(context, bill),
 
                           // 4. Contact/Notes if any
@@ -215,6 +228,34 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOwnerInfoCard(BuildContext context, Contract contract) {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGrey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(AppLocalizations.of(context)!.ownerInfo, style: Theme.of(context).textTheme.titleSmall),
+          const Divider(),
+          _buildDetailRow(context, AppLocalizations.of(context)!.fullName, contract.fullName),
+          _buildDetailRow(context, AppLocalizations.of(context)!.phoneNumber, contract.phoneNumber),
+          if (contract.businessAddress.isNotEmpty)
+            _buildDetailRow(context, AppLocalizations.of(context)!.address, contract.businessAddress),
         ],
       ),
     );

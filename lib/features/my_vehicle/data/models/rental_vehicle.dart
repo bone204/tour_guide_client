@@ -1,3 +1,4 @@
+import 'package:tour_guide_app/features/my_vehicle/data/models/contract.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/vehicle_catalog.dart';
 
 class RentalVehicle {
@@ -34,9 +35,12 @@ class RentalVehicle {
   final String createdAt;
   final String updatedAt;
 
+  final Contract? contract;
+
   const RentalVehicle({
     required this.licensePlate,
     required this.contractId,
+    this.contract,
     this.vehicleCatalogId,
     this.vehicleCatalog,
     required this.pricePerHour,
@@ -65,6 +69,8 @@ class RentalVehicle {
     return RentalVehicle(
       licensePlate: json['licensePlate'] ?? '',
       contractId: json['contractId'] ?? 0,
+      contract:
+          json['contract'] != null ? Contract.fromJson(json['contract']) : null,
       vehicleCatalogId: json['vehicleCatalogId'],
       vehicleCatalog:
           json['vehicleCatalog'] != null
@@ -101,6 +107,7 @@ class RentalVehicle {
     return {
       'licensePlate': licensePlate,
       'contractId': contractId,
+      'contract': contract?.toJson(),
       'vehicleCatalogId': vehicleCatalogId,
       'vehicleCatalog': vehicleCatalog?.toJson(),
       'pricePerHour': pricePerHour,

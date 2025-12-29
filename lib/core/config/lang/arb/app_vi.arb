@@ -198,7 +198,7 @@
 
 
 
-  "rentalInfo": "Thông Tin Thuê Xe",
+  "rentalInfo": "Thông tin thuê xe",
 
   "customers": "Khách hàng",
 
@@ -1173,6 +1173,7 @@
   "startTime": "Thời gian bắt đầu",
   "endTime": "Thời gian kết thúc",
   "travelPoints": "Điểm du lịch",
+  "travelTrips": "Chuyến đi",
   "enterPoints": "Nhập điểm",
   "addNotesHint": "Thêm ghi chú ở đây...",
   "selectStartEndTimeError": "Vui lòng chọn cả thời gian bắt đầu và kết thúc",
@@ -1537,5 +1538,6 @@
   "foodTypeJapanese": "Nhật Bản",
   "foodTypeFastFood": "Đồ ăn nhanh",
   "selectDateAndTime": "Chọn ngày và giờ",
-  "viewDetail": "Xem chi tiết"
+  "viewDetail": "Xem chi tiết",
+  "ownerInfo": "Thông tin chủ xe"
 }

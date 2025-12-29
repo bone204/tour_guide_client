@@ -1,29 +1,6 @@
-import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
-
-// Province style map (icon, color) for known provinces
-const Map<String, Map<String, dynamic>> _provinceStyles = {
-  'Đà Nẵng': {'icon': Icons.beach_access, 'color': Color(0xFF007BFF)},
-  'Hà Nội': {'icon': Icons.account_balance, 'color': Color(0xFFFF7029)},
-  'Thành phố Hồ Chí Minh': {
-    'icon': Icons.location_city,
-    'color': Color(0xFF800080),
-  },
-  'Hồ Chí Minh': {'icon': Icons.location_city, 'color': Color(0xFF800080)},
-  'Nha Trang': {'icon': Icons.pool, 'color': Color(0xFF4DA6FF)},
-  'Hội An': {'icon': Icons.lightbulb, 'color': Color(0xFFFFD336)},
-  'Huế': {'icon': Icons.castle, 'color': Color(0xFF77CC00)},
-  'Phú Quốc': {'icon': Icons.wb_sunny, 'color': Color(0xFF007BFF)},
-  'Đà Lạt': {'icon': Icons.local_florist, 'color': Color(0xFFFF69B4)},
-  'Sa Pa': {'icon': Icons.terrain, 'color': Color(0xFF77CC00)},
-  'Vũng Tàu': {'icon': Icons.sailing, 'color': Color(0xFF4DA6FF)},
-  'Hạ Long': {'icon': Icons.directions_boat, 'color': Color(0xFF007BFF)},
-  'Ninh Bình': {'icon': Icons.landscape, 'color': Color(0xFF77CC00)},
-  'Quy Nhơn': {'icon': Icons.surfing, 'color': Color(0xFF4DA6FF)},
-  'Cần Thơ': {'icon': Icons.agriculture, 'color': Color(0xFF77CC00)},
-};
+import 'dart:math';
 
 class ProvinceCard extends StatelessWidget {
   final Province province;
@@ -33,30 +10,11 @@ class ProvinceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = _provinceStyles[province.name];
-    final icon = style != null ? style['icon'] as IconData : Icons.location_on;
-     final locale = Localizations.localeOf(context).languageCode;
-        final displayName =
-            (locale == 'vi' ||
-                    province.nameEn == null ||
-                    province.nameEn!.isEmpty)
-                ? province.name
-                : province.nameEn!;
-                
-    LinearGradient _randomGradient() {
-      final random = Random(province.name.hashCode);
-      Color randomColor() => Color.fromARGB(
-        255,
-        100 + random.nextInt(156),
-        100 + random.nextInt(156),
-        100 + random.nextInt(156),
-      );
-      return LinearGradient(
-        colors: [randomColor(), randomColor()],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
-    }
+    final locale = Localizations.localeOf(context).languageCode;
+    final displayName =
+        (locale == 'vi' || province.nameEn == null || province.nameEn!.isEmpty)
+            ? province.name
+            : province.nameEn!;
 
     return Material(
       color: Colors.transparent,
@@ -77,14 +35,39 @@ class ProvinceCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              // Gradient ngẫu nhiên thay cho ảnh
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.r),
-                  gradient: _randomGradient(),
+              if (province.avatarUrl != null)
+                Image.network(
+                  province.avatarUrl!,
+                  fit: BoxFit.cover,
+                  errorBuilder:
+                      (context, error, stackTrace) => Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.r),
+                          gradient: _randomGradient(province.name),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.image_not_supported_outlined,
+                            color: Colors.white.withOpacity(0.5),
+                            size: 30.sp,
+                          ),
+                        ),
+                      ),
+                )
+              else
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.r),
+                    gradient: _randomGradient(province.name),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.location_on, // improved fallback icon
+                      color: Colors.white.withOpacity(0.85),
+                      size: 48.sp,
+                    ),
+                  ),
                 ),
-                child: _ProvinceIconBg(icon: icon, color: Colors.transparent),
-              ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16.r),
@@ -114,23 +97,19 @@ class ProvinceCard extends StatelessWidget {
       ),
     );
   }
-}
 
-class _ProvinceIconBg extends StatelessWidget {
-  final IconData icon;
-  final Color color;
-  const _ProvinceIconBg({required this.icon, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: Center(
-        child: Icon(icon, color: Colors.white.withOpacity(0.85), size: 48.sp),
-      ),
+  LinearGradient _randomGradient(String seed) {
+    final random = Random(seed.hashCode);
+    Color randomColor() => Color.fromARGB(
+      255,
+      100 + random.nextInt(156),
+      100 + random.nextInt(156),
+      100 + random.nextInt(156),
+    );
+    return LinearGradient(
+      colors: [randomColor(), randomColor()],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
     );
   }
 }

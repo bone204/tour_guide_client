@@ -6,6 +6,7 @@ class Province {
   final String? fullNameEn;
   final String? codeName;
   final int? administrativeUnitId;
+  final String? avatarUrl;
   final int? administrativeRegionId;
   final AdministrativeUnit? administrativeUnit;
   final AdministrativeRegion? region;
@@ -19,6 +20,7 @@ class Province {
     this.fullNameEn,
     this.codeName,
     this.administrativeUnitId,
+    this.avatarUrl,
     this.administrativeRegionId,
     this.administrativeUnit,
     this.region,
@@ -34,6 +36,7 @@ class Province {
       fullNameEn: json['fullNameEn'],
       codeName: json['codeName'],
       administrativeUnitId: json['administrativeUnitId'],
+      avatarUrl: json['avatarUrl'],
       administrativeRegionId: json['administrativeRegionId'],
       administrativeUnit:
           json['administrativeUnit'] != null
@@ -61,6 +64,7 @@ class Province {
       'fullNameEn': fullNameEn,
       'codeName': codeName,
       'administrativeUnitId': administrativeUnitId,
+      'avatarUrl': avatarUrl,
       'administrativeRegionId': administrativeRegionId,
       'administrativeUnit': administrativeUnit?.toJson(),
       'region': region?.toJson(),

@@ -254,7 +254,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get description => 'Mô tả';
 
   @override
-  String get rentalInfo => 'Thông Tin Thuê Xe';
+  String get rentalInfo => 'Thông tin thuê xe';
 
   @override
   String get customers => 'Khách hàng';
@@ -1820,6 +1820,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get travelPoints => 'Điểm du lịch';
 
   @override
+  String get travelTrips => 'Chuyến đi';
+
+  @override
   String get enterPoints => 'Nhập điểm';
 
   @override
@@ -2627,4 +2630,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get sushiWorld => 'Sushi World';
+
+  @override
+  String get ownerInfo => 'Thông tin chủ xe';
 }

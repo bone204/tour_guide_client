@@ -109,7 +109,7 @@ class _ProfileViewState extends State<_ProfileView> {
                         child: ProfileStatsRow(
                           travelPoints: user.travelPoint,
                           reviews: user.feedbackTimes,
-                          walletBalance: 0,
+                          travelTrips: user.travelTrip,
                         ),
                       ),
                       SizedBox(height: 20.h),

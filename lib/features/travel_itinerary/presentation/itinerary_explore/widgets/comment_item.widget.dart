@@ -25,7 +25,6 @@ class _CommentItemState extends State<CommentItem> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        // Ensure vi messages are loaded (hot fix for hot reload)
         timeago.setLocaleMessages('vi', timeago.ViMessages());
         context.read<ReplyCubit>().loadReplies(widget.feedback.id);
       }

@@ -3569,6 +3569,12 @@ abstract class AppLocalizations {
   /// **'Travel Points'**
   String get travelPoints;
 
+  /// No description provided for @travelTrips.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel Trips'**
+  String get travelTrips;
+
   /// No description provided for @enterPoints.
   ///
   /// In en, this message translates to:
@@ -5158,6 +5164,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sushi World'**
   String get sushiWorld;
+
+  /// No description provided for @ownerInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner Info'**
+  String get ownerInfo;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

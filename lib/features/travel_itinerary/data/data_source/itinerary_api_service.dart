@@ -258,7 +258,7 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
     try {
       final response = await sl<DioClient>().get(
         ApiUrls.provinces,
-        queryParameters: search != null ? {'search': search} : null,
+        queryParameters: search != null ? {'q': search} : null,
       );
       final provinceResponse = ProvinceResponse.fromJson(response.data);
       return Right(provinceResponse);

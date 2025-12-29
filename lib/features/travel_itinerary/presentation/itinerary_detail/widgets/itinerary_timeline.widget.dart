@@ -1,5 +1,6 @@
 import 'package:timelines_plus/timelines_plus.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 
 class ItineraryTimeline extends StatelessWidget {
   final List<Map<String, dynamic>> timelineItems;
@@ -48,6 +49,13 @@ class ItineraryTimeline extends StatelessWidget {
     BuildContext context,
     Map<String, dynamic> item,
   ) {
+    final stop = item['stop'] as Stop;
+    final imageUrl =
+        (stop.destination?.photos != null &&
+                stop.destination!.photos!.isNotEmpty)
+            ? stop.destination!.photos!.first
+            : null;
+
     return GestureDetector(
       onTap: () {
         if (item['stop'] != null) {
@@ -59,44 +67,145 @@ class ItineraryTimeline extends StatelessWidget {
         }
       },
       child: Container(
-        padding: EdgeInsets.all(16.w),
+        height: 160.h,
         decoration: BoxDecoration(
-          color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withOpacity(0.1),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  item['time']! as String,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: AppColors.primaryBlue,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16.r),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              // 1. Background Image
+              if (imageUrl != null)
+                Image.network(imageUrl, fit: BoxFit.cover)
+              else
+                Container(
+                  color: AppColors.primaryGrey.withOpacity(0.1),
+                  child: Center(
+                    child: Icon(
+                      Icons.image_not_supported_outlined,
+                      color: AppColors.primaryGrey,
+                      size: 40.sp,
+                    ),
                   ),
                 ),
-                Text(
-                  item['day']! as String,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSubtitle,
+
+              // 2. Gradient Overlay for readability
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.2), // Slight dark at top
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.8), // Dark at bottom for text
+                    ],
                   ),
                 ),
-              ],
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              item['activity']! as String,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ],
+              ),
+
+              // 3. Content
+              Padding(
+                padding: EdgeInsets.all(12.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Header: Time and Day Badges
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Time Badge
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 6.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(20.r),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.2),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.access_time_rounded,
+                                color: Colors.white,
+                                size: 14.sp,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                item['time']! as String,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.labelMedium?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // Day Badge (Optional, can be removed if redundant with timeline)
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10.w,
+                            vertical: 6.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryBlue.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          child: Text(
+                            item['day']! as String,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.labelMedium?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    // Footer: Activity Name
+                    Text(
+                      item['activity']! as String,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18.sp,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 4,
+                            color: Colors.black.withOpacity(0.5),
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

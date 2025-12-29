@@ -33,7 +33,7 @@ class ApiUrls {
   static const chatbot = "$baseURL/chat";
 
   //Provinces URLs
-  static const provinces = "$baseURL/vn-admin/legacy/provinces";
+  static const provinces = "$baseURL/provinces";
 
   //Travel Routes URLs
   static const itinerary = "$baseURL/travel-routes";

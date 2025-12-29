@@ -6,12 +6,12 @@ class ProfileStatsRow extends StatelessWidget {
     super.key,
     required this.travelPoints,
     required this.reviews,
-    required this.walletBalance,
+    required this.travelTrips,
   });
 
   final int travelPoints;
   final int reviews;
-  final double walletBalance;
+  final int travelTrips;
 
   @override
   Widget build(BuildContext context) {
@@ -31,34 +31,15 @@ class ProfileStatsRow extends StatelessWidget {
           iconColor: AppColors.primaryYellow,
         ),
         _ProfileStatCard(
-          title: AppLocalizations.of(context)!.wallet,
-          value: '${_formatWalletBalance(walletBalance)} ₫',
-          iconAsset: AppIcons.gift,
+          title: AppLocalizations.of(context)!.travelTrips,
+          value: travelTrips.toString(),
+          iconAsset: AppIcons.flight,
           iconColor: AppColors.primaryYellow,
         ),
       ],
     );
   }
 
-  String _formatWalletBalance(double balance) {
-    if (balance >= 1_000_000_000) {
-      final value = balance / 1_000_000_000;
-      return value == value.toInt()
-          ? '${value.toInt()}B'
-          : '${value.toStringAsFixed(1)}B';
-    } else if (balance >= 1_000_000) {
-      final value = balance / 1_000_000;
-      return value == value.toInt()
-          ? '${value.toInt()}M'
-          : '${value.toStringAsFixed(1)}M';
-    } else if (balance >= 1_000) {
-      final value = balance / 1_000;
-      return value == value.toInt()
-          ? '${value.toInt()}K'
-          : '${value.toStringAsFixed(1)}K';
-    }
-    return balance.toInt().toString();
-  }
 }
 
 class _ProfileStatCard extends StatelessWidget {

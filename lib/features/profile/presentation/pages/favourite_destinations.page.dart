@@ -3,7 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
-import 'package:tour_guide_app/features/cooperations/presentation/widgets/cooperation_card.widget.dart';
+
 import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_card.widget.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorite_cooperations/get_favorite_cooperations_cubit.dart';
@@ -95,7 +95,7 @@ class _FavouriteDestinationsPageState extends State<FavouriteDestinationsPage>
           labelStyle: Theme.of(context).textTheme.titleMedium,
           tabs: [
             Tab(text: isVietnamese ? 'Điểm đến' : 'Destinations'),
-            Tab(text: isVietnamese ? 'Hợp tác' : 'Cooperations'),
+            Tab(text: isVietnamese ? 'Dịch vụ' : 'Services'),
           ],
         ),
       ),
@@ -254,20 +254,24 @@ class _FavouriteDestinationsPageState extends State<FavouriteDestinationsPage>
                     itemBuilder: (context, index) {
                       final cooperation = cooperations[index];
                       // Wrap CooperationCard to constrain width in Grid or ensure it fits
-                      return FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: Alignment.topCenter,
-                        child: CooperationCard(
-                          cooperation: cooperation,
-                          onTap: () {
-                            Navigator.of(
-                              context,
-                              rootNavigator: true,
-                            ).pushNamed(
-                              AppRouteConstant.cooperationDetail,
-                              arguments: cooperation.id,
-                            );
-                          },
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: true).pushNamed(
+                            AppRouteConstant.cooperationDetail,
+                            arguments: cooperation.id,
+                          );
+                        },
+                        child: AttractionCard(
+                          imageUrl:
+                              cooperation.photo ?? AppImage.defaultDestination,
+                          title: cooperation.name,
+                          location:
+                              cooperation.province ??
+                              cooperation.address ??
+                              "Unknown",
+                          rating:
+                              double.tryParse(cooperation.averageRating) ?? 0.0,
+                          reviews: 0,
                         ),
                       );
                     },

@@ -57,7 +57,8 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
             AppLocalizations.of(context)!.contactInfo,
             style: Theme.of(context).textTheme.titleSmall,
           ),
-          SizedBox(height: 16.h),
+          const Divider(),
+          SizedBox(height: 8.h),
           _buildTextField(
             label: AppLocalizations.of(context)!.fullName,
             controller: _nameController,

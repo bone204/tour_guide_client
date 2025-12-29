@@ -183,6 +183,7 @@ class _ItineraryExplorePageState extends State<ItineraryExplorePage> {
                                         authorAvatar: item.user.avatarUrl,
                                         destinationCount:
                                             item.stops.length.toString(),
+                                        province: item.province,
                                         imageUrl: imageUrl,
                                         isLiked: isLiked,
                                         likeCount: likeCount,

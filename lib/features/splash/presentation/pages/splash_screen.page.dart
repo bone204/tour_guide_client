@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
 import 'package:tour_guide_app/common/bloc/auth/auth_state_cubit.dart';
@@ -357,10 +358,14 @@ class _SplashScreenPageState extends State<SplashScreenPage>
                   ],
                 ),
                 child: Center(
-                  child: Icon(
-                    Icons.explore,
-                    size: 45.sp,
-                    color: AppColors.textSecondary,
+                  child: SvgPicture.asset(
+                    AppIcons.travel,
+                    width: 45.sp,
+                    height: 45.sp,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.textSecondary,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),

@@ -1166,6 +1166,7 @@
   "startTime": "Start Time",
   "endTime": "End Time",
   "travelPoints": "Travel Points",
+  "travelTrips": "Travel Trips",
   "enterPoints": "Enter points",
   "addNotesHint": "Add notes here...",
   "selectStartEndTimeError": "Please select both start and end time",
@@ -1529,5 +1530,6 @@
   "foodTypeKorean": "Korean",
   "foodTypeJapanese": "Japanese",
   "foodTypeFastFood": "Fast Food",
-  "selectDateAndTime": "Select Date and Time"
+  "selectDateAndTime": "Select Date and Time",
+  "ownerInfo": "Owner Info"
 }

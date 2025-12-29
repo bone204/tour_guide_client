@@ -7,6 +7,7 @@ class ExploreItineraryCard extends StatelessWidget {
   final String? authorAvatar;
   final String destinationCount;
   final String imageUrl;
+  final String? province;
   final VoidCallback? onTap;
   final bool isLiked;
   final LikeButtonTapCallback? onLike;
@@ -20,8 +21,8 @@ class ExploreItineraryCard extends StatelessWidget {
     this.authorName,
     this.authorAvatar,
     required this.destinationCount,
-    this.imageUrl =
-        'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop',
+    required this.imageUrl,
+    this.province,
     this.onTap,
     this.isLiked = false,
     this.onLike,
@@ -33,11 +34,11 @@ class ExploreItineraryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20.h),
+      margin: EdgeInsets.only(bottom: 24.h),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24.r),
-        boxShadow: [
+        borderRadius: BorderRadius.circular(20.r),
+         boxShadow: [
           BoxShadow(
             color: AppColors.primaryGrey.withOpacity(0.25),
             blurRadius: 8.r,
@@ -50,26 +51,27 @@ class ExploreItineraryCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Hero Image Section with Author Overlay
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(24.r),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.r),
+                    topRight: Radius.circular(20.r),
                   ),
                   child: Image.network(
                     imageUrl,
-                    height: 200.h,
+                    height: 220.h,
                     width: double.infinity,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        height: 200.h,
+                        height: 220.h,
                         color: AppColors.primaryGrey.withOpacity(0.2),
                         child: Center(
                           child: Icon(
                             Icons.image_not_supported,
                             color: AppColors.primaryGrey,
+                            size: 40.sp,
                           ),
                         ),
                       );
@@ -80,33 +82,88 @@ class ExploreItineraryCard extends StatelessWidget {
                 Positioned.fill(
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(24.r),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.r),
+                        topRight: Radius.circular(20.r),
                       ),
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
+                        stops: const [0.0, 0.4, 0.7, 1.0],
                         colors: [
-                          Colors.black.withOpacity(0.4),
+                          Colors.black.withOpacity(0.3),
                           Colors.transparent,
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.7),
                         ],
-                        stops: const [0.0, 0.4],
                       ),
                     ),
                   ),
                 ),
-                // Author Info Overlay
+                // Province Tag (Top Right)
+                if (province != null && province!.isNotEmpty)
+                  Positioned(
+                    top: 16.h,
+                    right: 16.w,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 6.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(30.r),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.3),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: AppColors.primaryYellow,
+                            size: 14.sp,
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            province!,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.labelSmall?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                // Author Info (Bottom Left)
                 Positioned(
-                  top: 16.h,
+                  bottom: 16.h,
                   left: 16.w,
                   right: 16.w,
                   child: Row(
                     children: [
                       Container(
                         padding: EdgeInsets.all(2.r),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 4,
+                            ),
+                          ],
                         ),
                         child: CircleAvatar(
                           radius: 16.r,
@@ -127,25 +184,30 @@ class ExploreItineraryCard extends StatelessWidget {
                                   : null,
                         ),
                       ),
-                      SizedBox(width: 8.w),
+                      SizedBox(width: 10.w),
                       Expanded(
-                        child: Text(
-                          authorName ??
-                              AppLocalizations.of(context)!.unknownUser,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.displayLarge?.copyWith(
-                            color: Colors.white,
-                            shadows: [
-                              Shadow(
-                                offset: const Offset(0, 1),
-                                blurRadius: 4,
-                                color: Colors.black.withOpacity(0.5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              authorName ?? AppLocalizations.of(context)!.unknownUser,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleSmall?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                shadows: [
+                                  Shadow(
+                                    offset: const Offset(0, 1),
+                                    blurRadius: 2,
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -153,42 +215,71 @@ class ExploreItineraryCard extends StatelessWidget {
                 ),
               ],
             ),
+
             // Content Section
             Padding(
-              padding: EdgeInsets.all(16.w),
+              padding: EdgeInsets.all(20.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Title
                   Text(
                     title,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleLarge?.copyWith(height: 1.3),
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      height: 1.3,
+                      fontSize: 18.sp,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 8.h),
-                  _buildInfoChip(
-                    context,
-                    AppIcons.location,
-                    AppLocalizations.of(
-                      context,
-                    )!.destinationsCount(destinationCount),
-                  ),
                   SizedBox(height: 16.h),
-                  const Divider(height: 1),
-                  SizedBox(height: 12.h),
-                  // Social Interaction Buttons
+
+                  // Stats Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Locations Count
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 6.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryBlue.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.map_outlined,
+                              size: 16.sp,
+                              color: AppColors.primaryBlue,
+                            ),
+                            SizedBox(width: 6.w),
+                            Text(
+                              AppLocalizations.of(
+                      context,
+                    )!.destinationsCount(destinationCount),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelMedium?.copyWith(
+                                color: AppColors.primaryBlue,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // Social Actions
                       Row(
                         children: [
-                          // Like Button
+                          // Like
                           Row(
                             children: [
                               CustomLikeButton(
-                                size: 24.r,
+                                size: 22.r,
                                 isLiked: isLiked,
                                 likedColor: AppColors.primaryRed,
                                 unlikedColor: AppColors.textSubtitle,
@@ -198,48 +289,43 @@ class ExploreItineraryCard extends StatelessWidget {
                                       return !liked;
                                     },
                               ),
-                              SizedBox(width: 6.w),
+                              SizedBox(width: 4.w),
                               Text(
                                 likeCount.toString(),
                                 style: Theme.of(
                                   context,
-                                ).textTheme.displayLarge?.copyWith(
+                                ).textTheme.bodyMedium?.copyWith(
                                   color:
                                       isLiked
                                           ? AppColors.primaryRed
                                           : AppColors.textSubtitle,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(width: 24.w),
-                          // Comment Button
+                          SizedBox(width: 16.w),
+                          // Comment
                           InkWell(
                             onTap: onComment,
-                            borderRadius: BorderRadius.circular(8.r),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 4.w,
-                                vertical: 4.h,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.chat_bubble_outline,
-                                    size: 22.r,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.chat_bubble_outline_rounded,
+                                  size: 20.r,
+                                  color: AppColors.textSubtitle,
+                                ),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  commentCount.toString(),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.bodyMedium?.copyWith(
                                     color: AppColors.textSubtitle,
+                                    fontWeight: FontWeight.w700,
                                   ),
-                                  SizedBox(width: 6.w),
-                                  Text(
-                                    commentCount.toString(),
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.displayLarge?.copyWith(
-                                      color: AppColors.textSubtitle,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -251,38 +337,6 @@ class ExploreItineraryCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildInfoChip(BuildContext context, String icon, String label) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-      decoration: BoxDecoration(
-        color: AppColors.primaryBlue.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(30.r),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset(
-            icon,
-            width: 14.w,
-            height: 14.h,
-            colorFilter: const ColorFilter.mode(
-              AppColors.primaryBlue,
-              BlendMode.srcIn,
-            ),
-          ),
-          SizedBox(width: 6.w),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.primaryBlue,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
       ),
     );
   }

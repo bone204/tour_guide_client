@@ -1814,6 +1814,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get travelPoints => 'Travel Points';
 
   @override
+  String get travelTrips => 'Travel Trips';
+
+  @override
   String get enterPoints => 'Enter points';
 
   @override
@@ -2621,4 +2624,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sushiWorld => 'Sushi World';
+
+  @override
+  String get ownerInfo => 'Owner Info';
 }
