@@ -13,10 +13,19 @@ import 'package:tour_guide_app/features/auth/domain/usecases/sign_in.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/sign_up.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/email_start.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/verify_email.dart';
+
 import 'package:tour_guide_app/features/auth/domain/usecases/verify_phone.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_my_rental_bills/get_my_rental_bills_cubit.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_rental_bill_detail/get_rental_bill_detail_cubit.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/usecases/send_chat_message.dart';
+import 'package:tour_guide_app/features/cooperations/data/data_source/cooperation_api_service.dart';
+import 'package:tour_guide_app/features/cooperations/data/repository/cooperation_repository_impl.dart';
+import 'package:tour_guide_app/features/cooperations/domain/repository/cooperation_repository.dart';
+import 'package:tour_guide_app/features/cooperations/domain/usecases/favorite_cooperation.dart';
+import 'package:tour_guide_app/features/cooperations/domain/usecases/get_cooperation_detail.dart';
+import 'package:tour_guide_app/features/cooperations/domain/usecases/get_cooperations.dart';
+import 'package:tour_guide_app/features/cooperations/domain/usecases/get_favorite_cooperations.dart';
+import 'package:tour_guide_app/features/cooperations/domain/usecases/unfavorite_cooperation.dart';
 import 'package:tour_guide_app/features/destination/data/data_source/destination_api_service.dart';
 import 'package:tour_guide_app/features/destination/data/repository/destination_repository_impl.dart';
 import 'package:tour_guide_app/features/destination/domain/repository/destination_repository.dart';
@@ -180,6 +189,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<CarRentalApiService>(CarRentalApiServiceImpl());
   sl.registerSingleton<RentalBillApiService>(RentalBillApiServiceImpl());
   sl.registerSingleton<EateryApiService>(EateryApiServiceImpl());
+  sl.registerSingleton<RentalBillApiService>(RentalBillApiServiceImpl());
+  sl.registerSingleton<EateryApiService>(EateryApiServiceImpl());
+  sl.registerSingleton<CooperationApiService>(CooperationApiServiceImpl());
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
@@ -195,6 +207,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<CarRentalRepository>(CarRentalRepositoryImpl());
   sl.registerSingleton<RentalBillRepository>(RentalBillRepositoryImpl());
   sl.registerSingleton<EateryRepository>(EateryRepositoryImpl());
+
+  sl.registerSingleton<EateryRepository>(EateryRepositoryImpl());
+  sl.registerSingleton<CooperationRepository>(CooperationRepositoryImpl());
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());
@@ -304,6 +319,23 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<PayRentalBillUseCase>(PayRentalBillUseCase());
   sl.registerSingleton<ConfirmQrPaymentUseCase>(ConfirmQrPaymentUseCase(sl()));
   sl.registerSingleton<SuggestItineraryUseCase>(SuggestItineraryUseCase());
+
+  sl.registerSingleton<SuggestItineraryUseCase>(SuggestItineraryUseCase());
+
+  // Cooperation
+  sl.registerSingleton<GetCooperationsUseCase>(GetCooperationsUseCase());
+  sl.registerSingleton<GetCooperationDetailUseCase>(
+    GetCooperationDetailUseCase(),
+  );
+  sl.registerSingleton<GetFavoriteCooperationsUseCase>(
+    GetFavoriteCooperationsUseCase(),
+  );
+  sl.registerSingleton<FavoriteCooperationUseCase>(
+    FavoriteCooperationUseCase(),
+  );
+  sl.registerSingleton<UnfavoriteCooperationUseCase>(
+    UnfavoriteCooperationUseCase(),
+  );
 
   // Cubits
   sl.registerFactory<SuggestItineraryCubit>(

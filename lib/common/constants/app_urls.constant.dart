@@ -47,6 +47,12 @@ class ApiUrls {
   //Voucher URLs
   static const vouchers = "$baseURL/vouchers";
 
+  //Cooperation URLs
+  static const cooperations = "$baseURL/cooperations";
+  static const getFavoriteCooperations = "$baseURL/cooperations/favorites";
+  static String favoriteCooperation(int id) =>
+      "$baseURL/cooperations/$id/favorite";
+
   //Payment URLs
   static const payments = "$baseURL/payments";
 }

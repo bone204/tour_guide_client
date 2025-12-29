@@ -87,10 +87,8 @@ class DioClient {
             // Thay vì showDialog trực tiếp, gọi qua hàm quản lý Future
             final shouldRetry = await _getRetryDecision(
               navigatorKey.currentContext,
-              title:
-                  errorTitle,
-              content:
-                  errorContent,
+              title: errorTitle,
+              content: errorContent,
             );
 
             if (shouldRetry) {
@@ -315,7 +313,11 @@ class DioClient {
 
     if (context != null) {
       final currentRoute = ModalRoute.of(context)?.settings.name;
-      final excludedRoutes = [AppRouteConstant.splash, AppRouteConstant.signIn];
+      final excludedRoutes = [
+        AppRouteConstant.root,
+        AppRouteConstant.splash,
+        AppRouteConstant.signIn,
+      ];
 
       if (!excludedRoutes.contains(currentRoute) && isTokenExpired) {
         await showAppDialog(
