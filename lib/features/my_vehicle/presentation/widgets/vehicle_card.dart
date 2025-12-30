@@ -105,41 +105,68 @@ class VehicleCard extends StatelessWidget {
   ) {
     final theme = Theme.of(context);
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.vehicleTitle(vehicle.licensePlate),
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: AppColors.primaryBlue,
+        // Vehicle Image
+        if (vehicle.vehicleCatalog?.photo != null) ...[
+          Container(
+            width: 150.w,
+            height: 100.h,
+            decoration: BoxDecoration(
+              color: AppColors.primaryGrey.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.r),
+              child: Image.network(
+                vehicle.vehicleCatalog!.photo!,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.image_not_supported,
+                    size: 20.sp,
+                    color: AppColors.textSubtitle,
+                  );
+                },
               ),
             ),
-            if (vehicle.createdAt.isNotEmpty) ...[
-              SizedBox(height: 4.h),
+          ),
+          SizedBox(width: 16.w),
+        ],
+        // Info + Status
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Text(
-                _formatDate(vehicle.createdAt),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[500],
+                '${vehicle.vehicleCatalog?.brand ?? ''} ${vehicle.vehicleCatalog?.model ?? ''}',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: AppColors.primaryBlue,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 8.h),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12.w,
+                  vertical: 6.h,
+                ),
+                decoration: BoxDecoration(
+                  color: statusColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(color: statusColor.withOpacity(0.2)),
+                ),
+                child: Text(
+                  statusText,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: statusColor,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],
-          ],
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-          decoration: BoxDecoration(
-            color: statusColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(20.r),
-            border: Border.all(color: statusColor.withOpacity(0.2)),
-          ),
-          child: Text(
-            statusText,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: statusColor,
-              fontWeight: FontWeight.w700,
-            ),
           ),
         ),
       ],
@@ -159,6 +186,8 @@ class VehicleCard extends StatelessWidget {
     final locale = AppLocalizations.of(context)!;
     return Column(
       children: [
+        _buildInfoRow(context, AppIcons.star, vehicle.licensePlate),
+        SizedBox(height: 6.h),
         _buildInfoRow(
           context,
           AppIcons.calendar,
@@ -237,16 +266,6 @@ class VehicleCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatDate(String dateStr) {
-    try {
-      if (dateStr.isEmpty) return '';
-      final date = DateTime.parse(dateStr);
-      return '${date.day}/${date.month}/${date.year}';
-    } catch (_) {
-      return '';
-    }
   }
 
   String _formatCurrency(double amount) {

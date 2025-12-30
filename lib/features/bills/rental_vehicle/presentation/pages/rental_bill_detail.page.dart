@@ -15,6 +15,7 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/g
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/widgets/rental_bill_detail_shimmer.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/utils/rental_status_helper.dart';
 import 'package:dropdown_button2/dropdown_button2.dart'; // Add this
 import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_vouchers_cubit.dart'; // Add this
 import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_vouchers_state.dart'; // Add this
@@ -25,7 +26,9 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/r
 import 'package:tour_guide_app/features/voucher/data/models/voucher.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_workflow/rental_workflow_cubit.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_workflow/rental_workflow_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:io';
 
@@ -93,6 +96,13 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
           ),
           body: MultiBlocListener(
             listeners: [
+              BlocListener<RentalWorkflowCubit, RentalWorkflowState>(
+                listener: (context, state) {
+                  if (state.status == RentalWorkflowStatus.success) {
+                    eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
+                  }
+                },
+              ),
               BlocListener<GetRentalBillDetailCubit, RentalBillDetailState>(
                 listener: (context, state) {
                   if (state.status == RentalBillDetailInitStatus.success ||
@@ -124,79 +134,87 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
                 },
               ),
             ],
-            child: BlocConsumer<
-              GetRentalBillDetailCubit,
-              RentalBillDetailState
-            >(
-              listener: (context, state) {
-                if (state.status == RentalBillDetailInitStatus.success &&
-                    state.bill != null) {
-                  context.read<RentalPaymentCubit>().init(state.bill!);
-                }
-              },
-              builder: (context, state) {
-                if (state.status == RentalBillDetailInitStatus.loading) {
-                  return const RentalBillDetailShimmer();
-                } else if (state.status == RentalBillDetailInitStatus.failure &&
-                    state.bill == null) {
-                  return Center(child: Text(state.errorMessage ?? 'Error'));
-                } else if (state.bill != null) {
-                  final bill = state.bill!;
-                  // Assume single vehicle flow as per user request
-                  final RentalVehicle? vehicle =
-                      bill.details.isNotEmpty
-                          ? bill.details.first.vehicle
-                          : null;
-                  final String licensePlate =
-                      bill.details.isNotEmpty
-                          ? bill.details.first.licensePlate
-                          : '';
+            child:
+                BlocConsumer<GetRentalBillDetailCubit, RentalBillDetailState>(
+                  listener: (context, state) {
+                    if (state.status == RentalBillDetailInitStatus.success &&
+                        state.bill != null) {
+                      context.read<RentalPaymentCubit>().init(state.bill!);
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state.status == RentalBillDetailInitStatus.loading) {
+                      return const RentalBillDetailShimmer();
+                    } else if (state.status ==
+                            RentalBillDetailInitStatus.failure &&
+                        state.bill == null) {
+                      return Center(child: Text(state.errorMessage ?? 'Error'));
+                    } else if (state.bill != null) {
+                      final bill = state.bill!;
+                      // Assume single vehicle flow as per user request
+                      final RentalVehicle? vehicle =
+                          bill.details.isNotEmpty
+                              ? bill.details.first.vehicle
+                              : null;
+                      final String licensePlate =
+                          bill.details.isNotEmpty
+                              ? bill.details.first.licensePlate
+                              : '';
 
-                  return SmartRefresher(
-                    controller: _refreshController,
-                    onRefresh: () => _onRefresh(context),
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.all(16.w),
-                      child: Column(
-                        children: [
-                          // 1. Vehicle Info Card
-                          _buildVehicleInfoCard(context, vehicle, licensePlate),
-                          SizedBox(height: 16.h),
+                      return SmartRefresher(
+                        controller: _refreshController,
+                        onRefresh: () => _onRefresh(context),
+                        child: SingleChildScrollView(
+                          padding: EdgeInsets.all(16.w),
+                          child: Column(
+                            children: [
+                              // 1. Vehicle Info Card
+                              _buildVehicleInfoCard(
+                                context,
+                                vehicle,
+                                licensePlate,
+                                bill,
+                              ),
+                              SizedBox(height: 16.h),
 
-                          // 2. Owner Info Card
-                          if (vehicle?.contract != null)
-                            Column(
-                              children: [
-                                _buildOwnerInfoCard(
-                                  context,
-                                  vehicle!.contract!,
+                              // 2. Owner Info Card
+                              if (vehicle?.contract != null)
+                                Column(
+                                  children: [
+                                    _buildOwnerInfoCard(
+                                      context,
+                                      vehicle!.contract!,
+                                    ),
+                                    SizedBox(height: 16.h),
+                                  ],
                                 ),
-                                SizedBox(height: 16.h),
-                              ],
-                            ),
 
-                          // 3. Rental Details (Status, Dates, etc.)
-                          _buildRentalDetailsCard(context, bill),
-                          SizedBox(height: 16.h),
+                              // 3. Rental Details (Status, Dates, etc.)
+                              _buildRentalDetailsCard(context, bill),
+                              SizedBox(height: 16.h),
 
-                          ContactInfoForm(bill: bill),
-                          SizedBox(height: 16.h),
-                          // 4. Payment Details
-                          _buildPaymentDetailsCard(context, bill),
-                          SizedBox(height: 16.h),
-                          // 5. Workflow Actions
-                          _buildWorkflowActions(context, bill),
+                              ContactInfoForm(bill: bill),
+                              SizedBox(height: 16.h),
+                              // 4. Payment Details
+                              _buildPaymentDetailsCard(context, bill),
 
-                          // 4. Contact/Notes if any
-                          // 4. Contact Info Update
-                        ],
-                      ),
-                    ),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
+                              // 5. Tracking Images
+                              _buildTrackingImagesCard(context, bill),
+
+                              SizedBox(height: 32.h),
+                              // 5. Workflow Actions
+                              _buildWorkflowActions(context, bill),
+
+                              // 4. Contact/Notes if any
+                              // 4. Contact Info Update
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
           ),
         ),
       ),
@@ -207,6 +225,7 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
     BuildContext context,
     RentalVehicle? vehicle,
     String licensePlate,
+    RentalBill bill,
   ) {
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -222,6 +241,7 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
         ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12.r),
@@ -251,27 +271,60 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 SizedBox(height: 8.h),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryGrey.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(4.r),
-                    border: Border.all(
-                      color: AppColors.primaryBlack.withOpacity(0.1),
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 4.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryGrey.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(4.r),
+                        border: Border.all(
+                          color: AppColors.primaryBlack.withOpacity(0.1),
+                        ),
+                      ),
+                      child: Text(
+                        licensePlate,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryBlack,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    licensePlate,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryBlack,
-                    ),
-                  ),
+                    const Spacer(),
+                    _buildStatusBadge(context, bill),
+                  ],
                 ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildStatusBadge(BuildContext context, RentalBill bill) {
+    final (color, text) = RentalStatusHelper.getStatusColorAndText(
+      context,
+      bill,
+    );
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(6.r),
+        border: Border.all(color: color.withOpacity(0.2)),
+      ),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: color,
+          fontWeight: FontWeight.w700,
+          fontSize: 10.sp,
+        ),
       ),
     );
   }
@@ -320,6 +373,11 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
   }
 
   Widget _buildRentalDetailsCard(BuildContext context, RentalBill bill) {
+    final (statusColor, statusText) = RentalStatusHelper.getStatusColorAndText(
+      context,
+      bill,
+    );
+
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -349,8 +407,8 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
           _buildDetailRow(
             context,
             AppLocalizations.of(context)!.status,
-            _getStatusText(context, bill.status),
-            valueColor: _getStatusColor(bill.status),
+            statusText,
+            valueColor: statusColor,
             isBold: true,
           ),
           _buildDetailRow(
@@ -376,6 +434,185 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
             ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTrackingImagesCard(BuildContext context, RentalBill bill) {
+    final sections = <(String, List<String>)>[];
+
+    if (bill.deliveryPhotos.isNotEmpty) {
+      sections.add((
+        AppLocalizations.of(context)!.deliveryPhotos,
+        bill.deliveryPhotos,
+      ));
+    }
+    if (bill.pickupSelfiePhoto != null) {
+      sections.add((
+        AppLocalizations.of(context)!.pickupPhotos,
+        [bill.pickupSelfiePhoto!],
+      ));
+    }
+    if (bill.returnPhotosUser.isNotEmpty) {
+      sections.add((
+        "${AppLocalizations.of(context)!.returnPhotos} (${AppLocalizations.of(context)!.customer})",
+        bill.returnPhotosUser,
+      ));
+    }
+    if (bill.returnPhotosOwner.isNotEmpty) {
+      sections.add((
+        "${AppLocalizations.of(context)!.returnPhotos} (${AppLocalizations.of(context)!.owner})",
+        bill.returnPhotosOwner,
+      ));
+    }
+
+    if (sections.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      margin: EdgeInsets.only(top: 16.h),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGrey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.trackingPhotos,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          const Divider(),
+          SizedBox(height: 16.h),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12.w,
+              mainAxisSpacing: 12.h,
+              childAspectRatio: 0.85,
+            ),
+            itemCount: sections.length,
+            itemBuilder: (context, index) {
+              final section = sections[index];
+              return _buildGridImageItem(context, section.$1, section.$2);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGridImageItem(
+    BuildContext context,
+    String title,
+    List<String> images,
+  ) {
+    // If multiple images, we show the first one big, or a mini grid?
+    // User emphasized "1 image each", so we optimize for 1 image.
+    // If multiple, maybe show a stack or just the first one with indicator.
+    final firstImage = images.first;
+    final count = images.length;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppColors.textSubtitle,
+            fontWeight: FontWeight.w600,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        SizedBox(height: 8.h),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => _showFullScreenImage(context, firstImage),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.r),
+                  child: Image.network(
+                    firstImage,
+                    fit: BoxFit.cover,
+                    errorBuilder:
+                        (context, error, stackTrace) => Container(
+                          color: AppColors.primaryGrey.withOpacity(0.2),
+                          child: const Icon(Icons.broken_image),
+                        ),
+                  ),
+                ),
+                if (count > 1)
+                  Positioned(
+                    right: 4,
+                    bottom: 4,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 2.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                      child: Text(
+                        '+${count - 1}',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Colors.white,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showFullScreenImage(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: EdgeInsets.zero,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                InteractiveViewer(
+                  minScale: 0.1,
+                  maxScale: 5.0,
+                  child: Image.network(imageUrl),
+                ),
+                Positioned(
+                  top: 40,
+                  right: 20,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+              ],
+            ),
+          ),
     );
   }
 
@@ -531,17 +768,30 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
             // 2. Voucher Dropdown
             BlocBuilder<GetVouchersCubit, GetVouchersState>(
               builder: (context, voucherState) {
+                var vouchers = <Voucher>[];
+                if (voucherState is GetVouchersLoaded) {
+                  vouchers = voucherState.vouchers;
+                }
+
+                // Safely determine current value
+                Voucher? dropdownValue = paymentState.selectedVoucher;
+                if (dropdownValue != null &&
+                    !vouchers.contains(dropdownValue)) {
+                  dropdownValue = null;
+                }
+
+                String hintText = AppLocalizations.of(context)!.selectVoucher;
+                if (voucherState is GetVouchersLoading) {
+                  hintText = AppLocalizations.of(context)!.loading;
+                } else if (vouchers.isEmpty) {
+                  hintText = AppLocalizations.of(context)!.noVouchersAvailable;
+                }
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Voucher", // Assuming 'Voucher' can be static or use 'exclusiveVouchers' or just 'Voucher' as key
-                      // Checking arb: 'exclusiveVouchers': 'Exclusive Vouchers'. 'voucher' key??
-                      // I added 'selectVoucher'. Let's use 'Voucher' string or add key 'voucher' = 'Voucher'.
-                      // For now I'll use "Voucher" title case, or reuse 'exclusiveVouchers' if fitting.
-                      // Better to use static "Voucher" or add specific key if strict. User didn't ask for 'Voucher' label key.
-                      // Let's use 'Voucher' text for now or 'AppLocalizations.of(context)!.exclusiveVouchers' (might be too long).
-                      // Actually I can just use "Voucher".
+                      "Voucher",
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     SizedBox(height: 6.h),
@@ -573,29 +823,29 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
                           ),
                         ),
                       ),
-                      hint: Text(
-                        AppLocalizations.of(context)!.selectVoucher,
-                        style: TextStyle(fontSize: 14.sp),
-                      ),
-                      value: paymentState.selectedVoucher,
+                      hint: Text(hintText, style: TextStyle(fontSize: 14.sp)),
+                      value: dropdownValue,
                       items:
-                          voucherState is GetVouchersLoaded
-                              ? voucherState.vouchers
-                                  .map(
-                                    (item) => DropdownMenuItem<Voucher>(
-                                      value: item,
-                                      child: Text(
-                                        "${item.code} - ${item.description ?? ''}",
-                                        style: TextStyle(fontSize: 14.sp),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  )
-                                  .toList()
-                              : [],
-                      onChanged: (value) {
-                        context.read<RentalPaymentCubit>().selectVoucher(value);
-                      },
+                          vouchers
+                              .map(
+                                (item) => DropdownMenuItem<Voucher>(
+                                  value: item,
+                                  child: Text(
+                                    "${item.code} - ${item.description ?? ''}",
+                                    style: TextStyle(fontSize: 14.sp),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                      onChanged:
+                          vouchers.isEmpty
+                              ? null
+                              : (value) {
+                                context
+                                    .read<RentalPaymentCubit>()
+                                    .selectVoucher(value);
+                              },
                       buttonStyleData: ButtonStyleData(
                         height: 48.h,
                         padding: EdgeInsets.only(right: 8.w),
@@ -732,6 +982,9 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
       listener: (context, state) {
         if (state.status == RentalPaymentStatus.success &&
             state.payUrl != null) {
+          // Fire event to update list
+          eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
+
           if (state.payUrl!.startsWith('data:image')) {
             _showQRCodeDialog(context, state.payUrl!);
           } else {
@@ -860,38 +1113,6 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
     );
   }
 
-  String _getStatusText(BuildContext context, RentalBillStatus status) {
-    switch (status) {
-      case RentalBillStatus.pending:
-        return AppLocalizations.of(context)!.pending;
-      case RentalBillStatus.confirmed:
-        return AppLocalizations.of(context)!.approved;
-      case RentalBillStatus.paidPendingDelivery:
-      case RentalBillStatus.paid:
-        return AppLocalizations.of(context)!.paid;
-      case RentalBillStatus.cancelled:
-        return AppLocalizations.of(context)!.cancelled;
-      case RentalBillStatus.completed:
-        return AppLocalizations.of(context)!.completed;
-    }
-  }
-
-  Color _getStatusColor(RentalBillStatus status) {
-    switch (status) {
-      case RentalBillStatus.pending:
-        return Colors.orange;
-      case RentalBillStatus.confirmed:
-        return AppColors.primaryBlue;
-      case RentalBillStatus.paidPendingDelivery:
-      case RentalBillStatus.paid:
-        return Colors.green;
-      case RentalBillStatus.cancelled:
-        return AppColors.primaryRed;
-      case RentalBillStatus.completed:
-        return Colors.teal;
-    }
-  }
-
   Widget _buildWorkflowActions(BuildContext context, RentalBill bill) {
     return BlocBuilder<RentalWorkflowCubit, RentalWorkflowState>(
       builder: (context, state) {
@@ -924,13 +1145,17 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
   }
 
   Future<void> _onPickup(BuildContext context, int id) async {
+    final source = await _showImageSourceActionSheet(context);
+    if (source == null) return;
+
     setState(() => _isActionLoading = true);
     try {
       final ImagePicker picker = ImagePicker();
       final XFile? photo = await picker.pickImage(
-        source: ImageSource.camera,
+        source: source,
         preferredCameraDevice: CameraDevice.front,
       );
+
       if (photo != null && context.mounted) {
         await context.read<RentalWorkflowCubit>().pickupVehicle(
           id,
@@ -943,61 +1168,67 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
   }
 
   Future<void> _onReturn(BuildContext context, int id) async {
+    // 1. Check/Request GPS
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) return;
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          message:
+              AppLocalizations.of(context)!.locationPermissionDeniedForever,
+          type: SnackbarType.error,
+        );
+      }
+      return;
+    }
+
+    final source = await _showImageSourceActionSheet(context);
+    if (source == null) return;
+
     setState(() => _isActionLoading = true);
     try {
-      // 1. Check Permission
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  AppLocalizations.of(context)!.locationPermissionRequired,
-                ),
-              ),
-            );
-          }
-          return;
-        }
-      }
-
-      if (permission == LocationPermission.deniedForever) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.locationPermissionDeniedForever,
-              ),
-            ),
-          );
-        }
-        return;
-      }
-
-      // 2. Get Location
       Position? position;
       try {
         position = await Geolocator.getCurrentPosition();
       } catch (e) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.locationError(e.toString()),
-              ),
-            ),
-          );
-        }
-        return;
+        // Handle error? For now proceed or return
       }
 
-      // 3. Pick Photos
       final ImagePicker picker = ImagePicker();
-      final List<XFile> photos = await picker.pickMultiImage();
+      List<XFile> photos = [];
+
+      if (source == ImageSource.camera) {
+        final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+        if (photo != null) {
+          photos.add(photo);
+        }
+      } else {
+        photos = await picker.pickMultiImage();
+      }
 
       if (photos.isNotEmpty && context.mounted) {
+        if (position == null) {
+          try {
+            position = await Geolocator.getCurrentPosition();
+          } catch (e) {
+            if (context.mounted) {
+              CustomSnackbar.show(
+                context,
+                message: AppLocalizations.of(
+                  context,
+                )!.locationError(e.toString()),
+                type: SnackbarType.error,
+              );
+            }
+            return;
+          }
+        }
+
         await context.read<RentalWorkflowCubit>().returnRequest(
           id,
           photos.map((e) => File(e.path)).toList(),
@@ -1007,6 +1238,54 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
       }
     } finally {
       if (mounted) setState(() => _isActionLoading = false);
+    }
+  }
+
+  Future<ImageSource?> _showImageSourceActionSheet(BuildContext context) async {
+    if (Platform.isIOS) {
+      return showCupertinoModalPopup<ImageSource>(
+        context: context,
+        builder:
+            (context) => CupertinoActionSheet(
+              title: Text(AppLocalizations.of(context)!.selectImageSource),
+              actions: [
+                CupertinoActionSheetAction(
+                  onPressed: () => Navigator.pop(context, ImageSource.camera),
+                  child: Text(AppLocalizations.of(context)!.camera),
+                ),
+                CupertinoActionSheetAction(
+                  onPressed: () => Navigator.pop(context, ImageSource.gallery),
+                  child: Text(AppLocalizations.of(context)!.gallery),
+                ),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                onPressed: () => Navigator.pop(context),
+                isDestructiveAction: true,
+                child: Text(AppLocalizations.of(context)!.cancel),
+              ),
+            ),
+      );
+    } else {
+      return showModalBottomSheet<ImageSource>(
+        context: context,
+        builder:
+            (context) => SafeArea(
+              child: Wrap(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.camera_alt),
+                    title: Text(AppLocalizations.of(context)!.camera),
+                    onTap: () => Navigator.pop(context, ImageSource.camera),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: Text(AppLocalizations.of(context)!.gallery),
+                    onTap: () => Navigator.pop(context, ImageSource.gallery),
+                  ),
+                ],
+              ),
+            ),
+      );
     }
   }
 }

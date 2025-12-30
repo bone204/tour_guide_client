@@ -33,6 +33,66 @@ class AppLocalizationsVi extends AppLocalizations {
   String get enterUsernameOrEmail => 'Nhập tên đăng nhập hoặc email';
 
   @override
+  String get statusBooked => 'Đã đặt';
+
+  @override
+  String get statusDelivering => 'Đang giao xe';
+
+  @override
+  String get statusDelivered => 'Đã giao xe';
+
+  @override
+  String get statusInProgress => 'Đang thuê';
+
+  @override
+  String get statusReturnRequested => 'Yêu cầu trả';
+
+  @override
+  String get statusReturnConfirmed => 'Đã xác nhận trả';
+
+  @override
+  String get rentalStartDelivery => 'Bắt đầu giao xe';
+
+  @override
+  String get rentalDelivered => 'Đã giao xe';
+
+  @override
+  String get rentalConfirmReturn => 'Xác nhận đã nhận xe';
+
+  @override
+  String get rentalCheckIn => 'Check-in (Nhận xe)';
+
+  @override
+  String get rentalCheckOut => 'Check-out (Trả xe)';
+
+  @override
+  String get deliveryPhotos => 'Ảnh giao xe';
+
+  @override
+  String get pickupPhotos => 'Ảnh nhận xe';
+
+  @override
+  String get returnPhotos => 'Ảnh trả xe';
+
+  @override
+  String get noImages => 'Chưa có ảnh';
+
+  @override
+  String get trackingPhotos => 'Hình ảnh giao nhận';
+
+  @override
+  String get camera => 'Máy ảnh';
+
+  @override
+  String get gallery => 'Thư viện';
+
+  @override
+  String get cancel => 'Hủy';
+
+  @override
+  String get selectImageSource => 'Chọn nguồn ảnh';
+
+  @override
   String get forgotPassword => 'Quên mật khẩu?';
 
   @override
@@ -324,9 +384,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get exitAppConfirm => 'Bạn có chắc chắn muốn thoát ứng dụng?';
-
-  @override
-  String get cancel => 'Hủy';
 
   @override
   String get exit => 'Thoát';
@@ -1202,21 +1259,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get searchDestinationHint => 'Tìm kiếm địa điểm...';
 
   @override
-  String get rentalCheckIn => 'Check-in (Nhận xe)';
-
-  @override
-  String get rentalCheckOut => 'Check-out (Trả xe)';
-
-  @override
-  String get rentalStartDelivery => 'Bắt đầu giao xe';
-
-  @override
-  String get rentalDelivered => 'Đã giao xe';
-
-  @override
-  String get rentalConfirmReturn => 'Xác nhận đã nhận xe';
-
-  @override
   String get rentalPickupSuccess => 'Đã nhận xe thành công';
 
   @override
@@ -1258,16 +1300,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get unverified => 'Chưa xác thực';
 
   @override
-  String get selectVoucher => 'Chọn Voucher';
+  String get selectVoucher => 'Chọn mã giảm giá';
 
   @override
   String get finalPrice => 'Thành tiền';
 
   @override
-  String get voucherDiscount => 'Ưu đãi Voucher';
+  String get voucherDiscount => 'Giảm giá voucher';
 
   @override
-  String get pointDiscount => 'Ưu đãi điểm';
+  String get pointDiscount => 'Giảm giá điểm thưởng';
 
   @override
   String get paid => 'Đã thanh toán';
@@ -1880,24 +1922,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get travelTrips => 'Chuyến đi';
-
-  @override
-  String get statusBooked => 'Đã đặt';
-
-  @override
-  String get statusDelivering => 'Đang giao xe';
-
-  @override
-  String get statusDelivered => 'Đã giao xe';
-
-  @override
-  String get statusInProgress => 'Đang thuê';
-
-  @override
-  String get statusReturnRequested => 'Yêu cầu trả';
-
-  @override
-  String get statusReturnConfirmed => 'Đã xác nhận trả';
 
   @override
   String get enterPoints => 'Nhập điểm';
@@ -2728,4 +2752,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get notificationList => 'Danh sách thông báo';
+
+  @override
+  String get loading => 'Đang tải...';
+
+  @override
+  String get noVouchersAvailable => 'Không có mã giảm giá';
 }

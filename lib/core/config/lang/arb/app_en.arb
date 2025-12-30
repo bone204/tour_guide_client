@@ -11,6 +11,26 @@
   "usernameOrEmail": "Username/Email",
 
   "enterUsernameOrEmail": "Enter username or email",
+  "statusBooked": "Booked",
+  "statusDelivering": "Delivering",
+  "statusDelivered": "Delivered",
+  "statusInProgress": "In Progress",
+  "statusReturnRequested": "Return Requested",
+  "statusReturnConfirmed": "Return Confirmed",
+  "rentalStartDelivery": "Start Delivery",
+  "rentalDelivered": "Confirm Delivered",
+  "rentalConfirmReturn": "Confirm Return",
+  "rentalCheckIn": "Receive Vehicle",
+  "rentalCheckOut": "Return Vehicle",
+  "deliveryPhotos": "Delivery Photos",
+  "pickupPhotos": "Pickup Photos",
+  "returnPhotos": "Return Photos",
+  "noImages": "No images",
+  "trackingPhotos": "Tracking Photos",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "cancel": "Cancel",
+  "selectImageSource": "Select Image Source",
 
 
 
@@ -1593,5 +1613,10 @@
   "notifications": "Notifications",
   "noNotificationsYet": "No notifications yet.",
   "markAsRead": "Mark as read",
-  "notificationList": "Notification List"
+  "notificationList": "Notification List",
+  "loading": "Loading...",
+  "noVouchersAvailable": "No vouchers available",
+  "selectVoucher": "Select Voucher",
+  "voucherDiscount": "Voucher Discount",
+  "pointDiscount": "Point Discount"
 }

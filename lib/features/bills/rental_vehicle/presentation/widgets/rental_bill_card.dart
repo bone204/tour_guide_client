@@ -2,6 +2,7 @@ import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/utils/date_formatter.dart';
 import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/utils/rental_status_helper.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 
 class RentalBillCard extends StatelessWidget {
@@ -188,32 +189,10 @@ class RentalBillCard extends StatelessWidget {
   }
 
   Widget _buildStatusBadge(BuildContext context) {
-    Color color;
-    String text;
-
-    switch (bill.status) {
-      case RentalBillStatus.pending:
-        color = Colors.orange;
-        text = AppLocalizations.of(context)!.pending;
-        break;
-      case RentalBillStatus.confirmed:
-        color = AppColors.primaryBlue;
-        text = AppLocalizations.of(context)!.approved;
-        break;
-      case RentalBillStatus.paidPendingDelivery:
-      case RentalBillStatus.paid:
-        color = Colors.green;
-        text = AppLocalizations.of(context)!.paid;
-        break;
-      case RentalBillStatus.cancelled:
-        color = AppColors.primaryRed;
-        text = AppLocalizations.of(context)!.cancelled;
-        break;
-      case RentalBillStatus.completed:
-        color = Colors.teal;
-        text = AppLocalizations.of(context)!.completed;
-        break;
-    }
+    final (color, text) = RentalStatusHelper.getStatusColorAndText(
+      context,
+      bill,
+    );
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),

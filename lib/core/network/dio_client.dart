@@ -130,7 +130,12 @@ class DioClient {
             return handler.next(error);
           }
 
-          // Tránh loop nếu chính API refresh bị 401
+          // Nếu API login bị 401 (sai pass), trả về lỗi ngay để UI xử lý, không logout cleanup
+          if (error.requestOptions.path.endsWith("/auth/login")) {
+            return handler.next(error);
+          }
+
+          // Tránh loop nếu chính API refresh bị 401 -> Session chết hẳn
           if (error.requestOptions.path.endsWith(ApiUrls.refreshToken)) {
             await _handleRefreshFailure(isTokenExpired: !_isLoggingOut);
             return handler.next(error);
@@ -312,11 +317,18 @@ class DioClient {
     final context = navigatorKey.currentContext;
 
     if (context != null) {
-      final currentRoute = ModalRoute.of(context)?.settings.name;
+      String? currentRoute;
+      navigatorKey.currentState?.popUntil((route) {
+        currentRoute = route.settings.name;
+        return true;
+      });
       final excludedRoutes = [
         AppRouteConstant.root,
         AppRouteConstant.splash,
         AppRouteConstant.signIn,
+        AppRouteConstant.signUp,
+        AppRouteConstant.verifyEmail,
+        AppRouteConstant.verifyPhone,
       ];
 
       if (!excludedRoutes.contains(currentRoute) && isTokenExpired) {
@@ -338,7 +350,10 @@ class DioClient {
           ],
         );
       } else {
-        _performLogout(context);
+        // Chỉ logout nếu KHÔNG PHẢI đang ở màn hình login
+        if (currentRoute != AppRouteConstant.signIn) {
+          _performLogout(context);
+        }
       }
     }
 

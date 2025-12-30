@@ -143,6 +143,126 @@ abstract class AppLocalizations {
   /// **'Enter username or email'**
   String get enterUsernameOrEmail;
 
+  /// No description provided for @statusBooked.
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get statusBooked;
+
+  /// No description provided for @statusDelivering.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivering'**
+  String get statusDelivering;
+
+  /// No description provided for @statusDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get statusDelivered;
+
+  /// No description provided for @statusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get statusInProgress;
+
+  /// No description provided for @statusReturnRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Requested'**
+  String get statusReturnRequested;
+
+  /// No description provided for @statusReturnConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Confirmed'**
+  String get statusReturnConfirmed;
+
+  /// No description provided for @rentalStartDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Delivery'**
+  String get rentalStartDelivery;
+
+  /// No description provided for @rentalDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get rentalDelivered;
+
+  /// No description provided for @rentalConfirmReturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Return'**
+  String get rentalConfirmReturn;
+
+  /// No description provided for @rentalCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in (Receive Vehicle)'**
+  String get rentalCheckIn;
+
+  /// No description provided for @rentalCheckOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-out (Return Vehicle)'**
+  String get rentalCheckOut;
+
+  /// No description provided for @deliveryPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Photos'**
+  String get deliveryPhotos;
+
+  /// No description provided for @pickupPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup Photos'**
+  String get pickupPhotos;
+
+  /// No description provided for @returnPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Photos'**
+  String get returnPhotos;
+
+  /// No description provided for @noImages.
+  ///
+  /// In en, this message translates to:
+  /// **'No images'**
+  String get noImages;
+
+  /// No description provided for @trackingPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking Photos'**
+  String get trackingPhotos;
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
+
+  /// No description provided for @gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get gallery;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @selectImageSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Image Source'**
+  String get selectImageSource;
+
   /// No description provided for @forgotPassword.
   ///
   /// In en, this message translates to:
@@ -724,12 +844,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to exit the app?'**
   String get exitAppConfirm;
-
-  /// No description provided for @cancel.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
 
   /// No description provided for @exit.
   ///
@@ -2453,36 +2567,6 @@ abstract class AppLocalizations {
   /// **'Search for destination...'**
   String get searchDestinationHint;
 
-  /// No description provided for @rentalCheckIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Check-in (Receive Vehicle)'**
-  String get rentalCheckIn;
-
-  /// No description provided for @rentalCheckOut.
-  ///
-  /// In en, this message translates to:
-  /// **'Check-out (Return Vehicle)'**
-  String get rentalCheckOut;
-
-  /// No description provided for @rentalStartDelivery.
-  ///
-  /// In en, this message translates to:
-  /// **'Start Delivery'**
-  String get rentalStartDelivery;
-
-  /// No description provided for @rentalDelivered.
-  ///
-  /// In en, this message translates to:
-  /// **'Delivered'**
-  String get rentalDelivered;
-
-  /// No description provided for @rentalConfirmReturn.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Return'**
-  String get rentalConfirmReturn;
-
   /// No description provided for @rentalPickupSuccess.
   ///
   /// In en, this message translates to:
@@ -2582,7 +2666,7 @@ abstract class AppLocalizations {
   /// No description provided for @pointDiscount.
   ///
   /// In en, this message translates to:
-  /// **'Points Discount'**
+  /// **'Point Discount'**
   String get pointDiscount;
 
   /// No description provided for @paid.
@@ -3688,42 +3772,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Travel Trips'**
   String get travelTrips;
-
-  /// No description provided for @statusBooked.
-  ///
-  /// In en, this message translates to:
-  /// **'Booked'**
-  String get statusBooked;
-
-  /// No description provided for @statusDelivering.
-  ///
-  /// In en, this message translates to:
-  /// **'Delivering'**
-  String get statusDelivering;
-
-  /// No description provided for @statusDelivered.
-  ///
-  /// In en, this message translates to:
-  /// **'Delivered'**
-  String get statusDelivered;
-
-  /// No description provided for @statusInProgress.
-  ///
-  /// In en, this message translates to:
-  /// **'In Progress'**
-  String get statusInProgress;
-
-  /// No description provided for @statusReturnRequested.
-  ///
-  /// In en, this message translates to:
-  /// **'Return Requested'**
-  String get statusReturnRequested;
-
-  /// No description provided for @statusReturnConfirmed.
-  ///
-  /// In en, this message translates to:
-  /// **'Return Confirmed'**
-  String get statusReturnConfirmed;
 
   /// No description provided for @enterPoints.
   ///
@@ -5356,6 +5404,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notification List'**
   String get notificationList;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @noVouchersAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No vouchers available'**
+  String get noVouchersAvailable;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

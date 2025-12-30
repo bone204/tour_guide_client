@@ -11,6 +11,26 @@
   "usernameOrEmail": "Tên đăng nhập/Email",
 
   "enterUsernameOrEmail": "Nhập tên đăng nhập hoặc email",
+  "statusBooked": "Đã đặt",
+  "statusDelivering": "Đang giao xe",
+  "statusDelivered": "Đã giao xe",
+  "statusInProgress": "Đang thuê",
+  "statusReturnRequested": "Yêu cầu trả xe",
+  "statusReturnConfirmed": "Xác nhận trả xe",
+  "rentalStartDelivery": "Bắt đầu giao xe",
+  "rentalDelivered": "Xác nhận đã giao",
+  "rentalConfirmReturn": "Xác nhận trả xe",
+  "rentalCheckIn": "Nhận xe",
+  "rentalCheckOut": "Trả xe",
+  "deliveryPhotos": "Ảnh giao xe",
+  "pickupPhotos": "Ảnh nhận xe",
+  "returnPhotos": "Ảnh trả xe",
+  "noImages": "Chưa có ảnh",
+  "trackingPhotos": "Hình ảnh giao nhận",
+  "camera": "Máy ảnh",
+  "gallery": "Thư viện",
+  "cancel": "Hủy",
+  "selectImageSource": "Chọn nguồn ảnh",
 
 
 
@@ -1602,5 +1622,10 @@
   "noNotificationsYet": "Chưa có thông báo nào.",
   "markAsRead": "Đánh dấu đã đọc",
   "notificationList": "Danh sách thông báo",
-  "totalRentals": "Tổng số lần thuê"
+  "totalRentals": "Tổng số lần thuê",
+  "loading": "Đang tải...",
+  "noVouchersAvailable": "Không có mã giảm giá",
+  "selectVoucher": "Chọn mã giảm giá",
+  "voucherDiscount": "Giảm giá voucher",
+  "pointDiscount": "Giảm giá điểm thưởng"
 }

@@ -48,9 +48,12 @@ class _VehicleViewState extends State<_VehicleView> {
   void initState() {
     super.initState();
     _subscription = eventBus.on<dynamic>().listen((event) {
-      if (mounted &&
-          (event is VehicleAddedEvent || event is VehicleStatusChangedEvent)) {
-        context.read<GetMyVehiclesCubit>().getMyVehicles();
+      if (mounted) {
+        if (event is VehicleAddedEvent || event is VehicleStatusChangedEvent) {
+          context.read<GetMyVehiclesCubit>().getMyVehicles();
+        } else if (event is RentalRequestUpdatedEvent) {
+          context.read<GetOwnerRentalBillsCubit>().getBills();
+        }
       }
     });
   }

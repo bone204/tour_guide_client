@@ -13,9 +13,12 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/owner_rental_workflow/owner_rental_workflow_cubit.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/owner_rental_workflow/owner_rental_workflow_state.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:io';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/utils/rental_status_helper.dart';
 
 import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
@@ -83,6 +86,7 @@ class _OwnerRentalRequestDetailPageState
                         AppLocalizations.of(context)!.actionSuccess,
                     type: SnackbarType.success,
                   );
+                  eventBus.fire(RentalRequestUpdatedEvent(billId: widget.id));
                   _onRefresh(context);
                 } else if (state.status == OwnerRentalWorkflowStatus.failure) {
                   CustomSnackbar.show(
@@ -129,7 +133,7 @@ class _OwnerRentalRequestDetailPageState
                           context,
                           vehicle,
                           licensePlate,
-                          bill.rentalStatus,
+                          bill,
                         ),
                         SizedBox(height: 16.h),
 
@@ -143,6 +147,10 @@ class _OwnerRentalRequestDetailPageState
 
                         // 4. Payment/Revenue Details
                         _buildPaymentDetailsCard(context, bill),
+
+                        // 5. Tracking Images
+                        _buildTrackingImagesCard(context, bill),
+
                         SizedBox(height: 16.h),
                         // 5. Workflow Actions
                         _buildWorkflowActions(context, bill),
@@ -200,7 +208,7 @@ class _OwnerRentalRequestDetailPageState
     BuildContext context,
     RentalVehicle? vehicle,
     String licensePlate,
-    RentalProgressStatus status,
+    RentalBill bill,
   ) {
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -239,39 +247,40 @@ class _OwnerRentalRequestDetailPageState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        vehicle != null
-                            ? "${vehicle.vehicleCatalog?.brand} ${vehicle.vehicleCatalog?.model}"
-                            : AppLocalizations.of(context)!.rentalVehicle,
-                        style: Theme.of(context).textTheme.titleMedium,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    _buildStatusBadge(context, status),
-                  ],
+                Text(
+                  vehicle != null
+                      ? "${vehicle.vehicleCatalog?.brand} ${vehicle.vehicleCatalog?.model}"
+                      : AppLocalizations.of(context)!.rentalVehicle,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 8.h),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryGrey.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(4.r),
-                    border: Border.all(
-                      color: AppColors.primaryBlack.withOpacity(0.1),
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 4.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryGrey.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(4.r),
+                        border: Border.all(
+                          color: AppColors.primaryBlack.withOpacity(0.1),
+                        ),
+                      ),
+                      child: Text(
+                        licensePlate,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryBlack,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    licensePlate,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryBlack,
-                    ),
-                  ),
+                    const Spacer(),
+                    _buildStatusBadge(context, bill),
+                  ],
                 ),
               ],
             ),
@@ -281,9 +290,11 @@ class _OwnerRentalRequestDetailPageState
     );
   }
 
-  Widget _buildStatusBadge(BuildContext context, RentalProgressStatus status) {
-    final color = _getRentalStatusColor(status);
-    final text = _getRentalStatusText(context, status);
+  Widget _buildStatusBadge(BuildContext context, RentalBill bill) {
+    final (color, text) = RentalStatusHelper.getStatusColorAndText(
+      context,
+      bill,
+    );
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -304,6 +315,11 @@ class _OwnerRentalRequestDetailPageState
   }
 
   Widget _buildRentalDetailsCard(BuildContext context, RentalBill bill) {
+    final (statusColor, statusText) = RentalStatusHelper.getStatusColorAndText(
+      context,
+      bill,
+    );
+
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -333,8 +349,8 @@ class _OwnerRentalRequestDetailPageState
           _buildDetailRow(
             context,
             AppLocalizations.of(context)!.status,
-            _getStatusText(context, bill.status),
-            valueColor: _getStatusColor(bill.status),
+            statusText,
+            valueColor: statusColor,
             isBold: true,
           ),
           _buildDetailRow(
@@ -399,6 +415,182 @@ class _OwnerRentalRequestDetailPageState
     );
   }
 
+  Widget _buildTrackingImagesCard(BuildContext context, RentalBill bill) {
+    final sections = <(String, List<String>)>[];
+
+    if (bill.deliveryPhotos.isNotEmpty) {
+      sections.add((
+        AppLocalizations.of(context)!.deliveryPhotos,
+        bill.deliveryPhotos,
+      ));
+    }
+    if (bill.pickupSelfiePhoto != null) {
+      sections.add((
+        AppLocalizations.of(context)!.pickupPhotos,
+        [bill.pickupSelfiePhoto!],
+      ));
+    }
+    if (bill.returnPhotosUser.isNotEmpty) {
+      sections.add((
+        "${AppLocalizations.of(context)!.returnPhotos} (${AppLocalizations.of(context)!.customer})",
+        bill.returnPhotosUser,
+      ));
+    }
+    if (bill.returnPhotosOwner.isNotEmpty) {
+      sections.add((
+        "${AppLocalizations.of(context)!.returnPhotos} (${AppLocalizations.of(context)!.owner})",
+        bill.returnPhotosOwner,
+      ));
+    }
+
+    if (sections.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      margin: EdgeInsets.only(top: 16.h),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGrey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.trackingPhotos,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          Divider(),
+          SizedBox(height: 16.h),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12.w,
+              mainAxisSpacing: 12.h,
+              childAspectRatio: 0.85,
+            ),
+            itemCount: sections.length,
+            itemBuilder: (context, index) {
+              final section = sections[index];
+              return _buildGridImageItem(context, section.$1, section.$2);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGridImageItem(
+    BuildContext context,
+    String title,
+    List<String> images,
+  ) {
+    final firstImage = images.first;
+    final count = images.length;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppColors.textSubtitle,
+            fontWeight: FontWeight.w600,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        SizedBox(height: 8.h),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => _showFullScreenImage(context, firstImage),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.r),
+                  child: Image.network(
+                    firstImage,
+                    fit: BoxFit.cover,
+                    errorBuilder:
+                        (context, error, stackTrace) => Container(
+                          color: AppColors.primaryGrey.withOpacity(0.2),
+                          child: const Icon(Icons.broken_image),
+                        ),
+                  ),
+                ),
+                if (count > 1)
+                  Positioned(
+                    right: 4,
+                    bottom: 4,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 2.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                      child: Text(
+                        '+${count - 1}',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: Colors.white,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showFullScreenImage(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: EdgeInsets.zero,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                InteractiveViewer(
+                  minScale: 0.1,
+                  maxScale: 5.0,
+                  child: Image.network(imageUrl),
+                ),
+                Positioned(
+                  top: 40,
+                  right: 20,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+              ],
+            ),
+          ),
+    );
+  }
+
   Widget _buildDetailRow(
     BuildContext context,
     String label,
@@ -432,83 +624,6 @@ class _OwnerRentalRequestDetailPageState
         ],
       ),
     );
-  }
-
-  String _getRentalStatusText(
-    BuildContext context,
-    RentalProgressStatus status,
-  ) {
-    switch (status) {
-      case RentalProgressStatus.pending:
-        return AppLocalizations.of(context)!.pending;
-      case RentalProgressStatus.booked:
-        return AppLocalizations.of(context)!.statusBooked;
-      case RentalProgressStatus.delivering:
-        return AppLocalizations.of(context)!.statusDelivering;
-      case RentalProgressStatus.delivered:
-        return AppLocalizations.of(context)!.statusDelivered;
-      case RentalProgressStatus.inProgress:
-        return AppLocalizations.of(context)!.statusInProgress;
-      case RentalProgressStatus.returnRequested:
-        return AppLocalizations.of(context)!.statusReturnRequested;
-      case RentalProgressStatus.returnConfirmed:
-        return AppLocalizations.of(context)!.statusReturnConfirmed;
-      case RentalProgressStatus.cancelled:
-        return AppLocalizations.of(context)!.cancelled;
-    }
-  }
-
-  Color _getRentalStatusColor(RentalProgressStatus status) {
-    switch (status) {
-      case RentalProgressStatus.pending:
-        return Colors.orange;
-      case RentalProgressStatus.booked:
-        return AppColors.primaryBlue;
-      case RentalProgressStatus.delivering:
-        return Colors.blueAccent;
-      case RentalProgressStatus.delivered:
-        return Colors.lightGreen;
-      case RentalProgressStatus.inProgress:
-        return Colors.green;
-      case RentalProgressStatus.returnRequested:
-        return Colors.purple;
-      case RentalProgressStatus.returnConfirmed:
-        return Colors.indigo;
-      case RentalProgressStatus.cancelled:
-        return AppColors.primaryRed;
-    }
-  }
-
-  String _getStatusText(BuildContext context, RentalBillStatus status) {
-    switch (status) {
-      case RentalBillStatus.pending:
-        return AppLocalizations.of(context)!.pending;
-      case RentalBillStatus.confirmed:
-        return AppLocalizations.of(context)!.approved;
-      case RentalBillStatus.paidPendingDelivery:
-      case RentalBillStatus.paid:
-        return AppLocalizations.of(context)!.paid;
-      case RentalBillStatus.cancelled:
-        return AppLocalizations.of(context)!.cancelled;
-      case RentalBillStatus.completed:
-        return AppLocalizations.of(context)!.completed;
-    }
-  }
-
-  Color _getStatusColor(RentalBillStatus status) {
-    switch (status) {
-      case RentalBillStatus.pending:
-        return Colors.orange;
-      case RentalBillStatus.confirmed:
-        return AppColors.primaryBlue;
-      case RentalBillStatus.paidPendingDelivery:
-      case RentalBillStatus.paid:
-        return Colors.green;
-      case RentalBillStatus.cancelled:
-        return AppColors.primaryRed;
-      case RentalBillStatus.completed:
-        return Colors.teal;
-    }
   }
 
   Widget _buildWorkflowActions(BuildContext context, RentalBill bill) {
@@ -561,10 +676,23 @@ class _OwnerRentalRequestDetailPageState
   }
 
   Future<void> _onDelivered(BuildContext context, int id) async {
+    final source = await _showImageSourceActionSheet(context);
+    if (source == null) return;
+
     setState(() => _isActionLoading = true);
     try {
       final ImagePicker picker = ImagePicker();
-      final List<XFile> photos = await picker.pickMultiImage();
+      List<XFile> photos = [];
+
+      if (source == ImageSource.camera) {
+        final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+        if (photo != null) {
+          photos.add(photo);
+        }
+      } else {
+        photos = await picker.pickMultiImage();
+      }
+
       if (photos.isNotEmpty && context.mounted) {
         await context.read<OwnerRentalWorkflowCubit>().confirmDelivered(
           id,
@@ -577,47 +705,69 @@ class _OwnerRentalRequestDetailPageState
   }
 
   Future<void> _onConfirmReturn(BuildContext context, int id) async {
+    // 1. Check/Request GPS
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) return;
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          message:
+              AppLocalizations.of(context)!.locationPermissionDeniedForever,
+          type: SnackbarType.error,
+        );
+      }
+      return;
+    }
+
+    final source = await _showImageSourceActionSheet(context);
+    if (source == null) return;
+
     setState(() => _isActionLoading = true);
     try {
-      // 1. GPS
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) return;
-      }
-
-      if (permission == LocationPermission.deniedForever) {
-        if (context.mounted) {
-          CustomSnackbar.show(
-            context,
-            message:
-                AppLocalizations.of(context)!.locationPermissionDeniedForever,
-            type: SnackbarType.error,
-          );
-        }
-        return;
-      }
-
       Position? position;
       try {
         position = await Geolocator.getCurrentPosition();
       } catch (e) {
-        if (context.mounted) {
-          CustomSnackbar.show(
-            context,
-            message: AppLocalizations.of(context)!.locationError(e.toString()),
-            type: SnackbarType.error,
-          );
-        }
-        return;
+        // handle
       }
 
       // 2. Photos
       final ImagePicker picker = ImagePicker();
-      final List<XFile> photos = await picker.pickMultiImage();
+      List<XFile> photos = [];
+
+      if (source == ImageSource.camera) {
+        final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+        if (photo != null) {
+          photos.add(photo);
+        }
+      } else {
+        photos = await picker.pickMultiImage();
+      }
 
       // 3. Confirm
       if (photos.isNotEmpty && context.mounted) {
+        if (position == null) {
+          try {
+            position = await Geolocator.getCurrentPosition();
+          } catch (e) {
+            if (context.mounted) {
+              CustomSnackbar.show(
+                context,
+                message: AppLocalizations.of(
+                  context,
+                )!.locationError(e.toString()),
+                type: SnackbarType.error,
+              );
+            }
+            return;
+          }
+        }
+
         await context.read<OwnerRentalWorkflowCubit>().confirmReturn(
           id,
           photos.map((e) => File(e.path)).toList(),
@@ -628,6 +778,54 @@ class _OwnerRentalRequestDetailPageState
       }
     } finally {
       if (mounted) setState(() => _isActionLoading = false);
+    }
+  }
+
+  Future<ImageSource?> _showImageSourceActionSheet(BuildContext context) async {
+    if (Platform.isIOS) {
+      return showCupertinoModalPopup<ImageSource>(
+        context: context,
+        builder:
+            (context) => CupertinoActionSheet(
+              title: Text(AppLocalizations.of(context)!.selectImageSource),
+              actions: [
+                CupertinoActionSheetAction(
+                  onPressed: () => Navigator.pop(context, ImageSource.camera),
+                  child: Text(AppLocalizations.of(context)!.camera),
+                ),
+                CupertinoActionSheetAction(
+                  onPressed: () => Navigator.pop(context, ImageSource.gallery),
+                  child: Text(AppLocalizations.of(context)!.gallery),
+                ),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                onPressed: () => Navigator.pop(context),
+                isDestructiveAction: true,
+                child: Text(AppLocalizations.of(context)!.cancel),
+              ),
+            ),
+      );
+    } else {
+      return showModalBottomSheet<ImageSource>(
+        context: context,
+        builder:
+            (context) => SafeArea(
+              child: Wrap(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.camera_alt),
+                    title: Text(AppLocalizations.of(context)!.camera),
+                    onTap: () => Navigator.pop(context, ImageSource.camera),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: Text(AppLocalizations.of(context)!.gallery),
+                    onTap: () => Navigator.pop(context, ImageSource.gallery),
+                  ),
+                ],
+              ),
+            ),
+      );
     }
   }
 }

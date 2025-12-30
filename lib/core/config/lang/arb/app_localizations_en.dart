@@ -33,6 +33,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterUsernameOrEmail => 'Enter username or email';
 
   @override
+  String get statusBooked => 'Booked';
+
+  @override
+  String get statusDelivering => 'Delivering';
+
+  @override
+  String get statusDelivered => 'Delivered';
+
+  @override
+  String get statusInProgress => 'In Progress';
+
+  @override
+  String get statusReturnRequested => 'Return Requested';
+
+  @override
+  String get statusReturnConfirmed => 'Return Confirmed';
+
+  @override
+  String get rentalStartDelivery => 'Start Delivery';
+
+  @override
+  String get rentalDelivered => 'Delivered';
+
+  @override
+  String get rentalConfirmReturn => 'Confirm Return';
+
+  @override
+  String get rentalCheckIn => 'Check-in (Receive Vehicle)';
+
+  @override
+  String get rentalCheckOut => 'Check-out (Return Vehicle)';
+
+  @override
+  String get deliveryPhotos => 'Delivery Photos';
+
+  @override
+  String get pickupPhotos => 'Pickup Photos';
+
+  @override
+  String get returnPhotos => 'Return Photos';
+
+  @override
+  String get noImages => 'No images';
+
+  @override
+  String get trackingPhotos => 'Tracking Photos';
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get selectImageSource => 'Select Image Source';
+
+  @override
   String get forgotPassword => 'Forgot Password?';
 
   @override
@@ -324,9 +384,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exitAppConfirm => 'Are you sure you want to exit the app?';
-
-  @override
-  String get cancel => 'Cancel';
 
   @override
   String get exit => 'Exit';
@@ -1202,21 +1259,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchDestinationHint => 'Search for destination...';
 
   @override
-  String get rentalCheckIn => 'Check-in (Receive Vehicle)';
-
-  @override
-  String get rentalCheckOut => 'Check-out (Return Vehicle)';
-
-  @override
-  String get rentalStartDelivery => 'Start Delivery';
-
-  @override
-  String get rentalDelivered => 'Delivered';
-
-  @override
-  String get rentalConfirmReturn => 'Confirm Return';
-
-  @override
   String get rentalPickupSuccess => 'Vehicle picked up successfully';
 
   @override
@@ -1267,7 +1309,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get voucherDiscount => 'Voucher Discount';
 
   @override
-  String get pointDiscount => 'Points Discount';
+  String get pointDiscount => 'Point Discount';
 
   @override
   String get paid => 'Paid';
@@ -1874,24 +1916,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get travelTrips => 'Travel Trips';
-
-  @override
-  String get statusBooked => 'Booked';
-
-  @override
-  String get statusDelivering => 'Delivering';
-
-  @override
-  String get statusDelivered => 'Delivered';
-
-  @override
-  String get statusInProgress => 'In Progress';
-
-  @override
-  String get statusReturnRequested => 'Return Requested';
-
-  @override
-  String get statusReturnConfirmed => 'Return Confirmed';
 
   @override
   String get enterPoints => 'Enter points';
@@ -2722,4 +2746,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationList => 'Notification List';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get noVouchersAvailable => 'No vouchers available';
 }

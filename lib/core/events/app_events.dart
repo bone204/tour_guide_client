@@ -38,6 +38,18 @@ class VehicleStatusChangedEvent {
   VehicleStatusChangedEvent(this.licensePlate);
 }
 
+// Event when a rental bill is updated (paid, status changed, etc.)
+class RentalBillUpdatedEvent {
+  final int? billId;
+  RentalBillUpdatedEvent({this.billId});
+}
+
+// Event when a rental request is updated (owner approves/rejects, etc.)
+class RentalRequestUpdatedEvent {
+  final int? billId;
+  RentalRequestUpdatedEvent({this.billId});
+}
+
 // Singleton EventBus
 class AppEventBus {
   static final AppEventBus _instance = AppEventBus._internal();
