@@ -1,5 +1,5 @@
 class AppImage {
-  static const String defaultAvatar = 'assets/images/img_avatar_default.png';
+  static const String defaultAvatar = 'assets/images/img_avatar.jpg';
   static const String defaultCar = 'assets/images/img_car.png';
   static const String defaultFood = 'assets/images/img_food.jpeg';
   static const String defaultDestination = 'assets/images/img_destination.jpg';

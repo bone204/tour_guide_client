@@ -1202,6 +1202,47 @@ class AppLocalizationsVi extends AppLocalizations {
   String get searchDestinationHint => 'Tìm kiếm địa điểm...';
 
   @override
+  String get rentalCheckIn => 'Check-in (Nhận xe)';
+
+  @override
+  String get rentalCheckOut => 'Check-out (Trả xe)';
+
+  @override
+  String get rentalStartDelivery => 'Bắt đầu giao xe';
+
+  @override
+  String get rentalDelivered => 'Đã giao xe';
+
+  @override
+  String get rentalConfirmReturn => 'Xác nhận đã nhận xe';
+
+  @override
+  String get rentalPickupSuccess => 'Đã nhận xe thành công';
+
+  @override
+  String get rentalReturnRequestSuccess => 'Đã gửi yêu cầu trả xe thành công';
+
+  @override
+  String get rentalStartDeliverySuccess => 'Bắt đầu giao xe thành công';
+
+  @override
+  String get rentalDeliveredSuccess => 'Xác nhận giao xe thành công';
+
+  @override
+  String get rentalConfirmReturnSuccess => 'Xác nhận trả xe thành công';
+
+  @override
+  String get locationPermissionRequired => 'Yêu cầu quyền vị trí';
+
+  @override
+  String get locationPermissionDeniedForever => 'Quyền vị trí bị từ chối vĩnh viễn';
+
+  @override
+  String locationError(String error) {
+    return 'Lỗi khi lấy vị trí: $error';
+  }
+
+  @override
   String get searchFavoritePlaceHint => 'Tìm kiếm địa điểm yêu thích...';
 
   @override
@@ -1351,7 +1392,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get noData => 'Không có dữ liệu';
 
   @override
-  String get actionSuccess => 'Thao tác thành công';
+  String get actionSuccess => 'Thành công';
 
   @override
   String get continueText => 'Tiếp tục';
@@ -2666,4 +2707,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get ownerInfo => 'Thông tin chủ xe';
+
+  @override
+  String get actionFailed => 'Thao tác thất bại';
+
+  @override
+  String get paymentFailed => 'Thanh toán thất bại';
+
+  @override
+  String get paymentGatewayError => 'Không thể mở cổng thanh toán';
 }

@@ -2453,6 +2453,84 @@ abstract class AppLocalizations {
   /// **'Search for destination...'**
   String get searchDestinationHint;
 
+  /// No description provided for @rentalCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in (Receive Vehicle)'**
+  String get rentalCheckIn;
+
+  /// No description provided for @rentalCheckOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-out (Return Vehicle)'**
+  String get rentalCheckOut;
+
+  /// No description provided for @rentalStartDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Delivery'**
+  String get rentalStartDelivery;
+
+  /// No description provided for @rentalDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get rentalDelivered;
+
+  /// No description provided for @rentalConfirmReturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Return'**
+  String get rentalConfirmReturn;
+
+  /// No description provided for @rentalPickupSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle picked up successfully'**
+  String get rentalPickupSuccess;
+
+  /// No description provided for @rentalReturnRequestSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Return request sent successfully'**
+  String get rentalReturnRequestSuccess;
+
+  /// No description provided for @rentalStartDeliverySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery started successfully'**
+  String get rentalStartDeliverySuccess;
+
+  /// No description provided for @rentalDeliveredSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery confirmed successfully'**
+  String get rentalDeliveredSuccess;
+
+  /// No description provided for @rentalConfirmReturnSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Return confirmed successfully'**
+  String get rentalConfirmReturnSuccess;
+
+  /// No description provided for @locationPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission required'**
+  String get locationPermissionRequired;
+
+  /// No description provided for @locationPermissionDeniedForever.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission permanently denied'**
+  String get locationPermissionDeniedForever;
+
+  /// No description provided for @locationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error getting location: {error}'**
+  String locationError(String error);
+
   /// No description provided for @searchFavoritePlaceHint.
   ///
   /// In en, this message translates to:
@@ -2726,7 +2804,7 @@ abstract class AppLocalizations {
   /// No description provided for @actionSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Action successful'**
+  /// **'Success'**
   String get actionSuccess;
 
   /// No description provided for @continueText.
@@ -5236,6 +5314,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Owner Info'**
   String get ownerInfo;
+
+  /// No description provided for @actionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Action failed'**
+  String get actionFailed;
+
+  /// No description provided for @paymentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment failed'**
+  String get paymentFailed;
+
+  /// No description provided for @paymentGatewayError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch payment gateway'**
+  String get paymentGatewayError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

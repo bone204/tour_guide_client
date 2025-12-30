@@ -798,6 +798,26 @@
 
   "ok": "OK",
   "searchDestinationHint": "Search for destination...",
+  "rentalCheckIn": "Check-in (Receive Vehicle)",
+  "rentalCheckOut": "Check-out (Return Vehicle)",
+  "rentalStartDelivery": "Start Delivery",
+  "rentalDelivered": "Delivered",
+  "rentalConfirmReturn": "Confirm Return",
+  "rentalPickupSuccess": "Vehicle picked up successfully",
+  "rentalReturnRequestSuccess": "Return request sent successfully",
+  "rentalStartDeliverySuccess": "Delivery started successfully",
+  "rentalDeliveredSuccess": "Delivery confirmed successfully",
+  "rentalConfirmReturnSuccess": "Return confirmed successfully",
+  "locationPermissionRequired": "Location permission required",
+  "locationPermissionDeniedForever": "Location permission permanently denied",
+  "locationError": "Error getting location: {error}",
+  "@locationError": {
+    "placeholders": {
+        "error": {
+            "type": "String"
+        }
+    }
+  },
   "searchFavoritePlaceHint": "Search favorite places...",
   "searchProvinceHint": "Search province/city...",
   "selectRentType": "Please select rental type in filter",
@@ -1545,5 +1565,29 @@
   "foodTypeJapanese": "Japanese",
   "foodTypeFastFood": "Fast Food",
   "selectDateAndTime": "Select Date and Time",
-  "ownerInfo": "Owner Info"
+  "ownerInfo": "Owner Info",
+  "rentalCheckIn": "Check-in (Receive Vehicle)",
+  "rentalCheckOut": "Check-out (Return Vehicle)",
+  "rentalStartDelivery": "Start Delivery",
+  "rentalDelivered": "Delivered",
+  "rentalConfirmReturn": "Confirm Return",
+  "rentalPickupSuccess": "Vehicle picked up successfully",
+  "rentalReturnRequestSuccess": "Return request sent successfully",
+  "rentalStartDeliverySuccess": "Delivery started successfully",
+  "rentalDeliveredSuccess": "Delivery confirmed successfully",
+  "rentalConfirmReturnSuccess": "Return confirmed successfully",
+  "locationPermissionRequired": "Location permission required",
+  "locationPermissionDeniedForever": "Location permission permanently denied",
+  "locationError": "Error getting location: {error}",
+  "@locationError": {
+    "placeholders": {
+        "error": {
+            "type": "String"
+        }
+    }
+  },
+  "actionSuccess": "Success",
+  "actionFailed": "Action failed",
+  "paymentFailed": "Payment failed",
+  "paymentGatewayError": "Could not launch payment gateway"
 }

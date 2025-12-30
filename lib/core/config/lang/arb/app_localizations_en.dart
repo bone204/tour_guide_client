@@ -1202,6 +1202,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchDestinationHint => 'Search for destination...';
 
   @override
+  String get rentalCheckIn => 'Check-in (Receive Vehicle)';
+
+  @override
+  String get rentalCheckOut => 'Check-out (Return Vehicle)';
+
+  @override
+  String get rentalStartDelivery => 'Start Delivery';
+
+  @override
+  String get rentalDelivered => 'Delivered';
+
+  @override
+  String get rentalConfirmReturn => 'Confirm Return';
+
+  @override
+  String get rentalPickupSuccess => 'Vehicle picked up successfully';
+
+  @override
+  String get rentalReturnRequestSuccess => 'Return request sent successfully';
+
+  @override
+  String get rentalStartDeliverySuccess => 'Delivery started successfully';
+
+  @override
+  String get rentalDeliveredSuccess => 'Delivery confirmed successfully';
+
+  @override
+  String get rentalConfirmReturnSuccess => 'Return confirmed successfully';
+
+  @override
+  String get locationPermissionRequired => 'Location permission required';
+
+  @override
+  String get locationPermissionDeniedForever => 'Location permission permanently denied';
+
+  @override
+  String locationError(String error) {
+    return 'Error getting location: $error';
+  }
+
+  @override
   String get searchFavoritePlaceHint => 'Search favorite places...';
 
   @override
@@ -1345,7 +1386,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noData => 'No data';
 
   @override
-  String get actionSuccess => 'Action successful';
+  String get actionSuccess => 'Success';
 
   @override
   String get continueText => 'Continue';
@@ -2660,4 +2701,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ownerInfo => 'Owner Info';
+
+  @override
+  String get actionFailed => 'Action failed';
+
+  @override
+  String get paymentFailed => 'Payment failed';
+
+  @override
+  String get paymentGatewayError => 'Could not launch payment gateway';
 }

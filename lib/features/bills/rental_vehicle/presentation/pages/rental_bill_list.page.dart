@@ -4,7 +4,6 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_my_rental_bills/get_my_rental_bills_cubit.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_my_rental_bills/rental_bill_list_state.dart';
-import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/widgets/rental_bill_card.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/widgets/rental_bill_list_shimmer.dart';
 import 'package:tour_guide_app/service_locator.dart';
@@ -66,21 +65,11 @@ class _RentalBillListPageState extends State<RentalBillListPage> {
                     return RentalBillCard(
                       bill: bill,
                       onTap: () {
-                        if (bill.status == RentalBillStatus.paid ||
-                            bill.status ==
-                                RentalBillStatus.paidPendingDelivery) {
-                          Navigator.pushNamed(
-                            context,
-                            AppRouteConstant.rentalProcess,
-                            arguments: bill,
-                          );
-                        } else {
-                          Navigator.pushNamed(
+                        Navigator.pushNamed(
                             context,
                             AppRouteConstant.rentalBillDetail,
                             arguments: bill.id,
                           );
-                        }
                       },
                     );
                   },

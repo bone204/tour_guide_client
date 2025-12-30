@@ -798,6 +798,26 @@
   "pleaseSelectBank": "Vui lòng chọn ngân hàng",
 
   "pleaseEnterUsername": "Vui lòng nhập tên đăng nhập",
+  "rentalCheckIn": "Check-in (Nhận xe)",
+  "rentalCheckOut": "Check-out (Trả xe)",
+  "rentalStartDelivery": "Bắt đầu giao xe",
+  "rentalDelivered": "Đã giao xe",
+  "rentalConfirmReturn": "Xác nhận đã nhận xe",
+  "rentalPickupSuccess": "Đã nhận xe thành công",
+  "rentalReturnRequestSuccess": "Đã gửi yêu cầu trả xe thành công",
+  "rentalStartDeliverySuccess": "Bắt đầu giao xe thành công",
+  "rentalDeliveredSuccess": "Xác nhận giao xe thành công",
+  "rentalConfirmReturnSuccess": "Xác nhận trả xe thành công",
+  "locationPermissionRequired": "Yêu cầu quyền vị trí",
+  "locationPermissionDeniedForever": "Quyền vị trí bị từ chối vĩnh viễn",
+  "locationError": "Lỗi khi lấy vị trí: {error}",
+  "@locationError": {
+    "placeholders": {
+        "error": {
+            "type": "String"
+        }
+    }
+  },
 
   "usernameMinLength": "Tên đăng nhập phải có ít nhất 3 ký tự",
 
@@ -1553,5 +1573,29 @@
   "foodTypeFastFood": "Đồ ăn nhanh",
   "selectDateAndTime": "Chọn ngày và giờ",
   "viewDetail": "Xem chi tiết",
-  "ownerInfo": "Thông tin chủ xe"
+  "ownerInfo": "Thông tin chủ xe",
+  "rentalCheckIn": "Check-in (Nhận xe)",
+  "rentalCheckOut": "Check-out (Trả xe)",
+  "rentalStartDelivery": "Bắt đầu giao xe",
+  "rentalDelivered": "Đã giao xe",
+  "rentalConfirmReturn": "Xác nhận đã nhận xe",
+  "rentalPickupSuccess": "Đã nhận xe thành công",
+  "rentalReturnRequestSuccess": "Đã gửi yêu cầu trả xe thành công",
+  "rentalStartDeliverySuccess": "Bắt đầu giao xe thành công",
+  "rentalDeliveredSuccess": "Xác nhận giao xe thành công",
+  "rentalConfirmReturnSuccess": "Xác nhận trả xe thành công",
+  "locationPermissionRequired": "Yêu cầu quyền vị trí",
+  "locationPermissionDeniedForever": "Quyền vị trí bị từ chối vĩnh viễn",
+  "locationError": "Lỗi khi lấy vị trí: {error}",
+  "@locationError": {
+    "placeholders": {
+        "error": {
+            "type": "String"
+        }
+    }
+  },
+  "actionSuccess": "Thành công",
+  "actionFailed": "Thao tác thất bại",
+  "paymentFailed": "Thanh toán thất bại",
+  "paymentGatewayError": "Không thể mở cổng thanh toán"
 }

@@ -1,4 +1,5 @@
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
+import 'package:tour_guide_app/features/profile/data/models/user.dart';
 
 enum RentalBillStatus {
   pending,
@@ -77,6 +78,7 @@ class RentalBill {
   final int id;
   final String code;
   final int userId;
+  final User? user;
   final RentalBillType rentalType;
   final DateTime startDate;
   final DateTime endDate;
@@ -106,6 +108,7 @@ class RentalBill {
     required this.id,
     required this.code,
     required this.userId,
+    this.user,
     required this.rentalType,
     required this.startDate,
     required this.endDate,
@@ -141,6 +144,7 @@ class RentalBill {
           json['userId'] is int
               ? json['userId']
               : int.tryParse(json['userId'].toString()) ?? 0,
+      user: json['user'] != null ? User.fromJson(json['user']) : null,
       rentalType: _parseRentalType(json['rentalType']),
       startDate: DateTime.tryParse(json['startDate'] ?? '') ?? DateTime.now(),
       endDate: DateTime.tryParse(json['endDate'] ?? '') ?? DateTime.now(),
@@ -193,6 +197,7 @@ class RentalBill {
       'id': id,
       'code': code,
       'userId': userId,
+      'user': user?.toJson(),
       'rentalType': _rentalTypeToString(rentalType),
       'startDate': startDate.toIso8601String(),
       'endDate': endDate.toIso8601String(),

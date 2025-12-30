@@ -232,7 +232,10 @@ class RentalBillApiServiceImpl implements RentalBillApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
@@ -273,7 +276,10 @@ class RentalBillApiServiceImpl implements RentalBillApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );

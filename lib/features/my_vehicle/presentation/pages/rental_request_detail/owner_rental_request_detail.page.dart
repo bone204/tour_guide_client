@@ -10,6 +10,14 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/widget
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/owner_rental_workflow/owner_rental_workflow_cubit.dart';
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/owner_rental_workflow/owner_rental_workflow_state.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:geolocator/geolocator.dart';
+import 'dart:io';
+
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class OwnerRentalRequestDetailPage extends StatefulWidget {
   final int id;
@@ -24,6 +32,7 @@ class OwnerRentalRequestDetailPage extends StatefulWidget {
 class _OwnerRentalRequestDetailPageState
     extends State<OwnerRentalRequestDetailPage> {
   final RefreshController _refreshController = RefreshController();
+  bool _isActionLoading = false;
 
   void _onRefresh(BuildContext context) {
     context.read<GetRentalBillDetailCubit>().getBillDetail(widget.id);
@@ -31,9 +40,22 @@ class _OwnerRentalRequestDetailPageState
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) => sl<GetRentalBillDetailCubit>()..getBillDetail(widget.id),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create:
+              (context) =>
+                  sl<GetRentalBillDetailCubit>()..getBillDetail(widget.id),
+        ),
+        BlocProvider(
+          create:
+              (context) => OwnerRentalWorkflowCubit(
+                ownerDeliveringUseCase: sl(),
+                ownerDeliveredUseCase: sl(),
+                ownerConfirmReturnUseCase: sl(),
+              ),
+        ),
+      ],
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: CustomAppBar(
@@ -41,13 +63,39 @@ class _OwnerRentalRequestDetailPageState
           showBackButton: true,
           onBackPressed: () => Navigator.pop(context),
         ),
-        body: BlocListener<GetRentalBillDetailCubit, RentalBillDetailState>(
-          listener: (context, state) {
-            if (state.status == RentalBillDetailInitStatus.success ||
-                state.status == RentalBillDetailInitStatus.failure) {
-              _refreshController.refreshCompleted();
-            }
-          },
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<GetRentalBillDetailCubit, RentalBillDetailState>(
+              listener: (context, state) {
+                if (state.status == RentalBillDetailInitStatus.success ||
+                    state.status == RentalBillDetailInitStatus.failure) {
+                  _refreshController.refreshCompleted();
+                }
+              },
+            ),
+            BlocListener<OwnerRentalWorkflowCubit, OwnerRentalWorkflowState>(
+              listener: (context, state) {
+                if (state.status == OwnerRentalWorkflowStatus.success) {
+                  CustomSnackbar.show(
+                    context,
+                    message:
+                        state.successMessage ??
+                        AppLocalizations.of(context)!.actionSuccess,
+                    type: SnackbarType.success,
+                  );
+                  _onRefresh(context);
+                } else if (state.status == OwnerRentalWorkflowStatus.failure) {
+                  CustomSnackbar.show(
+                    context,
+                    message:
+                        state.errorMessage ??
+                        AppLocalizations.of(context)!.errorOccurred,
+                    type: SnackbarType.error,
+                  );
+                }
+              },
+            ),
+          ],
           child: BlocBuilder<GetRentalBillDetailCubit, RentalBillDetailState>(
             builder: (context, state) {
               if (state.status == RentalBillDetailInitStatus.loading) {
@@ -95,6 +143,9 @@ class _OwnerRentalRequestDetailPageState
 
                         // 4. Payment/Revenue Details
                         _buildPaymentDetailsCard(context, bill),
+                        SizedBox(height: 16.h),
+                        // 5. Workflow Actions
+                        _buildWorkflowActions(context, bill),
                       ],
                     ),
                   ),
@@ -294,16 +345,12 @@ class _OwnerRentalRequestDetailPageState
           _buildDetailRow(
             context,
             AppLocalizations.of(context)!.startDate,
-            bill.rentalType == RentalBillType.hourly
-                ? DateFormatter.formatDateTime(bill.startDate)
-                : DateFormatter.formatDate(bill.startDate),
+            DateFormatter.formatDateTime(bill.startDate),
           ),
           _buildDetailRow(
             context,
             AppLocalizations.of(context)!.endDate,
-            bill.rentalType == RentalBillType.hourly
-                ? DateFormatter.formatDateTime(bill.endDate)
-                : DateFormatter.formatDate(bill.endDate),
+            DateFormatter.formatDateTime(bill.endDate),
           ),
         ],
       ),
@@ -461,6 +508,126 @@ class _OwnerRentalRequestDetailPageState
         return AppColors.primaryRed;
       case RentalBillStatus.completed:
         return Colors.teal;
+    }
+  }
+
+  Widget _buildWorkflowActions(BuildContext context, RentalBill bill) {
+    return BlocBuilder<OwnerRentalWorkflowCubit, OwnerRentalWorkflowState>(
+      builder: (context, state) {
+        final isLoading =
+            _isActionLoading ||
+            state.status == OwnerRentalWorkflowStatus.loading;
+
+        if (bill.rentalStatus == RentalProgressStatus.booked) {
+          return Padding(
+            padding: EdgeInsets.only(top: 16.h),
+            child: PrimaryButton(
+              title: AppLocalizations.of(context)!.rentalStartDelivery,
+              isLoading: isLoading,
+              onPressed:
+                  isLoading ? null : () => _onStartDelivery(context, bill.id),
+            ),
+          );
+        }
+        if (bill.rentalStatus == RentalProgressStatus.delivering) {
+          return Padding(
+            padding: EdgeInsets.only(top: 16.h),
+            child: PrimaryButton(
+              title: AppLocalizations.of(context)!.rentalDelivered,
+              isLoading: isLoading,
+              onPressed:
+                  isLoading ? null : () => _onDelivered(context, bill.id),
+            ),
+          );
+        }
+        if (bill.rentalStatus == RentalProgressStatus.returnRequested) {
+          return Padding(
+            padding: EdgeInsets.only(top: 16.h),
+            child: PrimaryButton(
+              title: AppLocalizations.of(context)!.rentalConfirmReturn,
+              isLoading: isLoading,
+              onPressed:
+                  isLoading ? null : () => _onConfirmReturn(context, bill.id),
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  void _onStartDelivery(BuildContext context, int id) {
+    context.read<OwnerRentalWorkflowCubit>().startDelivering(id);
+  }
+
+  Future<void> _onDelivered(BuildContext context, int id) async {
+    setState(() => _isActionLoading = true);
+    try {
+      final ImagePicker picker = ImagePicker();
+      final List<XFile> photos = await picker.pickMultiImage();
+      if (photos.isNotEmpty && context.mounted) {
+        await context.read<OwnerRentalWorkflowCubit>().confirmDelivered(
+          id,
+          photos.map((e) => File(e.path)).toList(),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isActionLoading = false);
+    }
+  }
+
+  Future<void> _onConfirmReturn(BuildContext context, int id) async {
+    setState(() => _isActionLoading = true);
+    try {
+      // 1. GPS
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) return;
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        if (context.mounted) {
+          CustomSnackbar.show(
+            context,
+            message:
+                AppLocalizations.of(context)!.locationPermissionDeniedForever,
+            type: SnackbarType.error,
+          );
+        }
+        return;
+      }
+
+      Position? position;
+      try {
+        position = await Geolocator.getCurrentPosition();
+      } catch (e) {
+        if (context.mounted) {
+          CustomSnackbar.show(
+            context,
+            message: AppLocalizations.of(context)!.locationError(e.toString()),
+            type: SnackbarType.error,
+          );
+        }
+        return;
+      }
+
+      // 2. Photos
+      final ImagePicker picker = ImagePicker();
+      final List<XFile> photos = await picker.pickMultiImage();
+
+      // 3. Confirm
+      if (photos.isNotEmpty && context.mounted) {
+        await context.read<OwnerRentalWorkflowCubit>().confirmReturn(
+          id,
+          photos.map((e) => File(e.path)).toList(),
+          position.latitude,
+          position.longitude,
+          null,
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isActionLoading = false);
     }
   }
 }

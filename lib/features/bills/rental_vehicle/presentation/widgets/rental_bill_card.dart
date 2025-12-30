@@ -1,4 +1,3 @@
-
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/utils/date_formatter.dart';
 import 'package:tour_guide_app/core/utils/money_formatter.dart';
@@ -27,12 +26,12 @@ class RentalBillCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryGrey.withOpacity(0.25),
-            blurRadius: 8.r,
-            offset: const Offset(0, 2),
-          ),
-        ],
+            BoxShadow(
+              color: AppColors.primaryGrey.withOpacity(0.25),
+              blurRadius: 8.r,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Column(
           children: [
@@ -116,20 +115,14 @@ class RentalBillCard extends StatelessWidget {
               context,
               icon: AppIcons.calendar,
               label: AppLocalizations.of(context)!.startDate,
-              value:
-                  bill.rentalType == RentalBillType.hourly
-                      ? DateFormatter.formatDateTime(bill.startDate)
-                      : DateFormatter.formatDate(bill.startDate),
+              value: DateFormatter.formatDateTime(bill.startDate),
             ),
             SizedBox(height: 8.h),
             _buildInfoRow(
               context,
               icon: AppIcons.calendar,
               label: AppLocalizations.of(context)!.endDate,
-              value:
-                  bill.rentalType == RentalBillType.hourly
-                      ? DateFormatter.formatDateTime(bill.endDate)
-                      : DateFormatter.formatDate(bill.endDate),
+              value: DateFormatter.formatDateTime(bill.endDate),
             ),
             SizedBox(height: 12.h),
             const Divider(height: 1, color: AppColors.primaryGrey),

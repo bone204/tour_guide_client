@@ -24,8 +24,8 @@ class CreateRentalBillCubit extends Cubit<CreateRentalBillState> {
       rentalType: request.rentalType,
       vehicleType: request.vehicleType,
       durationPackage: request.durationPackage,
-      startDate: request.startDate.add(const Duration(hours: 7)),
-      endDate: request.endDate.add(const Duration(hours: 7)),
+      startDate: request.startDate,
+      endDate: request.endDate,
       location: request.location,
       details: request.details,
     );

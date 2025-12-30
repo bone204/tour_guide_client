@@ -158,6 +158,13 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/update_rental_bill_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/pay_rental_bill_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/confirm_qr_payment_use_case.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_workflow/rental_workflow_cubit.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/user_pickup.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/user_return_request.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/owner_rental_workflow/owner_rental_workflow_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/owner_delivering.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/owner_delivered.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/owner_confirm_return.dart';
 
 import 'package:tour_guide_app/features/voucher/data/data_source/voucher_api_service.dart';
 import 'package:tour_guide_app/features/voucher/data/repository/voucher_repository_impl.dart';
@@ -341,6 +348,12 @@ void setUpServiceLocator(SharedPreferences prefs) {
     UnfavoriteCooperationUseCase(),
   );
 
+  sl.registerSingleton<UserPickupUseCase>(UserPickupUseCase());
+  sl.registerSingleton<UserReturnRequestUseCase>(UserReturnRequestUseCase());
+  sl.registerSingleton<OwnerDeliveringUseCase>(OwnerDeliveringUseCase());
+  sl.registerSingleton<OwnerDeliveredUseCase>(OwnerDeliveredUseCase());
+  sl.registerSingleton<OwnerConfirmReturnUseCase>(OwnerConfirmReturnUseCase());
+
   // Cubits
   sl.registerFactory<CooperationDetailCubit>(
     () => CooperationDetailCubit(sl()),
@@ -441,6 +454,19 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<GetMyRentalBillsCubit>(() => GetMyRentalBillsCubit(sl()));
   sl.registerFactory<GetRentalBillDetailCubit>(
     () => GetRentalBillDetailCubit(sl()),
+  );
+  sl.registerFactory<RentalWorkflowCubit>(
+    () => RentalWorkflowCubit(
+      userPickupUseCase: sl(),
+      userReturnRequestUseCase: sl(),
+    ),
+  );
+  sl.registerFactory<OwnerRentalWorkflowCubit>(
+    () => OwnerRentalWorkflowCubit(
+      ownerDeliveringUseCase: sl(),
+      ownerDeliveredUseCase: sl(),
+      ownerConfirmReturnUseCase: sl(),
+    ),
   );
 
   // Feedback Replies

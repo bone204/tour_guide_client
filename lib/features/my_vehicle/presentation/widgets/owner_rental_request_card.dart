@@ -43,8 +43,9 @@ class OwnerRentalRequestCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 20.r,
                   backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
-                  backgroundImage: const NetworkImage(AppImage.defaultAvatar),
-                  // TODO: Use actual user avatar if available in future
+                  backgroundImage: NetworkImage(
+                    bill.user?.avatarUrl ?? AppImage.defaultAvatar,
+                  ),
                 ),
                 SizedBox(width: 12.w),
                 Expanded(
@@ -125,20 +126,14 @@ class OwnerRentalRequestCard extends StatelessWidget {
               context,
               icon: AppIcons.calendar,
               label: AppLocalizations.of(context)!.startDate,
-              value:
-                  bill.rentalType == RentalBillType.hourly
-                      ? DateFormatter.formatDateTime(bill.startDate)
-                      : DateFormatter.formatDate(bill.startDate),
+              value: DateFormatter.formatDateTime(bill.startDate),
             ),
             SizedBox(height: 8.h),
             _buildInfoRow(
               context,
               icon: AppIcons.calendar,
               label: AppLocalizations.of(context)!.endDate,
-              value:
-                  bill.rentalType == RentalBillType.hourly
-                      ? DateFormatter.formatDateTime(bill.endDate)
-                      : DateFormatter.formatDate(bill.endDate),
+              value: DateFormatter.formatDateTime(bill.endDate),
             ),
 
             SizedBox(height: 12.h),
@@ -149,7 +144,7 @@ class OwnerRentalRequestCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.totalRevenue, 
+                  AppLocalizations.of(context)!.totalRevenue,
                   style: Theme.of(
                     context,
                   ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),

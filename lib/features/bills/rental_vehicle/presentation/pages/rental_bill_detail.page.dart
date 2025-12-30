@@ -22,8 +22,14 @@ import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_state.dart'; // Add this
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_payment/rental_payment_cubit.dart'; // Add this
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_payment/rental_payment_state.dart'; // Add this
-import 'package:tour_guide_app/features/voucher/data/models/voucher.dart'; // Add this
+import 'package:tour_guide_app/features/voucher/data/models/voucher.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_workflow/rental_workflow_cubit.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_workflow/rental_workflow_state.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:geolocator/geolocator.dart';
+import 'dart:io';
 
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -39,6 +45,7 @@ class RentalBillDetailPage extends StatefulWidget {
 
 class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
   final RefreshController _refreshController = RefreshController();
+  bool _isActionLoading = false;
 
   void _onRefresh(BuildContext context) {
     context.read<GetRentalBillDetailCubit>().getBillDetail(widget.id);
@@ -67,6 +74,13 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
                 confirmQrPaymentUseCase: sl(),
               ),
         ),
+        BlocProvider(
+          create:
+              (context) => RentalWorkflowCubit(
+                userPickupUseCase: sl(),
+                userReturnRequestUseCase: sl(),
+              ),
+        ),
       ],
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -77,13 +91,39 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
             showBackButton: true,
             onBackPressed: () => Navigator.pop(context),
           ),
-          body: BlocListener<GetRentalBillDetailCubit, RentalBillDetailState>(
-            listener: (context, state) {
-              if (state.status == RentalBillDetailInitStatus.success ||
-                  state.status == RentalBillDetailInitStatus.failure) {
-                _refreshController.refreshCompleted();
-              }
-            },
+          body: MultiBlocListener(
+            listeners: [
+              BlocListener<GetRentalBillDetailCubit, RentalBillDetailState>(
+                listener: (context, state) {
+                  if (state.status == RentalBillDetailInitStatus.success ||
+                      state.status == RentalBillDetailInitStatus.failure) {
+                    _refreshController.refreshCompleted();
+                  }
+                },
+              ),
+              BlocListener<RentalWorkflowCubit, RentalWorkflowState>(
+                listener: (context, state) {
+                  if (state.status == RentalWorkflowStatus.success) {
+                    CustomSnackbar.show(
+                      context,
+                      message:
+                          state.successMessage ??
+                          AppLocalizations.of(context)!.actionSuccess,
+                      type: SnackbarType.success,
+                    );
+                    _onRefresh(context);
+                  } else if (state.status == RentalWorkflowStatus.failure) {
+                    CustomSnackbar.show(
+                      context,
+                      message:
+                          state.errorMessage ??
+                          AppLocalizations.of(context)!.errorOccurred,
+                      type: SnackbarType.error,
+                    );
+                  }
+                },
+              ),
+            ],
             child: BlocConsumer<
               GetRentalBillDetailCubit,
               RentalBillDetailState
@@ -143,6 +183,9 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
                           SizedBox(height: 16.h),
                           // 4. Payment Details
                           _buildPaymentDetailsCard(context, bill),
+                          SizedBox(height: 16.h),
+                          // 5. Workflow Actions
+                          _buildWorkflowActions(context, bill),
 
                           // 4. Contact/Notes if any
                           // 4. Contact Info Update
@@ -250,12 +293,27 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(AppLocalizations.of(context)!.ownerInfo, style: Theme.of(context).textTheme.titleSmall),
+          Text(
+            AppLocalizations.of(context)!.ownerInfo,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
           const Divider(),
-          _buildDetailRow(context, AppLocalizations.of(context)!.fullName, contract.fullName),
-          _buildDetailRow(context, AppLocalizations.of(context)!.phoneNumber, contract.phoneNumber),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.fullName,
+            contract.fullName,
+          ),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.phoneNumber,
+            contract.phoneNumber,
+          ),
           if (contract.businessAddress.isNotEmpty)
-            _buildDetailRow(context, AppLocalizations.of(context)!.address, contract.businessAddress),
+            _buildDetailRow(
+              context,
+              AppLocalizations.of(context)!.address,
+              contract.businessAddress,
+            ),
         ],
       ),
     );
@@ -303,16 +361,12 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
           _buildDetailRow(
             context,
             AppLocalizations.of(context)!.startDate,
-            bill.rentalType == RentalBillType.hourly
-                ? DateFormatter.formatDateTime(bill.startDate)
-                : DateFormatter.formatDate(bill.startDate),
+            DateFormatter.formatDateTime(bill.startDate),
           ),
           _buildDetailRow(
             context,
             AppLocalizations.of(context)!.endDate,
-            bill.rentalType == RentalBillType.hourly
-                ? DateFormatter.formatDateTime(bill.endDate)
-                : DateFormatter.formatDate(bill.endDate),
+            DateFormatter.formatDateTime(bill.endDate),
           ),
           if (bill.location != null)
             _buildDetailRow(
@@ -684,11 +738,12 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
             _launchUrl(context, state.payUrl!);
           }
         } else if (state.status == RentalPaymentStatus.failure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage ?? 'Payment failed'),
-              backgroundColor: AppColors.primaryRed,
-            ),
+          CustomSnackbar.show(
+            context,
+            message:
+                state.errorMessage ??
+                AppLocalizations.of(context)!.paymentFailed,
+            type: SnackbarType.error,
           );
         }
       },
@@ -712,11 +767,10 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
     final Uri url = Uri.parse(urlString);
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Could not launch payment gateway'),
-            backgroundColor: AppColors.primaryRed,
-          ),
+        CustomSnackbar.show(
+          context,
+          message: AppLocalizations.of(context)!.paymentGatewayError,
+          type: SnackbarType.error,
         );
       }
     }
@@ -835,6 +889,124 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
         return AppColors.primaryRed;
       case RentalBillStatus.completed:
         return Colors.teal;
+    }
+  }
+
+  Widget _buildWorkflowActions(BuildContext context, RentalBill bill) {
+    return BlocBuilder<RentalWorkflowCubit, RentalWorkflowState>(
+      builder: (context, state) {
+        final isLoading =
+            _isActionLoading || state.status == RentalWorkflowStatus.loading;
+
+        if (bill.rentalStatus == RentalProgressStatus.delivered) {
+          return Padding(
+            padding: EdgeInsets.only(top: 16.h),
+            child: PrimaryButton(
+              title: AppLocalizations.of(context)!.rentalCheckIn,
+              isLoading: isLoading,
+              onPressed: isLoading ? null : () => _onPickup(context, bill.id),
+            ),
+          );
+        }
+        if (bill.rentalStatus == RentalProgressStatus.inProgress) {
+          return Padding(
+            padding: EdgeInsets.only(top: 16.h),
+            child: PrimaryButton(
+              title: AppLocalizations.of(context)!.rentalCheckOut,
+              isLoading: isLoading,
+              onPressed: isLoading ? null : () => _onReturn(context, bill.id),
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  Future<void> _onPickup(BuildContext context, int id) async {
+    setState(() => _isActionLoading = true);
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? photo = await picker.pickImage(
+        source: ImageSource.camera,
+        preferredCameraDevice: CameraDevice.front,
+      );
+      if (photo != null && context.mounted) {
+        await context.read<RentalWorkflowCubit>().pickupVehicle(
+          id,
+          File(photo.path),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isActionLoading = false);
+    }
+  }
+
+  Future<void> _onReturn(BuildContext context, int id) async {
+    setState(() => _isActionLoading = true);
+    try {
+      // 1. Check Permission
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  AppLocalizations.of(context)!.locationPermissionRequired,
+                ),
+              ),
+            );
+          }
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.locationPermissionDeniedForever,
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      // 2. Get Location
+      Position? position;
+      try {
+        position = await Geolocator.getCurrentPosition();
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.locationError(e.toString()),
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      // 3. Pick Photos
+      final ImagePicker picker = ImagePicker();
+      final List<XFile> photos = await picker.pickMultiImage();
+
+      if (photos.isNotEmpty && context.mounted) {
+        await context.read<RentalWorkflowCubit>().returnRequest(
+          id,
+          photos.map((e) => File(e.path)).toList(),
+          position.latitude,
+          position.longitude,
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isActionLoading = false);
     }
   }
 }
