@@ -55,4 +55,7 @@ class ApiUrls {
 
   //Payment URLs
   static const payments = "$baseURL/payments";
+
+  //Notification URLs
+  static const notifications = "$baseURL/notifications";
 }

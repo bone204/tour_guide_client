@@ -5332,6 +5332,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not launch payment gateway'**
   String get paymentGatewayError;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @noNotificationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet.'**
+  String get noNotificationsYet;
+
+  /// No description provided for @markAsRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as read'**
+  String get markAsRead;
+
+  /// No description provided for @notificationList.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification List'**
+  String get notificationList;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

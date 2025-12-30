@@ -50,6 +50,7 @@ class AppRouteConstant {
   static const String favouriteDestinations = '/favourite_destinations';
   static const String favouriteDestinationsSearch =
       '/favourite_destinations_search';
+  static const String notification = '/notification';
   static const String myItinerary = '/my_itinerary';
   static const String itineraryList = '/itinerary_list';
   static const String itineraryStopDetail = '/itinerary_stop_detail';

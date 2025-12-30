@@ -849,7 +849,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get fuelElectric => 'Điện';
 
   @override
-  String get totalRentals => 'Total Rentals';
+  String get totalRentals => 'Tổng số lần thuê';
 
   @override
   String get averageRating => 'Đánh giá trung bình';
@@ -2716,4 +2716,16 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get paymentGatewayError => 'Không thể mở cổng thanh toán';
+
+  @override
+  String get notifications => 'Thông báo';
+
+  @override
+  String get noNotificationsYet => 'Chưa có thông báo nào.';
+
+  @override
+  String get markAsRead => 'Đánh dấu đã đọc';
+
+  @override
+  String get notificationList => 'Danh sách thông báo';
 }

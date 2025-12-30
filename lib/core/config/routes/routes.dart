@@ -74,6 +74,7 @@ import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_wheel.p
 import 'package:tour_guide_app/features/eatery/data/models/eatery.dart';
 
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/rental_request_detail/owner_rental_request_detail.page.dart';
+import 'package:tour_guide_app/features/notifications/presentation/pages/notification.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -569,6 +570,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => OwnerRentalRequestDetailPage(id: id),
+        );
+
+      case AppRouteConstant.notification:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const NotificationPage(),
         );
 
       default:

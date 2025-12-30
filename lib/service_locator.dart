@@ -181,6 +181,16 @@ import 'package:tour_guide_app/features/eatery/domain/usecases/get_eatery_detail
 import 'package:tour_guide_app/features/eatery/presentation/bloc/get_eateries/get_eateries_cubit.dart';
 import 'package:tour_guide_app/features/eatery/presentation/bloc/get_eatery_detail/get_eatery_detail_cubit.dart';
 
+import 'package:tour_guide_app/features/notifications/data/data_source/notification_api_service.dart';
+import 'package:tour_guide_app/features/notifications/data/repository/notification_repository_impl.dart';
+import 'package:tour_guide_app/features/notifications/domain/repository/notification_repository.dart';
+import 'package:tour_guide_app/features/notifications/domain/usecases/get_all_notifications.dart';
+import 'package:tour_guide_app/features/notifications/domain/usecases/get_my_notifications.dart';
+import 'package:tour_guide_app/features/notifications/domain/usecases/mark_notification_read.dart';
+import 'package:tour_guide_app/features/notifications/domain/usecases/test_reminders.dart';
+import 'package:tour_guide_app/features/notifications/data/data_source/notification_socket_service.dart';
+import 'package:tour_guide_app/features/notifications/presentation/bloc/notification_cubit.dart';
+
 final sl = GetIt.instance;
 
 void setUpServiceLocator(SharedPreferences prefs) {
@@ -204,6 +214,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<RentalBillApiService>(RentalBillApiServiceImpl());
   sl.registerSingleton<EateryApiService>(EateryApiServiceImpl());
   sl.registerSingleton<CooperationApiService>(CooperationApiServiceImpl());
+  sl.registerSingleton<NotificationApiService>(NotificationApiServiceImpl());
+  sl.registerSingleton<NotificationSocketService>(NotificationSocketService());
+
   // Repositories
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
@@ -220,6 +233,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<RentalBillRepository>(RentalBillRepositoryImpl());
   sl.registerSingleton<EateryRepository>(EateryRepositoryImpl());
   sl.registerSingleton<CooperationRepository>(CooperationRepositoryImpl());
+  sl.registerSingleton<NotificationRepository>(
+    NotificationRepositoryImpl(apiService: sl()),
+  );
 
   // Usecases
   sl.registerSingleton<SignInUseCase>(SignInUseCase());
@@ -281,6 +297,18 @@ void setUpServiceLocator(SharedPreferences prefs) {
   // Like Itinerary
   sl.registerSingleton<LikeItineraryUseCase>(LikeItineraryUseCase());
   sl.registerSingleton<UnlikeItineraryUseCase>(UnlikeItineraryUseCase());
+
+  // Notification Use Cases
+  sl.registerSingleton<GetMyNotificationsUseCase>(
+    GetMyNotificationsUseCase(sl()),
+  );
+  sl.registerSingleton<GetAllNotificationsUseCase>(
+    GetAllNotificationsUseCase(sl()),
+  );
+  sl.registerSingleton<MarkNotificationReadUseCase>(
+    MarkNotificationReadUseCase(sl()),
+  );
+  sl.registerSingleton<TestRemindersUseCase>(TestRemindersUseCase(sl()));
 
   sl.registerFactory<LikeItineraryCubit>(() => LikeItineraryCubit());
   sl.registerFactory<UseItineraryCubit>(
@@ -497,4 +525,11 @@ void setUpServiceLocator(SharedPreferences prefs) {
   // Eatery Cubits
   sl.registerFactory<GetEateriesCubit>(() => GetEateriesCubit(sl()));
   sl.registerFactory<GetEateryDetailCubit>(() => GetEateryDetailCubit(sl()));
+  sl.registerFactory<NotificationCubit>(
+    () => NotificationCubit(
+      getMyNotificationsUseCase: sl(),
+      markNotificationReadUseCase: sl(),
+      socketService: sl(),
+    ),
+  );
 }

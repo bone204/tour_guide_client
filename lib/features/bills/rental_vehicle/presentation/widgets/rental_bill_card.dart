@@ -12,7 +12,6 @@ class RentalBillCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get primary vehicle info (assuming first device in list for card display)
     RentalVehicle? vehicle;
     if (bill.details.isNotEmpty) {
       vehicle = bill.details.first.vehicle;

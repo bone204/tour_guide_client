@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 import 'package:tour_guide_app/features/profile/data/models/user.dart';
 
@@ -146,8 +147,8 @@ class RentalBill {
               : int.tryParse(json['userId'].toString()) ?? 0,
       user: json['user'] != null ? User.fromJson(json['user']) : null,
       rentalType: _parseRentalType(json['rentalType']),
-      startDate: DateTime.tryParse(json['startDate'] ?? '') ?? DateTime.now(),
-      endDate: DateTime.tryParse(json['endDate'] ?? '') ?? DateTime.now(),
+      startDate: _parseDate(json['startDate']),
+      endDate: _parseDate(json['endDate']),
       location: json['location'],
       durationPackage: json['durationPackage'],
       paymentMethod: _parsePaymentMethod(json['paymentMethod']),
@@ -336,6 +337,23 @@ class RentalBill {
         return 'return_confirmed';
       case RentalProgressStatus.cancelled:
         return 'cancelled';
+    }
+  }
+
+  static DateTime _parseDate(String? dateStr) {
+    if (dateStr == null || dateStr.isEmpty) return DateTime.now();
+
+    try {
+      // First try standard ISO 8601
+      return DateTime.parse(dateStr);
+    } catch (_) {
+      try {
+        // Try the custom format from server: dd-MM-yyyy HH:mm:ss
+        return DateFormat("dd-MM-yyyy HH:mm:ss").parse(dateStr);
+      } catch (e) {
+        print("Error parsing date: $dateStr, error: $e");
+        return DateTime.now();
+      }
     }
   }
 }

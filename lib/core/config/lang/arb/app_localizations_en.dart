@@ -2710,4 +2710,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentGatewayError => 'Could not launch payment gateway';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get noNotificationsYet => 'No notifications yet.';
+
+  @override
+  String get markAsRead => 'Mark as read';
+
+  @override
+  String get notificationList => 'Notification List';
 }

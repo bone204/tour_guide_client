@@ -1589,5 +1589,9 @@
   "actionSuccess": "Success",
   "actionFailed": "Action failed",
   "paymentFailed": "Payment failed",
-  "paymentGatewayError": "Could not launch payment gateway"
+  "paymentGatewayError": "Could not launch payment gateway",
+  "notifications": "Notifications",
+  "noNotificationsYet": "No notifications yet.",
+  "markAsRead": "Mark as read",
+  "notificationList": "Notification List"
 }

@@ -1597,5 +1597,10 @@
   "actionSuccess": "Thành công",
   "actionFailed": "Thao tác thất bại",
   "paymentFailed": "Thanh toán thất bại",
-  "paymentGatewayError": "Không thể mở cổng thanh toán"
+  "paymentGatewayError": "Không thể mở cổng thanh toán",
+  "notifications": "Thông báo",
+  "noNotificationsYet": "Chưa có thông báo nào.",
+  "markAsRead": "Đánh dấu đã đọc",
+  "notificationList": "Danh sách thông báo",
+  "totalRentals": "Tổng số lần thuê"
 }
