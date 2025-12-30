@@ -15,19 +15,35 @@ class ChatApiServiceImpl extends ChatApiService {
   @override
   Future<Either<Failure, ChatResponse>> sendMessage(ChatRequest request) async {
     try {
-      final response = await sl<DioClient>().post(
-        ApiUrls.chatbot,
-        data: request.toJson(),
-      );
+      dynamic data;
 
-      final data = response.data;
-      if (data is! Map<String, dynamic>) {
+      if (request.images.isNotEmpty) {
+        final formData = FormData.fromMap({
+          'message': request.message,
+          if (request.lang != null) 'lang': request.lang,
+          if (request.sessionId != null) 'sessionId': request.sessionId,
+        });
+
+        for (final path in request.images) {
+          formData.files.add(
+            MapEntry('images', await MultipartFile.fromFile(path)),
+          );
+        }
+        data = formData;
+      } else {
+        data = request.toJson();
+      }
+
+      final response = await sl<DioClient>().post(ApiUrls.chatbot, data: data);
+
+      final responseData = response.data;
+      if (responseData is! Map<String, dynamic>) {
         return const Left(
           ServerFailure(message: 'Invalid chat response format from server'),
         );
       }
 
-      final chatResponse = ChatResponse.fromJson(data);
+      final chatResponse = ChatResponse.fromJson(responseData);
       return Right(chatResponse);
     } on DioException catch (e) {
       final data = e.response?.data;

@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/chat_bot/data/models/chat_result_item.dart';
 import 'package:tour_guide_app/features/chat_bot/presentation/bloc/chat_cubit.dart';
 import 'package:tour_guide_app/features/chat_bot/presentation/bloc/chat_state.dart';
+import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
 
 class ChatBotPage extends StatefulWidget {
   const ChatBotPage({super.key});
@@ -34,10 +36,10 @@ class _ChatBotPageState extends State<ChatBotPage>
     final cubit = context.read<ChatCubit>();
     if (cubit.state.isTyping) return;
     final text = _controller.text.trim();
-    if (text.isEmpty) return;
 
-    // Mặc định dùng tiếng Việt
-    const lang = 'vi';
+    if (text.isEmpty && cubit.state.selectedImages.isEmpty) return;
+
+    final lang = Localizations.localeOf(context).languageCode;
 
     cubit.sendMessage(text, lang: lang);
     _controller.clear();
@@ -58,70 +60,74 @@ class _ChatBotPageState extends State<ChatBotPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: CustomAppBar(
-        title: AppLocalizations.of(context)!.travelAssistant,
-        showBackButton: true,
-        onBackPressed: () => Navigator.of(context).pop(),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: BlocConsumer<ChatCubit, ChatState>(
-                listener: (context, state) {
-                  _scrollToBottom();
-                },
-                builder: (context, state) {
-                  final messages = state.messages;
-                  if (messages.isEmpty) {
-                    return ListView(
+    return GestureDetector(
+      onTap: () => _focusNode.unfocus(),
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        appBar: CustomAppBar(
+          title: AppLocalizations.of(context)!.travelAssistant,
+          showBackButton: true,
+          onBackPressed: () => Navigator.of(context).pop(),
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: BlocConsumer<ChatCubit, ChatState>(
+                  listener: (context, state) {
+                    _scrollToBottom();
+                  },
+                  builder: (context, state) {
+                    final messages = state.messages;
+                    if (messages.isEmpty) {
+                      return ListView(
+                        controller: _scrollController,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 24.h,
+                        ),
+                        children: [
+                          _ChatWelcomeSection(
+                            onQuickSend: (value) {
+                              _controller.text = value;
+                              _handleSend();
+                            },
+                          ),
+                        ],
+                      );
+                    }
+
+                    final itemCount =
+                        messages.length + (state.isTyping ? 1 : 0);
+
+                    return ListView.builder(
                       controller: _scrollController,
                       padding: EdgeInsets.symmetric(
                         horizontal: 16.w,
                         vertical: 24.h,
                       ),
-                      children: [
-                        _ChatWelcomeSection(
-                          onQuickSend: (value) {
-                            _controller.text = value;
-                            _handleSend();
-                          },
-                        ),
-                      ],
+                      itemCount: itemCount,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        if (index >= messages.length) {
+                          return const _ChatTypingIndicator();
+                        }
+
+                        final message = messages[index];
+                        return _buildMessageWithAnimation(message, index);
+                      },
                     );
-                  }
-
-                  final itemCount = messages.length + (state.isTyping ? 1 : 0);
-
-                  return ListView.builder(
-                    controller: _scrollController,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 24.h,
-                    ),
-                    itemCount: itemCount,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      if (index >= messages.length) {
-                        return const _ChatTypingIndicator();
-                      }
-
-                      final message = messages[index];
-                      return _buildMessageWithAnimation(message, index);
-                    },
-                  );
-                },
+                  },
+                ),
               ),
-            ),
-            _ChatComposer(
-              controller: _controller,
-              focusNode: _focusNode,
-              onSend: _handleSend,
-              isBusy: context.watch<ChatCubit>().state.isTyping,
-            ),
-          ],
+              _ChatComposer(
+                controller: _controller,
+                focusNode: _focusNode,
+                onSend: _handleSend,
+                isBusy: context.watch<ChatCubit>().state.isTyping,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -175,88 +181,168 @@ class _ChatComposer extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.backgroundColor,
-                borderRadius: BorderRadius.circular(24.r),
-                border: Border.all(
-                  color: AppColors.secondaryGrey.withOpacity(0.3),
-                  width: 1,
-                ),
-              ),
-              child: TextField(
-                controller: controller,
-                focusNode: focusNode,
-                minLines: 1,
-                maxLines: 4,
-                textInputAction: TextInputAction.send,
-                onSubmitted: (_) => onSend(),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  height: 1.4,
-                ),
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)!.searchDestinationHint,
-                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSubtitle,
-                  ),
-                  filled: false,
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 12.h,
-                  ),
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(width: 12.w),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            width: 48.w,
-            height: 48.w,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors:
+          const _SelectedImagesList(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              IconButton(
+                onPressed:
                     isBusy
-                        ? [AppColors.secondaryGrey, AppColors.secondaryGrey]
-                        : [AppColors.primaryBlue, AppColors.primaryLightBlue],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              shape: BoxShape.circle,
-              boxShadow:
-                  isBusy
-                      ? []
-                      : [
-                        BoxShadow(
-                          color: AppColors.primaryBlue.withOpacity(0.3),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: isBusy ? null : onSend,
-                borderRadius: BorderRadius.circular(24.r),
-                child: Icon(
-                  Icons.send_rounded,
-                  color: AppColors.primaryWhite,
-                  size: 20.sp,
+                        ? null
+                        : () => context.read<ChatCubit>().pickImages(),
+                icon: Icon(
+                  Icons.image_outlined,
+                  color: AppColors.primaryBlue,
+                  size: 24.sp,
                 ),
               ),
-            ),
+              SizedBox(width: 8.w),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundColor,
+                    borderRadius: BorderRadius.circular(24.r),
+                    border: Border.all(
+                      color: AppColors.secondaryGrey.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: TextField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    minLines: 1,
+                    maxLines: 4,
+                    textInputAction: TextInputAction.send,
+                    onSubmitted: (_) => onSend(),
+                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      color: AppColors.textPrimary,
+                      height: 1.4,
+                    ),
+                    decoration: InputDecoration(
+                      hintText:
+                          AppLocalizations.of(context)!.searchDestinationHint,
+                      hintStyle: Theme.of(context).textTheme.displayLarge
+                          ?.copyWith(color: AppColors.textSubtitle),
+                      filled: false,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 20.w,
+                        vertical: 12.h,
+                      ),
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: 48.w,
+                height: 48.w,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors:
+                        isBusy
+                            ? [AppColors.secondaryGrey, AppColors.secondaryGrey]
+                            : [
+                              AppColors.primaryBlue,
+                              AppColors.primaryLightBlue,
+                            ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  shape: BoxShape.circle,
+                  boxShadow:
+                      isBusy
+                          ? []
+                          : [
+                            BoxShadow(
+                              color: AppColors.primaryBlue.withOpacity(0.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: isBusy ? null : onSend,
+                    borderRadius: BorderRadius.circular(24.r),
+                    child: Icon(
+                      Icons.send_rounded,
+                      color: AppColors.primaryWhite,
+                      size: 20.sp,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SelectedImagesList extends StatelessWidget {
+  const _SelectedImagesList();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ChatCubit, ChatState>(
+      builder: (context, state) {
+        if (state.selectedImages.isEmpty) return const SizedBox.shrink();
+
+        return Container(
+          height: 80.h,
+          margin: EdgeInsets.only(bottom: 12.h),
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: state.selectedImages.length,
+            separatorBuilder: (context, index) => SizedBox(width: 12.w),
+            itemBuilder: (context, index) {
+              final path = state.selectedImages[index];
+              return Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Image.file(
+                      File(path),
+                      width: 80.w,
+                      height: 80.h,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 4.w,
+                    right: 4.w,
+                    child: GestureDetector(
+                      onTap: () => context.read<ChatCubit>().removeImage(path),
+                      child: Container(
+                        padding: EdgeInsets.all(4.w),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.6),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 14.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
@@ -283,6 +369,8 @@ class _ChatMessageBubble extends StatelessWidget {
               crossAxisAlignment:
                   isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
+                if (isUser && message.images.isNotEmpty)
+                  _buildImages(context, isUser),
                 if (message.content.trim().isNotEmpty)
                   _buildMessageContent(context, isUser),
                 if (message.hasSuggestions) ...[
@@ -309,49 +397,106 @@ class _ChatMessageBubble extends StatelessWidget {
     );
   }
 
+  Widget _buildImages(BuildContext context, bool isUser) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8.h),
+      child: Wrap(
+        spacing: 8.w,
+        runSpacing: 8.h,
+        alignment: isUser ? WrapAlignment.end : WrapAlignment.start,
+        children:
+            message.images.map((path) {
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(12.r),
+                child:
+                    path.startsWith('http')
+                        ? Image.network(
+                          path,
+                          width: 150.w,
+                          height: 150.h,
+                          fit: BoxFit.cover,
+                          errorBuilder:
+                              (_, __, ___) => Container(
+                                width: 150.w,
+                                height: 150.h,
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.error),
+                              ),
+                        )
+                        : Image.file(
+                          File(path),
+                          width: 150.w,
+                          height: 150.h,
+                          fit: BoxFit.cover,
+                          errorBuilder:
+                              (_, __, ___) => Container(
+                                width: 150.w,
+                                height: 150.h,
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.error),
+                              ),
+                        ),
+              );
+            }).toList(),
+      ),
+    );
+  }
+
   Widget _buildMessageContent(BuildContext context, bool isUser) {
     final backgroundColor =
         message.isError
-            ? AppColors.primaryRed.withOpacity(0.1)
+            ? AppColors.primaryRed.withOpacity(0.12)
             : isUser
-            ? AppColors.primaryBlue
+            ? Colors
+                .transparent // Gradient will be used instead
             : AppColors.primaryWhite;
+
     final textColor =
         message.isError
             ? AppColors.primaryRed
             : isUser
             ? AppColors.primaryWhite
             : AppColors.textPrimary;
+
     final borderRadius = BorderRadius.only(
-      topLeft: Radius.circular(isUser ? 18.r : 4.r),
-      topRight: Radius.circular(isUser ? 4.r : 18.r),
-      bottomLeft: Radius.circular(18.r),
-      bottomRight: Radius.circular(18.r),
+      topLeft: Radius.circular(isUser ? 20.r : 4.r),
+      topRight: Radius.circular(isUser ? 4.r : 20.r),
+      bottomLeft: Radius.circular(20.r),
+      bottomRight: Radius.circular(20.r),
     );
 
     return Container(
-      constraints: BoxConstraints(maxWidth: 0.75.sw),
+      constraints: BoxConstraints(maxWidth: 0.76.sw),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: !isUser || message.isError ? backgroundColor : null,
+        gradient:
+            isUser && !message.isError
+                ? const LinearGradient(
+                  colors: [AppColors.primaryBlue, AppColors.primaryLightBlue],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+                : null,
         borderRadius: borderRadius,
-        boxShadow:
-            message.isError || isUser
-                ? [
-                  BoxShadow(
-                    color: AppColors.primaryBlue.withOpacity(0.2),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-                : [
-                  BoxShadow(
-                    color: AppColors.primaryBlack.withOpacity(0.05),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+        boxShadow: [
+          BoxShadow(
+            color:
+                isUser && !message.isError
+                    ? AppColors.primaryBlue.withOpacity(0.25)
+                    : AppColors.primaryBlack.withOpacity(0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+        border:
+            !isUser && !message.isError
+                ? Border.all(
+                  color: AppColors.secondaryGrey.withOpacity(0.1),
+                  width: 1,
+                )
+                : null,
       ),
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 14.h),
       child: _FormattedMessageText(
         content: message.content,
         textColor: textColor,
@@ -457,7 +602,6 @@ class _ChatSuggestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 0.75.sw,
-      padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: AppColors.primaryWhite,
         borderRadius: BorderRadius.circular(16.r),
@@ -473,86 +617,149 @@ class _ChatSuggestionCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                  color: _chipColor(),
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      _getIconByType(),
-                      size: 12.sp,
-                      color: _chipTextColor(),
-                    ),
-                    SizedBox(width: 4.w),
-                    Text(
-                      item.type.toUpperCase(),
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: _chipTextColor(),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 10.sp,
-                        letterSpacing: 0.5,
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16.r),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap:
+              item.id != null
+                  ? () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (_) => DestinationDetailPage.withProvider(
+                              destinationId: item.id!,
+                            ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            item.name,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          if ((item.address ?? '').isNotEmpty) ...[
-            SizedBox(height: 4.h),
-            Row(
+                    );
+                  }
+                  : null,
+          child: Padding(
+            padding: EdgeInsets.all(12.w),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  Icons.location_on_outlined,
-                  size: 14.sp,
-                  color: AppColors.textSubtitle,
-                ),
-                SizedBox(width: 4.w),
-                Expanded(
-                  child: Text(
-                    item.address!,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSubtitle,
-                      fontSize: 11.sp,
-                      height: 1.3,
+                if (item.images?.isNotEmpty == true) ...[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Image.network(
+                      item.images!.first,
+                      width: 80.w,
+                      height: 80.w,
+                      fit: BoxFit.cover,
+                      errorBuilder:
+                          (_, __, ___) => Container(
+                            width: 80.w,
+                            height: 80.w,
+                            color: AppColors.secondaryGrey.withOpacity(0.1),
+                            child: Icon(
+                              Icons.image_not_supported_outlined,
+                              color: AppColors.textSubtitle,
+                              size: 24.sp,
+                            ),
+                          ),
                     ),
+                  ),
+                  SizedBox(width: 12.w),
+                ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 4.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: _chipColor(),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  _getIconByType(),
+                                  size: 12.sp,
+                                  color: _chipTextColor(),
+                                ),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  item.type.toUpperCase(),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.labelSmall?.copyWith(
+                                    color: _chipTextColor(),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 10.sp,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        item.name,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      if ((item.address ?? '').isNotEmpty) ...[
+                        SizedBox(height: 4.h),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.location_on_outlined,
+                              size: 14.sp,
+                              color: AppColors.textSubtitle,
+                            ),
+                            SizedBox(width: 4.w),
+                            Expanded(
+                              child: Text(
+                                item.address!,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodySmall?.copyWith(
+                                  color: AppColors.textSubtitle,
+                                  fontSize: 11.sp,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      if ((item.description ?? '').isNotEmpty) ...[
+                        SizedBox(height: 8.h),
+                        Text(
+                          item.description!,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textPrimary.withOpacity(0.7),
+                            fontSize: 12.sp,
+                            height: 1.4,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ],
                   ),
                 ),
               ],
             ),
-          ],
-          if ((item.description ?? '').isNotEmpty) ...[
-            SizedBox(height: 8.h),
-            Text(
-              item.description!,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textPrimary.withOpacity(0.7),
-                fontSize: 12.sp,
-                height: 1.4,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -817,7 +1024,7 @@ class _QuickSuggestionChip extends StatelessWidget {
               Expanded(
                 child: Text(
                   label,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w500,
                     height: 1.3,
@@ -853,14 +1060,14 @@ class _FormattedMessageText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Nếu là user thì hiển thị text bình thường
     if (isUser) {
       return Text(
         content,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        style: Theme.of(context).textTheme.displayLarge?.copyWith(
           color: textColor,
-          height: 1.5,
-          fontSize: 15.sp,
+          height: 1.55,
+          fontSize: 15.5.sp,
+          fontWeight: FontWeight.w500,
         ),
       );
     }
@@ -954,7 +1161,7 @@ class _FormattedMessageText extends StatelessWidget {
           children: [
             Text(
               number,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              style: Theme.of(context).textTheme.displayLarge?.copyWith(
                 color: AppColors.primaryBlue,
                 height: 1.6,
               ),
@@ -972,10 +1179,11 @@ class _FormattedMessageText extends StatelessWidget {
   Widget _buildRichText(String text) {
     final spans = _parseInlineFormatting(text);
     // Base style for bot text
-    final baseStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+    final baseStyle = Theme.of(context).textTheme.displayLarge?.copyWith(
       color: AppColors.textPrimary,
       height: 1.6,
-      fontSize: 15.sp,
+      fontSize: 15.5.sp,
+      letterSpacing: 0.1,
     );
 
     return RichText(text: TextSpan(children: spans, style: baseStyle));
@@ -987,13 +1195,13 @@ class _FormattedMessageText extends StatelessWidget {
     final regex = RegExp(r'\*\*(.+?)\*\*');
     int lastMatchEnd = 0;
 
-    final normalStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+    final normalStyle = Theme.of(context).textTheme.displayLarge?.copyWith(
       color: AppColors.textPrimary,
       height: 1.6,
       fontSize: 15.sp,
     );
 
-    final boldStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+    final boldStyle = Theme.of(context).textTheme.displayLarge?.copyWith(
       color: AppColors.textPrimary,
       fontWeight: FontWeight.w700,
       height: 1.6,

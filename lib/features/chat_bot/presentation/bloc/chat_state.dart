@@ -10,6 +10,7 @@ class ChatUiMessage extends Equatable {
   final ChatSource? source;
   final List<ChatResultItem> suggestions;
   final bool isError;
+  final List<String> images;
 
   const ChatUiMessage({
     required this.id,
@@ -19,15 +20,17 @@ class ChatUiMessage extends Equatable {
     this.source,
     this.suggestions = const [],
     this.isError = false,
+    this.images = const [],
   });
 
-  factory ChatUiMessage.user(String content) {
+  factory ChatUiMessage.user(String content, {List<String> images = const []}) {
     final now = DateTime.now();
     return ChatUiMessage(
       id: 'user-${now.microsecondsSinceEpoch}',
       content: content,
       isUser: true,
       createdAt: now,
+      images: images,
     );
   }
 
@@ -35,6 +38,7 @@ class ChatUiMessage extends Equatable {
     String content, {
     ChatSource? source,
     List<ChatResultItem>? suggestions,
+    List<String> images = const [],
   }) {
     final now = DateTime.now();
     return ChatUiMessage(
@@ -44,6 +48,7 @@ class ChatUiMessage extends Equatable {
       createdAt: now,
       source: source,
       suggestions: suggestions ?? const [],
+      images: images,
     );
   }
 
@@ -65,6 +70,7 @@ class ChatUiMessage extends Equatable {
     ChatSource? source,
     List<ChatResultItem>? suggestions,
     bool? isError,
+    List<String>? images,
   }) {
     return ChatUiMessage(
       id: id,
@@ -74,6 +80,7 @@ class ChatUiMessage extends Equatable {
       source: source ?? this.source,
       suggestions: suggestions ?? this.suggestions,
       isError: isError ?? this.isError,
+      images: images ?? this.images,
     );
   }
 
@@ -88,6 +95,7 @@ class ChatUiMessage extends Equatable {
     source,
     suggestions,
     isError,
+    images,
   ];
 }
 
@@ -95,11 +103,15 @@ class ChatState extends Equatable {
   final List<ChatUiMessage> messages;
   final bool isTyping;
   final String? errorMessage;
+  final String? sessionId;
+  final List<String> selectedImages;
 
   const ChatState({
     required this.messages,
     this.isTyping = false,
     this.errorMessage,
+    this.sessionId,
+    this.selectedImages = const [],
   });
 
   factory ChatState.initial() => const ChatState(messages: []);
@@ -109,14 +121,24 @@ class ChatState extends Equatable {
     bool? isTyping,
     bool clearError = false,
     String? errorMessage,
+    String? sessionId,
+    List<String>? selectedImages,
   }) {
     return ChatState(
       messages: messages ?? this.messages,
       isTyping: isTyping ?? this.isTyping,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+      sessionId: sessionId ?? this.sessionId,
+      selectedImages: selectedImages ?? this.selectedImages,
     );
   }
 
   @override
-  List<Object?> get props => [messages, isTyping, errorMessage];
+  List<Object?> get props => [
+    messages,
+    isTyping,
+    errorMessage,
+    sessionId,
+    selectedImages,
+  ];
 }
