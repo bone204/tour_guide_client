@@ -1,3 +1,4 @@
+import 'package:tour_guide_app/core/utils/date_formatter.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/user.dart';
 
 class Feedback {
@@ -50,8 +51,8 @@ class Feedback {
               .toList() ??
           [],
       status: json['status'] ?? 'pending',
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: DateFormatter.parse(json['createdAt']),
+      updatedAt: DateFormatter.parse(json['updatedAt']),
       replies:
           (json['replies'] as List<dynamic>?)
               ?.map((e) => FeedbackReply.fromJson(e))
@@ -133,8 +134,8 @@ class FeedbackReply {
       id: json['id'] ?? 0,
       user: json['user'] != null ? User.fromJson(json['user']) : null,
       content: json['content'] ?? '',
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: DateFormatter.parse(json['createdAt']),
+      updatedAt: DateFormatter.parse(json['updatedAt']),
     );
   }
 
