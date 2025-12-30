@@ -2501,6 +2501,24 @@ abstract class AppLocalizations {
   /// **'Next'**
   String get next;
 
+  /// No description provided for @memoryLane.
+  ///
+  /// In en, this message translates to:
+  /// **'Memory Lane'**
+  String get memoryLane;
+
+  /// No description provided for @noMemoriesToday.
+  ///
+  /// In en, this message translates to:
+  /// **'No memories today'**
+  String get noMemoriesToday;
+
+  /// No description provided for @sinceYouCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Since you completed'**
+  String get sinceYouCompleted;
+
   /// No description provided for @back.
   ///
   /// In en, this message translates to:

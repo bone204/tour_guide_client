@@ -80,6 +80,7 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_
 
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/like_itinerary_usecase.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/unlike_itinerary_usecase.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/trigger_anniversary_check.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/stop_media/stop_media_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/edit_stop/edit_stop_cubit.dart';
 
@@ -189,6 +190,7 @@ import 'package:tour_guide_app/features/notifications/domain/usecases/get_my_not
 import 'package:tour_guide_app/features/notifications/domain/usecases/mark_notification_read.dart';
 import 'package:tour_guide_app/features/notifications/domain/usecases/test_reminders.dart';
 import 'package:tour_guide_app/features/notifications/data/data_source/notification_socket_service.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_cubit.dart';
 import 'package:tour_guide_app/features/notifications/presentation/bloc/notification_cubit.dart';
 
 final sl = GetIt.instance;
@@ -286,6 +288,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
     PublicizeItineraryUseCase(sl()),
   );
   sl.registerSingleton<ClaimItineraryUseCase>(ClaimItineraryUseCase(sl()));
+  sl.registerSingleton<TriggerAnniversaryCheckUseCase>(
+    TriggerAnniversaryCheckUseCase(),
+  );
 
   // Eatery
   sl.registerSingleton<GetEateriesUseCase>(GetEateriesUseCase());
@@ -532,4 +537,5 @@ void setUpServiceLocator(SharedPreferences prefs) {
       socketService: sl(),
     ),
   );
+  sl.registerFactory<AnniversaryCubit>(() => AnniversaryCubit(sl()));
 }

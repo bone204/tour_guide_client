@@ -1226,6 +1226,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get next => 'Next';
 
   @override
+  String get memoryLane => 'Memory Lane';
+
+  @override
+  String get noMemoriesToday => 'No memories today';
+
+  @override
+  String get sinceYouCompleted => 'Since you completed';
+
+  @override
   String get back => 'Back';
 
   @override

@@ -15,6 +15,8 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart'
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary_query.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/repository/itinerary_repository.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_check_response.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_detail.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class ItineraryRepositoryImpl extends ItineraryRepository {
@@ -167,5 +169,14 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   @override
   Future<Either<Failure, SuccessResponse>> unlikeItinerary(int itineraryId) {
     return _apiService.unlikeItinerary(itineraryId);
+  }
+
+  Future<Either<Failure, AnniversaryCheckResponse>> triggerAnniversaryCheck() {
+    return _apiService.triggerAnniversaryCheck();
+  }
+
+  @override
+  Future<Either<Failure, AnniversaryDetail>> getAnniversary(int id) {
+    return _apiService.getAnniversary(id);
   }
 }

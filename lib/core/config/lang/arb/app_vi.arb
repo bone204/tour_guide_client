@@ -1627,5 +1627,7 @@
   "noVouchersAvailable": "Không có mã giảm giá",
   "selectVoucher": "Chọn mã giảm giá",
   "voucherDiscount": "Giảm giá voucher",
-  "pointDiscount": "Giảm giá điểm thưởng"
+  "pointDiscount": "Giảm giá điểm thưởng",
+  "noMemoriesToday": "Hôm nay không có kỷ niệm nào",
+  "sinceYouCompleted": "Kể từ khi bạn hoàn thành"
 }

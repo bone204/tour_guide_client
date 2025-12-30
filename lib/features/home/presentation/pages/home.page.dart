@@ -15,6 +15,7 @@ import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_header.widget.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/pages/anniversary.page.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/hotel_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/rating_destination_list.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/popular_destination_list.widget.dart';
@@ -193,13 +194,31 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          // ✅ Lottie animation ở góc dưới phải - Tap để mở chat bot
+          // Anniversary FAB is always shown for now
           Positioned(
+            bottom: 90.h + 56.h + 16.h,
+            right: 16.w,
+            child: FloatingActionButton(
+              heroTag: 'anniversary_fab',
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(builder: (_) => const AnniversaryPage()),
+                );
+              },
+              backgroundColor: Colors.white,
+              child: Lottie.asset(
+                AppLotties.anniversary,
+                width: 40.w,
+                height: 40.w,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom:
+                0.h, 
             right: 4.w,
-            bottom: 0.h,
             child: GestureDetector(
               onTap: () {
-                // Mở trang Chat Bot với root navigator (fullscreen)
                 Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(builder: (_) => ChatBotPage.withProvider()),
                 );

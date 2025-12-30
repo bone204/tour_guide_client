@@ -16,7 +16,9 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart'
 import 'package:tour_guide_app/features/travel_itinerary/data/models/suggest_params.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/use_itinerary_request.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_check_response.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/claim_itinerary_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_detail.dart';
 
 abstract class ItineraryApiService {
   Future<Either<Failure, ItineraryResponse>> getItineraryMe();
@@ -80,6 +82,10 @@ abstract class ItineraryApiService {
   Future<Either<Failure, SuccessResponse>> likeItinerary(int itineraryId);
 
   Future<Either<Failure, SuccessResponse>> unlikeItinerary(int itineraryId);
+
+  Future<Either<Failure, AnniversaryCheckResponse>> triggerAnniversaryCheck();
+
+  Future<Either<Failure, AnniversaryDetail>> getAnniversary(int id);
 }
 
 class ItineraryApiServiceImpl extends ItineraryApiService {
@@ -560,6 +566,47 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
       );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, AnniversaryCheckResponse>>
+  triggerAnniversaryCheck() async {
+    try {
+      final response = await sl<DioClient>().post(
+        '${ApiUrls.itinerary}/test/anniversary',
+      );
+      final result = AnniversaryCheckResponse.fromJson(response.data);
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, AnniversaryDetail>> getAnniversary(int id) async {
+    try {
+      final response = await sl<DioClient>().get(
+        '${ApiUrls.itinerary}/$id/anniversary',
+      );
+      final anniversary = AnniversaryDetail.fromJson(response.data);
+      return Right(anniversary);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

@@ -1226,6 +1226,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get next => 'Tiếp theo';
 
   @override
+  String get memoryLane => 'Memory Lane';
+
+  @override
+  String get noMemoriesToday => 'Hôm nay không có kỷ niệm nào';
+
+  @override
+  String get sinceYouCompleted => 'Kể từ khi bạn hoàn thành';
+
+  @override
   String get back => 'Quay lại';
 
   @override

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';
+import 'package:tour_guide_app/core/utils/date_formatter.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
@@ -96,9 +97,14 @@ class _EditItineraryViewState extends State<_EditItineraryView>
           : 1;
     }
     try {
-      final start = DateTime.parse(_currentItinerary.startDate);
-      final end = DateTime.parse(_currentItinerary.endDate);
-      return end.difference(start).inDays + 1;
+      final start = DateFormatter.parse(_currentItinerary.startDate);
+      final end = DateFormatter.parse(_currentItinerary.endDate);
+
+      // Normalize dates to start of day to calculate day difference correctly
+      final startDay = DateTime(start.year, start.month, start.day);
+      final endDay = DateTime(end.year, end.month, end.day);
+
+      return endDay.difference(startDay).inDays + 1;
     } catch (e) {
       return _currentItinerary.numberOfDays > 0
           ? _currentItinerary.numberOfDays
@@ -220,7 +226,7 @@ class _EditItineraryViewState extends State<_EditItineraryView>
                           borderRadius: BorderRadius.circular(16.r),
                           child: ItineraryStopCard(
                             stop: dayStops[index],
-                            onTap: () {}, 
+                            onTap: () {},
                             margin: EdgeInsets.zero,
                           ),
                         );

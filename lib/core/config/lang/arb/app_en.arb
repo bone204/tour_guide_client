@@ -797,6 +797,9 @@
   "rentalVehicleDefault": "Rental vehicle",
 
   "next": "Next",
+  "memoryLane": "Memory Lane",
+  "noMemoriesToday": "No memories today",
+  "sinceYouCompleted": "Since you completed",
 
   "back": "Back",
 
