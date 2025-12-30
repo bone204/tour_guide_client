@@ -33,8 +33,8 @@ class RentalWorkflowCubit extends Cubit<RentalWorkflowState> {
       (success) => emit(
         state.copyWith(
           status: RentalWorkflowStatus.success,
-          successMessage:
-              'Vehicle picked up successfully', // We can't localize here easily without context, keeping hardcoded for now or use generic success
+          action: RentalWorkflowAction.pickup,
+          successMessage: null,
         ),
       ),
     );
@@ -67,7 +67,8 @@ class RentalWorkflowCubit extends Cubit<RentalWorkflowState> {
       (success) => emit(
         state.copyWith(
           status: RentalWorkflowStatus.success,
-          successMessage: 'Return request sent successfully',
+          action: RentalWorkflowAction.returnRequest,
+          successMessage: null,
         ),
       ),
     );

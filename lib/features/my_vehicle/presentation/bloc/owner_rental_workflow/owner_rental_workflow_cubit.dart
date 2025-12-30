@@ -34,7 +34,8 @@ class OwnerRentalWorkflowCubit extends Cubit<OwnerRentalWorkflowState> {
       (success) => emit(
         state.copyWith(
           status: OwnerRentalWorkflowStatus.success,
-          successMessage: 'Started delivering',
+          action: OwnerRentalWorkflowAction.startDelivering,
+          successMessage: null,
         ),
       ),
     );
@@ -57,7 +58,8 @@ class OwnerRentalWorkflowCubit extends Cubit<OwnerRentalWorkflowState> {
       (success) => emit(
         state.copyWith(
           status: OwnerRentalWorkflowStatus.success,
-          successMessage: 'Confirmed delivered',
+          action: OwnerRentalWorkflowAction.confirmDelivered,
+          successMessage: null,
         ),
       ),
     );
@@ -92,7 +94,8 @@ class OwnerRentalWorkflowCubit extends Cubit<OwnerRentalWorkflowState> {
       (success) => emit(
         state.copyWith(
           status: OwnerRentalWorkflowStatus.success,
-          successMessage: 'Confirmed returned',
+          action: OwnerRentalWorkflowAction.confirmReturn,
+          successMessage: null,
         ),
       ),
     );

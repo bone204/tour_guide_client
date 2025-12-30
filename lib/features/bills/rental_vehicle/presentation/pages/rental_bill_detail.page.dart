@@ -96,13 +96,6 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
           ),
           body: MultiBlocListener(
             listeners: [
-              BlocListener<RentalWorkflowCubit, RentalWorkflowState>(
-                listener: (context, state) {
-                  if (state.status == RentalWorkflowStatus.success) {
-                    eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
-                  }
-                },
-              ),
               BlocListener<GetRentalBillDetailCubit, RentalBillDetailState>(
                 listener: (context, state) {
                   if (state.status == RentalBillDetailInitStatus.success ||
@@ -114,11 +107,24 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
               BlocListener<RentalWorkflowCubit, RentalWorkflowState>(
                 listener: (context, state) {
                   if (state.status == RentalWorkflowStatus.success) {
+                    eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
+
+                    String message =
+                        AppLocalizations.of(context)!.actionSuccess;
+                    if (state.action == RentalWorkflowAction.pickup) {
+                      message =
+                          AppLocalizations.of(context)!.rentalPickupSuccess;
+                    } else if (state.action ==
+                        RentalWorkflowAction.returnRequest) {
+                      message =
+                          AppLocalizations.of(
+                            context,
+                          )!.rentalReturnRequestSuccess;
+                    }
+
                     CustomSnackbar.show(
                       context,
-                      message:
-                          state.successMessage ??
-                          AppLocalizations.of(context)!.actionSuccess,
+                      message: message,
                       type: SnackbarType.success,
                     );
                     _onRefresh(context);

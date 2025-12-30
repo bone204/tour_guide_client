@@ -79,14 +79,32 @@ class _OwnerRentalRequestDetailPageState
             BlocListener<OwnerRentalWorkflowCubit, OwnerRentalWorkflowState>(
               listener: (context, state) {
                 if (state.status == OwnerRentalWorkflowStatus.success) {
+                  eventBus.fire(RentalRequestUpdatedEvent(billId: widget.id));
+
+                  String message = AppLocalizations.of(context)!.actionSuccess;
+                  if (state.action ==
+                      OwnerRentalWorkflowAction.startDelivering) {
+                    message =
+                        AppLocalizations.of(
+                          context,
+                        )!.rentalStartDeliverySuccess;
+                  } else if (state.action ==
+                      OwnerRentalWorkflowAction.confirmDelivered) {
+                    message =
+                        AppLocalizations.of(context)!.rentalDeliveredSuccess;
+                  } else if (state.action ==
+                      OwnerRentalWorkflowAction.confirmReturn) {
+                    message =
+                        AppLocalizations.of(
+                          context,
+                        )!.rentalConfirmReturnSuccess;
+                  }
+
                   CustomSnackbar.show(
                     context,
-                    message:
-                        state.successMessage ??
-                        AppLocalizations.of(context)!.actionSuccess,
+                    message: message,
                     type: SnackbarType.success,
                   );
-                  eventBus.fire(RentalRequestUpdatedEvent(billId: widget.id));
                   _onRefresh(context);
                 } else if (state.status == OwnerRentalWorkflowStatus.failure) {
                   CustomSnackbar.show(
