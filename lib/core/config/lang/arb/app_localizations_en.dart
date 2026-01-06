@@ -1641,7 +1641,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get platinumMember => 'Platinum Member';
 
   @override
-  String get reviews => 'Reviews';
+  String get reviews => 'reviews';
 
   @override
   String get wallet => 'Wallet';
@@ -2761,4 +2761,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noVouchersAvailable => 'No vouchers available';
+
+  @override
+  String get getDirections => 'Get Directions';
 }

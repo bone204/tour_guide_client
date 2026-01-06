@@ -88,17 +88,20 @@ class _SearchResultsList extends StatelessWidget {
                     children: [
                       Text(
                         destination.name,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                       if (hasAddress) ...[
                         const SizedBox(height: 6),
                         Text(
-                          destination.specificAddress ?? destination.province ?? '',
+                          destination.specificAddress ??
+                              destination.province ??
+                              '',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(
                             color: Colors.grey.shade600,
                             height: 1.35,
                           ),
@@ -121,9 +124,55 @@ class _LoadingState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 140,
-      child: Center(child: CircularProgressIndicator()),
+    return SizedBox(
+      height: 280,
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 4,
+        separatorBuilder:
+            (_, __) => Divider(height: 1, color: Colors.grey.shade200),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    margin: const EdgeInsets.only(right: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 16,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(height: 6),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          height: 12,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

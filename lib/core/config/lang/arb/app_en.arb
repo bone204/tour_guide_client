@@ -1621,5 +1621,10 @@
   "noVouchersAvailable": "No vouchers available",
   "selectVoucher": "Select Voucher",
   "voucherDiscount": "Voucher Discount",
-  "pointDiscount": "Point Discount"
+  "pointDiscount": "Point Discount",
+  "unknownLocation": "Unknown location",
+  "reviews": "reviews",
+  "getDirections": "Get Directions",
+  "about": "About",
+  "photos": "Photos"
 }

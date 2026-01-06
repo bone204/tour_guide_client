@@ -18,6 +18,7 @@ import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/features/map/services/osm_service.dart';
 import 'package:tour_guide_app/features/map/services/osrm_service.dart';
 import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
+import 'package:shimmer/shimmer.dart';
 
 part 'widgets/search_results_list.dart';
 part 'widgets/destination_marker.dart';
@@ -42,6 +43,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   final FocusNode _searchFocusNode = FocusNode();
 
   LatLng? _currentPosition;
+  double? _currentHeading; // Device heading in degrees (0-360)
   LatLng? _selectedDestinationPosition;
   int? _selectedDestinationId;
   double _currentMapZoom = _defaultZoom;
@@ -74,6 +76,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
   final OSMService _osmService = OSMService();
   final OSRMService _osrmService = OSRMService();
+  StreamSubscription<Position>? _positionStreamSubscription;
 
   static const double _defaultZoom = 15;
   static const double _destinationZoom = 17.5;
@@ -91,6 +94,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    _positionStreamSubscription?.cancel();
     _transportModeDebounceTimer?.cancel();
     _searchDebounceTimer?.cancel();
     _mapController.dispose();

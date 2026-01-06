@@ -72,10 +72,14 @@ List<Destination> _searchWorker(_SearchWorkerArgs args) {
       final dbNameLower = dbDest.name.toLowerCase();
       final osmNameLower = osmDest.name.toLowerCase();
 
-      // Relaxed name matching
+      final dbNameNorm = _removeDiacritics(dbNameLower);
+      final osmNameNorm = _removeDiacritics(osmNameLower);
+
+      // Relaxed name matching with normalization
       if (dbNameLower == osmNameLower ||
-          (dbNameLower.contains(osmNameLower) && osmNameLower.length > 5) ||
-          (osmNameLower.contains(dbNameLower) && dbNameLower.length > 5)) {
+          dbNameNorm == osmNameNorm ||
+          (dbNameNorm.contains(osmNameNorm) && osmNameNorm.length > 3) ||
+          (osmNameNorm.contains(dbNameNorm) && dbNameNorm.length > 3)) {
         // Distance check
         if (dbDest.latitude != null &&
             dbDest.longitude != null &&
@@ -87,7 +91,8 @@ List<Destination> _searchWorker(_SearchWorkerArgs args) {
             osmDest.latitude!,
             osmDest.longitude!,
           );
-          return distance < 0.5; // < 500m
+          return distance <
+              0.2; // Reduced to < 200m to be safer with fuzzy name matching
         }
       }
       return false;
@@ -181,6 +186,12 @@ double _workerCalculateDistance(
   double lat2,
   double lon2,
 ) {
+  // OPTIMIZATION: Bounding box check before heavy trig
+  // 0.01 degrees is roughly 1.1km. We care about < 0.5km.
+  if ((lat1 - lat2).abs() > 0.01 || (lon1 - lon2).abs() > 0.01) {
+    return 10.0; // Return a value > 0.5
+  }
+
   const double earthRadius = 6371; // km
   final dLat = (lat2 - lat1) * (math.pi / 180);
   final dLon = (lon2 - lon1) * (math.pi / 180);
@@ -288,7 +299,8 @@ extension MapSearchExtension on _MapPageState {
 
   /// Thực hiện tìm kiếm
   Future<void> _performSearch(String query) async {
-    if (query.trim().isEmpty) {
+    final queryTrimmed = query.trim();
+    if (queryTrimmed.isEmpty) {
       return;
     }
 
@@ -298,14 +310,40 @@ extension MapSearchExtension on _MapPageState {
       });
     }
 
+    // OPTIMIZATION: Phase 1 - Instant Local Search
+    // Filter DB results immediately on main thread for instant feedback
     try {
-      // 1. Fetch OSM results if needed (Must be on main/io thread)
+      final queryLower = queryTrimmed.toLowerCase();
+      final tokens =
+          queryLower.split(RegExp(r'\s+')).where((t) => t.isNotEmpty).toList();
+
+      final localResults =
+          _destinations
+              .where((destination) {
+                final nameLower = destination.name.toLowerCase();
+                return _workerMatchesSearchQuery(nameLower, queryLower, tokens);
+              })
+              .take(15)
+              .toList(); /* Take slightly more than display limit */
+
+      if (mounted && _searchController.text.trim() == queryTrimmed) {
+        setState(() {
+          _filteredDestinations = localResults;
+          // Don't turn off loading yet, waiting for OSM
+        });
+      }
+    } catch (e) {
+      print('Error in local search phase: $e');
+    }
+
+    try {
+      // Phase 2: Fetch OSM results (Async/IO)
       List<Destination> osmResults = [];
-      if (query.length >= 2) {
+      if (queryTrimmed.length >= 2) {
         try {
-          final osmPOIs = await _osmService.searchPlaces(query, limit: 25);
-          print(
-            'OSM search returned ${osmPOIs.length} results for query: $query',
+          final osmPOIs = await _osmService.searchPlaces(
+            queryTrimmed,
+            limit: 25,
           );
 
           osmResults =
@@ -333,35 +371,35 @@ extension MapSearchExtension on _MapPageState {
         }
       }
 
-      if (!mounted || _searchController.text.trim() != query) {
+      if (!mounted || _searchController.text.trim() != queryTrimmed) {
         return;
       }
 
-      // 2. Offload filtering & merging to Isolate
-      // Passing _destinations (DB results) and osmResults
+      // Phase 3: Merge & Deduplicate (Heavy CPU -> Isolate)
       final results = await compute(
         _searchWorker,
         _SearchWorkerArgs(
           dbDestinations: _destinations,
           osmDestinations: osmResults,
-          query: query,
+          query: queryTrimmed,
           userPosition: _currentPosition,
         ),
       );
 
-      if (mounted && _searchController.text.trim() == query) {
+      if (mounted && _searchController.text.trim() == queryTrimmed) {
         setState(() {
           _filteredDestinations = results.take(20).toList();
           _isFetchingDestinations = false;
+          // Ensure overlay is visible if we have results
           if (!_isSearchOverlayVisible &&
-              (results.isNotEmpty || _isFetchingDestinations)) {
+              (results.isNotEmpty || _searchFocusNode.hasFocus)) {
             _isSearchOverlayVisible = true;
           }
         });
       }
     } catch (e) {
-      print('Error in search: $e');
-      if (mounted && _searchController.text.trim() == query) {
+      print('Error in properties search: $e');
+      if (mounted && _searchController.text.trim() == queryTrimmed) {
         setState(() {
           _isFetchingDestinations = false;
         });
@@ -455,4 +493,16 @@ extension MapSearchExtension on _MapPageState {
       }
     }
   }
+}
+
+String _removeDiacritics(String str) {
+  var withDiacritics =
+      'áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệóòỏõọôốồổỗộơớờởỡợíìỉĩịúùủũụưứừửữựýỳỷỹỵđ';
+  var withoutDiacritics =
+      'aaaaaaaaaaaaaaaaaeeeeeeeeeeeooooooooooooooooiiiiiuuuuuuuuuuuyyyyyd';
+
+  for (int i = 0; i < withDiacritics.length; i++) {
+    str = str.replaceAll(withDiacritics[i], withoutDiacritics[i]);
+  }
+  return str;
 }

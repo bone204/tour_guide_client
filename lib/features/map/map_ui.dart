@@ -132,12 +132,19 @@ extension MapUIExtension on _MapPageState {
               onMapReady: _handleMapReady,
               onPositionChanged: (position, _) {
                 final zoom = position.zoom;
-                if ((zoom - _currentMapZoom).abs() > 0.01) {
+
+                // OPTIMIZATION: Only rebuild when crossing the threshold for marker style change
+                // This prevents 60fps rebuilding of the whole widget tree during zoom
+                const double photoZoomThreshold = 13.0;
+                final wasPhoto = _currentMapZoom >= photoZoomThreshold;
+                final isPhoto = zoom >= photoZoomThreshold;
+
+                if (wasPhoto != isPhoto) {
                   setState(() {
                     _currentMapZoom = zoom;
                   });
-                  // Không load OSM POIs tự động, chỉ hiển thị khi được search và chọn
-                  // _loadOSMPOIs(position.center);
+                } else {
+                  _currentMapZoom = zoom;
                 }
               },
               onTap: (_, __) {
@@ -147,11 +154,16 @@ extension MapUIExtension on _MapPageState {
                   _dismissSearchOverlay();
                 }
               },
+              interactionOptions: const InteractionOptions(
+                flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+              ),
             ),
             children: [
               TileLayer(
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 userAgentPackageName: 'tour_guide_app',
+                panBuffer: 1,
+                keepBuffer: 10,
               ),
               // Routing layer - chỉ hiển thị khi route được bật
               if (_isRouteEnabled &&
@@ -169,8 +181,6 @@ extension MapUIExtension on _MapPageState {
               MarkerLayer(
                 markers: [
                   ..._buildDestinationMarkers(),
-                  // Không hiển thị OSM POIs tự động, chỉ hiển thị khi được search và chọn
-                  // Marker cho địa điểm đã chọn từ OSM (không có trong DB)
                   if (_selectedDestination != null &&
                       !_selectedDestination!.isFromDatabase &&
                       _selectedDestination!.latitude != null &&
@@ -210,14 +220,10 @@ extension MapUIExtension on _MapPageState {
                     ),
                   if (_currentPosition != null)
                     Marker(
-                      width: 32,
-                      height: 32,
+                      width: 80,
+                      height: 80,
                       point: _currentPosition!,
-                      child: const Icon(
-                        Icons.my_location,
-                        size: 28,
-                        color: Colors.blueAccent,
-                      ),
+                      child: _AnimatedLocationMarker(heading: _currentHeading),
                     ),
                 ],
               ),
@@ -358,6 +364,90 @@ extension MapUIExtension on _MapPageState {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Animated location marker with pulsing effect
+class _AnimatedLocationMarker extends StatefulWidget {
+  const _AnimatedLocationMarker({this.heading});
+
+  final double? heading;
+
+  @override
+  State<_AnimatedLocationMarker> createState() =>
+      _AnimatedLocationMarkerState();
+}
+
+class _AnimatedLocationMarkerState extends State<_AnimatedLocationMarker>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat();
+
+    _animation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Pulsing ripple effect
+        AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            return Container(
+              width: 80 * _animation.value,
+              height: 80 * _animation.value,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.blue.withOpacity(0.3 * (1 - _animation.value)),
+              ),
+            );
+          },
+        ),
+        // Main marker
+        Transform.rotate(
+          angle: widget.heading != null ? (widget.heading! * math.pi / 180) : 0,
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.blue.shade600,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Icon(
+              widget.heading != null ? Icons.navigation : Icons.my_location,
+              size: 24,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

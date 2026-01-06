@@ -2767,4 +2767,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noVouchersAvailable => 'Không có mã giảm giá';
+
+  @override
+  String get getDirections => 'Tìm đường đi';
 }

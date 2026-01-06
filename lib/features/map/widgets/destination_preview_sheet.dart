@@ -14,7 +14,7 @@ class _DestinationPreviewSheet extends StatelessWidget {
     final address =
         destination.specificAddress ??
         destination.province ??
-        'Unknown location';
+        AppLocalizations.of(context)!.unknownLocation;
     return SafeArea(
       top: false,
       child: DefaultTabController(
@@ -237,7 +237,7 @@ class _DestinationPreviewSheet extends StatelessWidget {
               if (destination.userRatingsTotal != null) ...[
                 SizedBox(width: 4.w),
                 Text(
-                  '(${destination.userRatingsTotal} reviews)',
+                  '(${destination.userRatingsTotal} ${AppLocalizations.of(context)!.reviews})',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.textSubtitle,
                   ),
@@ -255,7 +255,7 @@ class _DestinationPreviewSheet extends StatelessWidget {
               onPressed: onNavigate,
               icon: Icon(Icons.directions, color: Colors.white),
               label: Text(
-                'Tìm đường đi',
+                AppLocalizations.of(context)!.getDirections,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
@@ -282,23 +282,27 @@ class _DestinationPreviewSheet extends StatelessWidget {
         color: AppColors.textSubtitle.withOpacity(0.08),
         borderRadius: BorderRadius.circular(10.r),
       ),
-      child: TabBar(
-        padding: EdgeInsets.all(4.r),
-        indicator: BoxDecoration(
-          color: AppColors.primaryBlue,
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        labelColor: AppColors.primaryWhite,
-        unselectedLabelColor: AppColors.textSubtitle,
-        labelStyle: theme.textTheme.displayMedium,
-        unselectedLabelStyle: theme.textTheme.displayMedium,
-        indicatorSize: TabBarIndicatorSize.tab,
-        dividerColor: Colors.transparent,
-        tabs: const [
-          Tab(text: 'About'),
-          Tab(text: 'Reviews'),
-          Tab(text: 'Photos'),
-        ],
+      child: Builder(
+        builder: (context) {
+          return TabBar(
+            padding: EdgeInsets.all(4.r),
+            indicator: BoxDecoration(
+              color: AppColors.primaryBlue,
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            labelColor: AppColors.primaryWhite,
+            unselectedLabelColor: AppColors.textSubtitle,
+            labelStyle: theme.textTheme.displayMedium,
+            unselectedLabelStyle: theme.textTheme.displayMedium,
+            indicatorSize: TabBarIndicatorSize.tab,
+            dividerColor: Colors.transparent,
+            tabs: [
+              Tab(text: AppLocalizations.of(context)!.about),
+              Tab(text: AppLocalizations.of(context)!.reviews),
+              Tab(text: AppLocalizations.of(context)!.photos),
+            ],
+          );
+        },
       ),
     );
   }

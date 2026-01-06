@@ -3278,7 +3278,7 @@ abstract class AppLocalizations {
   /// No description provided for @reviews.
   ///
   /// In en, this message translates to:
-  /// **'Reviews'**
+  /// **'reviews'**
   String get reviews;
 
   /// No description provided for @wallet.
@@ -5434,6 +5434,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No vouchers available'**
   String get noVouchersAvailable;
+
+  /// No description provided for @getDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Directions'**
+  String get getDirections;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

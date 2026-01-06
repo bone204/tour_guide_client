@@ -104,53 +104,56 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
             color: Colors.transparent,
             child: Stack(
               children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Drag handle - luôn hiển thị
-                    Container(
-                      margin: EdgeInsets.only(top: 8.h, bottom: 12.h),
-                      alignment: Alignment.center,
-                      child: Container(
-                        width: 40.w,
-                        height: 5.h,
-                        decoration: BoxDecoration(
-                          color: AppColors.textSubtitle.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(10.r),
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Drag handle - luôn hiển thị
+                      Container(
+                        margin: EdgeInsets.only(top: 8.h, bottom: 12.h),
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 40.w,
+                          height: 5.h,
+                          decoration: BoxDecoration(
+                            color: AppColors.textSubtitle.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Destination name
-                          Text(
-                            destination.name,
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              color: AppColors.textPrimary,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Destination name
+                            Text(
+                              destination.name,
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                color: AppColors.textPrimary,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 20.h),
-                          // Transport mode selector
-                          _buildTransportSelector(theme),
-                          SizedBox(height: 20.h),
-                          // Route info - luôn hiển thị
-                          // Sử dụng AnimatedSwitcher để cập nhật mượt mà khi route thay đổi
-                          if (route != null)
-                            _buildRouteInfo(theme, route)
-                          else if (widget.isRouteLoading || widget.isNavigating)
-                            _buildLoadingRoute(theme),
-                          SizedBox(height: 20.h),
-                          // Action button
-                          _buildActionButton(theme),
-                          SizedBox(height: 24.h),
-                        ],
+                            SizedBox(height: 20.h),
+                            // Transport mode selector
+                            _buildTransportSelector(theme),
+                            SizedBox(height: 20.h),
+                            // Route info - luôn hiển thị
+                            // Sử dụng AnimatedSwitcher để cập nhật mượt mà khi route thay đổi
+                            if (route != null)
+                              _buildRouteInfo(theme, route)
+                            else if (widget.isRouteLoading ||
+                                widget.isNavigating)
+                              _buildLoadingRoute(theme),
+                            SizedBox(height: 20.h),
+                            // Action button
+                            _buildActionButton(theme),
+                            SizedBox(height: 24.h),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 if (widget.onClose != null)
                   Positioned(

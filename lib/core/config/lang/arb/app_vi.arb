@@ -1629,5 +1629,6 @@
   "voucherDiscount": "Giảm giá voucher",
   "pointDiscount": "Giảm giá điểm thưởng",
   "noMemoriesToday": "Hôm nay không có kỷ niệm nào",
-  "sinceYouCompleted": "Kể từ khi bạn hoàn thành"
+  "sinceYouCompleted": "Kể từ khi bạn hoàn thành",
+  "getDirections": "Tìm đường đi"
 }

@@ -66,5 +66,34 @@ extension MapLocationExtension on _MapPageState {
     }
     await _animateTo(_currentPosition!, zoom: _MapPageState._defaultZoom);
   }
-}
 
+  /// Bắt đầu lắng nghe vị trí và hướng di chuyển
+  void _startPositionTracking() {
+    _positionStreamSubscription?.cancel();
+
+    const locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 5, // Update every 5 meters
+    );
+
+    _positionStreamSubscription = Geolocator.getPositionStream(
+      locationSettings: locationSettings,
+    ).listen((Position position) {
+      if (!mounted) return;
+
+      final newPosition = LatLng(position.latitude, position.longitude);
+
+      setState(() {
+        _currentPosition = newPosition;
+        // heading is in degrees: 0° = North, 90° = East, 180° = South, 270° = West
+        _currentHeading = position.heading;
+      });
+    });
+  }
+
+  /// Dừng lắng nghe vị trí
+  void _stopPositionTracking() {
+    _positionStreamSubscription?.cancel();
+    _positionStreamSubscription = null;
+  }
+}
