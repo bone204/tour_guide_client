@@ -46,28 +46,31 @@ class AttractionCard extends StatelessWidget {
             child: Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
-                  child: _isNetworkImage
-                      ? Image.network(
-                          imageUrl,
-                          width: double.infinity,
-                          height: 120.h,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(
-                              AppImage.defaultDestination,
-                              width: double.infinity,
-                              height: 120.h,
-                              fit: BoxFit.cover,
-                            );
-                          },
-                        )
-                      : Image.asset(
-                          imageUrl,
-                          width: double.infinity,
-                          height: 120.h,
-                          fit: BoxFit.cover,
-                        ),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(12.r),
+                  ),
+                  child:
+                      _isNetworkImage
+                          ? Image.network(
+                            imageUrl,
+                            width: double.infinity,
+                            height: 120.h,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                AppImage.defaultDestination,
+                                width: double.infinity,
+                                height: 120.h,
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          )
+                          : Image.asset(
+                            imageUrl,
+                            width: double.infinity,
+                            height: 120.h,
+                            fit: BoxFit.cover,
+                          ),
                 ),
 
                 /// Rating badge
@@ -75,7 +78,10 @@ class AttractionCard extends StatelessWidget {
                   top: 8.h,
                   right: 8.w,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 4.h,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.primaryBlack.withOpacity(0.6),
                       borderRadius: BorderRadius.circular(12.r),
@@ -91,9 +97,8 @@ class AttractionCard extends StatelessWidget {
                         SizedBox(width: 6.w),
                         Text(
                           rating.toStringAsFixed(1),
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          )
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(color: AppColors.textSecondary),
                         ),
                       ],
                     ),
@@ -110,10 +115,7 @@ class AttractionCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// Title
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
+                Text(title, style: Theme.of(context).textTheme.titleSmall),
                 SizedBox(height: 8.h),
 
                 /// Location
@@ -142,7 +144,7 @@ class AttractionCard extends StatelessWidget {
 
                 /// Reviews
                 Text(
-                  "$reviews reviews",
+                  AppLocalizations.of(context)!.reviewsCount(reviews),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSubtitle,
                   ),

@@ -87,9 +87,6 @@ class _ProfileViewState extends State<_ProfileView> {
                   return _buildShimmerLoading(context);
                 } else if (state is GetMyProfileSuccess) {
                   final user = state.user;
-                  final createdAt =
-                      DateTime.tryParse(user.createdAt) ?? DateTime.now();
-
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -100,7 +97,7 @@ class _ProfileViewState extends State<_ProfileView> {
                           avatarUrl: user.avatarUrl,
                           fullName: user.fullName ?? user.username,
                           tier: user.userTier,
-                          createdAt: createdAt,
+                          createdAt: user.createdAt,
                         ),
                       ),
                       SizedBox(height: 20.h),

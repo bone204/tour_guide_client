@@ -12,7 +12,7 @@ class ProfileHeaderCard extends StatelessWidget {
   final String? avatarUrl;
   final String fullName;
   final String tier;
-  final DateTime createdAt;
+  final String createdAt;
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +44,7 @@ class ProfileHeaderCard extends StatelessWidget {
                   offset: const Offset(0, 8),
                 ),
               ],
-              border: Border.all(
-                color: AppColors.primaryBlue,
-                width: 3,
-              ),
+              border: Border.all(color: AppColors.primaryBlue, width: 3),
             ),
             child: ClipOval(
               child: SizedBox(
@@ -113,8 +110,42 @@ class ProfileHeaderCard extends StatelessWidget {
   }
 
   String _memberSinceText(BuildContext context) {
-    final days = DateTime.now().difference(createdAt).inDays + 1;
+    final parsedDate = _parseCreatedAt(createdAt);
+    if (parsedDate == null) {
+      return AppLocalizations.of(context)!.memberForDays(0);
+    }
+    final days = DateTime.now().difference(parsedDate).inDays;
     return AppLocalizations.of(context)!.memberForDays(days);
+  }
+
+  DateTime? _parseCreatedAt(String dateStr) {
+    // Try ISO 8601 format first
+    var parsed = DateTime.tryParse(dateStr);
+    if (parsed != null) return parsed;
+
+    // Try DD-MM-YYYY HH:mm:ss format
+    try {
+      final parts = dateStr.split(' ');
+      if (parts.length == 2) {
+        final dateParts = parts[0].split('-');
+        final timeParts = parts[1].split(':');
+
+        if (dateParts.length == 3 && timeParts.length == 3) {
+          final day = int.parse(dateParts[0]);
+          final month = int.parse(dateParts[1]);
+          final year = int.parse(dateParts[2]);
+          final hour = int.parse(timeParts[0]);
+          final minute = int.parse(timeParts[1]);
+          final second = int.parse(timeParts[2]);
+
+          return DateTime(year, month, day, hour, minute, second);
+        }
+      }
+    } catch (e) {
+      print('Error parsing date: $e');
+    }
+
+    return null;
   }
 
   Widget _buildFallbackAvatar(BuildContext context, String text) {
