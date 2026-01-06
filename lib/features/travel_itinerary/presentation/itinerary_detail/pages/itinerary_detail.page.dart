@@ -509,6 +509,8 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
     switch (status) {
       case 'upcoming':
         return AppLocalizations.of(context)!.statusUpcoming;
+      case 'in_progress':
+        return AppLocalizations.of(context)!.statusInProgress;
       case 'completed':
         return AppLocalizations.of(context)!.statusCompleted;
       case 'ongoing':

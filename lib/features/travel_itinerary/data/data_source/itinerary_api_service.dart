@@ -19,6 +19,8 @@ import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_check_response.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/claim_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_detail.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/checkin_stop_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/checkin_stop_response.dart';
 
 abstract class ItineraryApiService {
   Future<Either<Failure, ItineraryResponse>> getItineraryMe();
@@ -86,6 +88,12 @@ abstract class ItineraryApiService {
   Future<Either<Failure, AnniversaryCheckResponse>> triggerAnniversaryCheck();
 
   Future<Either<Failure, AnniversaryDetail>> getAnniversary(int id);
+
+  Future<Either<Failure, CheckInStopResponse>> checkInStop(
+    int itineraryId,
+    int stopId,
+    CheckInStopRequest request,
+  );
 }
 
 class ItineraryApiServiceImpl extends ItineraryApiService {
@@ -607,6 +615,31 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
       );
       final anniversary = AnniversaryDetail.fromJson(response.data);
       return Right(anniversary);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CheckInStopResponse>> checkInStop(
+    int itineraryId,
+    int stopId,
+    CheckInStopRequest request,
+  ) async {
+    try {
+      final response = await sl<DioClient>().post(
+        '${ApiUrls.itinerary}/$itineraryId/stops/$stopId/check-in',
+        data: request.toJson(),
+      );
+      final checkInResponse = CheckInStopResponse.fromJson(response.data);
+      return Right(checkInResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

@@ -176,6 +176,8 @@ class ItineraryCard extends StatelessWidget {
     switch (status.toLowerCase()) {
       case 'upcoming':
         return AppLocalizations.of(context)!.statusUpcoming;
+      case 'in_progress':
+        return AppLocalizations.of(context)!.statusInProgress;
       case 'completed':
         return AppLocalizations.of(context)!.statusCompleted;
       case 'ongoing':

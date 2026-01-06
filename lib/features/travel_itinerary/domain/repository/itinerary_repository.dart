@@ -15,6 +15,7 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/use_itinera
 import 'package:tour_guide_app/features/travel_itinerary/data/models/claim_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_check_response.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_detail.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/checkin_stop_response.dart';
 
 abstract class ItineraryRepository {
   Future<Either<Failure, ItineraryResponse>> getItineraryMe();
@@ -77,4 +78,11 @@ abstract class ItineraryRepository {
   Future<Either<Failure, SuccessResponse>> unlikeItinerary(int itineraryId);
   Future<Either<Failure, AnniversaryCheckResponse>> triggerAnniversaryCheck();
   Future<Either<Failure, AnniversaryDetail>> getAnniversary(int id);
+  Future<Either<Failure, CheckInStopResponse>> checkInStop(
+    int itineraryId,
+    int stopId,
+    double latitude,
+    double longitude,
+    int? toleranceMeters,
+  );
 }

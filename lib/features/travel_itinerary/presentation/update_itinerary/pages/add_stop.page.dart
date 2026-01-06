@@ -104,7 +104,7 @@ class _AddStopPageState extends State<AddStopPage> {
                             borderRadius: BorderRadius.circular(12.r),
                             image: DecorationImage(
                               image: NetworkImage(
-                                widget.destination.photos!.first,
+                                widget.destination.photos?.first ?? AppImage.defaultDestination,
                               ),
                               fit: BoxFit.cover,
                             ),

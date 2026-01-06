@@ -17,6 +17,8 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/province.da
 import 'package:tour_guide_app/features/travel_itinerary/domain/repository/itinerary_repository.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_check_response.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_detail.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/checkin_stop_request.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/checkin_stop_response.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class ItineraryRepositoryImpl extends ItineraryRepository {
@@ -178,5 +180,21 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
   @override
   Future<Either<Failure, AnniversaryDetail>> getAnniversary(int id) {
     return _apiService.getAnniversary(id);
+  }
+
+  @override
+  Future<Either<Failure, CheckInStopResponse>> checkInStop(
+    int itineraryId,
+    int stopId,
+    double latitude,
+    double longitude,
+    int? toleranceMeters,
+  ) {
+    final request = CheckInStopRequest(
+      latitude: latitude,
+      longitude: longitude,
+      toleranceMeters: toleranceMeters,
+    );
+    return _apiService.checkInStop(itineraryId, stopId, request);
   }
 }
