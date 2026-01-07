@@ -87,47 +87,41 @@ class _ProfileViewState extends State<_ProfileView> {
                   return _buildShimmerLoading(context);
                 } else if (state is GetMyProfileSuccess) {
                   final user = state.user;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 40.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: ProfileHeaderCard(
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      await context.read<GetMyProfileCubit>().getMyProfile();
+                    },
+                    child: ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      children: [
+                        SizedBox(height: 40.h),
+                        ProfileHeaderCard(
                           avatarUrl: user.avatarUrl,
                           fullName: user.fullName ?? user.username,
                           tier: user.userTier,
                           createdAt: user.createdAt,
                         ),
-                      ),
-                      SizedBox(height: 20.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: ProfileStatsRow(
+                        SizedBox(height: 20.h),
+                        ProfileStatsRow(
                           travelPoints: user.travelPoint,
                           reviews: user.feedbackTimes,
                           travelTrips: user.travelTrip,
                         ),
-                      ),
-                      SizedBox(height: 20.h),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: Text(
+                        SizedBox(height: 20.h),
+                        Text(
                           AppLocalizations.of(context)!.memberFeatures,
                           style: textTheme.titleMedium?.copyWith(
                             color: AppColors.textPrimary,
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: ListView.separated(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 20.w,
-                            vertical: 10.h,
-                          ),
-                          itemBuilder: (_, index) {
-                            final item = featureItems[index];
-                            return ProfileFeatureTile(
+                        SizedBox(height: 10.h),
+                        ...featureItems.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final item = entry.value;
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 16.h),
+                            child: ProfileFeatureTile(
                               iconAsset: item.iconAsset,
                               iconColor: item.iconColor,
                               title: item.title,
@@ -160,13 +154,12 @@ class _ProfileViewState extends State<_ProfileView> {
                                   ).pushNamed(AppRouteConstant.rentalBillList);
                                 }
                               },
-                            );
-                          },
-                          separatorBuilder: (_, __) => SizedBox(height: 16.h),
-                          itemCount: featureItems.length,
-                        ),
-                      ),
-                    ],
+                            ),
+                          );
+                        }),
+                        SizedBox(height: 20.h),
+                      ],
+                    ),
                   );
                 } else if (state is GetMyProfileFailure) {
                   return Center(child: Text('Error: ${state.message}'));

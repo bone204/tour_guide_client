@@ -173,267 +173,287 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                 extendBody: true,
                 body: Stack(
                   children: [
-                    CustomScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      slivers: [
-                        SliverAppBar(
-                          expandedHeight: 250.h,
-                          pinned: true,
-                          backgroundColor: AppColors.backgroundColor,
-                          leading: Padding(
-                            padding: EdgeInsets.only(
-                              left: 16.w,
-                              top: 8.h,
-                              bottom: 8.h,
-                            ),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.white.withOpacity(0.9),
-                              child: IconButton(
-                                icon: SvgPicture.asset(
-                                  AppIcons.arrowLeft,
-                                  width: 16.w,
-                                  height: 16.h,
-                                  colorFilter: const ColorFilter.mode(
-                                    AppColors.primaryBlack,
-                                    BlendMode.srcIn,
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        context
+                            .read<GetItineraryDetailCubit>()
+                            .getItineraryDetail(widget.itineraryId);
+                        // Wait a bit for the refresh to complete
+                        await Future.delayed(const Duration(milliseconds: 500));
+                      },
+                      child: CustomScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(
+                          parent: BouncingScrollPhysics(),
+                        ),
+                        slivers: [
+                          SliverAppBar(
+                            expandedHeight: 250.h,
+                            pinned: true,
+                            stretch: true, // Enable stretch
+                            backgroundColor: AppColors.backgroundColor,
+                            leading: Padding(
+                              padding: EdgeInsets.only(
+                                left: 16.w,
+                                top: 8.h,
+                                bottom: 8.h,
+                              ),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white.withOpacity(0.9),
+                                child: IconButton(
+                                  icon: SvgPicture.asset(
+                                    AppIcons.arrowLeft,
+                                    width: 16.w,
+                                    height: 16.h,
+                                    colorFilter: const ColorFilter.mode(
+                                      AppColors.primaryBlack,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
+                                  onPressed: () => Navigator.of(context).pop(),
                                 ),
-                                onPressed: () => Navigator.of(context).pop(),
                               ),
                             ),
-                          ),
-                          flexibleSpace: FlexibleSpaceBar(
-                            background: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                if (images.isNotEmpty)
-                                  CarouselSlider(
-                                    options: CarouselOptions(
-                                      height: double.infinity,
-                                      viewportFraction: 1.0,
-                                      autoPlay: true,
-                                      autoPlayInterval: const Duration(
-                                        seconds: 5,
+                            flexibleSpace: FlexibleSpaceBar(
+                              stretchModes: const [
+                                StretchMode.zoomBackground,
+                                StretchMode.blurBackground,
+                              ],
+                              background: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  if (images.isNotEmpty)
+                                    CarouselSlider(
+                                      options: CarouselOptions(
+                                        height: double.infinity,
+                                        viewportFraction: 1.0,
+                                        autoPlay: true,
+                                        autoPlayInterval: const Duration(
+                                          seconds: 5,
+                                        ),
+                                        autoPlayAnimationDuration:
+                                            const Duration(seconds: 1),
+                                        autoPlayCurve: Curves.fastOutSlowIn,
+                                        scrollDirection: Axis.horizontal,
                                       ),
-                                      autoPlayAnimationDuration: const Duration(
-                                        seconds: 1,
-                                      ),
-                                      autoPlayCurve: Curves.fastOutSlowIn,
-                                      scrollDirection: Axis.horizontal,
+                                      items:
+                                          images.map((imgUrl) {
+                                            return Builder(
+                                              builder: (BuildContext context) {
+                                                return Image.network(
+                                                  imgUrl,
+                                                  fit: BoxFit.cover,
+                                                  width: double.infinity,
+                                                  errorBuilder:
+                                                      (
+                                                        context,
+                                                        error,
+                                                        stackTrace,
+                                                      ) => Container(
+                                                        color: Colors.grey,
+                                                      ),
+                                                );
+                                              },
+                                            );
+                                          }).toList(),
+                                    )
+                                  else
+                                    Image.network(
+                                      defaultImage,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Container(color: Colors.grey),
                                     ),
-                                    items:
-                                        images.map((imgUrl) {
-                                          return Builder(
-                                            builder: (BuildContext context) {
-                                              return Image.network(
-                                                imgUrl,
-                                                fit: BoxFit.cover,
-                                                width: double.infinity,
-                                                errorBuilder:
-                                                    (
-                                                      context,
-                                                      error,
-                                                      stackTrace,
-                                                    ) => Container(
-                                                      color: Colors.grey,
-                                                    ),
-                                              );
-                                            },
-                                          );
-                                        }).toList(),
-                                  )
-                                else
-                                  Image.network(
-                                    defaultImage,
-                                    fit: BoxFit.cover,
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Container(color: Colors.grey),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.transparent,
+                                          Colors.black.withOpacity(0.7),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Colors.transparent,
-                                        Colors.black.withOpacity(0.7),
+                                  Positioned(
+                                    bottom: 20.h,
+                                    left: 20.w,
+                                    right: 20.w,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 10.w,
+                                                vertical: 4.h,
+                                              ),
+                                              margin: EdgeInsets.only(
+                                                bottom: 8.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primaryBlue,
+                                                borderRadius:
+                                                    BorderRadius.circular(8.r),
+                                              ),
+                                              child: Text(
+                                                _getTranslatedStatus(
+                                                  context,
+                                                  status,
+                                                ),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall
+                                                    ?.copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 8.w),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 10.w,
+                                                vertical: 4.h,
+                                              ),
+                                              margin: EdgeInsets.only(
+                                                bottom: 8.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primaryGreen,
+                                                borderRadius:
+                                                    BorderRadius.circular(8.r),
+                                              ),
+                                              child: Text(
+                                                itinerary.province,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall
+                                                    ?.copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          title,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headlineSmall
+                                              ?.copyWith(color: Colors.white),
+                                        ),
+                                        SizedBox(height: 8.h),
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              AppIcons.calendar,
+                                              width: 16.w,
+                                              height: 16.h,
+                                              colorFilter:
+                                                  const ColorFilter.mode(
+                                                    AppColors.primaryWhite,
+                                                    BlendMode.srcIn,
+                                                  ),
+                                            ),
+                                            SizedBox(width: 6.w),
+                                            Text(
+                                              dateRange,
+                                              style: Theme.of(
+                                                context,
+                                              ).textTheme.bodySmall?.copyWith(
+                                                color: Colors.white70,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ],
                                     ),
                                   ),
-                                ),
-                                Positioned(
-                                  bottom: 20.h,
-                                  left: 20.w,
-                                  right: 20.w,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 10.w,
-                                              vertical: 4.h,
-                                            ),
-                                            margin: EdgeInsets.only(
-                                              bottom: 8.h,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: AppColors.primaryBlue,
-                                              borderRadius:
-                                                  BorderRadius.circular(8.r),
-                                            ),
-                                            child: Text(
-                                              _getTranslatedStatus(
-                                                context,
-                                                status,
-                                              ),
-                                              style: Theme.of(
-                                                context,
-                                              ).textTheme.labelSmall?.copyWith(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 8.w),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 10.w,
-                                              vertical: 4.h,
-                                            ),
-                                            margin: EdgeInsets.only(
-                                              bottom: 8.h,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: AppColors.primaryGreen,
-                                              borderRadius:
-                                                  BorderRadius.circular(8.r),
-                                            ),
-                                            child: Text(
-                                              itinerary.province,
-                                              style: Theme.of(
-                                                context,
-                                              ).textTheme.labelSmall?.copyWith(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        title,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall
-                                            ?.copyWith(color: Colors.white),
-                                      ),
-                                      SizedBox(height: 8.h),
-                                      Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                            AppIcons.calendar,
-                                            width: 16.w,
-                                            height: 16.h,
-                                            colorFilter: const ColorFilter.mode(
-                                              AppColors.primaryWhite,
-                                              BlendMode.srcIn,
-                                            ),
-                                          ),
-                                          SizedBox(width: 6.w),
-                                          Text(
-                                            dateRange,
-                                            style: Theme.of(
-                                              context,
-                                            ).textTheme.bodySmall?.copyWith(
-                                              color: Colors.white70,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: EdgeInsets.all(20.w),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (days.isNotEmpty) ...[
-                                  Text(
-                                    AppLocalizations.of(
-                                      context,
-                                    )!.itinerarySchedule,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleLarge?.copyWith(
-                                      color: AppColors.textPrimary,
-                                    ),
-                                  ),
-                                  SizedBox(height: 16.h),
                                 ],
-                                days.isNotEmpty
-                                    ? ItineraryTimeline(
-                                      timelineItems: days,
-                                      itineraryId: widget.itineraryId,
-                                      itineraryStatus: status,
-                                    )
-                                    : Container(
-                                      width: double.infinity,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Lottie.asset(
-                                            AppLotties.empty,
-                                            width: 300.w,
-                                            height: 300.h,
-                                            fit: BoxFit.contain,
-                                            errorBuilder: (
-                                              context,
-                                              error,
-                                              stackTrace,
-                                            ) {
-                                              return Icon(
-                                                Icons.image_not_supported,
-                                                size: 64.sp,
-                                                color: AppColors.primaryGrey,
-                                              );
-                                            },
-                                          ),
-                                          SizedBox(height: 16.h),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 30.w,
-                                            ),
-                                            child: Text(
-                                              AppLocalizations.of(
-                                                context,
-                                              )!.noSchedule,
-                                              textAlign: TextAlign.center,
-                                              style: Theme.of(
-                                                context,
-                                              ).textTheme.titleMedium?.copyWith(
-                                                color: AppColors.textPrimary,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                SizedBox(height: 120.h),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: EdgeInsets.all(20.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (days.isNotEmpty) ...[
+                                    Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.itinerarySchedule,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.titleLarge?.copyWith(
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                    SizedBox(height: 16.h),
+                                  ],
+                                  days.isNotEmpty
+                                      ? ItineraryTimeline(
+                                        timelineItems: days,
+                                        itineraryId: widget.itineraryId,
+                                        itineraryStatus: status,
+                                      )
+                                      : Container(
+                                        width: double.infinity,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Lottie.asset(
+                                              AppLotties.empty,
+                                              width: 300.w,
+                                              height: 300.h,
+                                              fit: BoxFit.contain,
+                                              errorBuilder: (
+                                                context,
+                                                error,
+                                                stackTrace,
+                                              ) {
+                                                return Icon(
+                                                  Icons.image_not_supported,
+                                                  size: 64.sp,
+                                                  color: AppColors.primaryGrey,
+                                                );
+                                              },
+                                            ),
+                                            SizedBox(height: 16.h),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 30.w,
+                                              ),
+                                              child: Text(
+                                                AppLocalizations.of(
+                                                  context,
+                                                )!.noSchedule,
+                                                textAlign: TextAlign.center,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium
+                                                    ?.copyWith(
+                                                      color:
+                                                          AppColors.textPrimary,
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                  SizedBox(height: 120.h),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
