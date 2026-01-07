@@ -1565,6 +1565,12 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get remaining => 'còn lại';
+
+  @override
+  String get estimatedArrival => 'Thời gian đến dự kiến';
+
+  @override
   String get myItinerary => 'Lịch trình của tôi';
 
   @override
@@ -1931,6 +1937,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get travelTrips => 'Chuyến đi';
+
+  @override
+  String get routeStatusInProgress => 'Đang thực hiện';
 
   @override
   String get enterPoints => 'Nhập điểm';

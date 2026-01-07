@@ -70,8 +70,8 @@ class ItineraryCard extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: 12.h,
-                    right: 12.w,
+                    top: 16.h,
+                    right: 16.w,
                     child: Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 10.w,
@@ -90,12 +90,11 @@ class ItineraryCard extends StatelessWidget {
                       ),
                       child: Text(
                         _getTranslatedStatus(context, status),
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        style: Theme.of(context).textTheme.displayLarge?.copyWith(
                           color:
                               status == 'Upcoming'
                                   ? AppColors.primaryBlue
                                   : AppColors.primaryGreen,
-                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
@@ -177,7 +176,7 @@ class ItineraryCard extends StatelessWidget {
       case 'upcoming':
         return AppLocalizations.of(context)!.statusUpcoming;
       case 'in_progress':
-        return AppLocalizations.of(context)!.statusInProgress;
+        return AppLocalizations.of(context)!.routeStatusInProgress;
       case 'completed':
         return AppLocalizations.of(context)!.statusCompleted;
       case 'ongoing':

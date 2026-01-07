@@ -1559,6 +1559,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get remaining => 'remaining';
+
+  @override
+  String get estimatedArrival => 'Estimated Arrival';
+
+  @override
   String get myItinerary => 'My Itinerary';
 
   @override
@@ -1925,6 +1931,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get travelTrips => 'Travel Trips';
+
+  @override
+  String get routeStatusInProgress => 'In Progress';
 
   @override
   String get enterPoints => 'Enter points';

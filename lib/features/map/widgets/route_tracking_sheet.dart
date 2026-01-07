@@ -401,35 +401,77 @@ class _RouteTrackingSheetState extends State<_RouteTrackingSheet> {
 
 class _NavigationSummarySheet extends StatelessWidget {
   const _NavigationSummarySheet({
+    super.key,
     required this.route,
     required this.onStopNavigation,
+    required this.currentPosition,
+    required this.destination,
   });
 
   final OSRMRoute? route;
   final VoidCallback onStopNavigation;
+  final LatLng? currentPosition;
+  final LatLng? destination;
+
+  /// Calculate remaining distance from current position to destination in meters
+  double? _calculateRemainingDistance() {
+    if (currentPosition == null || destination == null) return null;
+
+    return Geolocator.distanceBetween(
+      currentPosition!.latitude,
+      currentPosition!.longitude,
+      destination!.latitude,
+      destination!.longitude,
+    );
+  }
+
+  /// Calculate remaining time based on remaining distance and route's average speed
+  double? _calculateRemainingTime(double remainingDistance) {
+    if (route == null || route!.distance == 0) return null;
+
+    // Calculate average speed from route (meters per second)
+    final averageSpeed = route!.distance / route!.duration;
+
+    // Estimate remaining time (in seconds)
+    return remainingDistance / averageSpeed;
+  }
 
   String _formatDuration(OSRMRoute? route, BuildContext context) {
     if (route == null) return AppLocalizations.of(context)!.updatingTime;
-    final minutes = (route.duration / 60).ceil();
+
+    final remainingDistance = _calculateRemainingDistance();
+    if (remainingDistance == null) {
+      return AppLocalizations.of(context)!.updatingTime;
+    }
+
+    final remainingTime = _calculateRemainingTime(remainingDistance);
+    if (remainingTime == null) {
+      return AppLocalizations.of(context)!.updatingTime;
+    }
+
+    final minutes = (remainingTime / 60).ceil();
     final hours = minutes ~/ 60;
     final remainingMinutes = minutes % 60;
+
     if (hours > 0) {
-      return AppLocalizations.of(
-        context,
-      )!.hoursMinutes(hours, remainingMinutes);
+      return '${AppLocalizations.of(context)!.hoursMinutes(hours, remainingMinutes)} ${AppLocalizations.of(context)!.remaining}';
     }
-    return AppLocalizations.of(context)!.minutes(minutes);
+    return '${AppLocalizations.of(context)!.minutes(minutes)} ${AppLocalizations.of(context)!.remaining}';
   }
 
   String _formatDistance(OSRMRoute? route, BuildContext context) {
     if (route == null) return AppLocalizations.of(context)!.updatingDistance;
-    final distanceKm = route.distance / 1000;
-    if (distanceKm >= 1) {
-      return AppLocalizations.of(
-        context,
-      )!.kilometers(distanceKm.toStringAsFixed(1));
+
+    final remainingDistance = _calculateRemainingDistance();
+    if (remainingDistance == null) {
+      return AppLocalizations.of(context)!.updatingDistance;
     }
-    return AppLocalizations.of(context)!.meters(route.distance.toInt());
+
+    final distanceKm = remainingDistance / 1000;
+    if (distanceKm >= 1) {
+      return '${AppLocalizations.of(context)!.kilometers(distanceKm.toStringAsFixed(1))} ${AppLocalizations.of(context)!.remaining}';
+    }
+    return '${AppLocalizations.of(context)!.meters(remainingDistance.toInt())} ${AppLocalizations.of(context)!.remaining}';
   }
 
   @override

@@ -346,6 +346,18 @@ extension MapUIExtension on _MapPageState {
 
   Widget _buildNavigationSummaryOverlay() {
     final isVisible = _isNavigationOverlayVisible;
+
+    // Calculate destination position from selected destination
+    LatLng? destinationPosition;
+    if (_selectedDestination != null &&
+        _selectedDestination!.latitude != null &&
+        _selectedDestination!.longitude != null) {
+      destinationPosition = LatLng(
+        _selectedDestination!.latitude!,
+        _selectedDestination!.longitude!,
+      );
+    }
+
     return IgnorePointer(
       ignoring: !isVisible,
       child: AnimatedSlide(
@@ -358,8 +370,13 @@ extension MapUIExtension on _MapPageState {
           child: Align(
             alignment: Alignment.bottomCenter,
             child: _NavigationSummarySheet(
+              key: ValueKey(
+                '${_currentPosition?.latitude}_${_currentPosition?.longitude}',
+              ),
               route: _currentRoute ?? _routesByMode[_transportMode],
               onStopNavigation: _stopNavigation,
+              currentPosition: _currentPosition,
+              destination: destinationPosition,
             ),
           ),
         ),

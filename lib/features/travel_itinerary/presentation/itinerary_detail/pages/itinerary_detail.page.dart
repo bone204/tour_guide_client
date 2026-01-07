@@ -431,6 +431,8 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                         child: Padding(
                           padding: EdgeInsets.only(right: 20.w, bottom: 20.h),
                           child: ItineraryActionMenu(
+                            canEdit:
+                                status != 'in_progress' && status != 'completed',
                             onEdit: () {
                               Navigator.pushNamed(
                                 context,
@@ -510,7 +512,7 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
       case 'upcoming':
         return AppLocalizations.of(context)!.statusUpcoming;
       case 'in_progress':
-        return AppLocalizations.of(context)!.statusInProgress;
+        return AppLocalizations.of(context)!.routeStatusInProgress;
       case 'completed':
         return AppLocalizations.of(context)!.statusCompleted;
       case 'ongoing':

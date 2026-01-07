@@ -14,7 +14,7 @@
   "statusBooked": "Đã đặt",
   "statusDelivering": "Đang giao xe",
   "statusDelivered": "Đã giao xe",
-  "statusInProgress": "Đang thuê",
+  "routeStatusInProgress": "Đang thực hiện",
   "statusReturnRequested": "Yêu cầu trả xe",
   "statusReturnConfirmed": "Xác nhận trả xe",
   "rentalStartDelivery": "Bắt đầu giao xe",
@@ -974,6 +974,8 @@
   "@kilometers": {"placeholders": {"km": {"type": "String"}}},
   "meters": "{m} m",
   "@meters": {"placeholders": {"m": {"type": "int"}}},
+  "remaining": "còn lại",
+  "estimatedArrival": "Thời gian đến dự kiến",
   "myItinerary": "Lịch trình của tôi",
   "itemsCount": "{count} mục",
   "@itemsCount": {

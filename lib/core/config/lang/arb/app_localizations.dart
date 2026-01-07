@@ -3131,6 +3131,18 @@ abstract class AppLocalizations {
   /// **'{m} m'**
   String meters(int m);
 
+  /// No description provided for @remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'remaining'**
+  String get remaining;
+
+  /// No description provided for @estimatedArrival.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated Arrival'**
+  String get estimatedArrival;
+
   /// No description provided for @myItinerary.
   ///
   /// In en, this message translates to:
@@ -3790,6 +3802,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Travel Trips'**
   String get travelTrips;
+
+  /// No description provided for @routeStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get routeStatusInProgress;
 
   /// No description provided for @enterPoints.
   ///

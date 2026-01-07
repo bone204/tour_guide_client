@@ -7,6 +7,7 @@ class ItineraryActionMenu extends StatefulWidget {
   final VoidCallback onDelete;
   final VoidCallback? onPublicize;
   final bool canPublicize;
+  final bool canEdit;
 
   const ItineraryActionMenu({
     super.key,
@@ -14,6 +15,7 @@ class ItineraryActionMenu extends StatefulWidget {
     required this.onDelete,
     this.onPublicize,
     this.canPublicize = false,
+    this.canEdit = true,
   });
 
   @override
@@ -69,17 +71,19 @@ class _ItineraryActionMenuState extends State<ItineraryActionMenu>
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         if (_isOpen) ...[
-          _buildMenuItem(
-            onPressed: () {
-              _toggleMenu();
-              widget.onEdit();
-            },
-            icon: Icons.edit_rounded,
-            color: Theme.of(context).colorScheme.primaryContainer,
-            iconColor: Theme.of(context).colorScheme.primary,
-            heroTag: 'edit_fab',
-          ),
-          SizedBox(height: 12.h),
+          if (widget.canEdit) ...[
+            _buildMenuItem(
+              onPressed: () {
+                _toggleMenu();
+                widget.onEdit();
+              },
+              icon: Icons.edit_rounded,
+              color: Theme.of(context).colorScheme.primaryContainer,
+              iconColor: Theme.of(context).colorScheme.primary,
+              heroTag: 'edit_fab',
+            ),
+            SizedBox(height: 12.h),
+          ],
           _buildMenuItem(
             onPressed: () {
               _toggleMenu();
