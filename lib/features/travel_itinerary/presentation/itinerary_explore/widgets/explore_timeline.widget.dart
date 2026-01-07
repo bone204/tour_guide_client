@@ -136,7 +136,7 @@ class ExploreTimeline extends StatelessWidget {
                               item['time']! as String,
                               style: Theme.of(
                                 context,
-                              ).textTheme.labelMedium?.copyWith(
+                              ).textTheme.labelSmall?.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -159,7 +159,7 @@ class ExploreTimeline extends StatelessWidget {
                           item['day']! as String,
                           style: Theme.of(
                             context,
-                          ).textTheme.labelMedium?.copyWith(
+                          ).textTheme.labelSmall?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
                           ),

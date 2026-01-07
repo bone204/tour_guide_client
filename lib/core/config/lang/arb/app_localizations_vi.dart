@@ -1571,6 +1571,30 @@ class AppLocalizationsVi extends AppLocalizations {
   String get estimatedArrival => 'Thời gian đến dự kiến';
 
   @override
+  String get checkInSuccess => 'Check-in thành công!';
+
+  @override
+  String get checkInFailed => 'Check-in thất bại';
+
+  @override
+  String get checkInHere => 'Check-in tại đây';
+
+  @override
+  String get gettingLocation => 'Đang lấy vị trí...';
+
+  @override
+  String get stopStatusUpcoming => 'Sắp tới';
+
+  @override
+  String get stopStatusInProgress => 'Đang diễn ra';
+
+  @override
+  String get stopStatusCompleted => 'Hoàn thành';
+
+  @override
+  String get stopStatusMissed => 'Đã bỏ lỡ';
+
+  @override
   String get myItinerary => 'Lịch trình của tôi';
 
   @override

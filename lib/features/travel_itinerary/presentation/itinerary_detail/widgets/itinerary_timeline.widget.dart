@@ -5,11 +5,13 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart'
 class ItineraryTimeline extends StatelessWidget {
   final List<Map<String, dynamic>> timelineItems;
   final int itineraryId;
+  final String? itineraryStatus;
 
   const ItineraryTimeline({
     super.key,
     required this.timelineItems,
     required this.itineraryId,
+    this.itineraryStatus,
   });
 
   @override
@@ -45,6 +47,51 @@ class ItineraryTimeline extends StatelessWidget {
     );
   }
 
+  String _getStopStatusText(BuildContext context, String status) {
+    switch (status) {
+      case 'upcoming':
+        return AppLocalizations.of(context)!.stopStatusUpcoming;
+      case 'in_progress':
+        return AppLocalizations.of(context)!.stopStatusInProgress;
+      case 'completed':
+        return AppLocalizations.of(context)!.stopStatusCompleted;
+      case 'missed':
+        return AppLocalizations.of(context)!.stopStatusMissed;
+      default:
+        return status;
+    }
+  }
+
+  IconData _getStopStatusIcon(String status) {
+    switch (status) {
+      case 'upcoming':
+        return Icons.schedule_rounded;
+      case 'in_progress':
+        return Icons.play_circle_rounded;
+      case 'completed':
+        return Icons.check_circle_rounded;
+      case 'missed':
+        return Icons.cancel_rounded;
+      default:
+        return Icons.info_rounded;
+    }
+  }
+
+  Color _getStopStatusColor(String status) {
+    switch (status) {
+      case 'upcoming':
+        return const Color(0xFF3B82F6); // Blue
+      case 'in_progress':
+        return const Color(0xFFF59E0B); // Amber
+      case 'completed':
+        return const Color(0xFF10B981); // Green
+      case 'missed':
+        return const Color(0xFF6B7280); // Gray
+      default:
+        return const Color(0xFF6B7280);
+    }
+  }
+
   Widget _buildTimelineContent(
     BuildContext context,
     Map<String, dynamic> item,
@@ -62,7 +109,11 @@ class ItineraryTimeline extends StatelessWidget {
           Navigator.pushNamed(
             context,
             AppRouteConstant.itineraryStopDetail,
-            arguments: {'stop': item['stop'], 'itineraryId': itineraryId},
+            arguments: {
+              'stop': item['stop'],
+              'itineraryId': itineraryId,
+              'itineraryStatus': itineraryStatus,
+            },
           );
         }
       },
@@ -120,68 +171,175 @@ class ItineraryTimeline extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Header: Time and Day Badges
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Time Badge
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
-                            vertical: 6.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(20.r),
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0.2),
-                              width: 1,
+                    // Header: Time, Day, and Status Badges
+                    if (itineraryStatus == 'in_progress')
+                      // Use Wrap when status badge is present
+                      Wrap(
+                        spacing: 6.w,
+                        runSpacing: 6.h,
+                        children: [
+                          // Time Badge
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 6.h,
                             ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.access_time_rounded,
-                                color: Colors.white,
-                                size: 14.sp,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(20.r),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.2),
+                                width: 1,
                               ),
-                              SizedBox(width: 4.w),
-                              Text(
-                                item['time']! as String,
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.labelMedium?.copyWith(
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.access_time_rounded,
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w700,
+                                  size: 14.sp,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Day Badge (Optional, can be removed if redundant with timeline)
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10.w,
-                            vertical: 6.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryBlue.withOpacity(0.9),
-                            borderRadius: BorderRadius.circular(20.r),
-                          ),
-                          child: Text(
-                            item['day']! as String,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.labelMedium?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                                SizedBox(width: 4.w),
+                                Text(
+                                  item['time']! as String,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.labelSmall?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+
+                          // Day Badge
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 6.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryBlue.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Text(
+                              item['day']! as String,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.displayMedium?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+
+                          // Status Badge
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 6.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: _getStopStatusColor(stop.status),
+                              borderRadius: BorderRadius.circular(20.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: _getStopStatusColor(
+                                    stop.status,
+                                  ).withOpacity(0.3),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  _getStopStatusIcon(stop.status),
+                                  color: Colors.white,
+                                  size: 14.sp,
+                                ),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  _getStopStatusText(context, stop.status),
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.displayMedium?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    else
+                      // Use Row with spaceBetween when no status badge
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Time Badge
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 6.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(20.r),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.2),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.access_time_rounded,
+                                  color: Colors.white,
+                                  size: 14.sp,
+                                ),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  item['time']! as String,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.labelSmall?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Day Badge
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 6.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryBlue.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Text(
+                              item['day']! as String,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelSmall?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
 
                     // Footer: Activity Name
                     Text(

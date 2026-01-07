@@ -1,21 +1,28 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_stop_detail/get_stop_detail_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/checkin_stop/checkin_stop_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/checkin_stop/checkin_stop_state.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/widgets/creative_media_button.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';
 
 class StopDetailPage extends StatefulWidget {
   final Stop stop;
   final int itineraryId;
+  final String itineraryStatus;
 
   const StopDetailPage({
     super.key,
     required this.stop,
     required this.itineraryId,
+    required this.itineraryStatus,
   });
 
   @override
@@ -46,16 +53,121 @@ class _StopDetailPageState extends State<StopDetailPage> {
     super.dispose();
   }
 
+  bool _isWithinTimeWindow() {
+    try {
+      final now = DateTime.now();
+      final startTime = _parseTime(_currentStop.startTime);
+      final endTime = _parseTime(_currentStop.endTime);
+
+      if (startTime == null || endTime == null) return false;
+
+      return now.isAfter(startTime) && now.isBefore(endTime);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  DateTime? _parseTime(String timeString) {
+    try {
+      final parts = timeString.split(':');
+      if (parts.length != 2) return null;
+
+      final now = DateTime.now();
+      return DateTime(
+        now.year,
+        now.month,
+        now.day,
+        int.parse(parts[0]),
+        int.parse(parts[1]),
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  bool _shouldShowCheckInButton() {
+    return widget.itineraryStatus == 'in_progress' &&
+        _currentStop.status != 'completed' &&
+        _isWithinTimeWindow();
+  }
+
+  Future<void> _handleCheckIn() async {
+    try {
+      // Show loading message
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.gettingLocation,
+        type: SnackbarType.info,
+      );
+
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      if (mounted) {
+        context.read<CheckInStopCubit>().checkIn(
+          itineraryId: widget.itineraryId,
+          stopId: _currentStop.id,
+          latitude: position.latitude,
+          longitude: position.longitude,
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        CustomSnackbar.show(
+          context,
+          message: e.toString(),
+          type: SnackbarType.error,
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<GetStopDetailCubit, GetStopDetailState>(
-      listener: (context, state) {
-        if (state is GetStopDetailSuccess) {
-          setState(() {
-            _currentStop = state.stop;
-          });
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<GetStopDetailCubit, GetStopDetailState>(
+          listener: (context, state) {
+            if (state is GetStopDetailSuccess) {
+              setState(() {
+                _currentStop = state.stop;
+              });
+            }
+          },
+        ),
+        BlocListener<CheckInStopCubit, CheckInStopState>(
+          listener: (context, state) {
+            if (state is CheckInStopSuccess) {
+              CustomSnackbar.show(
+                context,
+                message: AppLocalizations.of(context)!.checkInSuccess,
+                type: SnackbarType.success,
+              );
+              // Fire event to refresh itinerary detail
+              eventBus.fire(
+                CheckInSuccessEvent(
+                  itineraryId: widget.itineraryId,
+                  stopId: widget.stop.id,
+                ),
+              );
+              // Navigate back after short delay
+              Future.delayed(const Duration(milliseconds: 500), () {
+                if (mounted) {
+                  Navigator.pop(context);
+                }
+              });
+            } else if (state is CheckInStopFailure) {
+              CustomSnackbar.show(
+                context,
+                message:
+                    '${AppLocalizations.of(context)!.checkInFailed}: ${state.message}',
+                type: SnackbarType.error,
+              );
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: CustomAppBar(
           title: AppLocalizations.of(context)!.stopDetail,
@@ -120,6 +232,19 @@ class _StopDetailPageState extends State<StopDetailPage> {
                 maxLines: 3,
               ),
               SizedBox(height: 32.h),
+
+              // Check-in Button
+              if (_shouldShowCheckInButton())
+                BlocBuilder<CheckInStopCubit, CheckInStopState>(
+                  builder: (context, state) {
+                    final isLoading = state is CheckInStopLoading;
+                    return PrimaryButton(
+                      title: AppLocalizations.of(context)!.checkInHere,
+                      onPressed: isLoading ? null : _handleCheckIn,
+                      isLoading: isLoading,
+                    );
+                  },
+                ),
             ],
           ),
         ),

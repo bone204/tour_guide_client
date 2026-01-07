@@ -50,6 +50,13 @@ class RentalRequestUpdatedEvent {
   RentalRequestUpdatedEvent({this.billId});
 }
 
+// Event when a stop check-in is successful
+class CheckInSuccessEvent {
+  final int itineraryId;
+  final int stopId;
+  CheckInSuccessEvent({required this.itineraryId, required this.stopId});
+}
+
 // Singleton EventBus
 class AppEventBus {
   static final AppEventBus _instance = AppEventBus._internal();

@@ -61,6 +61,15 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
         );
       }
     });
+
+    // Listen for check-in success to refresh itinerary
+    eventBus.on<CheckInSuccessEvent>().listen((event) {
+      if (mounted && event.itineraryId == widget.itineraryId) {
+        context.read<GetItineraryDetailCubit>().getItineraryDetail(
+          widget.itineraryId,
+        );
+      }
+    });
   }
 
   @override
@@ -374,6 +383,7 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                                     ? ItineraryTimeline(
                                       timelineItems: days,
                                       itineraryId: widget.itineraryId,
+                                      itineraryStatus: status,
                                     )
                                     : Container(
                                       width: double.infinity,
@@ -432,7 +442,9 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                           padding: EdgeInsets.only(right: 20.w, bottom: 20.h),
                           child: ItineraryActionMenu(
                             canEdit:
-                                status != 'in_progress' && status != 'completed',
+                                status != 'in_progress' &&
+                                status != 'completed' &&
+                                status != 'missed',
                             onEdit: () {
                               Navigator.pushNamed(
                                 context,

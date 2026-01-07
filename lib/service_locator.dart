@@ -97,12 +97,14 @@ import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_iti
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_provinces.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/add_stop.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_stop_detail.dart';
+import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/checkin_stop_usecase.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/create_itinerary/create_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/bloc/get_itinerary_me/get_itinerary_me_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_itinerary_detail/get_itinerary_detail_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/add_stop/add_stop_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/suggest_itinerary/suggest_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_stop_detail/get_stop_detail_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/checkin_stop/checkin_stop_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/delete_itinerary/delete_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_itinerary_stop.dart';
@@ -263,6 +265,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<CreateItineraryUseCase>(CreateItineraryUseCase());
   sl.registerSingleton<AddStopUseCase>(AddStopUseCase());
   sl.registerSingleton<GetStopDetailUseCase>(GetStopDetailUseCase());
+  sl.registerSingleton<CheckInStopUseCase>(CheckInStopUseCase(sl()));
   sl.registerSingleton<DeleteItineraryUseCase>(DeleteItineraryUseCase());
   sl.registerSingleton<EditStopTimeUseCase>(EditStopTimeUseCase());
   sl.registerSingleton<EditStopReorderUseCase>(EditStopReorderUseCase());
@@ -438,6 +441,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerFactory<AddStopCubit>(() => AddStopCubit(sl()));
   sl.registerFactory<GetStopDetailCubit>(() => GetStopDetailCubit(sl()));
+  sl.registerFactory<CheckInStopCubit>(() => CheckInStopCubit(sl()));
   sl.registerFactory<DeleteItineraryCubit>(() => DeleteItineraryCubit(sl()));
   sl.registerFactory<EditStopCubit>(() => EditStopCubit(sl(), sl(), sl()));
   sl.registerFactory<StopMediaCubit>(() => StopMediaCubit(sl(), sl(), sl()));

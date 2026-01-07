@@ -1565,6 +1565,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get estimatedArrival => 'Estimated Arrival';
 
   @override
+  String get checkInSuccess => 'Check-in successful!';
+
+  @override
+  String get checkInFailed => 'Check-in failed';
+
+  @override
+  String get checkInHere => 'Check In Here';
+
+  @override
+  String get gettingLocation => 'Getting location...';
+
+  @override
+  String get stopStatusUpcoming => 'Upcoming';
+
+  @override
+  String get stopStatusInProgress => 'In Progress';
+
+  @override
+  String get stopStatusCompleted => 'Completed';
+
+  @override
+  String get stopStatusMissed => 'Missed';
+
+  @override
   String get myItinerary => 'My Itinerary';
 
   @override

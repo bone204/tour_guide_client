@@ -3143,6 +3143,54 @@ abstract class AppLocalizations {
   /// **'Estimated Arrival'**
   String get estimatedArrival;
 
+  /// No description provided for @checkInSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in successful!'**
+  String get checkInSuccess;
+
+  /// No description provided for @checkInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in failed'**
+  String get checkInFailed;
+
+  /// No description provided for @checkInHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Check In Here'**
+  String get checkInHere;
+
+  /// No description provided for @gettingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting location...'**
+  String get gettingLocation;
+
+  /// No description provided for @stopStatusUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get stopStatusUpcoming;
+
+  /// No description provided for @stopStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get stopStatusInProgress;
+
+  /// No description provided for @stopStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get stopStatusCompleted;
+
+  /// No description provided for @stopStatusMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get stopStatusMissed;
+
   /// No description provided for @myItinerary.
   ///
   /// In en, this message translates to:
