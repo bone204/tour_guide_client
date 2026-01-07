@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';

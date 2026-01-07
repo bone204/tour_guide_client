@@ -423,9 +423,17 @@ class _AnimatedLocationMarkerState extends State<_AnimatedLocationMarker>
             );
           },
         ),
-        // Main marker
-        Transform.rotate(
-          angle: widget.heading != null ? (widget.heading! * math.pi / 180) : 0,
+        // Main marker with smooth rotation animation
+        TweenAnimationBuilder<double>(
+          tween: Tween<double>(
+            begin: widget.heading ?? 0,
+            end: widget.heading ?? 0,
+          ),
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+          builder: (context, angle, child) {
+            return Transform.rotate(angle: angle * math.pi / 180, child: child);
+          },
           child: Container(
             width: 40,
             height: 40,

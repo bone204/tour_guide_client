@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_compass/flutter_compass.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
@@ -77,6 +78,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   final OSMService _osmService = OSMService();
   final OSRMService _osrmService = OSRMService();
   StreamSubscription<Position>? _positionStreamSubscription;
+  StreamSubscription<CompassEvent>? _compassStreamSubscription;
 
   static const double _defaultZoom = 15;
   static const double _destinationZoom = 17.5;
@@ -95,6 +97,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   @override
   void dispose() {
     _positionStreamSubscription?.cancel();
+    _compassStreamSubscription?.cancel();
     _transportModeDebounceTimer?.cancel();
     _searchDebounceTimer?.cancel();
     _mapController.dispose();

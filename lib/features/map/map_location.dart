@@ -70,6 +70,21 @@ extension MapLocationExtension on _MapPageState {
   /// Bắt đầu lắng nghe vị trí và hướng di chuyển
   void _startPositionTracking() {
     _positionStreamSubscription?.cancel();
+    _compassStreamSubscription?.cancel();
+
+    // Start compass tracking immediately for device heading
+    _compassStreamSubscription = FlutterCompass.events?.listen((
+      CompassEvent event,
+    ) {
+      if (!mounted) return;
+
+      // heading is in degrees: 0° = North, 90° = East, 180° = South, 270° = West
+      if (event.heading != null) {
+        setState(() {
+          _currentHeading = event.heading;
+        });
+      }
+    });
 
     const locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
@@ -85,8 +100,7 @@ extension MapLocationExtension on _MapPageState {
 
       setState(() {
         _currentPosition = newPosition;
-        // heading is in degrees: 0° = North, 90° = East, 180° = South, 270° = West
-        _currentHeading = position.heading;
+        // Don't use GPS heading anymore, we use compass heading instead
       });
     });
   }
@@ -95,5 +109,7 @@ extension MapLocationExtension on _MapPageState {
   void _stopPositionTracking() {
     _positionStreamSubscription?.cancel();
     _positionStreamSubscription = null;
+    _compassStreamSubscription?.cancel();
+    _compassStreamSubscription = null;
   }
 }
