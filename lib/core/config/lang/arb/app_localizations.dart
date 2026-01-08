@@ -155,6 +155,24 @@ abstract class AppLocalizations {
   /// **'Delivering'**
   String get statusDelivering;
 
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @discardChangesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get discardChangesTitle;
+
+  /// No description provided for @discardChangesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to discard your changes?'**
+  String get discardChangesMessage;
+
   /// No description provided for @statusDelivered.
   ///
   /// In en, this message translates to:
@@ -5488,12 +5506,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notification List'**
   String get notificationList;
-
-  /// No description provided for @loading.
-  ///
-  /// In en, this message translates to:
-  /// **'Loading...'**
-  String get loading;
 
   /// No description provided for @noVouchersAvailable.
   ///

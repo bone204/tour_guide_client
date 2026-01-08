@@ -105,6 +105,7 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/update_iti
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/suggest_itinerary/suggest_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/get_stop_detail/get_stop_detail_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/checkin_stop/checkin_stop_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/get_provinces/get_province_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/delete_itinerary/delete_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/delete_itinerary_stop.dart';
@@ -143,6 +144,11 @@ import 'package:tour_guide_app/features/auth/presentation/bloc/update_hobbies/up
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/enable_disable_vehicle/enable_disable_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_owner_rental_bills.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_owner_rental_bills/get_owner_rental_bills_cubit.dart';
+import 'package:tour_guide_app/core/services/bank/data/data_sources/bank_api_service.dart';
+import 'package:tour_guide_app/core/services/bank/data/repositories/bank_repository_impl.dart';
+import 'package:tour_guide_app/core/services/bank/domain/repositories/bank_repository.dart';
+import 'package:tour_guide_app/core/services/bank/domain/usecases/get_banks_use_case.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_banks/get_banks_cubit.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/search_motorbike/search_motorbike_cubit.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/create_rental_bill/create_rental_bill_cubit.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/motorbike_detail/motorbike_detail_cubit.dart';
@@ -220,8 +226,10 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<CooperationApiService>(CooperationApiServiceImpl());
   sl.registerSingleton<NotificationApiService>(NotificationApiServiceImpl());
   sl.registerSingleton<NotificationSocketService>(NotificationSocketService());
+  sl.registerSingleton<BankApiService>(BankApiServiceImpl());
 
   // Repositories
+  sl.registerSingleton<BankRepository>(BankRepositoryImpl(sl()));
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   sl.registerSingleton<SettingsRepository>(SettingsRepositoryImpl());
   sl.registerSingleton<DestinationRepository>(DestinationRepositoryImpl());
@@ -283,6 +291,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
     DeleteItineraryStopUseCase(sl()),
   );
   sl.registerSingleton<GetMyProfileUseCase>(GetMyProfileUseCase());
+  sl.registerSingleton<GetBanksUseCase>(GetBanksUseCase(sl()));
   sl.registerLazySingleton<DeleteStopMediaUseCase>(
     () => DeleteStopMediaUseCase(),
   );
@@ -442,6 +451,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<AddStopCubit>(() => AddStopCubit(sl()));
   sl.registerFactory<GetStopDetailCubit>(() => GetStopDetailCubit(sl()));
   sl.registerFactory<CheckInStopCubit>(() => CheckInStopCubit(sl()));
+  sl.registerFactory<GetProvinceCubit>(() => GetProvinceCubit());
+  sl.registerFactory<GetBanksCubit>(() => GetBanksCubit(sl()));
   sl.registerFactory<DeleteItineraryCubit>(() => DeleteItineraryCubit(sl()));
   sl.registerFactory<EditStopCubit>(() => EditStopCubit(sl(), sl(), sl()));
   sl.registerFactory<StopMediaCubit>(() => StopMediaCubit(sl(), sl(), sl()));

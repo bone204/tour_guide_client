@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/image_picker_field.widget.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/business_type_selector.widget.dart';
+import 'package:tour_guide_app/common/widgets/dropdown/province_dropdown.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/get_provinces/get_province_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/get_provinces/get_province_state.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
 
 class BusinessInfoStep extends StatefulWidget {
   final String businessType;
@@ -45,32 +50,35 @@ class _BusinessInfoStepState extends State<BusinessInfoStep> {
   final _formKey = GlobalKey<FormState>();
   late String _businessType;
   late TextEditingController _businessNameController;
-  late TextEditingController _businessProvinceController;
   late TextEditingController _businessAddressController;
   late TextEditingController _taxCodeController;
   late TextEditingController _notesController;
   String? _businessRegisterPhotoPath;
+
+  // Province dropdown state
+  List<Province> _provinces = [];
+  bool _isLoadingProvinces = false;
+  Province? _selectedProvince;
 
   @override
   void initState() {
     super.initState();
     _businessType = widget.businessType;
     _businessNameController = TextEditingController(text: widget.businessName);
-    _businessProvinceController = TextEditingController(
-      text: widget.businessProvince,
-    );
     _businessAddressController = TextEditingController(
       text: widget.businessAddress,
     );
     _taxCodeController = TextEditingController(text: widget.taxCode);
     _notesController = TextEditingController(text: widget.notes);
     _businessRegisterPhotoPath = widget.businessRegisterPhoto;
+
+    // Fetch provinces
+    context.read<GetProvinceCubit>().getProvinces(search: null);
   }
 
   @override
   void dispose() {
     _businessNameController.dispose();
-    _businessProvinceController.dispose();
     _businessAddressController.dispose();
     _taxCodeController.dispose();
     _notesController.dispose();
@@ -85,11 +93,28 @@ class _BusinessInfoStepState extends State<BusinessInfoStep> {
   }
 
   void _handleNext() {
-    if (_formKey.currentState!.validate()) {
+    final isFormValid = _formKey.currentState!.validate();
+
+    // Manual validation for province
+    if (_selectedProvince == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(
+              context,
+            )!.fieldRequired(AppLocalizations.of(context)!.province),
+          ),
+          backgroundColor: AppColors.primaryRed,
+        ),
+      );
+      return;
+    }
+
+    if (isFormValid) {
       widget.onNext(
         businessType: _businessType,
         businessName: _businessNameController.text,
-        businessProvince: _businessProvinceController.text,
+        businessProvince: _selectedProvince!.name,
         businessAddress: _businessAddressController.text,
         taxCode: _taxCodeController.text,
         businessRegisterPhoto: _businessRegisterPhotoPath,
@@ -100,130 +125,160 @@ class _BusinessInfoStepState extends State<BusinessInfoStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.all(20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            BusinessTypeSelector(
-              label: AppLocalizations.of(context)!.businessType,
-              selectedType: _businessType,
-              onChanged: (type) {
-                setState(() {
-                  _businessType = type;
-                });
-              },
-            ),
-            SizedBox(height: 16.h),
-            CustomTextField(
-              label: AppLocalizations.of(context)!.businessName,
-              placeholder: AppLocalizations.of(context)!.enterBusinessName,
-              controller: _businessNameController,
-              validator:
-                  (value) => _validateRequired(
-                    value,
-                    AppLocalizations.of(context)!.businessName,
-                  ),
-            ),
-            SizedBox(height: 16.h),
-            CustomTextField(
-              label: AppLocalizations.of(context)!.province,
-              placeholder: AppLocalizations.of(context)!.searchProvinceHint,
-              controller: _businessProvinceController,
-              validator:
-                  (value) => _validateRequired(
-                    value,
-                    AppLocalizations.of(context)!.province,
-                  ),
-            ),
-            SizedBox(height: 16.h),
-            CustomTextField(
-              label: AppLocalizations.of(context)!.businessAddress,
-              placeholder: AppLocalizations.of(context)!.enterBusinessAddress,
-              controller: _businessAddressController,
-              validator:
-                  (value) => _validateRequired(
-                    value,
-                    AppLocalizations.of(context)!.businessAddress,
-                  ),
-              maxLines: 3,
-            ),
-            SizedBox(height: 16.h),
-            CustomTextField(
-              label: AppLocalizations.of(context)!.taxCode,
-              placeholder: AppLocalizations.of(context)!.enterTaxCode,
-              controller: _taxCodeController,
-              validator:
-                  (value) => _validateRequired(
-                    value,
-                    AppLocalizations.of(context)!.taxCode,
-                  ),
-            ),
-            SizedBox(height: 20.h),
-            ImagePickerField(
-              title: AppLocalizations.of(context)!.businessRegisterPhoto,
-              imagePath: _businessRegisterPhotoPath,
-              onImageSelected: (path) {
-                setState(() {
-                  _businessRegisterPhotoPath = path;
-                });
-              },
-            ),
-            SizedBox(height: 16.h),
-            CustomTextField(
-              label: AppLocalizations.of(context)!.notes,
-              placeholder: AppLocalizations.of(context)!.note,
-              controller: _notesController,
-              maxLines: 4,
-            ),
-            SizedBox(height: 32.h),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: widget.onBack,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.secondaryGrey,
-                      padding: EdgeInsets.symmetric(vertical: 14.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
+    return BlocListener<GetProvinceCubit, GetProvinceState>(
+      listener: (context, state) {
+        if (state is GetProvinceLoading) {
+          setState(() {
+            _isLoadingProvinces = true;
+          });
+        } else if (state is GetProvinceLoaded) {
+          setState(() {
+            _isLoadingProvinces = false;
+            _provinces = state.provinces;
+
+            // Set initial province if available
+            if (widget.businessProvince != null &&
+                widget.businessProvince!.isNotEmpty &&
+                _selectedProvince == null) {
+              try {
+                _selectedProvince = _provinces.firstWhere(
+                  (p) => p.name == widget.businessProvince,
+                );
+              } catch (_) {}
+            }
+          });
+        } else if (state is GetProvinceError) {
+          setState(() {
+            _isLoadingProvinces = false;
+          });
+        }
+      },
+      child: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              BusinessTypeSelector(
+                label: AppLocalizations.of(context)!.businessType,
+                selectedType: _businessType,
+                onChanged: (type) {
+                  setState(() {
+                    _businessType = type;
+                  });
+                },
+              ),
+              SizedBox(height: 16.h),
+              CustomTextField(
+                label: AppLocalizations.of(context)!.businessName,
+                placeholder: AppLocalizations.of(context)!.enterBusinessName,
+                controller: _businessNameController,
+                validator:
+                    (value) => _validateRequired(
+                      value,
+                      AppLocalizations.of(context)!.businessName,
+                    ),
+              ),
+              SizedBox(height: 16.h),
+              // Province Dropdown
+              ProvinceDropdown(
+                provinces: _provinces,
+                selectedProvince: _selectedProvince,
+                isLoading: _isLoadingProvinces,
+                onChanged: (province) {
+                  setState(() {
+                    _selectedProvince = province;
+                  });
+                },
+              ),
+              SizedBox(height: 16.h),
+              CustomTextField(
+                label: AppLocalizations.of(context)!.businessAddress,
+                placeholder: AppLocalizations.of(context)!.enterBusinessAddress,
+                controller: _businessAddressController,
+                validator:
+                    (value) => _validateRequired(
+                      value,
+                      AppLocalizations.of(context)!.businessAddress,
+                    ),
+                maxLines: 3,
+              ),
+              SizedBox(height: 16.h),
+              CustomTextField(
+                label: AppLocalizations.of(context)!.taxCode,
+                placeholder: AppLocalizations.of(context)!.enterTaxCode,
+                controller: _taxCodeController,
+                validator:
+                    (value) => _validateRequired(
+                      value,
+                      AppLocalizations.of(context)!.taxCode,
+                    ),
+              ),
+              SizedBox(height: 20.h),
+              ImagePickerField(
+                title: AppLocalizations.of(context)!.businessRegisterPhoto,
+                imagePath: _businessRegisterPhotoPath,
+                onImageSelected: (path) {
+                  setState(() {
+                    _businessRegisterPhotoPath = path;
+                  });
+                },
+              ),
+              SizedBox(height: 16.h),
+              CustomTextField(
+                label: AppLocalizations.of(context)!.notes,
+                placeholder: AppLocalizations.of(context)!.note,
+                controller: _notesController,
+                maxLines: 4,
+              ),
+              SizedBox(height: 32.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: widget.onBack,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.secondaryGrey,
+                        padding: EdgeInsets.symmetric(vertical: 14.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.back,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
-                    child: Text(
-                      AppLocalizations.of(context)!.back,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
+                  ),
+                  SizedBox(width: 16.w),
+                  Expanded(
+                    flex: 2,
+                    child: ElevatedButton(
+                      onPressed: _handleNext,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryBlue,
+                        padding: EdgeInsets.symmetric(vertical: 14.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.next,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.primaryWhite,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(width: 16.w),
-                Expanded(
-                  flex: 2,
-                  child: ElevatedButton(
-                    onPressed: _handleNext,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryBlue,
-                      padding: EdgeInsets.symmetric(vertical: 14.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.next,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.primaryWhite,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

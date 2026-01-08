@@ -34,7 +34,10 @@ class ProfileFeatureTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         child: InkWell(
           borderRadius: BorderRadius.circular(16.r),
-          onTap: onTap,
+          onTap: () async {
+            await Future.delayed(const Duration(milliseconds: 200));
+            onTap();
+          },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
             child: Row(

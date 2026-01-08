@@ -39,6 +39,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get statusDelivering => 'Đang giao xe';
 
   @override
+  String get loading => 'Đang tải...';
+
+  @override
+  String get discardChangesTitle => 'Hủy bỏ thay đổi?';
+
+  @override
+  String get discardChangesMessage => 'Bạn có chắc chắn muốn hủy bỏ các thay đổi không?';
+
+  @override
   String get statusDelivered => 'Đã giao xe';
 
   @override
@@ -2794,9 +2803,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get notificationList => 'Danh sách thông báo';
-
-  @override
-  String get loading => 'Đang tải...';
 
   @override
   String get noVouchersAvailable => 'Không có mã giảm giá';

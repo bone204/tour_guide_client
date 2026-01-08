@@ -8,9 +8,11 @@ import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/create_contract/create_contract_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/create_contract/create_contract_state.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_banks/get_banks_cubit.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/get_provinces/get_province_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/step_indicator.widget.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/steps/citizen_info_step.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/steps/business_info_step.page.dart';
@@ -27,6 +29,8 @@ class CreateContractPage extends StatefulWidget {
       providers: [
         BlocProvider(create: (_) => sl<CreateContractCubit>()),
         BlocProvider(create: (_) => sl<GetMyProfileCubit>()),
+        BlocProvider(create: (_) => sl<GetProvinceCubit>()),
+        BlocProvider(create: (_) => sl<GetBanksCubit>()),
       ],
       child: const CreateContractPage(),
     );
@@ -129,9 +133,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
             appBar: CustomAppBar(
               title: AppLocalizations.of(context)!.contractInfo,
               showBackButton: true,
-              onBackPressed: () {
-                Navigator.of(context, rootNavigator: true).pop();
-              },
+              onBackPressed: _handleBackPressed,
             ),
             body: Column(
               children: [
@@ -155,6 +157,64 @@ class _CreateContractPageState extends State<CreateContractPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _handleBackPressed() {
+    showAppDialog<void>(
+      context: context,
+      title: AppLocalizations.of(context)!.discardChangesTitle,
+      content: AppLocalizations.of(context)!.discardChangesMessage,
+      actions: [
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+                style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 12.h),
+                  side: const BorderSide(color: AppColors.primaryBlue),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.cancel,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.primaryBlue,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryRed,
+                  padding: EdgeInsets.symmetric(vertical: 12.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.exit,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.primaryWhite,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

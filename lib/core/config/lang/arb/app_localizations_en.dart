@@ -39,6 +39,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statusDelivering => 'Delivering';
 
   @override
+  String get loading => 'Loading...';
+
+  @override
+  String get discardChangesTitle => 'Discard changes?';
+
+  @override
+  String get discardChangesMessage => 'Are you sure you want to discard your changes?';
+
+  @override
   String get statusDelivered => 'Delivered';
 
   @override
@@ -2788,9 +2797,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationList => 'Notification List';
-
-  @override
-  String get loading => 'Loading...';
 
   @override
   String get noVouchersAvailable => 'No vouchers available';
