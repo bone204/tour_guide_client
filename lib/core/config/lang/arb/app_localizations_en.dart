@@ -293,6 +293,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectPickupLocation => 'Select pickup location';
 
   @override
+  String get rentalProvince => 'Rental Province';
+
+  @override
+  String get selectRentalProvince => 'Select rental province';
+
+  @override
   String get rent => 'Rent';
 
   @override
@@ -2293,6 +2299,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exploreItineraries => 'Explore Itineraries';
 
   @override
+  String get cameraPermissionDenied => 'Camera permission denied';
+
+  @override
+  String get faceInstruction => 'Place your face in the frame';
+
+  @override
+  String cameraError(String error) {
+    return 'Error initializing camera: $error';
+  }
+
+  @override
+  String get noCamerasAvailable => 'No cameras available';
+
+  @override
+  String get cameraNotInitialized => 'Camera not initialized';
+
+  @override
+  String takePictureError(String error) {
+    return 'Error taking picture: $error';
+  }
+
+  @override
   String get unknownUser => 'Unknown User';
 
   @override
@@ -2803,4 +2831,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get getDirections => 'Get Directions';
+
+  @override
+  String get vehiclePhotoInstruction => 'Please take a photo of the vehicle';
 }

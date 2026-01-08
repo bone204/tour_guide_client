@@ -152,7 +152,7 @@ class _CarRentalPageState extends State<CarRentalPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.pickupLocation,
+                  AppLocalizations.of(context)!.rentalProvince,
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(height: 8.h),
@@ -180,10 +180,10 @@ class _CarRentalPageState extends State<CarRentalPage> {
                           SizedBox(width: 12.w),
                           Text(
                             isLoadingProvinces
-                                ? 'Loading...'
+                                ? AppLocalizations.of(context)!.loading
                                 : AppLocalizations.of(
                                   context,
-                                )!.selectPickupLocation,
+                                )!.selectRentalProvince,
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(color: AppColors.textSubtitle),
                           ),

@@ -659,6 +659,18 @@ abstract class AppLocalizations {
   /// **'Select pickup location'**
   String get selectPickupLocation;
 
+  /// No description provided for @rentalProvince.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Province'**
+  String get rentalProvince;
+
+  /// No description provided for @selectRentalProvince.
+  ///
+  /// In en, this message translates to:
+  /// **'Select rental province'**
+  String get selectRentalProvince;
+
   /// No description provided for @rent.
   ///
   /// In en, this message translates to:
@@ -4511,6 +4523,42 @@ abstract class AppLocalizations {
   /// **'Explore Itineraries'**
   String get exploreItineraries;
 
+  /// No description provided for @cameraPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera permission denied'**
+  String get cameraPermissionDenied;
+
+  /// No description provided for @faceInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Place your face in the frame'**
+  String get faceInstruction;
+
+  /// No description provided for @cameraError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error initializing camera: {error}'**
+  String cameraError(String error);
+
+  /// No description provided for @noCamerasAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No cameras available'**
+  String get noCamerasAvailable;
+
+  /// No description provided for @cameraNotInitialized.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera not initialized'**
+  String get cameraNotInitialized;
+
+  /// No description provided for @takePictureError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error taking picture: {error}'**
+  String takePictureError(String error);
+
   /// No description provided for @unknownUser.
   ///
   /// In en, this message translates to:
@@ -5518,6 +5566,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get Directions'**
   String get getDirections;
+
+  /// No description provided for @vehiclePhotoInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Please take a photo of the vehicle'**
+  String get vehiclePhotoInstruction;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

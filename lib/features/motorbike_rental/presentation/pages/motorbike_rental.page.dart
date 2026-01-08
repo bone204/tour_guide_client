@@ -152,7 +152,7 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.pickupLocation,
+                  AppLocalizations.of(context)!.rentalProvince,
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(height: 8.h),
@@ -180,10 +180,10 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
                           SizedBox(width: 12.w),
                           Text(
                             isLoadingProvinces
-                                ? 'Loading...'
+                                ? AppLocalizations.of(context)!.loading
                                 : AppLocalizations.of(
                                   context,
-                                )!.selectPickupLocation,
+                                )!.selectRentalProvince,
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(color: AppColors.textSubtitle),
                           ),
@@ -233,10 +233,12 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         maxHeight: 300.h,
+                        
                       ),
                       menuItemStyleData: MenuItemStyleData(
                         padding: EdgeInsets.symmetric(horizontal: 16.w),
                       ),
+                      
                     ),
                   ),
                 ),

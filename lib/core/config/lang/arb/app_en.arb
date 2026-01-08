@@ -161,6 +161,10 @@
 
   "selectPickupLocation": "Select pickup location",
 
+  "rentalProvince": "Rental Province",
+
+  "selectRentalProvince": "Select rental province",
+
   "rent": "Rent",
 
   "details": "Details",
@@ -1371,6 +1375,26 @@
 
   "explore": "Explore",
   "exploreItineraries": "Explore Itineraries",
+  "cameraPermissionDenied": "Camera permission denied",
+  "faceInstruction": "Place your face in the frame",
+  "cameraError": "Error initializing camera: {error}",
+  "@cameraError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "noCamerasAvailable": "No cameras available",
+  "cameraNotInitialized": "Camera not initialized",
+  "takePictureError": "Error taking picture: {error}",
+  "@takePictureError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "unknownUser": "Unknown User",
   "destinationsCount": "{count} Destinations",
   "@destinationsCount": {
@@ -1640,5 +1664,6 @@
   "reviews": "reviews",
   "getDirections": "Get Directions",
   "about": "About",
-  "photos": "Photos"
+  "photos": "Photos",
+  "vehiclePhotoInstruction": "Please take a photo of the vehicle"
 }

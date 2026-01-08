@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tour_guide_app/core/usecases/no_params.dart';
@@ -15,22 +13,12 @@ class NotificationCubit extends Cubit<NotificationState> {
   final MarkNotificationReadUseCase markNotificationReadUseCase;
   final NotificationSocketService socketService;
 
-  Timer? _pollingTimer;
-
   NotificationCubit({
     required this.getMyNotificationsUseCase,
     required this.markNotificationReadUseCase,
     required this.socketService,
   }) : super(NotificationInitial()) {
     _initSocket();
-    _startPolling();
-  }
-
-  void _startPolling() {
-    _pollingTimer?.cancel();
-    _pollingTimer = Timer.periodic(const Duration(seconds: 5), (_) {
-      getNotifications();
-    });
   }
 
   Future<void> _initSocket() async {
@@ -117,7 +105,6 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   @override
   Future<void> close() {
-    _pollingTimer?.cancel();
     socketService.disconnect();
     return super.close();
   }

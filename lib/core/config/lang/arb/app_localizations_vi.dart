@@ -293,6 +293,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get selectPickupLocation => 'Chọn địa điểm nhận';
 
   @override
+  String get rentalProvince => 'Tỉnh thuê';
+
+  @override
+  String get selectRentalProvince => 'Chọn tỉnh thuê';
+
+  @override
   String get rent => 'Thuê';
 
   @override
@@ -2299,6 +2305,28 @@ class AppLocalizationsVi extends AppLocalizations {
   String get exploreItineraries => 'Khám phá lộ trình';
 
   @override
+  String get cameraPermissionDenied => 'Quyền truy cập máy ảnh bị từ chối';
+
+  @override
+  String get faceInstruction => 'Đưa mặt vào khung hình';
+
+  @override
+  String cameraError(String error) {
+    return 'Lỗi khởi tạo máy ảnh: $error';
+  }
+
+  @override
+  String get noCamerasAvailable => 'Không tìm thấy máy ảnh';
+
+  @override
+  String get cameraNotInitialized => 'Máy ảnh chưa được khởi tạo';
+
+  @override
+  String takePictureError(String error) {
+    return 'Lỗi khi chụp ảnh: $error';
+  }
+
+  @override
   String get unknownUser => 'Người dùng ẩn danh';
 
   @override
@@ -2809,4 +2837,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get getDirections => 'Tìm đường đi';
+
+  @override
+  String get vehiclePhotoInstruction => 'Vui lòng chụp ảnh xe';
 }

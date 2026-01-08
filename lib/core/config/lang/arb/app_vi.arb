@@ -59,6 +59,26 @@
 
   "explore": "Khám phá",
   "exploreItineraries": "Khám phá lộ trình",
+  "cameraPermissionDenied": "Quyền truy cập máy ảnh bị từ chối",
+  "faceInstruction": "Đưa mặt vào khung hình",
+  "cameraError": "Lỗi khởi tạo máy ảnh: {error}",
+  "@cameraError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "noCamerasAvailable": "Không tìm thấy máy ảnh",
+  "cameraNotInitialized": "Máy ảnh chưa được khởi tạo",
+  "takePictureError": "Lỗi khi chụp ảnh: {error}",
+  "@takePictureError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "unknownUser": "Người dùng ẩn danh",
   "destinationsCount": "{count} Điểm đến",
   "@destinationsCount": {
@@ -198,6 +218,10 @@
   "pickupLocation": "Địa điểm nhận",
 
   "selectPickupLocation": "Chọn địa điểm nhận",
+
+  "rentalProvince": "Tỉnh thuê",
+
+  "selectRentalProvince": "Chọn tỉnh thuê",
 
   "rent": "Thuê",
 
@@ -1644,5 +1668,6 @@
   "pointDiscount": "Giảm giá điểm thưởng",
   "noMemoriesToday": "Hôm nay không có kỷ niệm nào",
   "sinceYouCompleted": "Kể từ khi bạn hoàn thành",
-  "getDirections": "Tìm đường đi"
+  "getDirections": "Tìm đường đi",
+  "vehiclePhotoInstruction": "Vui lòng chụp ảnh xe"
 }
