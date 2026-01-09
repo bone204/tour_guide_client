@@ -144,6 +144,7 @@ import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_c
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/update_hobbies.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/update_hobbies/update_hobbies_cubit.dart';
+import 'package:tour_guide_app/features/auth/presentation/bloc/update_contact_info/update_contact_info_cubit.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_citizen_id/verify_citizen_id_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/enable_disable_vehicle/enable_disable_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_owner_rental_bills.dart';
@@ -496,6 +497,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerFactory<UpdateHobbiesCubit>(
     () => UpdateHobbiesCubit(updateHobbiesUseCase: sl()),
+  );
+  sl.registerFactory<UpdateContactInfoCubit>(
+    () => UpdateContactInfoCubit(updateInitialProfileUseCase: sl()),
   );
   sl.registerFactory<SearchMotorbikeCubit>(() => SearchMotorbikeCubit());
   sl.registerFactory<CreateRentalBillCubit>(() => CreateRentalBillCubit());

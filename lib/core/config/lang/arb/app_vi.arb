@@ -1,4 +1,8 @@
 {
+  "phoneInvalid": "Số điện thoại không hợp lệ",
+  "emailInvalid": "Định dạng email không hợp lệ",
+  "updateContactInfo": "Cập nhật thông tin liên hệ",
+  "update": "Cập nhật",
   "youHaveNotVerifiedIdentity": "Bạn chưa xác thực danh tính",
   "deleteStopSuccess": "Đã xóa điểm dừng",
   "deleteStopConfirmTitle": "Xóa điểm dừng",

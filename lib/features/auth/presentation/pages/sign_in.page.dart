@@ -104,7 +104,15 @@ class _SignInPageState extends State<SignInPage> {
                         );
                       },
                       (user) {
-                        if (user.hobbies.isEmpty) {
+                        if (user.email == null ||
+                            (user.email?.isEmpty ?? true) ||
+                            user.phone == null ||
+                            (user.phone?.isEmpty ?? true)) {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            AppRouteConstant.updateInitialProfile,
+                          );
+                        } else if (user.hobbies.isEmpty) {
                           Navigator.pushReplacementNamed(
                             context,
                             AppRouteConstant.interestSelection,

@@ -220,7 +220,18 @@ class _SplashScreenPageState extends State<SplashScreenPage>
             );
           },
           (user) {
-            if (user.hobbies.isEmpty) {
+            if (user.email == null ||
+                (user.email?.isEmpty ?? true) ||
+                user.phone == null ||
+                (user.phone?.isEmpty ?? true)) {
+              debugPrint(
+                '⚠️ User missing contact info, redirecting to update profile',
+              );
+              Navigator.pushReplacementNamed(
+                context,
+                AppRouteConstant.updateInitialProfile,
+              );
+            } else if (user.hobbies.isEmpty) {
               debugPrint(
                 '⚠️ User has no hobbies, redirecting to interest selection',
               );

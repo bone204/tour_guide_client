@@ -1,4 +1,8 @@
 {
+  "phoneInvalid": "Invalid phone number",
+  "emailInvalid": "Invalid email format",
+  "updateContactInfo": "Update Contact Info",
+  "update": "Update",
   "youHaveNotVerifiedIdentity": "You have not verified your identity",
   "deleteStopSuccess": "Delete stop successfully",
   "deleteStopConfirmTitle": "Delete Stop",

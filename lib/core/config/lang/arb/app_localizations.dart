@@ -95,6 +95,30 @@ abstract class AppLocalizations {
     Locale('vi')
   ];
 
+  /// No description provided for @phoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid phone number'**
+  String get phoneInvalid;
+
+  /// No description provided for @emailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email format'**
+  String get emailInvalid;
+
+  /// No description provided for @updateContactInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Contact Info'**
+  String get updateContactInfo;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
   /// No description provided for @youHaveNotVerifiedIdentity.
   ///
   /// In en, this message translates to:
@@ -3118,12 +3142,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You have unsaved changes. Discard them?'**
   String get unsavedChangesMessage;
-
-  /// No description provided for @update.
-  ///
-  /// In en, this message translates to:
-  /// **'Update'**
-  String get update;
 
   /// No description provided for @noChangesToUpdate.
   ///

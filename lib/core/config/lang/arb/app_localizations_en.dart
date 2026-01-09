@@ -9,6 +9,18 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get phoneInvalid => 'Invalid phone number';
+
+  @override
+  String get emailInvalid => 'Invalid email format';
+
+  @override
+  String get updateContactInfo => 'Update Contact Info';
+
+  @override
+  String get update => 'Update';
+
+  @override
   String get youHaveNotVerifiedIdentity => 'You have not verified your identity';
 
   @override
@@ -1543,9 +1555,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unsavedChangesMessage => 'You have unsaved changes. Discard them?';
-
-  @override
-  String get update => 'Update';
 
   @override
   String get noChangesToUpdate => 'No changes to update';

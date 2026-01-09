@@ -9,6 +9,18 @@ class AppLocalizationsVi extends AppLocalizations {
   AppLocalizationsVi([String locale = 'vi']) : super(locale);
 
   @override
+  String get phoneInvalid => 'Số điện thoại không hợp lệ';
+
+  @override
+  String get emailInvalid => 'Định dạng email không hợp lệ';
+
+  @override
+  String get updateContactInfo => 'Cập nhật thông tin liên hệ';
+
+  @override
+  String get update => 'Cập nhật';
+
+  @override
   String get youHaveNotVerifiedIdentity => 'Bạn chưa xác thực danh tính';
 
   @override
@@ -1549,9 +1561,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get unsavedChangesMessage => 'Bạn có thay đổi chưa lưu. Bạn có muốn hủy không?';
-
-  @override
-  String get update => 'Cập nhật';
 
   @override
   String get noChangesToUpdate => 'Không có thay đổi nào để cập nhật';
