@@ -8,9 +8,11 @@ class ContractParams {
   final String citizenId;
   final String businessType;
   final String businessName;
-  final String businessProvince;
   final String businessAddress;
   final String taxCode;
+
+  final double? businessLatitude;
+  final double? businessLongitude;
 
   /// File upload (multipart)
   final dynamic businessRegisterPhoto;
@@ -31,9 +33,10 @@ class ContractParams {
     required this.citizenId,
     required this.businessType,
     this.businessName = '',
-    this.businessProvince = '',
     this.businessAddress = '',
     this.taxCode = '',
+    this.businessLatitude,
+    this.businessLongitude,
     this.businessRegisterPhoto,
     this.citizenFrontPhoto,
 
@@ -52,9 +55,10 @@ class ContractParams {
       'citizenId': citizenId,
       'businessType': businessType,
       'businessName': businessName,
-      'businessProvince': businessProvince,
       'businessAddress': businessAddress,
       'taxCode': taxCode,
+      'businessLatitude': businessLatitude,
+      'businessLongitude': businessLongitude,
       'businessRegisterPhoto': businessRegisterPhoto,
       'citizenFrontPhoto': citizenFrontPhoto,
       'notes': notes,

@@ -10,6 +10,11 @@
   "@@locale": "en",
   "signInNow": "Sign in now",
 
+  "searchAddress": "Search address...",
+  "selectedLocation": "Selected Location",
+  "tapToSelectLocation": "Tap to select location on map",
+  "confirmLocation": "Confirm Location",
+
   "signInDescription": "Please sign in to continue using our app",
 
   "usernameOrEmail": "Username/Email",

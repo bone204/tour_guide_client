@@ -50,11 +50,12 @@ class _CreateContractPageState extends State<CreateContractPage> {
   // Step 2 data
   String _businessType = 'personal';
   String? _businessName;
-  String? _businessProvince;
   String? _businessAddress;
   String? _taxCode;
   String? _businessRegisterPhoto;
   String? _notes;
+  double? _businessLatitude;
+  double? _businessLongitude;
 
   // Step 3 data
   String? _bankName;
@@ -248,7 +249,6 @@ class _CreateContractPageState extends State<CreateContractPage> {
         return BusinessInfoStep(
           businessType: _businessType,
           businessName: _businessName,
-          businessProvince: _businessProvince,
           businessAddress: _businessAddress,
           taxCode: _taxCode,
           businessRegisterPhoto: _businessRegisterPhoto,
@@ -256,20 +256,22 @@ class _CreateContractPageState extends State<CreateContractPage> {
           onNext: ({
             required String businessType,
             String? businessName,
-            String? businessProvince,
             String? businessAddress,
             String? taxCode,
             String? businessRegisterPhoto,
             String? notes,
+            double? lat,
+            double? lng,
           }) {
             setState(() {
               _businessType = businessType;
               _businessName = businessName;
-              _businessProvince = businessProvince;
               _businessAddress = businessAddress;
               _taxCode = taxCode;
               _businessRegisterPhoto = businessRegisterPhoto;
               _notes = notes;
+              _businessLatitude = lat;
+              _businessLongitude = lng;
             });
             _nextStep();
           },
@@ -310,9 +312,10 @@ class _CreateContractPageState extends State<CreateContractPage> {
       citizenId: _citizenNumber,
       businessType: _businessType,
       businessName: _businessName ?? '',
-      businessProvince: _businessProvince ?? '',
       businessAddress: _businessAddress ?? '',
       taxCode: _taxCode ?? '',
+      businessLatitude: _businessLatitude,
+      businessLongitude: _businessLongitude,
       businessRegisterPhoto: _businessRegisterPhoto,
       citizenFrontPhoto: _citizenFrontPhoto,
       bankName: _bankName ?? '',

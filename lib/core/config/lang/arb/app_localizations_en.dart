@@ -36,6 +36,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signInNow => 'Sign in now';
 
   @override
+  String get searchAddress => 'Search address...';
+
+  @override
+  String get selectedLocation => 'Selected Location';
+
+  @override
+  String get tapToSelectLocation => 'Tap to select location on map';
+
+  @override
+  String get confirmLocation => 'Confirm Location';
+
+  @override
   String get signInDescription => 'Please sign in to continue using our app';
 
   @override

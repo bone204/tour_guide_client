@@ -36,6 +36,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signInNow => 'Đăng nhập ngay';
 
   @override
+  String get searchAddress => 'Tìm kiếm địa chỉ...';
+
+  @override
+  String get selectedLocation => 'Vị trí đã chọn';
+
+  @override
+  String get tapToSelectLocation => 'Chạm vào bản đồ để chọn vị trí';
+
+  @override
+  String get confirmLocation => 'Xác nhận vị trí';
+
+  @override
   String get signInDescription => 'Vui lòng đăng nhập để tiếp tục sử dụng ứng dụng của chúng tôi';
 
   @override

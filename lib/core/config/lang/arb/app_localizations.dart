@@ -149,6 +149,30 @@ abstract class AppLocalizations {
   /// **'Sign in now'**
   String get signInNow;
 
+  /// No description provided for @searchAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Search address...'**
+  String get searchAddress;
+
+  /// No description provided for @selectedLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Location'**
+  String get selectedLocation;
+
+  /// No description provided for @tapToSelectLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select location on map'**
+  String get tapToSelectLocation;
+
+  /// No description provided for @confirmLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Location'**
+  String get confirmLocation;
+
   /// No description provided for @signInDescription.
   ///
   /// In en, this message translates to:

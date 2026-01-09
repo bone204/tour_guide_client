@@ -10,6 +10,11 @@
   "@@locale": "vi",
   "signInNow": "Đăng nhập ngay",
 
+  "searchAddress": "Tìm kiếm địa chỉ...",
+  "selectedLocation": "Vị trí đã chọn",
+  "tapToSelectLocation": "Chạm vào bản đồ để chọn vị trí",
+  "confirmLocation": "Xác nhận vị trí",
+
   "signInDescription": "Vui lòng đăng nhập để tiếp tục sử dụng ứng dụng của chúng tôi",
 
   "usernameOrEmail": "Tên đăng nhập/Email",
