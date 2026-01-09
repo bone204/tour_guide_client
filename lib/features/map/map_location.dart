@@ -101,6 +101,11 @@ extension MapLocationExtension on _MapPageState {
       setState(() {
         _currentPosition = newPosition;
         // Don't use GPS heading anymore, we use compass heading instead
+
+        // Update route geometry to follow user
+        if (_isNavigating) {
+          _updateRouteProgress(newPosition);
+        }
       });
     });
   }

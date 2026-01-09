@@ -290,7 +290,7 @@ extension MapRouteExtension on _MapPageState {
     );
   }
 
-  /// Hiển thị route và mở sheet
+  /// Mở route tracking sheet
   Future<void> _showRouteAndOpenSheet() async {
     // Chỉ mở tracking sheet, không tính route
     if (_selectedDestination == null || _currentPosition == null) {
@@ -306,5 +306,124 @@ extension MapRouteExtension on _MapPageState {
 
     // Mở bottom sheet route tracking ngay, không tính route trước
     _openRouteTrackingSheet();
+  }
+
+  /// Cập nhật tiến độ di chuyển trên route
+  void _updateRouteProgress(LatLng currentPos) {
+    if (!_isNavigating ||
+        _currentRoute == null ||
+        _currentRoute!.geometry.isEmpty) {
+      return;
+    }
+
+    // Ensure destination is valid for rerouting
+    if (_selectedDestination == null ||
+        _selectedDestination!.latitude == null ||
+        _selectedDestination!.longitude == null) {
+      return;
+    }
+
+    final geometry = _currentRoute!.geometry;
+    final distance = const Distance();
+
+    // Tìm điểm gần nhất trên route
+    int closestIndex = 0;
+    double minDistance = double.infinity;
+
+    // Tìm trong toàn bộ geometry để phát hiện off-route chính xác hơn
+    // Tuy nhiên để tối ưu, nếu route quá dài có thể giới hạn lại
+    // Nhưng để tính off-route thì nên kiểm tra đoạn gần user nhất
+    // Ở đây ta check 30 điểm đầu tiên (hoặc toàn bộ nếu ít hơn)
+    final searchRange = math.min(geometry.length, 30);
+
+    for (int i = 0; i < searchRange; i++) {
+      final point = geometry[i];
+      final d = distance.as(LengthUnit.Meter, currentPos, point);
+      if (d < minDistance) {
+        minDistance = d;
+        closestIndex = i;
+      }
+    }
+
+    // OFF-ROUTE DETECTION
+    // Nếu điểm gần nhất cách xa hơn ngưỡng cho phép (ví dụ 50m)
+    // Và chúng ta không đang loading route mới
+    const double offRouteThreshold = 50.0; // meters
+    if (minDistance > offRouteThreshold) {
+      if (!_isRouteLoading && !_loadingModes.contains(_transportMode)) {
+        print('User is off-route ($minDistance m). Recalculating...');
+
+        // Target destination
+        final target = LatLng(
+          _selectedDestination!.latitude!,
+          _selectedDestination!.longitude!,
+        );
+
+        // Trigger reroute
+        // Lưu ý: hàm này async nhưng chúng ta gọi fire-and-forget ở đây
+        // Nó sẽ tự update state khi xong
+
+        // Set loading state để tránh spam request
+        setState(() {
+          _isRouteLoading = true;
+          _loadingModes.add(_transportMode);
+        });
+
+        _calculateRouteForMode(currentPos, target, _transportMode).then((_) {
+          if (mounted) {
+            setState(() {
+              _isRouteLoading = false;
+              _loadingModes.remove(_transportMode);
+              // Update current route
+              _currentRoute = _routesByMode[_transportMode];
+            });
+          }
+        });
+      }
+      return; // Không trim route cũ nếu đang off-route/rerouting
+    }
+
+    // TRIM ROUTE (Snap & Cut)
+    // Nếu điểm gần nhất không phải là điểm đầu tiên, hoặc user đã đi xa hơn điểm đầu
+    // Cắt bỏ các điểm đã đi qua
+    if (closestIndex > 0) {
+      // Giữ lại từ điểm gần nhất trở đi
+      final remainingGeometry = geometry.sublist(closestIndex);
+      // Thêm vị trí hiện tại vào đầu để line liền mạch
+      remainingGeometry.insert(0, currentPos);
+
+      final updatedRoute = OSRMRoute(
+        distance: _currentRoute!.distance, // Giữ nguyên hoặc tính lại nếu cần
+        duration: _currentRoute!.duration,
+        geometry: remainingGeometry,
+        steps: _currentRoute!.steps,
+      );
+
+      setState(() {
+        _currentRoute = updatedRoute;
+        _routesByMode[_transportMode] = updatedRoute;
+      });
+    } else {
+      // Ngay cả khi chưa qua điểm nào (closestIndex == 0),
+      // cập nhật điểm đầu tiên thành vị trí hiện tại để line "bám" vào icon
+      final remainingGeometry = List<LatLng>.from(geometry);
+      if (remainingGeometry.isNotEmpty) {
+        remainingGeometry[0] = currentPos;
+      } else {
+        remainingGeometry.add(currentPos);
+      }
+
+      final updatedRoute = OSRMRoute(
+        distance: _currentRoute!.distance,
+        duration: _currentRoute!.duration,
+        geometry: remainingGeometry,
+        steps: _currentRoute!.steps,
+      );
+
+      setState(() {
+        _currentRoute = updatedRoute;
+        _routesByMode[_transportMode] = updatedRoute;
+      });
+    }
   }
 }
