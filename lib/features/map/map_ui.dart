@@ -155,12 +155,12 @@ extension MapUIExtension on _MapPageState {
                 }
               },
               interactionOptions: const InteractionOptions(
-                flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+                flags: InteractiveFlag.all,
               ),
             ),
             children: [
               TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                urlTemplate: _currentMapType.urlTemplate,
                 userAgentPackageName: 'tour_guide_app',
                 panBuffer: 1,
                 keepBuffer: 10,
@@ -241,6 +241,11 @@ extension MapUIExtension on _MapPageState {
                     if (!_isNavigating) ...[
                       _buildSearchBar(),
                       const SizedBox(height: 8),
+                      // Layer Toggle Button - hiển thị ngay dưới thanh search
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: _buildMapTypeButton(),
+                      ),
                       AnimatedSwitcher(
                         duration: const Duration(milliseconds: 140),
                         switchInCurve: Curves.easeOutCubic,
@@ -381,6 +386,143 @@ extension MapUIExtension on _MapPageState {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildMapTypeButton() {
+    return Container(
+      margin: const EdgeInsets.only(top: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: _showMapTypeSelector,
+          borderRadius: BorderRadius.circular(30),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Icon(
+              Icons.layers_outlined,
+              color: Theme.of(context).primaryColor,
+              size: 24,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showMapTypeSelector() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder:
+          (context) => Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.mapType,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 16,
+                  runSpacing: 16,
+                  children:
+                      _MapType.values.map((type) {
+                        final isSelected = _currentMapType == type;
+                        String label;
+                        switch (type) {
+                          case _MapType.normal:
+                            label = AppLocalizations.of(context)!.mapTypeNormal;
+                            break;
+                          case _MapType.satellite:
+                            label =
+                                AppLocalizations.of(context)!.mapTypeSatellite;
+                            break;
+                          case _MapType.terrain:
+                            label =
+                                AppLocalizations.of(context)!.mapTypeTerrain;
+                            break;
+                        }
+
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              _currentMapType = type;
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color:
+                                        isSelected
+                                            ? Theme.of(context).primaryColor
+                                            : Colors.grey.shade300,
+                                    width: isSelected ? 2 : 1,
+                                  ),
+                                  color:
+                                      isSelected
+                                          ? Theme.of(
+                                            context,
+                                          ).primaryColor.withOpacity(0.1)
+                                          : Colors.white,
+                                ),
+                                child: Icon(
+                                  type.icon,
+                                  color:
+                                      isSelected
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey.shade600,
+                                  size: 30,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                label,
+                                style: TextStyle(
+                                  color:
+                                      isSelected
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey.shade600,
+                                  fontWeight:
+                                      isSelected
+                                          ? FontWeight.w600
+                                          : FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
     );
   }
 }

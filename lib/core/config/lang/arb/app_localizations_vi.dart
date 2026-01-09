@@ -42,6 +42,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get genderOther => 'Khác';
 
   @override
+  String get mapType => 'Loại bản đồ';
+
+  @override
+  String get mapTypeNormal => 'Thông thường';
+
+  @override
+  String get mapTypeSatellite => 'Vệ tinh';
+
+  @override
+  String get mapTypeTerrain => 'Địa hình';
+
+  @override
   String get statusBooked => 'Đã đặt';
 
   @override

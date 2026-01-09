@@ -42,6 +42,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get genderOther => 'Other';
 
   @override
+  String get mapType => 'Map Type';
+
+  @override
+  String get mapTypeNormal => 'Normal';
+
+  @override
+  String get mapTypeSatellite => 'Satellite';
+
+  @override
+  String get mapTypeTerrain => 'Terrain';
+
+  @override
   String get statusBooked => 'Booked';
 
   @override

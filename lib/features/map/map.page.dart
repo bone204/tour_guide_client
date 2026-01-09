@@ -74,6 +74,7 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
   Map<String, OSRMRoute?> _routesByMode =
       {}; // Lưu routes cho từng transport mode
   Set<String> _loadingModes = {}; // Các modes đang được tính toán
+  _MapType _currentMapType = _MapType.normal;
 
   final OSMService _osmService = OSMService();
   final OSRMService _osrmService = OSRMService();
@@ -143,3 +144,33 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
 // - map_route.dart: Route calculation
 // - map_ui.dart: UI building
 // - map_destination.dart: Destination selection and animation
+
+enum _MapType { normal, satellite, terrain }
+
+extension _MapTypeExtension on _MapType {
+  String get urlTemplate {
+    switch (this) {
+      case _MapType.normal:
+        return 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+      case _MapType.satellite:
+        // Esri World Imagery (Satellite)
+        return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+      case _MapType.terrain:
+        // Stamen Terrain (Note: Stamen tiles are now hosted by Stadia Maps, usually need API key,
+        // fall back to OpenTopoMap for free terrain view)
+        return 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+    }
+  }
+
+
+  IconData get icon {
+    switch (this) {
+      case _MapType.normal:
+        return Icons.map_outlined;
+      case _MapType.satellite:
+        return Icons.satellite_alt_outlined;
+      case _MapType.terrain:
+        return Icons.terrain_outlined;
+    }
+  }
+}

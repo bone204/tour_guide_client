@@ -161,6 +161,30 @@ abstract class AppLocalizations {
   /// **'Other'**
   String get genderOther;
 
+  /// No description provided for @mapType.
+  ///
+  /// In en, this message translates to:
+  /// **'Map Type'**
+  String get mapType;
+
+  /// No description provided for @mapTypeNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get mapTypeNormal;
+
+  /// No description provided for @mapTypeSatellite.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellite'**
+  String get mapTypeSatellite;
+
+  /// No description provided for @mapTypeTerrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Terrain'**
+  String get mapTypeTerrain;
+
   /// No description provided for @statusBooked.
   ///
   /// In en, this message translates to:

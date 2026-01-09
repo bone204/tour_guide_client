@@ -193,7 +193,7 @@ extension MapRouteExtension on _MapPageState {
             }
 
             return FractionallySizedBox(
-              heightFactor: 0.6, // Increased from 0.46 to 0.6 (60% of screen)
+              heightFactor: 0.5, // Increased from 0.46 to 0.6 (60% of screen)
               child: _RouteTrackingSheet(
                 destination: _selectedDestination!,
                 currentPosition: _currentPosition,
