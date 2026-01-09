@@ -1073,6 +1073,12 @@ abstract class AppLocalizations {
   /// **'Add image'**
   String get addImage;
 
+  /// No description provided for @tapToAddImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to add image'**
+  String get tapToAddImage;
+
   /// No description provided for @bookingSuccess.
   ///
   /// In en, this message translates to:
@@ -2291,17 +2297,17 @@ abstract class AppLocalizations {
   /// **'Updated Date'**
   String get updatedDate;
 
+  /// No description provided for @citizenIdPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Citizen ID Photo'**
+  String get citizenIdPhoto;
+
   /// No description provided for @citizenFrontPhoto.
   ///
   /// In en, this message translates to:
   /// **'Citizen ID Front Photo'**
   String get citizenFrontPhoto;
-
-  /// No description provided for @citizenBackPhoto.
-  ///
-  /// In en, this message translates to:
-  /// **'Citizen ID Back Photo'**
-  String get citizenBackPhoto;
 
   /// No description provided for @registeredVehicles.
   ///

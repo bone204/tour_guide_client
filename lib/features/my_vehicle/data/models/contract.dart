@@ -13,7 +13,6 @@ class Contract {
 
   final String businessRegisterPhoto;
   final String citizenFrontPhoto;
-  final String citizenBackPhoto;
 
   final String notes;
 
@@ -50,7 +49,7 @@ class Contract {
     required this.taxCode,
     required this.businessRegisterPhoto,
     required this.citizenFrontPhoto,
-    required this.citizenBackPhoto,
+
     required this.notes,
     required this.bankName,
     required this.bankAccountNumber,
@@ -84,7 +83,6 @@ class Contract {
 
       businessRegisterPhoto: json['businessRegisterPhoto'] ?? '',
       citizenFrontPhoto: json['citizenFrontPhoto'] ?? '',
-      citizenBackPhoto: json['citizenBackPhoto'] ?? '',
 
       notes: json['notes'] ?? '',
 
@@ -125,7 +123,6 @@ class Contract {
       'taxCode': taxCode,
       'businessRegisterPhoto': businessRegisterPhoto,
       'citizenFrontPhoto': citizenFrontPhoto,
-      'citizenBackPhoto': citizenBackPhoto,
       'notes': notes,
       'bankName': bankName,
       'bankAccountNumber': bankAccountNumber,
@@ -157,7 +154,7 @@ class Contract {
     String? taxCode,
     String? businessRegisterPhoto,
     String? citizenFrontPhoto,
-    String? citizenBackPhoto,
+
     String? notes,
     String? bankName,
     String? bankAccountNumber,
@@ -188,11 +185,9 @@ class Contract {
       businessRegisterPhoto:
           businessRegisterPhoto ?? this.businessRegisterPhoto,
       citizenFrontPhoto: citizenFrontPhoto ?? this.citizenFrontPhoto,
-      citizenBackPhoto: citizenBackPhoto ?? this.citizenBackPhoto,
       notes: notes ?? this.notes,
       bankName: bankName ?? this.bankName,
-      bankAccountNumber:
-          bankAccountNumber ?? this.bankAccountNumber,
+      bankAccountNumber: bankAccountNumber ?? this.bankAccountNumber,
       bankAccountName: bankAccountName ?? this.bankAccountName,
       fullName: fullName ?? this.fullName,
       email: email ?? this.email,
@@ -202,8 +197,7 @@ class Contract {
       rejectedReason: rejectedReason ?? this.rejectedReason,
       statusUpdatedAt: statusUpdatedAt ?? this.statusUpdatedAt,
       totalVehicles: totalVehicles ?? this.totalVehicles,
-      totalRentalTimes:
-          totalRentalTimes ?? this.totalRentalTimes,
+      totalRentalTimes: totalRentalTimes ?? this.totalRentalTimes,
       averageRating: averageRating ?? this.averageRating,
       vehicles: vehicles ?? this.vehicles,
       createdAt: createdAt ?? this.createdAt,

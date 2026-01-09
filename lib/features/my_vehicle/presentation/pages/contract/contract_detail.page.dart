@@ -205,12 +205,6 @@ class ContractDetailPage extends StatelessWidget {
                             AppLocalizations.of(context)!.citizenFrontPhoto,
                             contract.citizenFrontPhoto,
                           ),
-                        if (contract.citizenBackPhoto.isNotEmpty)
-                          _buildImageRow(
-                            context,
-                            AppLocalizations.of(context)!.citizenBackPhoto,
-                            contract.citizenBackPhoto,
-                          ),
                       ],
                     ),
                     SizedBox(height: 16.h),

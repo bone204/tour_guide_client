@@ -6,12 +6,14 @@ class ImagePickerField extends StatefulWidget {
   final String title;
   final String? imagePath;
   final Function(String?) onImageSelected;
+  final bool enabled;
 
   const ImagePickerField({
     super.key,
     required this.title,
     this.imagePath,
     required this.onImageSelected,
+    this.enabled = true,
   });
 
   @override
@@ -47,7 +49,7 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
         Text(widget.title, style: Theme.of(context).textTheme.displayLarge),
         SizedBox(height: 8.h),
         GestureDetector(
-          onTap: _pickImage,
+          onTap: widget.enabled ? _pickImage : null,
           child: Container(
             width: double.infinity,
             height: 180.h,
@@ -62,32 +64,46 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12.r),
-                          child: Image.file(
-                            File(widget.imagePath!),
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.contain,
-                          ),
+                          child:
+                              widget.imagePath!.startsWith('http')
+                                  ? Image.network(
+                                    widget.imagePath!,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Center(
+                                              child: Icon(Icons.error),
+                                            ),
+                                  )
+                                  : Image.file(
+                                    File(widget.imagePath!),
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.contain,
+                                  ),
                         ),
-                        Positioned(
-                          top: 8.h,
-                          right: 8.w,
-                          child: GestureDetector(
-                            onTap: () => widget.onImageSelected(null),
-                            child: Container(
-                              padding: EdgeInsets.all(4.w),
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryRed.withOpacity(0.8),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.close,
-                                color: AppColors.primaryWhite,
-                                size: 20.sp,
+                        if (widget.enabled)
+                          Positioned(
+                            top: 8.h,
+                            right: 8.w,
+                            child: GestureDetector(
+                              onTap: () => widget.onImageSelected(null),
+                              child: Container(
+                                padding: EdgeInsets.all(4.w),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryRed.withOpacity(0.8),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.close,
+                                  color: AppColors.primaryWhite,
+                                  size: 20.sp,
+                                ),
                               ),
                             ),
                           ),
-                        ),
                       ],
                     )
                     : Column(
@@ -100,7 +116,7 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
                         ),
                         SizedBox(height: 8.h),
                         Text(
-                          'Tap to add image',
+                          AppLocalizations.of(context)!.tapToAddImage,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: AppColors.textSubtitle),
                         ),

@@ -504,6 +504,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get addImage => 'Thêm ảnh';
 
   @override
+  String get tapToAddImage => 'Chạm để thêm ảnh';
+
+  @override
   String get bookingSuccess => 'Đặt phòng thành công!';
 
   @override
@@ -651,7 +654,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get identificationPhoto => 'Ảnh giấy tờ tùy thân';
 
   @override
-  String get vehicleRegistrationFrontPhoto => 'Ảnh mặt trước đăng ký xe';
+  String get vehicleRegistrationFrontPhoto => 'Vehicle Registration Front Photo';
 
   @override
   String get vehicleRegistrationBackPhoto => 'Ảnh mặt sau đăng ký xe';
@@ -1119,10 +1122,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get updatedDate => 'Ngày cập nhật';
 
   @override
-  String get citizenFrontPhoto => 'Mặt trước CCCD';
+  String get citizenIdPhoto => 'Ảnh CCCD';
 
   @override
-  String get citizenBackPhoto => 'Mặt sau CCCD';
+  String get citizenFrontPhoto => 'Ảnh mặt trước CCCD';
 
   @override
   String get registeredVehicles => 'Xe đã đăng ký';

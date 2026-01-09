@@ -15,7 +15,6 @@ class ContractParams {
   /// File upload (multipart)
   final dynamic businessRegisterPhoto;
   final dynamic citizenFrontPhoto;
-  final dynamic citizenBackPhoto;
 
   final String notes;
 
@@ -37,7 +36,7 @@ class ContractParams {
     this.taxCode = '',
     this.businessRegisterPhoto,
     this.citizenFrontPhoto,
-    this.citizenBackPhoto,
+
     this.notes = '',
     required this.bankName,
     required this.bankAccountNumber,
@@ -58,7 +57,6 @@ class ContractParams {
       'taxCode': taxCode,
       'businessRegisterPhoto': businessRegisterPhoto,
       'citizenFrontPhoto': citizenFrontPhoto,
-      'citizenBackPhoto': citizenBackPhoto,
       'notes': notes,
       'bankName': bankName,
       'bankAccountNumber': bankAccountNumber,
@@ -92,14 +90,6 @@ class ContractParams {
       );
     } else {
       map.remove('citizenFrontPhoto');
-    }
-
-    if (citizenBackPhoto is String &&
-        (citizenBackPhoto as String).isNotEmpty &&
-        !(citizenBackPhoto as String).startsWith('http')) {
-      map['citizenBackPhoto'] = await MultipartFile.fromFile(citizenBackPhoto);
-    } else {
-      map.remove('citizenBackPhoto');
     }
 
     return FormData.fromMap(map);

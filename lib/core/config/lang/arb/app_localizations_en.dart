@@ -504,6 +504,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addImage => 'Add image';
 
   @override
+  String get tapToAddImage => 'Tap to add image';
+
+  @override
   String get bookingSuccess => 'Booking Successful!';
 
   @override
@@ -1119,10 +1122,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updatedDate => 'Updated Date';
 
   @override
-  String get citizenFrontPhoto => 'Citizen ID Front Photo';
+  String get citizenIdPhoto => 'Citizen ID Photo';
 
   @override
-  String get citizenBackPhoto => 'Citizen ID Back Photo';
+  String get citizenFrontPhoto => 'Citizen ID Front Photo';
 
   @override
   String get registeredVehicles => 'Registered Vehicles';

@@ -306,6 +306,7 @@
   "packageImages": "Package images",
 
   "addImage": "Add image",
+  "tapToAddImage": "Tap to add image",
 
   "bookingSuccess": "Booking successful!",
 
@@ -717,8 +718,8 @@
   "notes": "Notes",
   "createdDate": "Created Date",
   "updatedDate": "Updated Date",
+  "citizenIdPhoto": "Citizen ID Photo",
   "citizenFrontPhoto": "Citizen ID Front Photo",
-  "citizenBackPhoto": "Citizen ID Back Photo",
   "registeredVehicles": "Registered Vehicles",
   "businessInfo": "Business Information",
   "contractDetail": "Contract Detail",

@@ -371,6 +371,7 @@
   "packageImages": "Hình ảnh kiện hàng",
 
   "addImage": "Thêm ảnh",
+  "tapToAddImage": "Chạm để thêm ảnh",
 
   "bookingSuccess": "Đặt phòng thành công!",
 
@@ -494,7 +495,8 @@
 
   "identificationPhoto": "Ảnh giấy tờ tùy thân",
 
-  "vehicleRegistrationFrontPhoto": "Ảnh mặt trước đăng ký xe",
+  "citizenIdPhoto": "Ảnh CCCD",
+  "citizenFrontPhoto": "Ảnh mặt trước CCCD",
 
   "vehicleRegistrationBackPhoto": "Ảnh mặt sau đăng ký xe",
 
@@ -809,8 +811,8 @@
   "notes": "Ghi chú",
   "createdDate": "Ngày tạo",
   "updatedDate": "Ngày cập nhật",
-  "citizenFrontPhoto": "Mặt trước CCCD",
-  "citizenBackPhoto": "Mặt sau CCCD",
+
+
   "registeredVehicles": "Xe đã đăng ký",
   "contractDetail": "Chi tiết hợp đồng",
 

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/image_picker_field.widget.dart';
@@ -9,14 +8,12 @@ class CitizenInfoStep extends StatefulWidget {
   final String phone;
   final String citizenNumber;
   final String? citizenFrontPhoto;
-  final String? citizenBackPhoto;
   final Function({
     required String fullName,
     required String email,
     required String phone,
     required String citizenNumber,
     String? citizenFrontPhoto,
-    String? citizenBackPhoto,
   })
   onNext;
 
@@ -27,7 +24,6 @@ class CitizenInfoStep extends StatefulWidget {
     required this.phone,
     required this.citizenNumber,
     this.citizenFrontPhoto,
-    this.citizenBackPhoto,
     required this.onNext,
   });
 
@@ -42,7 +38,6 @@ class _CitizenInfoStepState extends State<CitizenInfoStep> {
   late TextEditingController _phoneController;
   late TextEditingController _citizenNumberController;
   String? _citizenFrontPhotoPath;
-  String? _citizenBackPhotoPath;
 
   @override
   void initState() {
@@ -54,7 +49,6 @@ class _CitizenInfoStepState extends State<CitizenInfoStep> {
       text: widget.citizenNumber,
     );
     _citizenFrontPhotoPath = widget.citizenFrontPhoto;
-    _citizenBackPhotoPath = widget.citizenBackPhoto;
   }
 
   @override
@@ -74,9 +68,6 @@ class _CitizenInfoStepState extends State<CitizenInfoStep> {
     }
     if (widget.citizenFrontPhoto != oldWidget.citizenFrontPhoto) {
       _citizenFrontPhotoPath = widget.citizenFrontPhoto;
-    }
-    if (widget.citizenBackPhoto != oldWidget.citizenBackPhoto) {
-      _citizenBackPhotoPath = widget.citizenBackPhoto;
     }
   }
 
@@ -126,7 +117,6 @@ class _CitizenInfoStepState extends State<CitizenInfoStep> {
         phone: _phoneController.text,
         citizenNumber: _citizenNumberController.text,
         citizenFrontPhoto: _citizenFrontPhotoPath,
-        citizenBackPhoto: _citizenBackPhotoPath,
       );
     }
   }
@@ -149,6 +139,7 @@ class _CitizenInfoStepState extends State<CitizenInfoStep> {
                     value,
                     AppLocalizations.of(context)!.fullName,
                   ),
+              readOnly: true,
             ),
             SizedBox(height: 16.h),
             CustomTextField(
@@ -157,6 +148,7 @@ class _CitizenInfoStepState extends State<CitizenInfoStep> {
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               validator: _validateEmail,
+              readOnly: true,
             ),
             SizedBox(height: 16.h),
             CustomTextField(
@@ -165,6 +157,7 @@ class _CitizenInfoStepState extends State<CitizenInfoStep> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               validator: _validatePhone,
+              readOnly: true,
             ),
             SizedBox(height: 16.h),
             CustomTextField(
@@ -176,28 +169,20 @@ class _CitizenInfoStepState extends State<CitizenInfoStep> {
                     value,
                     AppLocalizations.of(context)!.citizenId,
                   ),
+              readOnly: true,
             ),
             SizedBox(height: 20.h),
             ImagePickerField(
-              title: AppLocalizations.of(context)!.citizenFrontPhoto,
+              title: AppLocalizations.of(context)!.citizenIdPhoto,
               imagePath: _citizenFrontPhotoPath,
               onImageSelected: (path) {
                 setState(() {
                   _citizenFrontPhotoPath = path;
                 });
               },
+              enabled: false,
             ),
-            SizedBox(height: 16.h),
-            ImagePickerField(
-              title: AppLocalizations.of(context)!.citizenBackPhoto,
-              imagePath: _citizenBackPhotoPath,
-              onImageSelected: (path) {
-                setState(() {
-                  _citizenBackPhotoPath = path;
-                });
-              },
-            ),
-            SizedBox(height: 32.h),
+            SizedBox(height: 20.h),
             ElevatedButton(
               onPressed: _handleNext,
               style: ElevatedButton.styleFrom(

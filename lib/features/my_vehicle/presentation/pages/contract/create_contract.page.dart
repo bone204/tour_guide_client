@@ -46,7 +46,6 @@ class _CreateContractPageState extends State<CreateContractPage> {
   String _phone = '';
   String _citizenNumber = '';
   String? _citizenFrontPhoto;
-  String? _citizenBackPhoto;
 
   // Step 2 data
   String _businessType = 'personal';
@@ -112,6 +111,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
               _email = state.user.email ?? '';
               _phone = state.user.phone ?? '';
               _citizenNumber = state.user.citizenId ?? '';
+              _citizenFrontPhoto = state.user.citizenFrontImageUrl;
             });
             if (state.user.citizenId == null || state.user.citizenId!.isEmpty) {
               _showErrorDialog(
@@ -227,14 +227,12 @@ class _CreateContractPageState extends State<CreateContractPage> {
           phone: _phone,
           citizenNumber: _citizenNumber,
           citizenFrontPhoto: _citizenFrontPhoto,
-          citizenBackPhoto: _citizenBackPhoto,
           onNext: ({
             required String fullName,
             required String email,
             required String phone,
             required String citizenNumber,
             String? citizenFrontPhoto,
-            String? citizenBackPhoto,
           }) {
             setState(() {
               _fullName = fullName;
@@ -242,7 +240,6 @@ class _CreateContractPageState extends State<CreateContractPage> {
               _phone = phone;
               _citizenNumber = citizenNumber;
               _citizenFrontPhoto = citizenFrontPhoto;
-              _citizenBackPhoto = citizenBackPhoto;
             });
             _nextStep();
           },
@@ -318,7 +315,6 @@ class _CreateContractPageState extends State<CreateContractPage> {
       taxCode: _taxCode ?? '',
       businessRegisterPhoto: _businessRegisterPhoto,
       citizenFrontPhoto: _citizenFrontPhoto,
-      citizenBackPhoto: _citizenBackPhoto,
       bankName: _bankName ?? '',
       bankAccountNumber: _bankAccountNumber ?? '',
       bankAccountName: _bankAccountName ?? '',
