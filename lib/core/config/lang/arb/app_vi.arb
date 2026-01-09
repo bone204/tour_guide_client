@@ -1669,5 +1669,13 @@
   "noMemoriesToday": "Hôm nay không có kỷ niệm nào",
   "sinceYouCompleted": "Kể từ khi bạn hoàn thành",
   "getDirections": "Tìm đường đi",
-  "vehiclePhotoInstruction": "Vui lòng chụp ảnh xe"
+  "vehiclePhotoInstruction": "Vui lòng chụp ảnh xe",
+  "verifyCitizenId": "Xác thực CCCD",
+  "selfiePhoto": "Ảnh chân dung",
+  "citizenIdInstruction": "Đặt CCCD vào khung hình",
+  "verifySuccess": "Gửi xác thực thành công",
+  "verify": "Xác thực",
+  "retake": "Chụp lại",
+  "captureCitizenId": "Chụp ảnh CCCD",
+  "capturePortrait": "Chụp ảnh chân dung"
 }

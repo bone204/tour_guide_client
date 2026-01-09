@@ -5572,6 +5572,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please take a photo of the vehicle'**
   String get vehiclePhotoInstruction;
+
+  /// No description provided for @verifyCitizenId.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Citizen ID'**
+  String get verifyCitizenId;
+
+  /// No description provided for @selfiePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Selfie Photo'**
+  String get selfiePhoto;
+
+  /// No description provided for @citizenIdInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Place your Citizen ID within the frame'**
+  String get citizenIdInstruction;
+
+  /// No description provided for @verifySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification submitted successfully'**
+  String get verifySuccess;
+
+  /// No description provided for @retake.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake'**
+  String get retake;
+
+  /// No description provided for @captureCitizenId.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture Citizen ID'**
+  String get captureCitizenId;
+
+  /// No description provided for @capturePortrait.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture Portrait'**
+  String get capturePortrait;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

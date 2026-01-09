@@ -2834,4 +2834,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vehiclePhotoInstruction => 'Please take a photo of the vehicle';
+
+  @override
+  String get verifyCitizenId => 'Verify Citizen ID';
+
+  @override
+  String get selfiePhoto => 'Selfie Photo';
+
+  @override
+  String get citizenIdInstruction => 'Place your Citizen ID within the frame';
+
+  @override
+  String get verifySuccess => 'Verification submitted successfully';
+
+  @override
+  String get retake => 'Retake';
+
+  @override
+  String get captureCitizenId => 'Capture Citizen ID';
+
+  @override
+  String get capturePortrait => 'Capture Portrait';
 }

@@ -13,6 +13,7 @@ import 'package:tour_guide_app/features/auth/domain/usecases/sign_in.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/sign_up.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/email_start.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/verify_email.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/verify_citizen_id.dart';
 
 import 'package:tour_guide_app/features/auth/domain/usecases/verify_phone.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_my_rental_bills/get_my_rental_bills_cubit.dart';
@@ -134,13 +135,14 @@ import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_vehicl
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_detail.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart';
 import 'package:tour_guide_app/features/profile/domain/usecases/update_initial_profile.dart';
-import 'package:tour_guide_app/features/profile/domain/usecases/update_verification_info.dart';
+
 import 'package:tour_guide_app/features/profile/domain/usecases/update_avatar.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/edit_profile/edit_profile_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_catalogs.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/update_hobbies.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/update_hobbies/update_hobbies_cubit.dart';
+import 'package:tour_guide_app/features/auth/presentation/bloc/verify_citizen_id/verify_citizen_id_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/enable_disable_vehicle/enable_disable_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_owner_rental_bills.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_owner_rental_bills/get_owner_rental_bills_cubit.dart';
@@ -256,6 +258,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<LogOutUseCase>(LogOutUseCase());
   sl.registerSingleton<EmailStartUseCase>(EmailStartUseCase());
   sl.registerSingleton<VerifyEmailUseCase>(VerifyEmailUseCase());
+  sl.registerSingleton<VerifyCitizenIdUseCase>(VerifyCitizenIdUseCase());
   sl.registerSingleton<GetDestinationByIdUseCase>(GetDestinationByIdUseCase());
   sl.registerSingleton<GetDestinationUseCase>(GetDestinationUseCase());
   sl.registerSingleton<GetFavoritesUseCase>(GetFavoritesUseCase());
@@ -340,9 +343,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<UpdateInitialProfileUseCase>(
     UpdateInitialProfileUseCase(),
   );
-  sl.registerSingleton<UpdateVerificationInfoUseCase>(
-    UpdateVerificationInfoUseCase(),
-  );
+
   sl.registerSingleton<UpdateAvatarUseCase>(UpdateAvatarUseCase());
   sl.registerSingleton<PhoneStartUseCase>(PhoneStartUseCase());
   sl.registerSingleton<VerifyPhoneUseCase>(VerifyPhoneUseCase());
@@ -461,7 +462,6 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<EditProfileCubit>(
     () => EditProfileCubit(
       updateInitialProfileUseCase: sl(),
-      updateVerificationInfoUseCase: sl(),
       updateAvatarUseCase: sl(),
     ),
   );
@@ -472,6 +472,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
     ),
   );
   sl.registerFactory<VerifyEmailCubit>(() => VerifyEmailCubit());
+  sl.registerFactory<VerifyCitizenIdCubit>(
+    () => VerifyCitizenIdCubit(verifyCitizenIdUseCase: sl()),
+  );
   sl.registerFactory<VerifyPhoneCubit>(() => VerifyPhoneCubit());
   sl.registerFactory<CommentCubit>(
     () => CommentCubit(

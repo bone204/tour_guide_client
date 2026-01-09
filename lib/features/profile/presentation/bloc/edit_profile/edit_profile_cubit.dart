@@ -2,19 +2,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/features/profile/data/models/update_initial_profile_model.dart';
 import 'package:tour_guide_app/features/profile/data/models/update_verification_info_model.dart';
 import 'package:tour_guide_app/features/profile/domain/usecases/update_initial_profile.dart';
-import 'package:tour_guide_app/features/profile/domain/usecases/update_verification_info.dart';
+
 import 'package:tour_guide_app/features/profile/domain/usecases/update_avatar.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/edit_profile/edit_profile_state.dart';
 import 'dart:io';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
   final UpdateInitialProfileUseCase updateInitialProfileUseCase;
-  final UpdateVerificationInfoUseCase updateVerificationInfoUseCase;
   final UpdateAvatarUseCase updateAvatarUseCase;
 
   EditProfileCubit({
     required this.updateInitialProfileUseCase,
-    required this.updateVerificationInfoUseCase,
     required this.updateAvatarUseCase,
   }) : super(EditProfileInitial());
 
@@ -38,9 +36,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       if (!isSuccess) return;
     }
 
-    // Update Verification Info
+    // Update Verification Info (merged into Initial Profile API)
     if (verificationInfo != null) {
-      final result = await updateVerificationInfoUseCase(verificationInfo);
+      final mergedModel = UpdateInitialProfileModel(
+        email: verificationInfo.email,
+        phone: verificationInfo.phone,
+        citizenId: verificationInfo.citizenId,
+      );
+      final result = await updateInitialProfileUseCase(mergedModel);
       if (isClosed) return;
 
       final isSuccess = result.fold((failure) {

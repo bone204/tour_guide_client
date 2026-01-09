@@ -2840,4 +2840,25 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get vehiclePhotoInstruction => 'Vui lòng chụp ảnh xe';
+
+  @override
+  String get verifyCitizenId => 'Xác thực CCCD';
+
+  @override
+  String get selfiePhoto => 'Ảnh chân dung';
+
+  @override
+  String get citizenIdInstruction => 'Đặt CCCD vào khung hình';
+
+  @override
+  String get verifySuccess => 'Gửi xác thực thành công';
+
+  @override
+  String get retake => 'Chụp lại';
+
+  @override
+  String get captureCitizenId => 'Chụp ảnh CCCD';
+
+  @override
+  String get capturePortrait => 'Chụp ảnh chân dung';
 }

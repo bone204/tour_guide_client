@@ -214,6 +214,7 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
           ProfileTextField(
             label: AppLocalizations.of(context)!.username,
             controller: _usernameController,
+            readOnly: true,
           ),
           ProfileTextField(
             label: AppLocalizations.of(context)!.email,
@@ -309,12 +310,15 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
                         _currentUser!.citizenId!.isNotEmpty)
                     ? ProfileVerificationBadge(
                       isVerified: _currentUser?.isCitizenIdVerified ?? false,
-                      onTap: () {
+                      onTap: () async {
                         if (!(_currentUser?.isCitizenIdVerified ?? false)) {
-                          Navigator.pushNamed(
+                          final result = await Navigator.pushNamed(
                             context,
                             AppRouteConstant.verifyCitizenId,
                           );
+                          if (result == true && context.mounted) {
+                            context.read<GetMyProfileCubit>().getMyProfile();
+                          }
                         }
                       },
                     )
@@ -324,7 +328,6 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
           SizedBox(height: 10.h),
           CitizenImagesSection(
             frontImageUrl: _currentUser?.citizenFrontImageUrl,
-            backImageUrl: _currentUser?.citizenBackImageUrl,
           ),
           SizedBox(height: 120.h),
         ],

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'dart:io';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/email_verification.dart';
@@ -16,10 +17,21 @@ abstract class AuthRepository {
   Future<bool> isLoggedIn();
 
   Future<Either<Failure, EmailVerificationResponse>> emailStart();
-  Future<Either<Failure, SuccessResponse>> emailVerify(EmailVerification emailVerification);
+  Future<Either<Failure, SuccessResponse>> emailVerify(
+    EmailVerification emailVerification,
+  );
 
-  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(String recapchaToken);
-  Future<Either<Failure, SuccessResponse>> phoneVerify(PhoneVerification phoneVerification);
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(
+    String recapchaToken,
+  );
+  Future<Either<Failure, SuccessResponse>> phoneVerify(
+    PhoneVerification phoneVerification,
+  );
 
   Future<Either<Failure, SuccessResponse>> updateHobbies(List<String> hobbies);
+
+  Future<Either<Failure, SuccessResponse>> verifyCitizenId({
+    required File citizenFrontPhoto,
+    required File selfiePhoto,
+  });
 }

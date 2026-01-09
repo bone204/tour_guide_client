@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'dart:io';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/local/auth_local_service.dart';
@@ -19,17 +20,24 @@ class AuthRepositoryImpl extends AuthRepository {
   final _apiService = sl<AuthApiService>();
 
   @override
-  Future<Either<Failure, SignUpResponse>> signUp(SignUpParams signupParams) async {
+  Future<Either<Failure, SignUpResponse>> signUp(
+    SignUpParams signupParams,
+  ) async {
     return await _apiService.signUp(signupParams);
   }
 
   @override
-  Future<Either<Failure, SignInResponse>> signIn(SignInParams signinParams) async {
+  Future<Either<Failure, SignInResponse>> signIn(
+    SignInParams signinParams,
+  ) async {
     final result = await _apiService.signIn(signinParams);
     return await result.fold<Future<Either<Failure, SignInResponse>>>(
       (error) async => Left(error),
       (signInResponse) async {
-        await _localService.saveTokens(signInResponse.accessToken, signInResponse.refreshToken);
+        await _localService.saveTokens(
+          signInResponse.accessToken,
+          signInResponse.refreshToken,
+        );
         return Right(signInResponse);
       },
     );
@@ -46,22 +54,41 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> emailVerify(EmailVerification emailVerification) async {
+  Future<Either<Failure, SuccessResponse>> emailVerify(
+    EmailVerification emailVerification,
+  ) async {
     return await _apiService.emailVerify(emailVerification);
   }
 
   @override
-  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(String recapchaToken) async {
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(
+    String recapchaToken,
+  ) async {
     return await _apiService.phoneStart(recapchaToken);
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> phoneVerify(PhoneVerification phoneVerification) async {
+  Future<Either<Failure, SuccessResponse>> phoneVerify(
+    PhoneVerification phoneVerification,
+  ) async {
     return await _apiService.phoneVerify(phoneVerification);
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> updateHobbies(List<String> hobbies) async {
+  Future<Either<Failure, SuccessResponse>> updateHobbies(
+    List<String> hobbies,
+  ) async {
     return await _apiService.updateHobbies(hobbies);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> verifyCitizenId({
+    required File citizenFrontPhoto,
+    required File selfiePhoto,
+  }) async {
+    return await _apiService.verifyCitizenId(
+      citizenFrontPhoto: citizenFrontPhoto,
+      selfiePhoto: selfiePhoto,
+    );
   }
 }

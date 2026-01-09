@@ -4,12 +4,10 @@ import 'package:tour_guide_app/features/profile/presentation/widgets/profile_ima
 
 class CitizenImagesSection extends StatelessWidget {
   final String? frontImageUrl;
-  final String? backImageUrl;
 
   const CitizenImagesSection({
     Key? key,
     required this.frontImageUrl,
-    required this.backImageUrl,
   }) : super(key: key);
 
   @override
@@ -30,28 +28,14 @@ class CitizenImagesSection extends StatelessWidget {
             border: Border.all(color: AppColors.secondaryGrey, width: 1.w),
             borderRadius: BorderRadius.circular(8.r),
           ),
-          child: Column(
-            children: [
-              ProfileImageThumbnail(
-                label: AppLocalizations.of(context)!.citizenFront,
-                imageUrl: frontImageUrl,
-                onTap: () {
-                  if (frontImageUrl != null) {
-                    _showImageDialog(context, frontImageUrl!);
-                  }
-                },
-              ),
-              SizedBox(height: 10.h),
-              ProfileImageThumbnail(
-                label: AppLocalizations.of(context)!.citizenBack,
-                imageUrl: backImageUrl,
-                onTap: () {
-                  if (backImageUrl != null) {
-                    _showImageDialog(context, backImageUrl!);
-                  }
-                },
-              ),
-            ],
+          child: ProfileImageThumbnail(
+            label: AppLocalizations.of(context)!.citizenFront,
+            imageUrl: frontImageUrl,
+            onTap: () {
+              if (frontImageUrl != null) {
+                _showImageDialog(context, frontImageUrl!);
+              }
+            },
           ),
         ),
       ],

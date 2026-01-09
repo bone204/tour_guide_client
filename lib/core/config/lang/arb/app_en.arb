@@ -1665,5 +1665,13 @@
   "getDirections": "Get Directions",
   "about": "About",
   "photos": "Photos",
-  "vehiclePhotoInstruction": "Please take a photo of the vehicle"
+  "vehiclePhotoInstruction": "Please take a photo of the vehicle",
+  "verifyCitizenId": "Verify Citizen ID",
+  "selfiePhoto": "Selfie Photo",
+  "citizenIdInstruction": "Place your Citizen ID within the frame",
+  "verifySuccess": "Verification submitted successfully",
+  "verify": "Verify",
+  "retake": "Retake",
+  "captureCitizenId": "Capture Citizen ID",
+  "capturePortrait": "Capture Portrait"
 }

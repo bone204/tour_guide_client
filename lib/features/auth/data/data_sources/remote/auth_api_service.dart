@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
@@ -18,10 +19,20 @@ abstract class AuthApiService {
   Future<Either<Failure, SignUpResponse>> signUp(SignUpParams signupParams);
   Future<Either<Failure, SignInResponse>> signIn(SignInParams signinParams);
   Future<Either<Failure, EmailVerificationResponse>> emailStart();
-  Future<Either<Failure, SuccessResponse>> emailVerify(EmailVerification emailVerification);
-  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(String recapchaToken);
-  Future<Either<Failure, SuccessResponse>> phoneVerify(PhoneVerification phoneVerification);
+  Future<Either<Failure, SuccessResponse>> emailVerify(
+    EmailVerification emailVerification,
+  );
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(
+    String recapchaToken,
+  );
+  Future<Either<Failure, SuccessResponse>> phoneVerify(
+    PhoneVerification phoneVerification,
+  );
   Future<Either<Failure, SuccessResponse>> updateHobbies(List<String> hobbies);
+  Future<Either<Failure, SuccessResponse>> verifyCitizenId({
+    required File citizenFrontPhoto,
+    required File selfiePhoto,
+  });
 }
 
 class AuthApiServiceImpl extends AuthApiService {
@@ -75,10 +86,10 @@ class AuthApiServiceImpl extends AuthApiService {
   @override
   Future<Either<Failure, EmailVerificationResponse>> emailStart() async {
     try {
-      final response = await sl<DioClient>().post(
-        ApiUrls.emailStart,
+      final response = await sl<DioClient>().post(ApiUrls.emailStart);
+      final emailVerificationResponse = EmailVerificationResponse.fromJson(
+        response.data,
       );
-      final emailVerificationResponse = EmailVerificationResponse.fromJson(response.data);
       return Right(emailVerificationResponse);
     } on DioException catch (e) {
       return Left(
@@ -93,7 +104,9 @@ class AuthApiServiceImpl extends AuthApiService {
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> emailVerify(EmailVerification emailVerification) async {
+  Future<Either<Failure, SuccessResponse>> emailVerify(
+    EmailVerification emailVerification,
+  ) async {
     try {
       final response = await sl<DioClient>().post(
         ApiUrls.emailVerify,
@@ -114,13 +127,17 @@ class AuthApiServiceImpl extends AuthApiService {
   }
 
   @override
-  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(String recapchaToken) async {
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(
+    String recapchaToken,
+  ) async {
     try {
       final response = await sl<DioClient>().post(
         ApiUrls.phoneStart,
         data: {'recapchaToken': recapchaToken},
       );
-      final phoneVerificationResponse = PhoneVerificationResponse.fromJson(response.data);
+      final phoneVerificationResponse = PhoneVerificationResponse.fromJson(
+        response.data,
+      );
       return Right(phoneVerificationResponse);
     } on DioException catch (e) {
       return Left(
@@ -135,7 +152,9 @@ class AuthApiServiceImpl extends AuthApiService {
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> phoneVerify(PhoneVerification phoneVerification) async {
+  Future<Either<Failure, SuccessResponse>> phoneVerify(
+    PhoneVerification phoneVerification,
+  ) async {
     try {
       final response = await sl<DioClient>().post(
         ApiUrls.phoneVerify,
@@ -156,7 +175,9 @@ class AuthApiServiceImpl extends AuthApiService {
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> updateHobbies(List<String> hobbies) async {
+  Future<Either<Failure, SuccessResponse>> updateHobbies(
+    List<String> hobbies,
+  ) async {
     try {
       final response = await sl<DioClient>().patch(
         ApiUrls.hobbies,
@@ -173,6 +194,38 @@ class AuthApiServiceImpl extends AuthApiService {
       );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> verifyCitizenId({
+    required File citizenFrontPhoto,
+    required File selfiePhoto,
+  }) async {
+    try {
+      final formData = FormData();
+      formData.files.add(
+        MapEntry(
+          'citizenFrontPhoto',
+          await MultipartFile.fromFile(citizenFrontPhoto.path),
+        ),
+      );
+      formData.files.add(
+        MapEntry('selfiePhoto', await MultipartFile.fromFile(selfiePhoto.path)),
+      );
+
+      final response = await sl<DioClient>().post(
+        "${ApiUrls.auth}/citizen-id/verify",
+        data: formData,
+      );
+      return Right(SuccessResponse.fromJson(response.data));
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? e.message ?? "Unknown Error",
+          statusCode: e.response?.statusCode,
+        ),
+      );
     }
   }
 }

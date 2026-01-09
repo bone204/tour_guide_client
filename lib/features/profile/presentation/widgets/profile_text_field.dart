@@ -7,6 +7,7 @@ class ProfileTextField extends StatelessWidget {
   final TextEditingController controller;
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
+  final bool readOnly;
 
   const ProfileTextField({
     Key? key,
@@ -14,6 +15,7 @@ class ProfileTextField extends StatelessWidget {
     required this.controller,
     this.suffixIcon,
     this.validator,
+    this.readOnly = false,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,11 @@ class ProfileTextField extends StatelessWidget {
         controller: controller,
         suffixIcon: suffixIcon,
         validator: validator,
+        readOnly: readOnly,
+        // If readOnly is true, we might also want to set enabled to false or style it differently,
+        // but CustomTextField handles readOnly.
+        // Let's also set filled color or text style if readOnly?
+        // For now, just pass readOnly.
       ),
     );
   }
