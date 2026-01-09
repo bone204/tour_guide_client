@@ -181,14 +181,7 @@ class _SliverRatingDestinationListState
                                     location:
                                         destination.province ??
                                         AppLocalizations.of(context)!.unknown,
-                                    category:
-                                        destination.type ??
-                                        (destination.categories?.isNotEmpty ==
-                                                true
-                                            ? destination.categories!.first
-                                            : AppLocalizations.of(
-                                              context,
-                                            )!.destination),
+                                    favoriteTimes: destination.favouriteTimes,
                                     onTap: () {
                                       Navigator.of(
                                         context,

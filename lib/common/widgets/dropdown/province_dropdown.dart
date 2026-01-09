@@ -23,10 +23,7 @@ class ProvinceDropdown extends StatelessWidget {
       children: [
         Text(
           AppLocalizations.of(context)!.province,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSubtitle,
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(context).textTheme.displayLarge,
         ),
         SizedBox(height: 8.h),
         Container(

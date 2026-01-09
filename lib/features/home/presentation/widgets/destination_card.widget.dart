@@ -4,12 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/common/widgets/button/like_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
-class DestinationCard extends StatelessWidget {
+class DestinationCard extends StatefulWidget {
   final String imageUrl;
   final String name;
   final String rating;
   final String location;
-  final String? category;
+  final int? favoriteTimes;
   final VoidCallback? onTap;
   final LikeButtonTapCallback? onFavoriteTap;
   final bool isFavorite;
@@ -20,16 +20,37 @@ class DestinationCard extends StatelessWidget {
     required this.name,
     required this.rating,
     required this.location,
-    this.category,
+    this.favoriteTimes,
     this.onTap,
     this.onFavoriteTap,
     this.isFavorite = false,
   });
 
   @override
+  State<DestinationCard> createState() => _DestinationCardState();
+}
+
+class _DestinationCardState extends State<DestinationCard> {
+  int? _favoriteTimes;
+
+  @override
+  void initState() {
+    super.initState();
+    _favoriteTimes = widget.favoriteTimes;
+  }
+
+  @override
+  void didUpdateWidget(covariant DestinationCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.favoriteTimes != oldWidget.favoriteTimes) {
+      _favoriteTimes = widget.favoriteTimes;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
         width: 290.w,
         margin: EdgeInsets.only(right: 16.w),
@@ -65,7 +86,7 @@ class DestinationCard extends StatelessWidget {
                   child: Stack(
                     children: [
                       Image.network(
-                        imageUrl,
+                        widget.imageUrl,
                         width: double.infinity,
                         height: 170.h,
                         fit: BoxFit.cover,
@@ -108,14 +129,28 @@ class DestinationCard extends StatelessWidget {
                     ),
                     child: CustomLikeButton(
                       size: 22.r,
-                      isLiked: isFavorite,
+                      isLiked: widget.isFavorite,
                       likedColor: AppColors.primaryRed,
                       unlikedColor: AppColors.textSubtitle.withOpacity(0.6),
-                      onTap:
-                          onFavoriteTap ??
-                          (bool liked) async {
-                            return !liked;
-                          },
+                      onTap: (bool isLiked) async {
+                        if (widget.onFavoriteTap != null) {
+                          final result = await widget.onFavoriteTap!(isLiked);
+                          if (result != isLiked) {
+                            setState(() {
+                              if (result) {
+                                _favoriteTimes = (_favoriteTimes ?? 0) + 1;
+                              } else {
+                                if (_favoriteTimes != null &&
+                                    _favoriteTimes! > 0) {
+                                  _favoriteTimes = _favoriteTimes! - 1;
+                                }
+                              }
+                            });
+                          }
+                          return result;
+                        }
+                        return !isLiked;
+                      },
                     ),
                   ),
                 ),
@@ -152,7 +187,7 @@ class DestinationCard extends StatelessWidget {
                             ),
                             SizedBox(width: 4.w),
                             Text(
-                              rating,
+                              widget.rating,
                               style: Theme.of(context).textTheme.displayMedium
                                   ?.copyWith(color: AppColors.textPrimary),
                             ),
@@ -160,8 +195,8 @@ class DestinationCard extends StatelessWidget {
                         ),
                       ),
 
-                      // Category Badge
-                      if (category != null) ...[
+                      // Favorite Times Badge
+                      if (_favoriteTimes != null) ...[
                         SizedBox(width: 8.w),
                         Container(
                           padding: EdgeInsets.symmetric(
@@ -169,13 +204,24 @@ class DestinationCard extends StatelessWidget {
                             vertical: 6.h,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.primaryBlue.withOpacity(0.15),
+                            color: AppColors.primaryRed.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(10.r),
                           ),
-                          child: Text(
-                            category!,
-                            style: Theme.of(context).textTheme.displayMedium
-                                ?.copyWith(color: AppColors.textPrimary),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.favorite,
+                                color: AppColors.primaryRed,
+                                size: 14.sp,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                _favoriteTimes.toString(),
+                                style: Theme.of(context).textTheme.displayMedium
+                                    ?.copyWith(color: AppColors.primaryRed),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -184,7 +230,7 @@ class DestinationCard extends StatelessWidget {
                   SizedBox(height: 12.h),
                   // Name
                   Text(
-                    name,
+                    widget.name,
                     style: Theme.of(
                       context,
                     ).textTheme.titleMedium?.copyWith(letterSpacing: -0.3),
@@ -213,7 +259,7 @@ class DestinationCard extends StatelessWidget {
                       SizedBox(width: 6.w),
                       Expanded(
                         child: Text(
-                          location,
+                          widget.location,
                           style: Theme.of(context).textTheme.displayLarge
                               ?.copyWith(color: AppColors.textPrimary),
                           overflow: TextOverflow.ellipsis,

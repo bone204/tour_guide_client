@@ -215,16 +215,18 @@ class _BusinessInfoStepState extends State<BusinessInfoStep> {
                       AppLocalizations.of(context)!.taxCode,
                     ),
               ),
-              SizedBox(height: 20.h),
-              ImagePickerField(
-                title: AppLocalizations.of(context)!.businessRegisterPhoto,
-                imagePath: _businessRegisterPhotoPath,
-                onImageSelected: (path) {
-                  setState(() {
-                    _businessRegisterPhotoPath = path;
-                  });
-                },
-              ),
+              if (_businessType == 'company')...[
+                SizedBox(height: 20.h),
+                ImagePickerField(
+                  title: AppLocalizations.of(context)!.businessRegisterPhoto,
+                  imagePath: _businessRegisterPhotoPath,
+                  onImageSelected: (path) {
+                    setState(() {
+                      _businessRegisterPhotoPath = path;
+                    });
+                  },
+                ),
+              ],
               SizedBox(height: 16.h),
               CustomTextField(
                 label: AppLocalizations.of(context)!.notes,
