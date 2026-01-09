@@ -37,6 +37,10 @@ class RentalVehicle {
 
   final Contract? contract;
 
+  final double? distance;
+  final double? shippingFee;
+  final bool? isShippingFeeNegotiable;
+
   const RentalVehicle({
     required this.licensePlate,
     required this.contractId,
@@ -63,6 +67,9 @@ class RentalVehicle {
     required this.averageRating,
     required this.createdAt,
     required this.updatedAt,
+    this.distance,
+    this.shippingFee,
+    this.isShippingFeeNegotiable,
   });
 
   factory RentalVehicle.fromJson(Map<String, dynamic> json) {
@@ -100,6 +107,9 @@ class RentalVehicle {
           double.tryParse(json['averageRating']?.toString() ?? '0') ?? 0,
       createdAt: json['createdAt'] ?? '',
       updatedAt: json['updatedAt'] ?? '',
+      distance: double.tryParse(json['distance']?.toString() ?? ''),
+      shippingFee: double.tryParse(json['shippingFee']?.toString() ?? ''),
+      isShippingFeeNegotiable: json['isShippingFeeNegotiable'],
     );
   }
 
@@ -130,6 +140,9 @@ class RentalVehicle {
       'averageRating': averageRating,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'distance': distance,
+      'shippingFee': shippingFee,
+      'isShippingFeeNegotiable': isShippingFeeNegotiable,
     };
   }
 }

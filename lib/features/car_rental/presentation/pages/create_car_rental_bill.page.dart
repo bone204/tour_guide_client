@@ -467,19 +467,43 @@ class _CreateCarRentalBillPageState extends State<CreateCarRentalBillPage> {
                   (e) => e['value'] == _selectedPackage,
                   orElse: () => {'price': 0},
                 );
-                final price = selectedPkg['price'] ?? 0;
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                final price =
+                    (selectedPkg['price'] ?? 0) +
+                    (widget.vehicle.shippingFee ?? 0);
+                return Column(
                   children: [
-                    Text(
-                      '${locale.totalPayment}:',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    Text(
-                      Formatter.currency(price),
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppColors.primaryBlue,
+                    if (widget.vehicle.shippingFee != null &&
+                        widget.vehicle.shippingFee! > 0)
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 12.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${locale.shippingFee}:',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            Text(
+                              Formatter.currency(widget.vehicle.shippingFee!),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(color: AppColors.primaryBlue),
+                            ),
+                          ],
+                        ),
                       ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${locale.totalPayment}:',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        Text(
+                          Formatter.currency(price),
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(color: AppColors.primaryBlue),
+                        ),
+                      ],
                     ),
                   ],
                 );

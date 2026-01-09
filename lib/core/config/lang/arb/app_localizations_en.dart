@@ -2915,4 +2915,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get capturePortrait => 'Capture Portrait';
+
+  @override
+  String get shippingFee => 'Shipping Fee';
 }

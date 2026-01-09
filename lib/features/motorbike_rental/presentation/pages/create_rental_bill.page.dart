@@ -466,19 +466,59 @@ class _CreateRentalBillPageState extends State<CreateRentalBillPage> {
                   (e) => e['value'] == _selectedPackage,
                   orElse: () => {'price': 0},
                 );
-                final price = selectedPkg['price'] ?? 0;
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                final rentalPrice = selectedPkg['price'] ?? 0;
+                final shippingFee = widget.vehicle.shippingFee ?? 0;
+                final totalPrice = rentalPrice + shippingFee;
+
+                return Column(
                   children: [
-                    Text(
-                      '${locale.totalPayment}:',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    Text(
-                      Formatter.currency(price),
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppColors.primaryBlue,
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 12.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${locale.subtotal}:',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          Text(
+                            Formatter.currency(rentalPrice),
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
                       ),
+                    ),
+                    if (shippingFee > 0)
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 12.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${locale.shippingFee}:',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            Text(
+                              Formatter.currency(shippingFee),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(color: AppColors.primaryBlue),
+                            ),
+                          ],
+                        ),
+                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${locale.totalPayment}:',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        Text(
+                          Formatter.currency(totalPrice),
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(color: AppColors.primaryBlue),
+                        ),
+                      ],
                     ),
                   ],
                 );

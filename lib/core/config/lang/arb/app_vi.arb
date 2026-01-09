@@ -1703,5 +1703,6 @@
   "verify": "Xác thực",
   "retake": "Chụp lại",
   "captureCitizenId": "Chụp ảnh CCCD",
-  "capturePortrait": "Chụp ảnh chân dung"
+  "capturePortrait": "Chụp ảnh chân dung",
+  "shippingFee": "Phí vận chuyển"
 }

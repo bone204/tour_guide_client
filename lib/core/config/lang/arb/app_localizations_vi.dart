@@ -2921,4 +2921,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get capturePortrait => 'Chụp ảnh chân dung';
+
+  @override
+  String get shippingFee => 'Phí vận chuyển';
 }

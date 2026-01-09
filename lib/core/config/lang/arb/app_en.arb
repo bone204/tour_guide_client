@@ -1696,5 +1696,6 @@
   "verify": "Verify",
   "retake": "Retake",
   "captureCitizenId": "Capture Citizen ID",
-  "capturePortrait": "Capture Portrait"
+  "capturePortrait": "Capture Portrait",
+  "shippingFee": "Shipping Fee"
 }

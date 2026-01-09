@@ -5734,6 +5734,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Capture Portrait'**
   String get capturePortrait;
+
+  /// No description provided for @shippingFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipping Fee'**
+  String get shippingFee;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
