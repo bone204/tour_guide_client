@@ -241,6 +241,7 @@
 
   "selectPickupLocation": "Chọn địa điểm nhận",
 
+  "rentalLocation": "Địa điểm thuê",
   "rentalProvince": "Tỉnh thuê",
 
   "selectRentalProvince": "Chọn tỉnh thuê",
@@ -512,6 +513,7 @@
   "citizenIdPhoto": "Ảnh CCCD",
   "citizenFrontPhoto": "Ảnh mặt trước CCCD",
 
+  "vehicleRegistrationFrontPhoto": "Ảnh mặt trước đăng ký xe",
   "vehicleRegistrationBackPhoto": "Ảnh mặt sau đăng ký xe",
 
   "travelAssistant": "Trợ lý du lịch Traveline",

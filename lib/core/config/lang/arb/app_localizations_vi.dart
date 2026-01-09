@@ -350,6 +350,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get selectPickupLocation => 'Chọn địa điểm nhận';
 
   @override
+  String get rentalLocation => 'Địa điểm thuê';
+
+  @override
   String get rentalProvince => 'Tỉnh thuê';
 
   @override
@@ -690,7 +693,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get identificationPhoto => 'Ảnh giấy tờ tùy thân';
 
   @override
-  String get vehicleRegistrationFrontPhoto => 'Vehicle Registration Front Photo';
+  String get vehicleRegistrationFrontPhoto => 'Ảnh mặt trước đăng ký xe';
 
   @override
   String get vehicleRegistrationBackPhoto => 'Ảnh mặt sau đăng ký xe';

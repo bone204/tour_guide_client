@@ -12,10 +12,7 @@ import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.da
 class CarListPage extends StatelessWidget {
   const CarListPage({super.key});
 
-  void _navigateToCarDetailsPage(
-    BuildContext context,
-    String licensePlate,
-  ) {
+  void _navigateToCarDetailsPage(BuildContext context, String licensePlate) {
     Navigator.of(
       context,
       rootNavigator: true,
@@ -27,6 +24,9 @@ class CarListPage extends StatelessWidget {
     RentalVehicle vehicle,
     String? rentalType,
     DateTime? startDate,
+    String? locationAddress,
+    double? latitude,
+    double? longitude,
   ) {
     if (rentalType == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -40,14 +40,21 @@ class CarListPage extends StatelessWidget {
         'vehicle': vehicle,
         'rentalType': rentalType,
         'initialStartDate': startDate ?? DateTime.now(),
+        'locationAddress': locationAddress,
+        'pickupLatitude': latitude,
+        'pickupLongitude': longitude,
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final request =
-        ModalRoute.of(context)!.settings.arguments as CarSearchRequest?;
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final request = args['request'] as CarSearchRequest?;
+    final locationAddress = args['locationAddress'] as String?;
+    final latitude = args['latitude'] as double?;
+    final longitude = args['longitude'] as double?;
 
     return BlocProvider(
       create: (context) {
@@ -104,16 +111,17 @@ class CarListPage extends StatelessWidget {
                           ? AppLocalizations.of(context)!.day
                           : AppLocalizations.of(context)!.hour,
                   onDetail:
-                      () => _navigateToCarDetailsPage(
-                        context,
-                        car.licensePlate,
-                      ),
+                      () =>
+                          _navigateToCarDetailsPage(context, car.licensePlate),
                   onRent:
                       () => _navigateToCreateRentalBillPage(
                         context,
                         car,
                         request?.rentalType?.name,
                         request?.startDate,
+                        locationAddress,
+                        latitude,
+                        longitude,
                       ),
                 );
               },

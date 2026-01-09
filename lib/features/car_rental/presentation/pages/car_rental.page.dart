@@ -1,15 +1,14 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:tour_guide_app/common/pages/location_map.page.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common/widgets/picker/date_and_hour_picker.dart';
 import 'package:tour_guide_app/common/widgets/slider/price_range_slider.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/selector/rent_type.widget.dart';
-import 'package:tour_guide_app/features/travel_itinerary/data/models/province.dart';
-import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_provinces.dart';
 import 'package:tour_guide_app/features/car_rental/data/models/car_search_request.dart';
-import 'package:tour_guide_app/service_locator.dart';
 
 class CarRentalPage extends StatefulWidget {
   CarRentalPage({Key? key}) : super(key: key);
@@ -25,35 +24,33 @@ class _CarRentalPageState extends State<CarRentalPage> {
   DateTime? startDateTime;
   DateTime? endDateTime;
 
-  String? pickupLocation;
-  List<Province> provinces = [];
-  Province? selectedProvince;
-  bool isLoadingProvinces = false;
+  LatLng? _selectedLocation;
+  String _address = '';
 
   @override
   void initState() {
     super.initState();
-    _loadProvinces();
   }
 
-  Future<void> _loadProvinces() async {
-    setState(() => isLoadingProvinces = true);
-    final result = await sl<GetProvincesUseCase>().call(null);
-    if (mounted) {
-      result.fold(
-        (failure) => debugPrint('Error loading provinces: ${failure.message}'),
-        (response) {
-          setState(() {
-            provinces = response.items;
-            isLoadingProvinces = false;
-          });
-        },
-      );
+  Future<void> _pickLocation() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => LocationMapPage(initialLocation: _selectedLocation),
+      ),
+    );
+
+    if (result != null && result is Map) {
+      setState(() {
+        _selectedLocation = LatLng(result['lat'], result['lng']);
+        _address = result['address'];
+      });
     }
   }
 
   void _navigateToCarListPage(BuildContext context) {
-    if (selectedProvince == null) {
+    if (_selectedLocation == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppLocalizations.of(context)!.selectPickupLocation),
@@ -106,13 +103,19 @@ class _CarRentalPageState extends State<CarRentalPage> {
       maxPrice: selectedRange.end.toInt(),
       startDate: startDateTime,
       endDate: endDateTime,
-      province: selectedProvince?.name,
+      latitude: _selectedLocation?.latitude,
+      longitude: _selectedLocation?.longitude,
     );
 
-    Navigator.of(
-      context,
-      rootNavigator: true,
-    ).pushNamed(AppRouteConstant.carList, arguments: request);
+    Navigator.of(context, rootNavigator: true).pushNamed(
+      AppRouteConstant.carList,
+      arguments: {
+        'request': request,
+        'locationAddress': _address,
+        'latitude': _selectedLocation?.latitude,
+        'longitude': _selectedLocation?.longitude,
+      },
+    );
   }
 
   @override
@@ -152,91 +155,120 @@ class _CarRentalPageState extends State<CarRentalPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.rentalProvince,
+                  AppLocalizations.of(context)!.rentalLocation,
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
                 SizedBox(height: 8.h),
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryWhite,
-                    borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(
-                      color: AppColors.primaryGrey,
-                      width: 1.w,
+                GestureDetector(
+                  onTap: _pickLocation,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(12.r),
+                      color: Colors.white,
                     ),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton2<Province>(
-                      isExpanded: true,
-                      value: selectedProvince,
-                      hint: Row(
-                        children: [
-                          SvgPicture.asset(
-                            AppIcons.location,
-                            width: 20.w,
-                            height: 20.h,
-                            color: AppColors.primaryBlack,
-                          ),
-                          SizedBox(width: 12.w),
-                          Text(
-                            isLoadingProvinces
-                                ? AppLocalizations.of(context)!.loading
-                                : AppLocalizations.of(
-                                  context,
-                                )!.selectRentalProvince,
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: AppColors.textSubtitle),
-                          ),
-                        ],
-                      ),
-                      items:
-                          provinces.map((Province province) {
-                            return DropdownMenuItem<Province>(
-                              value: province,
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    AppIcons.location,
-                                    width: 20.w,
-                                    height: 20.h,
-                                    color: AppColors.primaryBlack,
-                                  ),
-                                  SizedBox(width: 12.w),
-                                  Text(
-                                    province.name,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodyMedium?.copyWith(
-                                      color: AppColors.primaryBlack,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Map Preview
+                        SizedBox(
+                          height: 150.h,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(12.r),
+                            ),
+                            child:
+                                _selectedLocation == null
+                                    ? Container(
+                                      color: Colors.grey.shade100,
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.map_outlined,
+                                              size: 32.sp,
+                                              color: AppColors.primaryBlue,
+                                            ),
+                                            SizedBox(height: 8.h),
+                                            Text(
+                                              AppLocalizations.of(
+                                                context,
+                                              )!.tapToSelectLocation,
+                                              style: Theme.of(
+                                                context,
+                                              ).textTheme.bodySmall?.copyWith(
+                                                color: AppColors.primaryBlue,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                    : IgnorePointer(
+                                      child: FlutterMap(
+                                        options: MapOptions(
+                                          initialCenter: _selectedLocation!,
+                                          initialZoom: 15.0,
+                                        ),
+                                        children: [
+                                          TileLayer(
+                                            urlTemplate:
+                                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                          ),
+                                          MarkerLayer(
+                                            markers: [
+                                              Marker(
+                                                point: _selectedLocation!,
+                                                width: 30,
+                                                height: 30,
+                                                child: const Icon(
+                                                  Icons.location_on,
+                                                  color: Colors.red,
+                                                  size: 30,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
-                      onChanged: (Province? newValue) {
-                        setState(() {
-                          selectedProvince = newValue;
-                        });
-                      },
-                      buttonStyleData: ButtonStyleData(
-                        padding: EdgeInsets.only(right: 12.w),
-                        height: 48.h,
-                      ),
-                      iconStyleData: IconStyleData(
-                        icon: Icon(Icons.arrow_drop_down_sharp),
-                        iconSize: 24.w,
-                      ),
-                      dropdownStyleData: DropdownStyleData(
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryWhite,
-                          borderRadius: BorderRadius.circular(8.r),
+                          ),
                         ),
-                        maxHeight: 300.h,
-                      ),
-                      menuItemStyleData: MenuItemStyleData(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      ),
+                        // Address Text
+                        Padding(
+                          padding: EdgeInsets.all(12.w),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  _address.isEmpty
+                                      ? AppLocalizations.of(
+                                        context,
+                                      )!.enterPickupLocation
+                                      : _address,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.bodyMedium?.copyWith(
+                                    color:
+                                        _address.isEmpty
+                                            ? Colors.grey.shade400
+                                            : AppColors.primaryBlack,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 14.sp,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

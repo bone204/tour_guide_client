@@ -4,12 +4,14 @@ enum RentalType { hourly, daily }
 
 class CarSearchRequest {
   final RentalType? rentalType;
-  final String? vehicleType; // 'bike' or 'car'
+  final String? vehicleType;
   final int? minPrice;
   final int? maxPrice;
   final DateTime? startDate;
   final DateTime? endDate;
   final String? province;
+  final double? latitude;
+  final double? longitude;
 
   CarSearchRequest({
     this.rentalType,
@@ -19,6 +21,8 @@ class CarSearchRequest {
     this.startDate,
     this.endDate,
     this.province,
+    this.latitude,
+    this.longitude,
   });
 
   Map<String, dynamic> toJson() {
@@ -31,6 +35,8 @@ class CarSearchRequest {
       if (startDate != null) 'startDate': dateFormat.format(startDate!),
       if (endDate != null) 'endDate': dateFormat.format(endDate!),
       if (province != null) 'province': province,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
     };
   }
 }

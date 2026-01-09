@@ -536,6 +536,9 @@ class AppRouter {
                 vehicle: args['vehicle'] as RentalVehicle,
                 rentalType: args['rentalType'] as String,
                 initialStartDate: args['initialStartDate'] as DateTime,
+                locationAddress: args['locationAddress'] as String?,
+                pickupLatitude: args['pickupLatitude'] as double?,
+                pickupLongitude: args['pickupLongitude'] as double?,
               ),
         );
 
@@ -548,6 +551,9 @@ class AppRouter {
                 vehicle: args['vehicle'] as RentalVehicle,
                 rentalType: args['rentalType'] as String,
                 initialStartDate: args['initialStartDate'] as DateTime,
+                locationAddress: args['locationAddress'] as String?,
+                pickupLatitude: args['pickupLatitude'] as double?,
+                pickupLongitude: args['pickupLongitude'] as double?,
               ),
         );
 

@@ -7,6 +7,8 @@ class CreateRentalBillRequest {
   final DateTime startDate;
   final DateTime endDate;
   final String? location;
+  final double? pickupLatitude;
+  final double? pickupLongitude;
   final List<RentalBillDetailRequest> details;
 
   CreateRentalBillRequest({
@@ -16,6 +18,8 @@ class CreateRentalBillRequest {
     required this.startDate,
     required this.endDate,
     this.location,
+    this.pickupLatitude,
+    this.pickupLongitude,
     required this.details,
   });
 
@@ -28,6 +32,8 @@ class CreateRentalBillRequest {
       'startDate': formatter.format(startDate),
       'endDate': formatter.format(endDate),
       if (location != null) 'location': location,
+      if (pickupLatitude != null) 'pickupLatitude': pickupLatitude,
+      if (pickupLongitude != null) 'pickupLongitude': pickupLongitude,
       'details': details.map((e) => e.toJson()).toList(),
     };
   }

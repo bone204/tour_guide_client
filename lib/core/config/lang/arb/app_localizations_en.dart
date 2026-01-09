@@ -350,6 +350,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectPickupLocation => 'Select pickup location';
 
   @override
+  String get rentalLocation => 'Rental Location';
+
+  @override
   String get rentalProvince => 'Rental Province';
 
   @override

@@ -20,12 +20,18 @@ class CreateRentalBillPage extends StatefulWidget {
   final RentalVehicle vehicle;
   final String rentalType;
   final DateTime initialStartDate;
+  final String? locationAddress;
+  final double? pickupLatitude;
+  final double? pickupLongitude;
 
   const CreateRentalBillPage({
     super.key,
     required this.vehicle,
     required this.rentalType,
     required this.initialStartDate,
+    this.locationAddress,
+    this.pickupLatitude,
+    this.pickupLongitude,
   });
 
   @override
@@ -50,6 +56,9 @@ class _CreateRentalBillPageState extends State<CreateRentalBillPage> {
     super.initState();
     _startDate = widget.initialStartDate;
     _startDateController.text = _dateFormat.format(_startDate);
+    if (widget.locationAddress != null) {
+      _locationController.text = widget.locationAddress!;
+    }
     // Packages generation depends on localization but strictly speaking the keys are hardcoded in logic for now.
     // We should re-generate packages on build or local change if we want localized labels.
     if (_packages.isEmpty) {
@@ -412,10 +421,16 @@ class _CreateRentalBillPageState extends State<CreateRentalBillPage> {
           ),
         ),
         SizedBox(height: 16.h),
-        CustomTextField(
-          controller: _locationController,
-          label: locale.location,
-          placeholder: locale.enterPickupLocation,
+        AbsorbPointer(
+          absorbing:
+              widget.locationAddress != null &&
+              widget.locationAddress!.isNotEmpty,
+          child: CustomTextField(
+            controller: _locationController,
+            label: locale.location,
+            placeholder: locale.enterPickupLocation,
+            maxLines: 5,
+          ),
         ),
         SizedBox(height: 16.h),
         CustomTextField(
@@ -494,6 +509,8 @@ class _CreateRentalBillPageState extends State<CreateRentalBillPage> {
                               startDate: _startDate,
                               endDate: _endDate,
                               location: _locationController.text,
+                              pickupLatitude: widget.pickupLatitude,
+                              pickupLongitude: widget.pickupLongitude,
                               details: [
                                 RentalBillDetailRequest(
                                   licensePlate: widget.vehicle.licensePlate,

@@ -773,6 +773,12 @@ abstract class AppLocalizations {
   /// **'Select pickup location'**
   String get selectPickupLocation;
 
+  /// No description provided for @rentalLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Location'**
+  String get rentalLocation;
+
   /// No description provided for @rentalProvince.
   ///
   /// In en, this message translates to:

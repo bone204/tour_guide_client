@@ -27,6 +27,9 @@ class MotorbikeListPage extends StatelessWidget {
     RentalVehicle vehicle,
     String? rentalType,
     DateTime? startDate,
+    String? locationAddress,
+    double? latitude,
+    double? longitude,
   ) {
     if (rentalType == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -40,14 +43,21 @@ class MotorbikeListPage extends StatelessWidget {
         'vehicle': vehicle,
         'rentalType': rentalType,
         'initialStartDate': startDate ?? DateTime.now(),
+        'locationAddress': locationAddress,
+        'pickupLatitude': latitude,
+        'pickupLongitude': longitude,
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final request =
-        ModalRoute.of(context)!.settings.arguments as MotorbikeSearchRequest?;
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final request = args['request'] as MotorbikeSearchRequest?;
+    final locationAddress = args['locationAddress'] as String?;
+    final latitude = args['latitude'] as double?;
+    final longitude = args['longitude'] as double?;
 
     return BlocProvider(
       create: (context) {
@@ -114,6 +124,9 @@ class MotorbikeListPage extends StatelessWidget {
                         motorbike,
                         request?.rentalType?.name,
                         request?.startDate,
+                        locationAddress,
+                        latitude,
+                        longitude,
                       ),
                 );
               },
