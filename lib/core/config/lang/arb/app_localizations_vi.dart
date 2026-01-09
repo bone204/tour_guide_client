@@ -111,6 +111,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get selectImageSource => 'Chọn nguồn ảnh';
 
   @override
+  String get currentPassword => 'Mật khẩu hiện tại';
+
+  @override
+  String get newPassword => 'Mật khẩu mới';
+
+  @override
+  String get changePasswordSuccess => 'Đổi mật khẩu thành công';
+
+  @override
   String get forgotPassword => 'Quên mật khẩu?';
 
   @override

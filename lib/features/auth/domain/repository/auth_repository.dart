@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'dart:io';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
+import 'package:tour_guide_app/features/auth/data/models/change_password_model.dart';
 import 'package:tour_guide_app/features/auth/data/models/email_verification.dart';
 import 'package:tour_guide_app/features/auth/data/models/email_verification_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/phone_verification.dart';
@@ -34,4 +35,7 @@ abstract class AuthRepository {
     required File citizenFrontPhoto,
     required File selfiePhoto,
   });
+  Future<Either<Failure, SuccessResponse>> changePassword(
+    ChangePasswordModel changePasswordModel,
+  );
 }

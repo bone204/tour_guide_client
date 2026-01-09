@@ -11,6 +11,7 @@ class ApiUrls {
   static const phoneVerify = "$baseURL/auth/phone/verify";
 
   static const auth = "$baseURL/auth";
+  static const changePassword = "$baseURL/auth/password";
 
   //Users URLs
   static const users = "$baseURL/users";

@@ -299,6 +299,24 @@ abstract class AppLocalizations {
   /// **'Select Image Source'**
   String get selectImageSource;
 
+  /// No description provided for @currentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get currentPassword;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPassword;
+
+  /// No description provided for @changePasswordSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully'**
+  String get changePasswordSuccess;
+
   /// No description provided for @forgotPassword.
   ///
   /// In en, this message translates to:

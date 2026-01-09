@@ -42,6 +42,10 @@
 
 
 
+  "currentPassword": "Mật khẩu hiện tại",
+  "newPassword": "Mật khẩu mới",
+  "changePasswordSuccess": "Đổi mật khẩu thành công",
+
   "forgotPassword": "Quên mật khẩu?",
 
   "signIn": "Đăng nhập",

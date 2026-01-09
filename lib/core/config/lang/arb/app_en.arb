@@ -40,6 +40,9 @@
 
 
 
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "changePasswordSuccess": "Password changed successfully",
   "forgotPassword": "Forgot Password?",
 
   "signIn": "Sign In",

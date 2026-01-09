@@ -111,6 +111,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectImageSource => 'Select Image Source';
 
   @override
+  String get currentPassword => 'Current Password';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get changePasswordSuccess => 'Password changed successfully';
+
+  @override
   String get forgotPassword => 'Forgot Password?';
 
   @override

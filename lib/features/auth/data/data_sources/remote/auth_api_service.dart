@@ -13,6 +13,7 @@ import 'package:tour_guide_app/features/auth/data/models/signin_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/signup_params.dart';
 import 'package:tour_guide_app/features/auth/data/models/signup_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/email_verification_response.dart';
+import 'package:tour_guide_app/features/auth/data/models/change_password_model.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class AuthApiService {
@@ -33,6 +34,9 @@ abstract class AuthApiService {
     required File citizenFrontPhoto,
     required File selfiePhoto,
   });
+  Future<Either<Failure, SuccessResponse>> changePassword(
+    ChangePasswordModel changePasswordModel,
+  );
 }
 
 class AuthApiServiceImpl extends AuthApiService {
@@ -226,6 +230,32 @@ class AuthApiServiceImpl extends AuthApiService {
           statusCode: e.response?.statusCode,
         ),
       );
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> changePassword(
+    ChangePasswordModel changePasswordModel,
+  ) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        ApiUrls.changePassword,
+        data: changePasswordModel.toJson(),
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/local/auth_local_service.dart';
 import 'package:tour_guide_app/features/auth/data/data_sources/remote/auth_api_service.dart';
+import 'package:tour_guide_app/features/auth/data/models/change_password_model.dart';
 import 'package:tour_guide_app/features/auth/data/models/email_verification.dart';
 import 'package:tour_guide_app/features/auth/data/models/email_verification_response.dart';
 import 'package:tour_guide_app/features/auth/data/models/phone_verification.dart';
@@ -90,5 +91,14 @@ class AuthRepositoryImpl extends AuthRepository {
       citizenFrontPhoto: citizenFrontPhoto,
       selfiePhoto: selfiePhoto,
     );
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> changePassword(
+    ChangePasswordModel changePasswordModel,
+  ) async {
+    // Assuming networkInfo and OfflineFailure are available or need to be added.
+    // For now, directly calling the API service as per existing methods.
+    return await _apiService.changePassword(changePasswordModel);
   }
 }

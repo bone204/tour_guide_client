@@ -362,9 +362,7 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
                       });
                     },
                     buttonStyleData: ButtonStyleData(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 0.w,
-                      ), 
+                      padding: EdgeInsets.symmetric(horizontal: 0.w),
                       height: 48.h,
                     ),
                     iconStyleData: IconStyleData(
@@ -537,7 +535,7 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
         dateOfBirth:
             _dateOfBirthController.text != (_currentUser?.dateOfBirth ?? '')
                 ? _dateOfBirthController.text.isNotEmpty
-                    ? _dateOfBirthController.text
+                    ? "${int.parse(_dateOfBirthController.text.split('-')[2]).toString().padLeft(2, '0')}/${int.parse(_dateOfBirthController.text.split('-')[1]).toString().padLeft(2, '0')}/${_dateOfBirthController.text.split('-')[0]}"
                     : null
                 : null,
         gender:

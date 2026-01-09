@@ -16,6 +16,7 @@ import 'package:tour_guide_app/features/auth/domain/usecases/verify_email.dart';
 import 'package:tour_guide_app/features/auth/domain/usecases/verify_citizen_id.dart';
 
 import 'package:tour_guide_app/features/auth/domain/usecases/verify_phone.dart';
+import 'package:tour_guide_app/features/auth/domain/usecases/change_password.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_my_rental_bills/get_my_rental_bills_cubit.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/get_rental_bill_detail/get_rental_bill_detail_cubit.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/usecases/send_chat_message.dart';
@@ -134,6 +135,7 @@ import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_contra
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_my_vehicles.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/get_vehicle_detail.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_my_profile/get_my_profile_cubit.dart';
+import 'package:tour_guide_app/features/settings/presentation/bloc/change_password/change_password_cubit.dart';
 import 'package:tour_guide_app/features/profile/domain/usecases/update_initial_profile.dart';
 
 import 'package:tour_guide_app/features/profile/domain/usecases/update_avatar.dart';
@@ -258,6 +260,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<LogOutUseCase>(LogOutUseCase());
   sl.registerSingleton<EmailStartUseCase>(EmailStartUseCase());
   sl.registerSingleton<VerifyEmailUseCase>(VerifyEmailUseCase());
+  sl.registerSingleton<ChangePasswordUseCase>(ChangePasswordUseCase());
   sl.registerSingleton<VerifyCitizenIdUseCase>(VerifyCitizenIdUseCase());
   sl.registerSingleton<GetDestinationByIdUseCase>(GetDestinationByIdUseCase());
   sl.registerSingleton<GetDestinationUseCase>(GetDestinationUseCase());
@@ -475,6 +478,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<VerifyCitizenIdCubit>(
     () => VerifyCitizenIdCubit(verifyCitizenIdUseCase: sl()),
   );
+  sl.registerFactory<ChangePasswordCubit>(() => ChangePasswordCubit());
   sl.registerFactory<VerifyPhoneCubit>(() => VerifyPhoneCubit());
   sl.registerFactory<CommentCubit>(
     () => CommentCubit(

@@ -76,6 +76,7 @@ import 'package:tour_guide_app/features/eatery/data/models/eatery.dart';
 
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/rental_request_detail/owner_rental_request_detail.page.dart';
 import 'package:tour_guide_app/features/notifications/presentation/pages/notification.page.dart';
+import 'package:tour_guide_app/features/settings/presentation/pages/change_password.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -581,6 +582,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const NotificationPage(),
+        );
+
+      case AppRouteConstant.changePassword:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const ChangePasswordPage(),
         );
 
       default:

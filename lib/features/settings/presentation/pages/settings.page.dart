@@ -29,6 +29,13 @@ class SettingsPage extends StatelessWidget {
       ).pushNamed(AppRouteConstant.language);
     }
 
+    void openChangePasswordScreen(BuildContext context) {
+      Navigator.of(
+        context,
+        rootNavigator: true,
+      ).pushNamed(AppRouteConstant.changePassword);
+    }
+
     return MultiBlocProvider(
       providers: [BlocProvider(create: (context) => ButtonStateCubit())],
       child: BlocListener<ButtonStateCubit, ButtonState>(
@@ -78,7 +85,7 @@ class SettingsPage extends StatelessWidget {
                     icon: AppIcons.lock,
                     title: AppLocalizations.of(context)!.changePassword,
                     trailingIcon: AppIcons.arrowRight,
-                    onTap: () {},
+                    onTap: () => openChangePasswordScreen(context),
                   ),
                   SizedBox(height: 16.w),
                   Text(
