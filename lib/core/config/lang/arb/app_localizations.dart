@@ -143,6 +143,24 @@ abstract class AppLocalizations {
   /// **'Enter username or email'**
   String get enterUsernameOrEmail;
 
+  /// No description provided for @genderMale.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get genderMale;
+
+  /// No description provided for @genderFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get genderFemale;
+
+  /// No description provided for @genderOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get genderOther;
+
   /// No description provided for @statusBooked.
   ///
   /// In en, this message translates to:
@@ -628,6 +646,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select date and hour'**
   String get selectDateAndHour;
+
+  /// No description provided for @selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get selectDate;
 
   /// No description provided for @startHour.
   ///

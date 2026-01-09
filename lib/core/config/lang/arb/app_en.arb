@@ -11,6 +11,9 @@
   "usernameOrEmail": "Username/Email",
 
   "enterUsernameOrEmail": "Enter username or email",
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "genderOther": "Other",
   "statusBooked": "Booked",
   "statusDelivering": "Delivering",
   "loading": "Loading...",
@@ -150,6 +153,7 @@
   "dailyRent": "Daily Rent",
 
   "selectDateAndHour": "Select date and hour",
+  "selectDate": "Select date",
 
   "startHour": "Start hour",
 

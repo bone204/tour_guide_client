@@ -5,6 +5,8 @@ class DatePickerField extends StatefulWidget {
   final String? label;
   final String placeholder;
   final DateTime? initialDate;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
   final void Function(DateTime) onChanged;
   final Widget? prefixIcon;
 
@@ -14,6 +16,8 @@ class DatePickerField extends StatefulWidget {
     required this.placeholder,
     required this.onChanged,
     this.initialDate,
+    this.firstDate,
+    this.lastDate,
     this.prefixIcon,
   });
 
@@ -44,8 +48,8 @@ class _DatePickerFieldState extends State<DatePickerField> {
     final date = await showDatePicker(
       context: context,
       initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      firstDate: widget.firstDate ?? DateTime(1900),
+      lastDate: widget.lastDate ?? DateTime(2100),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -84,7 +88,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
             decoration: BoxDecoration(
               color: AppColors.primaryWhite,
               borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: AppColors.primaryGrey, width: 1.w),
+              border: Border.all(color: AppColors.secondaryGrey, width: 1.w),
             ),
             child: Row(
               children: [

@@ -36,7 +36,7 @@ class ProfileImageThumbnail extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.r),
                       child: Image.network(
                         imageUrl!,
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                         errorBuilder:
                             (_, __, ___) => const Icon(Icons.broken_image),
                       ),

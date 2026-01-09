@@ -33,6 +33,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterUsernameOrEmail => 'Enter username or email';
 
   @override
+  String get genderMale => 'Male';
+
+  @override
+  String get genderFemale => 'Female';
+
+  @override
+  String get genderOther => 'Other';
+
+  @override
   String get statusBooked => 'Booked';
 
   @override
@@ -276,6 +285,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectDateAndHour => 'Select date and hour';
+
+  @override
+  String get selectDate => 'Select date';
 
   @override
   String get startHour => 'Start hour';

@@ -33,6 +33,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get enterUsernameOrEmail => 'Nhập tên đăng nhập hoặc email';
 
   @override
+  String get genderMale => 'Nam';
+
+  @override
+  String get genderFemale => 'Nữ';
+
+  @override
+  String get genderOther => 'Khác';
+
+  @override
   String get statusBooked => 'Đã đặt';
 
   @override
@@ -276,6 +285,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get selectDateAndHour => 'Chọn ngày và giờ';
+
+  @override
+  String get selectDate => 'Chọn ngày';
 
   @override
   String get startHour => 'Giờ bắt đầu';

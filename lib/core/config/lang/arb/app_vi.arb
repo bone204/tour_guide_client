@@ -11,6 +11,9 @@
   "usernameOrEmail": "Tên đăng nhập/Email",
 
   "enterUsernameOrEmail": "Nhập tên đăng nhập hoặc email",
+  "genderMale": "Nam",
+  "genderFemale": "Nữ",
+  "genderOther": "Khác",
   "statusBooked": "Đã đặt",
   "statusDelivering": "Đang giao xe",
   "loading": "Đang tải...",
@@ -208,6 +211,7 @@
 
 
   "selectDateAndHour": "Chọn ngày và giờ",
+  "selectDate": "Chọn ngày",
 
   "startHour": "Giờ bắt đầu",
 
