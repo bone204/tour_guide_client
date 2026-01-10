@@ -58,7 +58,7 @@ class CustomSnackbar {
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
               ),
-              maxLines: 2,
+              maxLines: 5,
               overflow: TextOverflow.ellipsis,
             ),
           ),

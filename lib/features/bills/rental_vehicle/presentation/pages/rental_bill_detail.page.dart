@@ -36,6 +36,7 @@ import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:tour_guide_app/common/pages/selfie_camera.page.dart';
 
 class RentalBillDetailPage extends StatefulWidget {
   final int id;
@@ -1151,18 +1152,16 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
   }
 
   Future<void> _onPickup(BuildContext context, int id) async {
-    final source = await _showImageSourceActionSheet(context);
-    if (source == null) return;
+    final XFile? photo = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SelfieCameraPage()),
+    );
+
+    if (photo == null) return;
 
     setState(() => _isActionLoading = true);
     try {
-      final ImagePicker picker = ImagePicker();
-      final XFile? photo = await picker.pickImage(
-        source: source,
-        preferredCameraDevice: CameraDevice.front,
-      );
-
-      if (photo != null && context.mounted) {
+      if (context.mounted) {
         await context.read<RentalWorkflowCubit>().pickupVehicle(
           id,
           File(photo.path),
