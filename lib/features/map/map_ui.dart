@@ -241,11 +241,6 @@ extension MapUIExtension on _MapPageState {
                     if (!_isNavigating) ...[
                       _buildSearchBar(),
                       const SizedBox(height: 8),
-                      // Layer Toggle Button - hiển thị ngay dưới thanh search
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: _buildMapTypeButton(),
-                      ),
                       AnimatedSwitcher(
                         duration: const Duration(milliseconds: 140),
                         switchInCurve: Curves.easeOutCubic,
@@ -294,6 +289,34 @@ extension MapUIExtension on _MapPageState {
                 ),
               ),
             ),
+          // Map Controls (Map Type & Current Location)
+          if (!hasError &&
+              !_isLoading &&
+              !_isNavigating &&
+              !_isRouteLoading) ...[
+            // Map Type Button
+            Positioned(
+              right: 16,
+              bottom: 100, // Adjusted: Just above the location button
+              child: FloatingActionButton(
+                heroTag: 'map_type_fab_main',
+                onPressed: _showMapTypeSelector,
+                backgroundColor: AppColors.primaryBlue,
+                child: Icon(_currentMapType.icon, color: AppColors.primaryWhite),
+              ),
+            ),
+            // Current Location Button
+            Positioned(
+              right: 16,
+              bottom: 30, // Bottom alignment
+              child: FloatingActionButton(
+                heroTag: 'my_location',
+                onPressed: _recenterOnUser,
+                backgroundColor: AppColors.primaryBlue,
+                child: const Icon(Icons.my_location, color: AppColors.primaryWhite),
+              ),
+            ),
+          ],
           _buildNavigationSummaryOverlay(),
         ],
       ),
@@ -389,38 +412,6 @@ extension MapUIExtension on _MapPageState {
     );
   }
 
-  Widget _buildMapTypeButton() {
-    return Container(
-      margin: const EdgeInsets.only(top: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: _showMapTypeSelector,
-          borderRadius: BorderRadius.circular(30),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Icon(
-              Icons.layers_outlined,
-              color: Theme.of(context).primaryColor,
-              size: 24,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   void _showMapTypeSelector() {
     showModalBottomSheet(
       context: context,
@@ -431,80 +422,58 @@ extension MapUIExtension on _MapPageState {
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  AppLocalizations.of(context)!.mapType,
-                  style: Theme.of(context).textTheme.titleLarge,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.mapType,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 16,
-                  runSpacing: 16,
-                  children:
-                      MapType.values.map((type) {
-                        final isSelected = _currentMapType == type;
-                        String label = type.getLabel(context);
-
-                        return InkWell(
-                          onTap: () {
-                            setState(() {
-                              _currentMapType = type;
-                            });
-                            Navigator.pop(context);
-                          },
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 60,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color:
-                                        isSelected
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.grey.shade300,
-                                    width: isSelected ? 2 : 1,
-                                  ),
-                                  color:
-                                      isSelected
-                                          ? Theme.of(
-                                            context,
-                                          ).primaryColor.withOpacity(0.1)
-                                          : Colors.white,
-                                ),
-                                child: Icon(
-                                  type.icon,
-                                  color:
-                                      isSelected
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.grey.shade600,
-                                  size: 30,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                label,
-                                style: TextStyle(
-                                  color:
-                                      isSelected
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.grey.shade600,
-                                  fontWeight:
-                                      isSelected
-                                          ? FontWeight.w600
-                                          : FontWeight.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                ...MapType.values.map(
+                  (type) => ListTile(
+                    leading: Icon(
+                      type.icon,
+                      color:
+                          _currentMapType == type
+                              ? AppColors.primaryBlue
+                              : Colors.grey.shade600,
+                    ),
+                    title: Text(
+                      type.getLabel(context),
+                      style: TextStyle(
+                        fontWeight:
+                            _currentMapType == type
+                                ? FontWeight.w900
+                                : FontWeight.normal,
+                        color:
+                            _currentMapType == type
+                                ? AppColors.primaryBlue
+                                : Colors.black87,
+                      ),
+                    ),
+                    trailing:
+                        _currentMapType == type
+                            ? const Icon(
+                              Icons.check,
+                              color: AppColors.primaryBlue,
+                            )
+                            : null,
+                    onTap: () {
+                      setState(() => _currentMapType = type);
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
                 const SizedBox(height: 16),
               ],

@@ -115,25 +115,11 @@ class _MapPageState extends State<MapPage> with TickerProviderStateMixin {
     final hasError = _errorMessage != null;
     final center = _currentPosition ?? _fallbackCenter;
 
-    final showFab =
-        !hasError && !_isLoading && !_isNavigating && !_isRouteLoading;
 
     return Scaffold(
+      resizeToAvoidBottomInset:
+          false, // Prevent keyboard from pushing widgets up
       body: _buildBody(hasError, center),
-      floatingActionButton:
-          showFab
-              ? Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  FloatingActionButton(
-                    heroTag: 'my_location',
-                    onPressed: _recenterOnUser,
-                    child: const Icon(Icons.my_location),
-                  ),
-                ],
-              )
-              : null,
     );
   }
 }

@@ -41,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   final List<PersistentTabConfig> _tabs = [
-    PersistentTabConfig(  
+    PersistentTabConfig(
       screen: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light.copyWith(
           statusBarColor: Colors.transparent,
@@ -80,9 +80,7 @@ class _MainScreenState extends State<MainScreen> {
           statusBarIconBrightness: Brightness.light,
           statusBarBrightness: Brightness.light,
         ),
-        child: Builder(
-          builder: (context) => const MapPage(),
-        ),
+        child: Builder(builder: (context) => const MapPage()),
       ),
       item: ItemConfig(
         icon: const Icon(Icons.newspaper),
@@ -114,9 +112,7 @@ class _MainScreenState extends State<MainScreen> {
           statusBarIconBrightness: Brightness.light,
           statusBarBrightness: Brightness.light,
         ),
-        child: Builder(
-          builder: (context) => const ProfilePage(),
-        ),
+        child: Builder(builder: (context) => const ProfilePage()),
       ),
       item: ItemConfig(
         icon: const Icon(Icons.newspaper),
@@ -152,7 +148,8 @@ class _MainScreenState extends State<MainScreen> {
       actionsSpacing: 8,
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context, rootNavigator: true).pop(false),
+          onPressed:
+              () => Navigator.of(context, rootNavigator: true).pop(false),
           child: Text(
             AppLocalizations.of(context)!.cancel,
             style: TextStyle(color: AppColors.primaryGrey),
@@ -192,77 +189,99 @@ class _MainScreenState extends State<MainScreen> {
       child: PersistentTabView(
         controller: _controller,
         tabs: _tabs,
+        resizeToAvoidBottomInset:
+            false, // Prevent keyboard from resizing the tab view
         navBarBuilder: (navBarConfig) {
-      final selectedIndex = navBarConfig.selectedIndex;
-      return Container(
-        height: 55,
-        decoration: BoxDecoration(
-          color: AppColors.primaryWhite,
-          border: Border(
-            top: BorderSide(color: AppColors.secondaryGrey, width: 0.4),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(navBarConfig.items.length, (index) {
-            final isSelected = index == selectedIndex;
-    
-            String svgPath;
-            switch (index) {
-              case 0:
-                svgPath = isSelected ? AppIcons.homeActive : AppIcons.homeInactive;
-                break;
-              case 1:
-                svgPath = isSelected ? AppIcons.translateActive : AppIcons.translateInactive;
-                break;
-              case 2:
-                svgPath = isSelected ? AppIcons.mapActive : AppIcons.mapInactive;
-                break;
-              case 3:
-                svgPath = isSelected ? AppIcons.vehicleActive : AppIcons.vehicleInactive;
-                break;
-              case 4:
-                svgPath = isSelected ? AppIcons.accountActive : AppIcons.accountInactive;
-                break;
-              case 5:
-                svgPath = isSelected ? AppIcons.barActive : AppIcons.barInactive;
-                break;
-              default:
-                svgPath = AppIcons.homeInactive;
-            }
-    
-            return Expanded(
-              child: GestureDetector(
-                onTap: () => navBarConfig.onItemSelected(index),
-                behavior: HitTestBehavior.opaque,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      height: 3,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: isSelected ? AppColors.primaryBlue : Colors.transparent,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
+          final selectedIndex = navBarConfig.selectedIndex;
+          return Container(
+            height: 55,
+            decoration: BoxDecoration(
+              color: AppColors.primaryWhite,
+              border: Border(
+                top: BorderSide(color: AppColors.secondaryGrey, width: 0.4),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(navBarConfig.items.length, (index) {
+                final isSelected = index == selectedIndex;
+
+                String svgPath;
+                switch (index) {
+                  case 0:
+                    svgPath =
+                        isSelected
+                            ? AppIcons.homeActive
+                            : AppIcons.homeInactive;
+                    break;
+                  case 1:
+                    svgPath =
+                        isSelected
+                            ? AppIcons.translateActive
+                            : AppIcons.translateInactive;
+                    break;
+                  case 2:
+                    svgPath =
+                        isSelected ? AppIcons.mapActive : AppIcons.mapInactive;
+                    break;
+                  case 3:
+                    svgPath =
+                        isSelected
+                            ? AppIcons.vehicleActive
+                            : AppIcons.vehicleInactive;
+                    break;
+                  case 4:
+                    svgPath =
+                        isSelected
+                            ? AppIcons.accountActive
+                            : AppIcons.accountInactive;
+                    break;
+                  case 5:
+                    svgPath =
+                        isSelected ? AppIcons.barActive : AppIcons.barInactive;
+                    break;
+                  default:
+                    svgPath = AppIcons.homeInactive;
+                }
+
+                return Expanded(
+                  child: GestureDetector(
+                    onTap: () => navBarConfig.onItemSelected(index),
+                    behavior: HitTestBehavior.opaque,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          height: 3,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color:
+                                isSelected
+                                    ? AppColors.primaryBlue
+                                    : Colors.transparent,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SvgPicture.asset(
+                          svgPath,
+                          width: 28,
+                          height: 28,
+                          color:
+                              isSelected
+                                  ? AppColors.primaryBlue
+                                  : AppColors.primaryBlack,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    SvgPicture.asset(
-                      svgPath,
-                      width: 28,
-                      height: 28,
-                      color: isSelected ? AppColors.primaryBlue : AppColors.primaryBlack,
-                      ),
-                    ],
                   ),
-                ),
-              );
-            }),
-          ),
-        );
-      },
+                );
+              }),
+            ),
+          );
+        },
       ),
     );
   }

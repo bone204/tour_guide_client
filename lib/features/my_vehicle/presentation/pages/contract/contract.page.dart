@@ -18,19 +18,19 @@ class ContractPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<GetContractsCubit>()..getContracts(),
-      child: const _ContractView(),
+      child: const ContractView(),
     );
   }
 }
 
-class _ContractView extends StatefulWidget {
-  const _ContractView();
+class ContractView extends StatefulWidget {
+  const ContractView({super.key});
 
   @override
-  State<_ContractView> createState() => _ContractViewState();
+  State<ContractView> createState() => _ContractViewState();
 }
 
-class _ContractViewState extends State<_ContractView> {
+class _ContractViewState extends State<ContractView> {
   late StreamSubscription _subscription;
 
   @override
@@ -53,18 +53,7 @@ class _ContractViewState extends State<_ContractView> {
   Widget build(BuildContext context) {
     return BlocListener<GetContractsCubit, GetContractsState>(
       listener: (context, state) {
-        if (state.status == GetContractsStatus.loaded) {
-          final hasApprovedContract = state.contracts.any(
-            (contract) => contract.status.toLowerCase() == 'approved',
-          );
-
-          if (hasApprovedContract) {
-            Navigator.of(
-              context,
-              rootNavigator: true,
-            ).pushReplacementNamed(AppRouteConstant.vehicle);
-          }
-        }
+        // Navigation logic removed to be handled by parent or conditional rendering
       },
       child: Scaffold(
         appBar: CustomAppBar(

@@ -455,8 +455,8 @@ class _TrackingMapPageState extends State<TrackingMapPage>
                     ),
               );
             },
-            backgroundColor: Colors.white,
-            child: Icon(_currentMapType.icon, color: AppColors.primaryBlue),
+            backgroundColor: AppColors.primaryBlue,
+            child: Icon(_currentMapType.icon, color: AppColors.primaryWhite),
           ),
         ),
 
@@ -468,10 +468,10 @@ class _TrackingMapPageState extends State<TrackingMapPage>
             child: FloatingActionButton(
               heroTag: 'tracking_map_fab',
               onPressed: _recenter,
-              backgroundColor: Colors.white,
+              backgroundColor: AppColors.primaryBlue,
               child: Icon(
                 Icons.my_location,
-                color: _isAutoCenter ? AppColors.primaryBlue : Colors.grey,
+                color: AppColors.primaryWhite,
               ),
             ),
           ),

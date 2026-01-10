@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:tour_guide_app/common_libs.dart';
@@ -16,7 +17,8 @@ class LocationMapPage extends StatefulWidget {
   State<LocationMapPage> createState() => _LocationMapPageState();
 }
 
-class _LocationMapPageState extends State<LocationMapPage> {
+class _LocationMapPageState extends State<LocationMapPage>
+    with TickerProviderStateMixin {
   final MapController _mapController = MapController();
   final TextEditingController _searchController = TextEditingController();
 
@@ -25,6 +27,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
   bool _isLoading = false;
   List<dynamic> _searchResults = [];
   Timer? _debounce;
+  AnimationController? _cameraAnimationController;
 
   @override
   void initState() {
@@ -32,6 +35,8 @@ class _LocationMapPageState extends State<LocationMapPage> {
     if (widget.initialLocation != null) {
       _selectedLocation = widget.initialLocation!;
       _getAddress(_selectedLocation);
+    } else {
+      _getCurrentLocation();
     }
   }
 
@@ -40,6 +45,7 @@ class _LocationMapPageState extends State<LocationMapPage> {
     _mapController.dispose();
     _searchController.dispose();
     _debounce?.cancel();
+    _cameraAnimationController?.dispose();
     super.dispose();
   }
 
@@ -113,7 +119,14 @@ class _LocationMapPageState extends State<LocationMapPage> {
       _searchController.text = result['display_name'];
     });
 
-    _mapController.move(newLocation, 16.0);
+    setState(() {
+      _selectedLocation = newLocation;
+      _address = result['display_name'];
+      _searchResults = [];
+      _searchController.text = result['display_name'];
+    });
+
+    _animateTo(newLocation, zoom: 16.0);
   }
 
   void _confirmSelection() {
@@ -124,11 +137,125 @@ class _LocationMapPageState extends State<LocationMapPage> {
     });
   }
 
+  Future<void> _animateTo(LatLng target, {double? zoom}) async {
+    final camera = _mapController.camera;
+    final currentCenter = camera.center;
+    final currentZoom = camera.zoom;
+    final targetZoom = zoom ?? currentZoom;
+
+    _cameraAnimationController?.stop();
+    _cameraAnimationController?.dispose();
+
+    final controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 850),
+    );
+    final curve = CurvedAnimation(
+      parent: controller,
+      curve: Curves.easeInOutCubic,
+    );
+
+    final latTween = Tween<double>(
+      begin: currentCenter.latitude,
+      end: target.latitude,
+    );
+    final lngTween = Tween<double>(
+      begin: currentCenter.longitude,
+      end: target.longitude,
+    );
+    final zoomTween = Tween<double>(begin: currentZoom, end: targetZoom);
+
+    curve.addListener(() {
+      final lat = latTween.evaluate(curve);
+      final lng = lngTween.evaluate(curve);
+      final z = zoomTween.evaluate(curve);
+      _mapController.move(LatLng(lat, lng), z);
+    });
+
+    curve.addStatusListener((status) {
+      if (status == AnimationStatus.completed ||
+          status == AnimationStatus.dismissed) {
+        controller.dispose();
+        if (identical(_cameraAnimationController, controller)) {
+          _cameraAnimationController = null;
+        }
+      }
+    });
+
+    _cameraAnimationController = controller;
+    await controller.forward();
+  }
+
   void _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
       _searchAddress(query);
     });
+  }
+
+  Future<void> _getCurrentLocation() async {
+    setState(() => _isLoading = true);
+    try {
+      bool serviceEnabled;
+      LocationPermission permission;
+
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.locationServiceDisabled,
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  AppLocalizations.of(context)!.locationPermissionDenied,
+                ),
+              ),
+            );
+          }
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)!.locationPermissionDenied,
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      final position = await Geolocator.getCurrentPosition();
+      final newLocation = LatLng(position.latitude, position.longitude);
+
+      setState(() {
+        _selectedLocation = newLocation;
+      });
+      _animateTo(newLocation, zoom: 16.0);
+      _getAddress(newLocation);
+    } catch (e) {
+      debugPrint('Error getting current location: $e');
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -276,6 +403,21 @@ class _LocationMapPageState extends State<LocationMapPage> {
                     ),
                   ),
               ],
+            ),
+          ),
+
+          // Current Location Button
+          Positioned(
+            right: 16.w,
+            bottom: 240.h, // Adjusted to be above the bottom sheet
+            child: FloatingActionButton(
+              heroTag: 'my_location_btn',
+              onPressed: _getCurrentLocation,
+              backgroundColor: AppColors.primaryBlue,
+              child: const Icon(
+                Icons.my_location,
+                color: AppColors.primaryWhite,
+              ),
             ),
           ),
 
