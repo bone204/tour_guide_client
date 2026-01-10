@@ -32,6 +32,8 @@ class Contract {
   final int totalVehicles;
   final int totalRentalTimes;
   final double averageRating;
+  final double? businessLatitude;
+  final double? businessLongitude;
 
   final List<dynamic> vehicles;
 
@@ -64,6 +66,8 @@ class Contract {
     required this.totalVehicles,
     required this.totalRentalTimes,
     required this.averageRating,
+    this.businessLatitude,
+    this.businessLongitude,
     required this.vehicles,
     required this.createdAt,
     required this.updatedAt,
@@ -103,6 +107,12 @@ class Contract {
       totalRentalTimes: json['totalRentalTimes'] ?? 0,
       averageRating:
           double.tryParse(json['averageRating']?.toString() ?? '0') ?? 0,
+      businessLatitude: double.tryParse(
+        json['businessLatitude']?.toString() ?? '',
+      ),
+      businessLongitude: double.tryParse(
+        json['businessLongitude']?.toString() ?? '',
+      ),
 
       vehicles: json['vehicles'] as List? ?? [],
 
@@ -137,6 +147,8 @@ class Contract {
       'totalVehicles': totalVehicles,
       'totalRentalTimes': totalRentalTimes,
       'averageRating': averageRating,
+      'businessLatitude': businessLatitude,
+      'businessLongitude': businessLongitude,
       'vehicles': vehicles,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
@@ -169,6 +181,8 @@ class Contract {
     int? totalVehicles,
     int? totalRentalTimes,
     double? averageRating,
+    double? businessLatitude,
+    double? businessLongitude,
     List<dynamic>? vehicles,
     String? createdAt,
     String? updatedAt,
@@ -199,6 +213,8 @@ class Contract {
       totalVehicles: totalVehicles ?? this.totalVehicles,
       totalRentalTimes: totalRentalTimes ?? this.totalRentalTimes,
       averageRating: averageRating ?? this.averageRating,
+      businessLatitude: businessLatitude ?? this.businessLatitude,
+      businessLongitude: businessLongitude ?? this.businessLongitude,
       vehicles: vehicles ?? this.vehicles,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,

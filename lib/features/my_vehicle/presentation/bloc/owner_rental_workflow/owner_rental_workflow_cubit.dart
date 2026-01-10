@@ -41,11 +41,21 @@ class OwnerRentalWorkflowCubit extends Cubit<OwnerRentalWorkflowState> {
     );
   }
 
-  Future<void> confirmDelivered(int id, List<File> photos) async {
+  Future<void> confirmDelivered(
+    int id,
+    List<File> photos,
+    double lat,
+    double long,
+  ) async {
     if (isClosed) return;
     emit(state.copyWith(status: OwnerRentalWorkflowStatus.loading));
     final result = await ownerDeliveredUseCase(
-      OwnerDeliveredParams(id: id, photos: photos),
+      OwnerDeliveredParams(
+        id: id,
+        photos: photos,
+        latitude: lat,
+        longitude: long,
+      ),
     );
     if (isClosed) return;
     result.fold(

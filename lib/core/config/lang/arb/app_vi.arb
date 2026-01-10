@@ -1704,5 +1704,18 @@
   "retake": "Chụp lại",
   "captureCitizenId": "Chụp ảnh CCCD",
   "capturePortrait": "Chụp ảnh chân dung",
-  "shippingFee": "Phí vận chuyển"
+  "shippingFee": "Phí vận chuyển",
+  "locationServiceDisabled": "Dịch vụ vị trí bị tắt.",
+  "locationPermissionDenied": "Quyền truy cập vị trí bị từ chối.",
+  "map": "Bản đồ",
+  "estimatedTime": "Thời gian dự kiến",
+  "remaining": "Còn lại",
+  "traveled": "Đã đi được",
+  "trackDeliveryRoute": "Theo dõi lộ trình giao xe",
+  "updating": "Đang cập nhật...",
+  "recalculating": "Đang tìm lại đường...",
+  "selectMapType": "Chọn loại bản đồ",
+  "mapTypeNormal": "Mặc định",
+  "mapTypeSatellite": "Vệ tinh",
+  "mapTypeTerrain": "Địa hình"
 }

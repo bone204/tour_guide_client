@@ -34,6 +34,8 @@ abstract class MyVehicleRepository {
   Future<Either<Failure, SuccessResponse>> ownerDelivered(
     int id,
     List<File> photos,
+    double latitude,
+    double longitude,
   );
   Future<Either<Failure, SuccessResponse>> ownerConfirmReturn(
     int id,

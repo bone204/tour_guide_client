@@ -445,22 +445,9 @@ extension MapUIExtension on _MapPageState {
                   spacing: 16,
                   runSpacing: 16,
                   children:
-                      _MapType.values.map((type) {
+                      MapType.values.map((type) {
                         final isSelected = _currentMapType == type;
-                        String label;
-                        switch (type) {
-                          case _MapType.normal:
-                            label = AppLocalizations.of(context)!.mapTypeNormal;
-                            break;
-                          case _MapType.satellite:
-                            label =
-                                AppLocalizations.of(context)!.mapTypeSatellite;
-                            break;
-                          case _MapType.terrain:
-                            label =
-                                AppLocalizations.of(context)!.mapTypeTerrain;
-                            break;
-                        }
+                        String label = type.getLabel(context);
 
                         return InkWell(
                           onTap: () {

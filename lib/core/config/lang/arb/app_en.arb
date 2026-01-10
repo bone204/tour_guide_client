@@ -1697,5 +1697,18 @@
   "retake": "Retake",
   "captureCitizenId": "Capture Citizen ID",
   "capturePortrait": "Capture Portrait",
-  "shippingFee": "Shipping Fee"
+  "shippingFee": "Shipping Fee",
+  "locationServiceDisabled": "Location services are disabled.",
+  "locationPermissionDenied": "Location permissions are denied.",
+  "map": "Map",
+  "estimatedTime": "Estimated Time",
+  "remaining": "Remaining",
+  "traveled": "Traveled",
+  "trackDeliveryRoute": "Track delivery route",
+  "updating": "Updating...",
+  "recalculating": "Recalculating...",
+  "selectMapType": "Select Map Type",
+  "mapTypeNormal": "Default",
+  "mapTypeSatellite": "Satellite",
+  "mapTypeTerrain": "Terrain"
 }

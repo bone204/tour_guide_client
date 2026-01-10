@@ -104,6 +104,8 @@ class RentalBill {
   final String? pickupSelfiePhoto;
   final List<String> returnPhotosUser;
   final List<String> returnPhotosOwner;
+  final double? pickupLatitude;
+  final double? pickupLongitude;
 
   RentalBill({
     required this.id,
@@ -132,6 +134,8 @@ class RentalBill {
     this.pickupSelfiePhoto,
     this.returnPhotosUser = const [],
     this.returnPhotosOwner = const [],
+    this.pickupLatitude,
+    this.pickupLongitude,
   });
 
   factory RentalBill.fromJson(Map<String, dynamic> json) {
@@ -190,6 +194,10 @@ class RentalBill {
               ?.map((e) => e.toString())
               .toList() ??
           [],
+      pickupLatitude: double.tryParse(json['pickupLatitude']?.toString() ?? ''),
+      pickupLongitude: double.tryParse(
+        json['pickupLongitude']?.toString() ?? '',
+      ),
     );
   }
 
@@ -221,6 +229,8 @@ class RentalBill {
       'pickupSelfiePhoto': pickupSelfiePhoto,
       'returnPhotosUser': returnPhotosUser,
       'returnPhotosOwner': returnPhotosOwner,
+      'pickupLatitude': pickupLatitude,
+      'pickupLongitude': pickupLongitude,
     };
   }
 

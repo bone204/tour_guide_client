@@ -69,7 +69,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get mapType => 'Loại bản đồ';
 
   @override
-  String get mapTypeNormal => 'Thông thường';
+  String get mapTypeNormal => 'Mặc định';
 
   @override
   String get mapTypeSatellite => 'Vệ tinh';
@@ -1640,7 +1640,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get remaining => 'còn lại';
+  String get remaining => 'Còn lại';
 
   @override
   String get estimatedArrival => 'Thời gian đến dự kiến';
@@ -2924,4 +2924,31 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get shippingFee => 'Phí vận chuyển';
+
+  @override
+  String get locationServiceDisabled => 'Dịch vụ vị trí bị tắt.';
+
+  @override
+  String get locationPermissionDenied => 'Quyền truy cập vị trí bị từ chối.';
+
+  @override
+  String get map => 'Bản đồ';
+
+  @override
+  String get estimatedTime => 'Thời gian dự kiến';
+
+  @override
+  String get traveled => 'Đã đi được';
+
+  @override
+  String get trackDeliveryRoute => 'Theo dõi lộ trình giao xe';
+
+  @override
+  String get updating => 'Đang cập nhật...';
+
+  @override
+  String get recalculating => 'Đang tìm lại đường...';
+
+  @override
+  String get selectMapType => 'Chọn loại bản đồ';
 }

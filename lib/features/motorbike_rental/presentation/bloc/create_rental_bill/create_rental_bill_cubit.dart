@@ -27,6 +27,8 @@ class CreateRentalBillCubit extends Cubit<CreateRentalBillState> {
       startDate: request.startDate,
       endDate: request.endDate,
       location: request.location,
+      pickupLatitude: request.pickupLatitude,
+      pickupLongitude: request.pickupLongitude,
       details: request.details,
     );
 

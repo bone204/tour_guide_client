@@ -69,7 +69,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mapType => 'Map Type';
 
   @override
-  String get mapTypeNormal => 'Normal';
+  String get mapTypeNormal => 'Default';
 
   @override
   String get mapTypeSatellite => 'Satellite';
@@ -1634,7 +1634,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get remaining => 'remaining';
+  String get remaining => 'Remaining';
 
   @override
   String get estimatedArrival => 'Estimated Arrival';
@@ -2918,4 +2918,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shippingFee => 'Shipping Fee';
+
+  @override
+  String get locationServiceDisabled => 'Location services are disabled.';
+
+  @override
+  String get locationPermissionDenied => 'Location permissions are denied.';
+
+  @override
+  String get map => 'Map';
+
+  @override
+  String get estimatedTime => 'Estimated Time';
+
+  @override
+  String get traveled => 'Traveled';
+
+  @override
+  String get trackDeliveryRoute => 'Track delivery route';
+
+  @override
+  String get updating => 'Updating...';
+
+  @override
+  String get recalculating => 'Recalculating...';
+
+  @override
+  String get selectMapType => 'Select Map Type';
 }

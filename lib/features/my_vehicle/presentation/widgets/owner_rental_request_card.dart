@@ -41,13 +41,21 @@ class OwnerRentalRequestCard extends StatelessWidget {
             // Renter Info Header
             Row(
               children: [
-                CircleAvatar(
-                  radius: 20.r,
-                  backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
-                  backgroundImage: NetworkImage(
-                    bill.user?.avatarUrl ?? AppImage.defaultAvatar,
+                if (bill.user?.avatarUrl != null)
+                  CircleAvatar(
+                    radius: 20.r,
+                    backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
+                    backgroundImage: NetworkImage(
+                      bill.user!.avatarUrl!,
+                    ),
                   ),
-                ),
+                CircleAvatar(
+                    radius: 20.r,
+                    backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
+                    backgroundImage: AssetImage(
+                      AppImage.defaultAvatar,
+                    ),
+                  ),
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Column(

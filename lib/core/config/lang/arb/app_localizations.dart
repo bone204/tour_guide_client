@@ -218,7 +218,7 @@ abstract class AppLocalizations {
   /// No description provided for @mapTypeNormal.
   ///
   /// In en, this message translates to:
-  /// **'Normal'**
+  /// **'Default'**
   String get mapTypeNormal;
 
   /// No description provided for @mapTypeSatellite.
@@ -3284,7 +3284,7 @@ abstract class AppLocalizations {
   /// No description provided for @remaining.
   ///
   /// In en, this message translates to:
-  /// **'remaining'**
+  /// **'Remaining'**
   String get remaining;
 
   /// No description provided for @estimatedArrival.
@@ -5740,6 +5740,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shipping Fee'**
   String get shippingFee;
+
+  /// No description provided for @locationServiceDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are disabled.'**
+  String get locationServiceDisabled;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permissions are denied.'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @map.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get map;
+
+  /// No description provided for @estimatedTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated Time'**
+  String get estimatedTime;
+
+  /// No description provided for @traveled.
+  ///
+  /// In en, this message translates to:
+  /// **'Traveled'**
+  String get traveled;
+
+  /// No description provided for @trackDeliveryRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Track delivery route'**
+  String get trackDeliveryRoute;
+
+  /// No description provided for @updating.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating...'**
+  String get updating;
+
+  /// No description provided for @recalculating.
+  ///
+  /// In en, this message translates to:
+  /// **'Recalculating...'**
+  String get recalculating;
+
+  /// No description provided for @selectMapType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Map Type'**
+  String get selectMapType;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

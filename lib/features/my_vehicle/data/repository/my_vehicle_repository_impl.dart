@@ -88,8 +88,10 @@ class MyVehicleRepositoryImpl extends MyVehicleRepository {
   Future<Either<Failure, SuccessResponse>> ownerDelivered(
     int id,
     List<File> photos,
+    double latitude,
+    double longitude,
   ) async {
-    return _apiService.ownerDelivered(id, photos);
+    return _apiService.ownerDelivered(id, photos, latitude, longitude);
   }
 
   @override

@@ -12,6 +12,11 @@ class OwnerDeliveredUseCase
   Future<Either<Failure, SuccessResponse>> call(
     OwnerDeliveredParams params,
   ) async {
-    return sl<MyVehicleRepository>().ownerDelivered(params.id, params.photos);
+    return sl<MyVehicleRepository>().ownerDelivered(
+      params.id,
+      params.photos,
+      params.latitude,
+      params.longitude,
+    );
   }
 }

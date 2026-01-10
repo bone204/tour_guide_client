@@ -38,6 +38,8 @@ abstract class MyVehicleApiService {
   Future<Either<Failure, SuccessResponse>> ownerDelivered(
     int id,
     List<File> photos,
+    double latitude,
+    double longitude,
   );
   Future<Either<Failure, SuccessResponse>> ownerConfirmReturn(
     int id,
@@ -299,9 +301,13 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
   Future<Either<Failure, SuccessResponse>> ownerDelivered(
     int id,
     List<File> photos,
+    double latitude,
+    double longitude,
   ) async {
     try {
       final formData = FormData();
+      formData.fields.add(MapEntry('latitude', latitude.toString()));
+      formData.fields.add(MapEntry('longitude', longitude.toString()));
       for (var file in photos) {
         formData.files.add(
           MapEntry(

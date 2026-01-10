@@ -21,6 +21,9 @@ import 'dart:io';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/utils/rental_status_helper.dart';
 
 import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
+import 'package:tour_guide_app/common/pages/tracking_map.page.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class OwnerRentalRequestDetailPage extends StatefulWidget {
   final int id;
@@ -36,6 +39,39 @@ class _OwnerRentalRequestDetailPageState
     extends State<OwnerRentalRequestDetailPage> {
   final RefreshController _refreshController = RefreshController();
   bool _isActionLoading = false;
+  LatLng? _currentPosition;
+
+  @override
+  void initState() {
+    super.initState();
+    _initLocation();
+  }
+
+  Future<void> _initLocation() async {
+    try {
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return;
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+
+      if (permission == LocationPermission.deniedForever ||
+          permission == LocationPermission.denied) {
+        return;
+      }
+
+      final position = await Geolocator.getCurrentPosition();
+      if (mounted) {
+        setState(() {
+          _currentPosition = LatLng(position.latitude, position.longitude);
+        });
+      }
+    } catch (_) {
+      // Ignore errors for preview
+    }
+  }
 
   void _onRefresh(BuildContext context) {
     context.read<GetRentalBillDetailCubit>().getBillDetail(widget.id);
@@ -169,8 +205,11 @@ class _OwnerRentalRequestDetailPageState
                         // 5. Tracking Images
                         _buildTrackingImagesCard(context, bill),
 
+                        // 6. Tracking Map
+                        _buildTrackingMapSection(context, bill),
+
                         SizedBox(height: 16.h),
-                        // 5. Workflow Actions
+                        // 7. Workflow Actions
                         _buildWorkflowActions(context, bill),
                       ],
                     ),
@@ -689,16 +728,211 @@ class _OwnerRentalRequestDetailPageState
     );
   }
 
+  Widget _buildTrackingMapSection(BuildContext context, RentalBill bill) {
+    if (bill.rentalStatus != RentalProgressStatus.delivering) {
+      return const SizedBox.shrink();
+    }
+
+    if (_currentPosition == null) {
+      return Container(
+        margin: EdgeInsets.only(top: 16.h),
+        height: 180.h,
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        child: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    return Container(
+      margin: EdgeInsets.only(top: 16.h),
+      height: 180.h,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGrey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16.r),
+            child: IgnorePointer(
+              child: FlutterMap(
+                options: MapOptions(
+                  initialCenter: _currentPosition!,
+                  initialZoom: 15.0,
+                  interactionOptions: const InteractionOptions(
+                    flags: InteractiveFlag.none,
+                  ),
+                ),
+                children: [
+                  TileLayer(
+                    urlTemplate: MapType.normal.urlTemplate,
+                    userAgentPackageName: 'tour_guide_app',
+                  ),
+                  MarkerLayer(
+                    markers: [
+                      Marker(
+                        point: _currentPosition!,
+                        width: 60,
+                        height: 60,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue.withOpacity(0.3),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryBlue,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(16.r),
+                onTap: () => _navigateToTrackingMap(context, bill),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 12.h,
+            right: 12.w,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(20.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.fullscreen,
+                    size: 16.sp,
+                    color: AppColors.primaryBlue,
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    AppLocalizations.of(context)!.map,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.primaryBlue,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _navigateToTrackingMap(BuildContext context, RentalBill bill) {
+    final vehicle = bill.details.isNotEmpty ? bill.details.first.vehicle : null;
+    final contract = vehicle?.contract;
+
+    final double? startLat = contract?.businessLatitude;
+    final double? startLong = contract?.businessLongitude;
+    final double? endLat = bill.pickupLatitude;
+    final double? endLong = bill.pickupLongitude;
+
+    if (startLat == null || startLong == null) {
+      CustomSnackbar.show(
+        context,
+        message: 'Missing owner location', // Localization?
+        type: SnackbarType.warning,
+      );
+      return;
+    }
+
+    if (endLat == null || endLong == null) {
+      CustomSnackbar.show(
+        context,
+        message: 'Missing pickup location', // Localization?
+        type: SnackbarType.warning,
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => TrackingMapPage(
+              startLocation: LatLng(startLat, startLong),
+              endLocation: LatLng(endLat, endLong),
+              startAddress: contract?.businessAddress,
+              endAddress: bill.location,
+            ),
+      ),
+    );
+  }
+
   void _onStartDelivery(BuildContext context, int id) {
     context.read<OwnerRentalWorkflowCubit>().startDelivering(id);
   }
 
   Future<void> _onDelivered(BuildContext context, int id) async {
+    // 1. Check/Request GPS
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) return;
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          message:
+              AppLocalizations.of(context)!.locationPermissionDeniedForever,
+          type: SnackbarType.error,
+        );
+      }
+      return;
+    }
+
+    if (!context.mounted) return;
+
     final source = await _showImageSourceActionSheet(context);
     if (source == null) return;
 
     setState(() => _isActionLoading = true);
     try {
+      final position = await Geolocator.getCurrentPosition();
+
       final ImagePicker picker = ImagePicker();
       List<XFile> photos = [];
 
@@ -715,6 +949,16 @@ class _OwnerRentalRequestDetailPageState
         await context.read<OwnerRentalWorkflowCubit>().confirmDelivered(
           id,
           photos.map((e) => File(e.path)).toList(),
+          position.latitude,
+          position.longitude,
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        CustomSnackbar.show(
+          context,
+          message: e.toString(),
+          type: SnackbarType.error,
         );
       }
     } finally {
