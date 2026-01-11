@@ -110,4 +110,12 @@ class MyVehicleRepositoryImpl extends MyVehicleRepository {
       overtimeFeeAccepted,
     );
   }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> ownerCancelBill(
+    int id,
+    String reason,
+  ) async {
+    return _apiService.ownerCancelBill(id, reason);
+  }
 }

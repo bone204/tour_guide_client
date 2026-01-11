@@ -300,14 +300,21 @@ class ContractDetailPage extends StatelessWidget {
                         (contract.vehicles.isNotEmpty))
                       _buildSection(
                         context,
-                        title: AppLocalizations.of(context)!.registeredVehicles,
-                        children: [
-                          _buildDetailRow(
-                            context,
-                            AppLocalizations.of(context)!.vehicles,
-                            "${contract.totalVehicles}",
-                          ),
-                        ],
+                        title:
+                            "${AppLocalizations.of(context)!.registeredVehicles} (${contract.totalVehicles})",
+                        children:
+                            contract.vehicles.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final vehicle = entry.value;
+                              final licensePlate =
+                                  vehicle['licensePlate']?.toString() ?? '';
+
+                              return _buildDetailRow(
+                                context,
+                                "${AppLocalizations.of(context)!.vehicle} ${index + 1}",
+                                licensePlate,
+                              );
+                            }).toList(),
                       ),
                   ],
                 ),

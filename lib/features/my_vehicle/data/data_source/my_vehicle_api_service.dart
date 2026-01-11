@@ -48,6 +48,10 @@ abstract class MyVehicleApiService {
     double longitude,
     bool? overtimeFeeAccepted,
   );
+  Future<Either<Failure, SuccessResponse>> ownerCancelBill(
+    int id,
+    String reason,
+  );
 }
 
 class MyVehicleApiServiceImpl extends MyVehicleApiService {
@@ -374,6 +378,33 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
       final response = await sl<DioClient>().patch(
         '${ApiUrls.rentalBills}/$id/confirm-return',
         data: formData,
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> ownerCancelBill(
+    int id,
+    String reason,
+  ) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.rentalBills}/$id/owner-cancel',
+        data: {'reason': reason},
       );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);

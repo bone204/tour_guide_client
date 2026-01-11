@@ -143,6 +143,18 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to delete this stop?'**
   String get deleteStopConfirmMessage;
 
+  /// No description provided for @vehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle'**
+  String get vehicle;
+
+  /// No description provided for @contractDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Details'**
+  String get contractDetails;
+
   /// No description provided for @signInNow.
   ///
   /// In en, this message translates to:

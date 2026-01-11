@@ -45,18 +45,14 @@ class OwnerRentalRequestCard extends StatelessWidget {
                   CircleAvatar(
                     radius: 20.r,
                     backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
-                    backgroundImage: NetworkImage(
-                      bill.user!.avatarUrl!,
-                    ),
+                    backgroundImage: NetworkImage(bill.user!.avatarUrl!),
                   ),
-                if (bill.user?.avatarUrl != null)
+                if (bill.user?.avatarUrl == null)
                   CircleAvatar(
-                      radius: 20.r,
-                      backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
-                      backgroundImage: AssetImage(
-                        AppImage.defaultAvatar,
-                      ),
-                    ),
+                    radius: 20.r,
+                    backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
+                    backgroundImage: AssetImage(AppImage.defaultAvatar),
+                  ),
                 SizedBox(width: 12.w),
                 Expanded(
                   child: Column(

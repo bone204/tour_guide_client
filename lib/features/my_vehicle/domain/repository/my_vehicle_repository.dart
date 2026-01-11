@@ -44,4 +44,8 @@ abstract class MyVehicleRepository {
     double longitude,
     bool? overtimeFeeAccepted,
   );
+  Future<Either<Failure, SuccessResponse>> ownerCancelBill(
+    int id,
+    String reason,
+  );
 }

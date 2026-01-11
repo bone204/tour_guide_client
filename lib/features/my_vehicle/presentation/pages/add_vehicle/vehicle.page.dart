@@ -14,6 +14,8 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/owner_re
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_owner_rental_bills/get_owner_rental_bills_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_owner_rental_bills/get_owner_rental_bills_state.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_state.dart';
 
 class VehiclePage extends StatelessWidget {
   const VehiclePage({super.key});
@@ -72,6 +74,34 @@ class _VehicleViewState extends State<_VehicleView> {
         appBar: CustomAppBar(
           title: AppLocalizations.of(context)!.rentalVehicle,
           showBackButton: false,
+          actions: [
+            BlocBuilder<GetContractsCubit, GetContractsState>(
+              builder: (context, state) {
+                if (state.status == GetContractsStatus.loaded) {
+                  final approvedContract =
+                      state.contracts
+                          .where((c) => c.status.toLowerCase() == 'approved')
+                          .firstOrNull;
+
+                  if (approvedContract != null) {
+                    return IconButton(
+                      icon: const Icon(Icons.description_outlined),
+                      color: AppColors.primaryBlue,
+                      tooltip:
+                          AppLocalizations.of(context)!.contractDetails,
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pushNamed(
+                          AppRouteConstant.contractDetail,
+                          arguments: approvedContract.id,
+                        );
+                      },
+                    );
+                  }
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
           bottom: TabBar(
             indicatorColor: AppColors.primaryBlue,
             labelColor: AppColors.primaryBlue,

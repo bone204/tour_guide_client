@@ -33,6 +33,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteStopConfirmMessage => 'Are you sure you want to delete this stop?';
 
   @override
+  String get vehicle => 'Vehicle';
+
+  @override
+  String get contractDetails => 'Contract Details';
+
+  @override
   String get signInNow => 'Sign in now';
 
   @override

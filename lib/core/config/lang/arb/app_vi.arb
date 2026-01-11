@@ -8,6 +8,8 @@
   "deleteStopConfirmTitle": "Xóa điểm dừng",
   "deleteStopConfirmMessage": "Bạn có chắc chắn muốn xóa điểm dừng này không?",
   "@@locale": "vi",
+  "vehicle": "Xe",
+  "contractDetails": "Chi tiết hợp đồng",
   "signInNow": "Đăng nhập ngay",
 
   "searchAddress": "Tìm kiếm địa chỉ...",

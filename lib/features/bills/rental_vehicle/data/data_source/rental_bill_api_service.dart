@@ -33,6 +33,7 @@ abstract class RentalBillApiService {
     double latitude,
     double longitude,
   );
+  Future<Either<Failure, SuccessResponse>> cancelBill(int id);
 }
 
 class RentalBillApiServiceImpl implements RentalBillApiService {
@@ -270,6 +271,29 @@ class RentalBillApiServiceImpl implements RentalBillApiService {
       final response = await sl<DioClient>().patch(
         '${ApiUrls.rentalBills}/$id/return-request',
         data: formData,
+      );
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> cancelBill(int id) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.rentalBills}/$id/cancel',
       );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);

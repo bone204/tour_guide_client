@@ -33,6 +33,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get deleteStopConfirmMessage => 'Bạn có chắc chắn muốn xóa điểm dừng này không?';
 
   @override
+  String get vehicle => 'Xe';
+
+  @override
+  String get contractDetails => 'Chi tiết hợp đồng';
+
+  @override
   String get signInNow => 'Đăng nhập ngay';
 
   @override

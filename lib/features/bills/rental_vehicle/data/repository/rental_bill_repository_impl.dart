@@ -70,4 +70,9 @@ class RentalBillRepositoryImpl implements RentalBillRepository {
   ) async {
     return await _apiService.userReturnRequest(id, photos, latitude, longitude);
   }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> cancelBill(int id) async {
+    return await _apiService.cancelBill(id);
+  }
 }
