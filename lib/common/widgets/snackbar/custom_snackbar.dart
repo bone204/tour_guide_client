@@ -10,6 +10,7 @@ class CustomSnackbar {
     SnackbarType type = SnackbarType.info,
     Duration duration = const Duration(seconds: 3),
     EdgeInsetsGeometry? margin,
+    bool onTop = false,
   }) {
     Color backgroundColor;
     IconData icon;
@@ -36,6 +37,19 @@ class CustomSnackbar {
         icon = Icons.info_rounded;
         iconColor = const Color(0xFF0D47A1); // Darker Blue for icon
         break;
+    }
+
+    if (onTop) {
+      _showOverlay(
+        context,
+        message,
+        backgroundColor,
+        icon,
+        iconColor,
+        duration,
+        margin,
+      );
+      return;
     }
 
     final snackBar = SnackBar(
@@ -79,5 +93,79 @@ class CustomSnackbar {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(snackBar);
+  }
+
+  static void _showOverlay(
+    BuildContext context,
+    String message,
+    Color backgroundColor,
+    IconData icon,
+    Color iconColor,
+    Duration duration,
+    EdgeInsetsGeometry? margin,
+  ) {
+    final overlay = Overlay.of(context);
+    final overlayEntry = OverlayEntry(
+      builder:
+          (context) => Positioned(
+            bottom:
+                20.h +
+                MediaQuery.of(context).viewInsets.bottom, // Adjust for keyboard
+            left: 16.w,
+            right: 16.w,
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                margin: margin,
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(
+                    color: iconColor.withOpacity(0.3),
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(icon, color: iconColor, size: 24.sp),
+                    ),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Text(
+                        message,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+    );
+
+    overlay.insert(overlayEntry);
+    Future.delayed(duration, () {
+      overlayEntry.remove();
+    });
   }
 }

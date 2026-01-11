@@ -2267,6 +2267,30 @@ abstract class AppLocalizations {
   /// **'e.g. Black, White'**
   String get exampleColor;
 
+  /// No description provided for @cancelSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled successfully'**
+  String get cancelSuccess;
+
+  /// No description provided for @cancelBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Bill'**
+  String get cancelBill;
+
+  /// No description provided for @confirmCancelBill.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel this bill?'**
+  String get confirmCancelBill;
+
+  /// No description provided for @cancelReasonTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason must be at least 10 characters'**
+  String get cancelReasonTooShort;
+
   /// No description provided for @itineraryHint.
   ///
   /// In en, this message translates to:

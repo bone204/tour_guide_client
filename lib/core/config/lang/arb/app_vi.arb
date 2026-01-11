@@ -25,7 +25,6 @@
   "genderMale": "Nam",
   "genderFemale": "Nữ",
   "genderOther": "Khác",
-  "genderOther": "Khác",
   "mapType": "Loại bản đồ",
   "mapTypeNormal": "Thông thường",
   "mapTypeSatellite": "Vệ tinh",
@@ -797,6 +796,10 @@
   "exampleBrand": "VD: Honda, Toyota",
 
   "exampleModel": "VD: City, Wave",
+  "cancelSuccess": "Hủy thành công",
+  "cancelBill": "Hủy đơn",
+  "confirmCancelBill": "Bạn có chắc chắn muốn hủy đơn không?",
+  "cancelReasonTooShort": "Lý do phải dài hơn 10 ký tự",
 
   "exampleColor": "VD: Đen, Trắng",
 

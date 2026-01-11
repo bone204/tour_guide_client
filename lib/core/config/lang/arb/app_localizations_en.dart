@@ -1107,6 +1107,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exampleColor => 'e.g. Black, White';
 
   @override
+  String get cancelSuccess => 'Cancelled successfully';
+
+  @override
+  String get cancelBill => 'Cancel Bill';
+
+  @override
+  String get confirmCancelBill => 'Are you sure you want to cancel this bill?';
+
+  @override
+  String get cancelReasonTooShort => 'Reason must be at least 10 characters';
+
+  @override
   String get itineraryHint => 'e.g. Explore Da Nang 3 days';
 
   @override

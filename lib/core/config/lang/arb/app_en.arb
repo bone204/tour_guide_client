@@ -25,7 +25,6 @@
   "genderMale": "Male",
   "genderFemale": "Female",
   "genderOther": "Other",
-  "genderOther": "Other",
   "mapType": "Map Type",
   "mapTypeNormal": "Normal",
   "mapTypeSatellite": "Satellite",
@@ -702,6 +701,10 @@
   "exampleModel": "e.g. City, Wave",
 
   "exampleColor": "e.g. Black, White",
+  "cancelSuccess": "Cancelled successfully",
+  "cancelBill": "Cancel Bill",
+  "confirmCancelBill": "Are you sure you want to cancel this bill?",
+  "cancelReasonTooShort": "Reason must be at least 10 characters",
 
   "itineraryHint": "e.g. Explore Da Nang 3 days",
 

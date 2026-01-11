@@ -38,6 +38,10 @@ import 'package:tour_guide_app/service_locator.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tour_guide_app/common/pages/selfie_camera.page.dart';
 
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/cancel_rental_bill/cancel_rental_bill_cubit.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/cancel_rental_bill/cancel_rental_bill_state.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
+
 class RentalBillDetailPage extends StatefulWidget {
   final int id;
 
@@ -85,6 +89,7 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
                 userReturnRequestUseCase: sl(),
               ),
         ),
+        BlocProvider(create: (context) => sl<CancelRentalBillCubit>()),
       ],
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -135,6 +140,27 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
                       message:
                           state.errorMessage ??
                           AppLocalizations.of(context)!.errorOccurred,
+                      type: SnackbarType.error,
+                    );
+                  }
+                },
+              ),
+              BlocListener<CancelRentalBillCubit, CancelRentalBillState>(
+                listener: (context, state) {
+                  if (state is CancelRentalBillSuccess) {
+                    Navigator.pop(context); // Close dialog
+                    CustomSnackbar.show(
+                      context,
+                      message: AppLocalizations.of(context)!.cancelSuccess,
+                      type: SnackbarType.success,
+                    );
+                    _onRefresh(context);
+                    eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
+                  } else if (state is CancelRentalBillFailure) {
+                    Navigator.pop(context); // Close dialog
+                    CustomSnackbar.show(
+                      context,
+                      message: state.message,
                       type: SnackbarType.error,
                     );
                   }
@@ -203,7 +229,8 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
                               ContactInfoForm(bill: bill),
                               SizedBox(height: 16.h),
                               // 4. Payment Details
-                              _buildPaymentDetailsCard(context, bill),
+                              if (bill.status != RentalBillStatus.cancelled)
+                                _buildPaymentDetailsCard(context, bill),
 
                               // 5. Tracking Images
                               _buildTrackingImagesCard(context, bill),
@@ -1146,6 +1173,9 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
             ),
           );
         }
+        if (bill.status == RentalBillStatus.pending) {
+          return _buildCancelButton(context, bill, isLoading);
+        }
         return const SizedBox.shrink();
       },
     );
@@ -1244,6 +1274,64 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
     } finally {
       if (mounted) setState(() => _isActionLoading = false);
     }
+  }
+
+  Widget _buildCancelButton(
+    BuildContext context,
+    RentalBill bill,
+    bool isLoading,
+  ) {
+    return SizedBox(
+      width: double.infinity,
+      child: PrimaryButton(
+        title: AppLocalizations.of(context)!.cancel,
+        backgroundColor: AppColors.primaryRed,
+        isLoading: isLoading,
+        onPressed: isLoading ? null : () => _onCancelBill(context, bill.id),
+      ),
+    );
+  }
+
+  void _onCancelBill(BuildContext context, int id) {
+    showAppDialog(
+      context: context,
+      title: AppLocalizations.of(context)!.cancelBill,
+      contentWidget: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.confirmCancelBill,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ],
+      ),
+      actions: [
+        Row(
+          children: [
+            Expanded(
+              child: PrimaryButton(
+                title: AppLocalizations.of(context)!.cancel,
+                backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
+                textColor: AppColors.primaryBlack,
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: PrimaryButton(
+                title: AppLocalizations.of(context)!.confirm,
+                backgroundColor: AppColors.primaryRed,
+                onPressed: () {
+                  Navigator.pop(context);
+                  context.read<CancelRentalBillCubit>().cancelBill(id);
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
   Future<ImageSource?> _showImageSourceActionSheet(BuildContext context) async {

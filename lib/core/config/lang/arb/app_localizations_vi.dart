@@ -1107,6 +1107,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get exampleColor => 'VD: Đen, Trắng';
 
   @override
+  String get cancelSuccess => 'Hủy thành công';
+
+  @override
+  String get cancelBill => 'Hủy đơn';
+
+  @override
+  String get confirmCancelBill => 'Bạn có chắc chắn muốn hủy đơn không?';
+
+  @override
+  String get cancelReasonTooShort => 'Lý do phải dài hơn 10 ký tự';
+
+  @override
   String get itineraryHint => 'VD: Khám phá Đà Nẵng 3 ngày';
 
   @override

@@ -24,6 +24,12 @@ import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/common/pages/tracking_map.page.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
+
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/owner_cancel_bill/owner_cancel_bill_cubit.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/owner_cancel_bill/owner_cancel_bill_state.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
+import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
 
 class OwnerRentalRequestDetailPage extends StatefulWidget {
   final int id;
@@ -94,6 +100,7 @@ class _OwnerRentalRequestDetailPageState
                 ownerConfirmReturnUseCase: sl(),
               ),
         ),
+        BlocProvider(create: (context) => sl<OwnerCancelBillCubit>()),
       ],
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
@@ -153,6 +160,27 @@ class _OwnerRentalRequestDetailPageState
                 }
               },
             ),
+            BlocListener<OwnerCancelBillCubit, OwnerCancelBillState>(
+              listener: (context, state) {
+                if (state is OwnerCancelBillSuccess) {
+                  Navigator.pop(context); // Close dialog if open
+                  CustomSnackbar.show(
+                    context,
+                    message: AppLocalizations.of(context)!.cancelSuccess,
+                    type: SnackbarType.success,
+                  );
+                  _onRefresh(context);
+                  eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
+                } else if (state is OwnerCancelBillFailure) {
+                  Navigator.pop(context); // Close dialog if open
+                  CustomSnackbar.show(
+                    context,
+                    message: state.message,
+                    type: SnackbarType.error,
+                  );
+                }
+              },
+            ),
           ],
           child: BlocBuilder<GetRentalBillDetailCubit, RentalBillDetailState>(
             builder: (context, state) {
@@ -160,12 +188,7 @@ class _OwnerRentalRequestDetailPageState
                 return const RentalBillDetailShimmer();
               } else if (state.status == RentalBillDetailInitStatus.failure &&
                   state.bill == null) {
-                return Center(
-                  child: Text(
-                    state.errorMessage ??
-                        AppLocalizations.of(context)!.errorOccurred,
-                  ),
-                );
+                return Center(child: Text(state.errorMessage ?? 'Error'));
               } else if (state.bill != null) {
                 final bill = state.bill!;
                 final RentalVehicle? vehicle =
@@ -182,7 +205,7 @@ class _OwnerRentalRequestDetailPageState
                     padding: EdgeInsets.all(16.w),
                     child: Column(
                       children: [
-                        // 1. Renter Info
+                        // 1. Vehicle Info
                         _buildVehicleInfoCard(
                           context,
                           vehicle,
@@ -191,15 +214,15 @@ class _OwnerRentalRequestDetailPageState
                         ),
                         SizedBox(height: 16.h),
 
-                        // 2. Vehicle Info
+                        // 2. Renter Info
                         _buildRenterInfoCard(context, bill),
                         SizedBox(height: 16.h),
 
-                        // 3. Rental Details (Status, Dates, etc.)
+                        // 3. Rental Details
                         _buildRentalDetailsCard(context, bill),
                         SizedBox(height: 16.h),
 
-                        // 4. Payment/Revenue Details
+                        // 4. Payment Info
                         _buildPaymentDetailsCard(context, bill),
 
                         // 5. Tracking Images
@@ -208,7 +231,8 @@ class _OwnerRentalRequestDetailPageState
                         // 6. Tracking Map
                         _buildTrackingMapSection(context, bill),
 
-                        SizedBox(height: 16.h),
+                        SizedBox(height: 32.h),
+
                         // 7. Workflow Actions
                         _buildWorkflowActions(context, bill),
                       ],
@@ -220,43 +244,6 @@ class _OwnerRentalRequestDetailPageState
             },
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildRenterInfoCard(BuildContext context, RentalBill bill) {
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryGrey.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.renterInfo,
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          const Divider(),
-          _buildDetailRow(
-            context,
-            AppLocalizations.of(context)!.fullName,
-            bill.contactName ?? 'Unknown',
-          ),
-          _buildDetailRow(
-            context,
-            AppLocalizations.of(context)!.phoneNumber,
-            bill.contactPhone ?? 'Unknown',
-          ),
-        ],
       ),
     );
   }
@@ -309,8 +296,6 @@ class _OwnerRentalRequestDetailPageState
                       ? "${vehicle.vehicleCatalog?.brand} ${vehicle.vehicleCatalog?.model}"
                       : AppLocalizations.of(context)!.rentalVehicle,
                   style: Theme.of(context).textTheme.titleMedium,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 8.h),
                 Row(
@@ -371,6 +356,49 @@ class _OwnerRentalRequestDetailPageState
     );
   }
 
+  Widget _buildRenterInfoCard(BuildContext context, RentalBill bill) {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGrey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.renterInfo,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          const Divider(),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.fullName,
+            bill.contactName ?? bill.user?.fullName ?? '-',
+          ),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.phoneNumber,
+            bill.contactPhone ?? '-',
+          ),
+          if (bill.notes != null && bill.notes!.isNotEmpty)
+            _buildDetailRow(
+              context,
+              AppLocalizations.of(context)!.notes,
+              bill.notes!,
+            ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildRentalDetailsCard(BuildContext context, RentalBill bill) {
     final (statusColor, statusText) = RentalStatusHelper.getStatusColorAndText(
       context,
@@ -425,6 +453,12 @@ class _OwnerRentalRequestDetailPageState
             AppLocalizations.of(context)!.endDate,
             DateFormatter.formatDateTime(bill.endDate),
           ),
+          if (bill.location != null)
+            _buildDetailRow(
+              context,
+              AppLocalizations.of(context)!.pickupLocation,
+              bill.location!,
+            ),
         ],
       ),
     );
@@ -456,16 +490,50 @@ class _OwnerRentalRequestDetailPageState
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                AppLocalizations.of(context)!.totalRevenue,
+                AppLocalizations.of(context)!.totalPayment,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
                 Formatter.currency(bill.total),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.primaryGreen,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(color: AppColors.primaryRed),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(
+    BuildContext context,
+    String label,
+    String value, {
+    Color? valueColor,
+    bool isBold = false,
+  }) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: Theme.of(
+              context,
+            ).textTheme.displayLarge?.copyWith(color: AppColors.textSubtitle),
+          ),
+          SizedBox(width: 16.w),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                color: valueColor ?? AppColors.primaryBlack,
+              ),
+            ),
           ),
         ],
       ),
@@ -523,7 +591,7 @@ class _OwnerRentalRequestDetailPageState
             AppLocalizations.of(context)!.trackingPhotos,
             style: Theme.of(context).textTheme.titleSmall,
           ),
-          Divider(),
+          const Divider(),
           SizedBox(height: 16.h),
           GridView.builder(
             shrinkWrap: true,
@@ -648,41 +716,6 @@ class _OwnerRentalRequestDetailPageState
     );
   }
 
-  Widget _buildDetailRow(
-    BuildContext context,
-    String label,
-    String value, {
-    Color? valueColor,
-    bool isBold = false,
-  }) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: Theme.of(
-              context,
-            ).textTheme.displayLarge?.copyWith(color: AppColors.textSubtitle),
-          ),
-          SizedBox(width: 16.w),
-          Flexible(
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                color: valueColor ?? AppColors.primaryBlack,
-                fontWeight: isBold ? FontWeight.w900 : FontWeight.w500,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildWorkflowActions(BuildContext context, RentalBill bill) {
     return BlocBuilder<OwnerRentalWorkflowCubit, OwnerRentalWorkflowState>(
       builder: (context, state) {
@@ -693,11 +726,19 @@ class _OwnerRentalRequestDetailPageState
         if (bill.rentalStatus == RentalProgressStatus.booked) {
           return Padding(
             padding: EdgeInsets.only(top: 16.h),
-            child: PrimaryButton(
-              title: AppLocalizations.of(context)!.rentalStartDelivery,
-              isLoading: isLoading,
-              onPressed:
-                  isLoading ? null : () => _onStartDelivery(context, bill.id),
+            child: Column(
+              children: [
+                PrimaryButton(
+                  title: AppLocalizations.of(context)!.rentalStartDelivery,
+                  isLoading: isLoading,
+                  onPressed:
+                      isLoading
+                          ? null
+                          : () => _onStartDelivery(context, bill.id),
+                ),
+                SizedBox(height: 12.h),
+                _buildCancelButton(context, bill, isLoading),
+              ],
             ),
           );
         }
@@ -723,8 +764,89 @@ class _OwnerRentalRequestDetailPageState
             ),
           );
         }
+
+        if (bill.status == RentalBillStatus.pending) {
+          return _buildCancelButton(context, bill, isLoading);
+        }
+
         return const SizedBox.shrink();
       },
+    );
+  }
+
+  Widget _buildCancelButton(
+    BuildContext context,
+    RentalBill bill,
+    bool isLoading,
+  ) {
+    return SizedBox(
+      width: double.infinity,
+      child: PrimaryButton(
+        title: AppLocalizations.of(context)!.cancel,
+        backgroundColor: AppColors.primaryRed,
+        isLoading: isLoading,
+        onPressed: isLoading ? null : () => _onCancelBill(context, bill.id),
+      ),
+    );
+  }
+
+  void _onCancelBill(BuildContext context, int id) {
+    final reasonController = TextEditingController();
+    showAppDialog(
+      context: context,
+      title: AppLocalizations.of(context)!.cancelBill,
+      contentWidget: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.confirmCancelBill,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          SizedBox(height: 16.h),
+          CustomTextField(
+            controller: reasonController,
+            placeholder: AppLocalizations.of(context)!.reason(''),
+            maxLines: 3,
+          ),
+        ],
+      ),
+      actions: [
+        Row(
+          children: [
+            Expanded(
+              child: PrimaryButton(
+                title: AppLocalizations.of(context)!.cancel,
+                backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
+                textColor: AppColors.primaryBlack,
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: PrimaryButton(
+                title: AppLocalizations.of(context)!.confirm,
+                backgroundColor: AppColors.primaryRed,
+                onPressed: () {
+                  final reason = reasonController.text.trim();
+                  if (reason.length < 10) {
+                    CustomSnackbar.show(
+                      context,
+                      message:
+                          AppLocalizations.of(context)!.cancelReasonTooShort,
+                      type: SnackbarType.error,
+                      onTop: true,
+                    );
+                    return;
+                  }
+                  Navigator.pop(context);
+                  context.read<OwnerCancelBillCubit>().cancelBill(id, reason);
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -871,7 +993,7 @@ class _OwnerRentalRequestDetailPageState
     if (startLat == null || startLong == null) {
       CustomSnackbar.show(
         context,
-        message: 'Missing owner location', // Localization?
+        message: 'Missing owner location',
         type: SnackbarType.warning,
       );
       return;
@@ -880,7 +1002,7 @@ class _OwnerRentalRequestDetailPageState
     if (endLat == null || endLong == null) {
       CustomSnackbar.show(
         context,
-        message: 'Missing pickup location', // Localization?
+        message: 'Missing pickup location',
         type: SnackbarType.warning,
       );
       return;

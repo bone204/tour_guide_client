@@ -179,6 +179,10 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/owner_renta
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/owner_delivering.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/owner_delivered.dart';
 import 'package:tour_guide_app/features/my_vehicle/domain/usecases/owner_confirm_return.dart';
+import 'package:tour_guide_app/features/my_vehicle/domain/usecases/owner_cancel_bill.usecase.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/cancel_rental_bill_usecase.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/owner_cancel_bill/owner_cancel_bill_cubit.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/cancel_rental_bill/cancel_rental_bill_cubit.dart';
 
 import 'package:tour_guide_app/features/voucher/data/data_source/voucher_api_service.dart';
 import 'package:tour_guide_app/features/voucher/data/repository/voucher_repository_impl.dart';
@@ -403,6 +407,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<OwnerDeliveringUseCase>(OwnerDeliveringUseCase());
   sl.registerSingleton<OwnerDeliveredUseCase>(OwnerDeliveredUseCase());
   sl.registerSingleton<OwnerConfirmReturnUseCase>(OwnerConfirmReturnUseCase());
+  sl.registerSingleton<OwnerCancelBillUseCase>(OwnerCancelBillUseCase(sl()));
+  sl.registerSingleton<CancelRentalBillUseCase>(CancelRentalBillUseCase(sl()));
 
   // Cubits
   sl.registerFactory<CooperationDetailCubit>(
@@ -527,6 +533,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
       ownerConfirmReturnUseCase: sl(),
     ),
   );
+  sl.registerFactory<OwnerCancelBillCubit>(() => OwnerCancelBillCubit(sl()));
+  sl.registerFactory<CancelRentalBillCubit>(() => CancelRentalBillCubit(sl()));
 
   // Feedback Replies
 
