@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/stops.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/stop_media/stop_media_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/bloc/stop_media/stop_media_state.dart';
@@ -63,21 +64,22 @@ class _StopImagesPageState extends State<StopImagesPage> {
               child: BlocConsumer<StopMediaCubit, StopMediaState>(
                 listener: (context, state) {
                   if (state is StopMediaFailure) {
-                    ScaffoldMessenger.of(
+                    CustomSnackbar.show(
                       context,
-                    ).showSnackBar(SnackBar(content: Text(state.message)));
+                      message: state.message,
+                      type: SnackbarType.error,
+                    );
                   } else if (state is StopMediaUploaded) {
                     app_events.eventBus.fire(
                       app_events.StopUpdatedEvent(widget.stop.id),
                     );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
+                    CustomSnackbar.show(
+                      context,
+                      message:
                           AppLocalizations.of(
                             context,
                           )!.mediaUpdatedSuccessfully,
-                        ),
-                      ),
+                      type: SnackbarType.success,
                     );
                   }
                 },

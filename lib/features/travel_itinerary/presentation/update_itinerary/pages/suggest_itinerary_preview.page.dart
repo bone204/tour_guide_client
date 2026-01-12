@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/core/utils/date_formatter.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/widgets/itinerary_timeline.widget.dart';
@@ -9,8 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/suggest_itinerary/suggest_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/suggest_itinerary/suggest_itinerary_state.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
-import 'package:tour_guide_app/core/config/theme/color.dart';
-import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 
 class SuggestItineraryPreviewPage extends StatelessWidget {
   final Itinerary itinerary;
@@ -23,7 +20,6 @@ class SuggestItineraryPreviewPage extends StatelessWidget {
       itinerary.startDate,
       itinerary.endDate,
     );
-
     final List<Map<String, dynamic>> timelineItems =
         itinerary.stops
             .map(
@@ -37,18 +33,14 @@ class SuggestItineraryPreviewPage extends StatelessWidget {
               },
             )
             .toList();
-
     return BlocConsumer<SuggestItineraryCubit, SuggestItineraryState>(
       listener: (context, state) {
         if (state.claimStatus == ClaimStatus.success &&
             state.claimedItinerary != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.useItinerarySuccess,
-              ), // Placeholder for success
-              backgroundColor: AppColors.primaryGreen,
-            ),
+          CustomSnackbar.show(
+            context,
+            message: AppLocalizations.of(context)!.useItinerarySuccess,
+            type: SnackbarType.success,
           );
           Navigator.of(context).pushNamedAndRemoveUntil(
             AppRouteConstant.mainScreen,
@@ -60,11 +52,10 @@ class SuggestItineraryPreviewPage extends StatelessWidget {
             arguments: state.claimedItinerary!.id,
           );
         } else if (state.claimStatus == ClaimStatus.failure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage ?? 'Error'),
-              backgroundColor: AppColors.primaryRed,
-            ),
+          CustomSnackbar.show(
+            context,
+            message: state.errorMessage ?? 'Error',
+            type: SnackbarType.error,
           );
         }
       },
@@ -97,6 +88,7 @@ class SuggestItineraryPreviewPage extends StatelessWidget {
                         ItineraryTimeline(
                           timelineItems: timelineItems,
                           itineraryId: 0,
+                          itineraryStatus: 'preview',
                         )
                       else
                         Center(

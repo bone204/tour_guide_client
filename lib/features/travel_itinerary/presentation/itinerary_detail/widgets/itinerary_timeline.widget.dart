@@ -105,6 +105,7 @@ class ItineraryTimeline extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+        if (itineraryStatus == 'preview') return;
         if (item['stop'] != null) {
           Navigator.pushNamed(
             context,

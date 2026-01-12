@@ -3,7 +3,6 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/claim_itine
 import 'package:tour_guide_app/features/travel_itinerary/data/models/create_itinerary_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/suggest_params.dart';
-import 'package:tour_guide_app/core/utils/string_utils.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/claim_itinerary_use_case.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/suggest_itinerary.dart';
 import 'suggest_itinerary_state.dart';
@@ -25,11 +24,7 @@ class SuggestItineraryCubit extends Cubit<SuggestItineraryState> {
     emit(state.copyWith(status: SuggestItineraryStatus.loading));
 
     final result = await _suggestItineraryUseCase(
-      SuggestParams(
-        province: removeVietnameseAccents(province),
-        startDate: startDate,
-        endDate: endDate,
-      ),
+      SuggestParams(province: province, startDate: startDate, endDate: endDate),
     );
 
     if (isClosed) return;
