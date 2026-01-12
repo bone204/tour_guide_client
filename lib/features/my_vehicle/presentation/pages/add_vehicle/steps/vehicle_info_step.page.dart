@@ -94,12 +94,17 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
         licensePlate: _licensePlateController.text,
       );
     } else {
-      if (_selectedContract == null || _selectedCatalog == null) {
+      final locale = AppLocalizations.of(context)!;
+      if (_selectedContract == null) {
         CustomSnackbar.show(
           context,
-          message: AppLocalizations.of(
-            context,
-          )!.fieldRequired('Contract/Catalog'),
+          message: locale.fieldRequired(locale.contract),
+          type: SnackbarType.error,
+        );
+      } else if (_selectedCatalog == null) {
+        CustomSnackbar.show(
+          context,
+          message: locale.fieldRequired(locale.vehicleModel),
           type: SnackbarType.error,
         );
       }
@@ -172,7 +177,9 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
                 value: _selectedCatalog,
                 isExpanded: true,
                 hint: Text(
-                  locale.vehicleModel,
+                  _selectedVehicleType == null
+                      ? locale.selectVehicleTypeFirst
+                      : locale.vehicleModel,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSubtitle,
                   ),
@@ -222,9 +229,12 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
                         ),
                       );
                     }).toList(),
-                onChanged: (val) {
-                  setState(() => _selectedCatalog = val);
-                },
+                onChanged:
+                    _selectedVehicleType == null
+                        ? null
+                        : (val) {
+                          setState(() => _selectedCatalog = val);
+                        },
               ),
             ),
           ),
@@ -234,11 +244,16 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
             label: locale.licensePlate,
             placeholder: locale.licensePlate,
             controller: _licensePlateController,
-            validator:
-                (value) =>
-                    value == null || value.isEmpty
-                        ? locale.fieldRequired(locale.licensePlate)
-                        : null,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return locale.fieldRequired(locale.licensePlate);
+              }
+              final regex = RegExp(r'^[A-Za-z0-9\-\s]+$');
+              if (!regex.hasMatch(value)) {
+                return locale.licensePlateInvalid;
+              }
+              return null;
+            },
           ),
           SizedBox(height: 24.h),
           SizedBox(

@@ -55,9 +55,13 @@ class _AddVehicleViewState extends State<_AddVehicleView> {
                 type: SnackbarType.success,
               );
             } else if (state.status == AddVehicleStatus.failure) {
+              String message = state.errorMessage ?? locale.errorOccurred;
+              if (message.contains('licensePlate must match')) {
+                message = locale.licensePlateInvalid;
+              }
               CustomSnackbar.show(
                 context,
-                message: state.errorMessage ?? locale.errorOccurred,
+                message: message,
                 type: SnackbarType.error,
               );
             }

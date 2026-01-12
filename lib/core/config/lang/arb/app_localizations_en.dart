@@ -174,6 +174,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signIn => 'Sign In';
 
   @override
+  String get licensePlateInvalid => 'License plate contains invalid characters';
+
+  @override
+  String get selectVehicleTypeFirst => 'Please select vehicle type first';
+
+  @override
+  String get priceFor12HoursRequired => 'Price for 12 hours is required';
+
+  @override
+  String get priceFor2DaysRequired => 'Price for 2 days is required';
+
+  @override
+  String get anotherPriceRange => 'Another price range';
+
+  @override
   String get noAccount => 'Don\'t have an account?';
 
   @override

@@ -174,6 +174,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signIn => 'Đăng nhập';
 
   @override
+  String get licensePlateInvalid => 'Biển số xe chứa ký tự không hợp lệ';
+
+  @override
+  String get selectVehicleTypeFirst => 'Vui lòng chọn loại xe trước';
+
+  @override
+  String get priceFor12HoursRequired => 'Giá thuê 12 giờ là bắt buộc';
+
+  @override
+  String get priceFor2DaysRequired => 'Giá thuê 2 ngày là bắt buộc';
+
+  @override
+  String get anotherPriceRange => 'Khung giá khác';
+
+  @override
   String get noAccount => 'Chưa có tài khoản?';
 
   @override

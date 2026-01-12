@@ -63,6 +63,12 @@
   "forgotPassword": "Forgot Password?",
 
   "signIn": "Sign In",
+  "licensePlateInvalid": "License plate contains invalid characters",
+  "selectVehicleTypeFirst": "Please select vehicle type first",
+  "priceFor12HoursRequired": "Price for 12 hours is required",
+  "priceFor2DaysRequired": "Price for 2 days is required",
+  "anotherPriceRange": "Another price range",
+  "priceFor2DaysRequired": "Price for 2 days is required",
 
   "noAccount": "Don't have an account?",
 

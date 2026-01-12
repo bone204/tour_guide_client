@@ -425,6 +425,36 @@ abstract class AppLocalizations {
   /// **'Sign In'**
   String get signIn;
 
+  /// No description provided for @licensePlateInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'License plate contains invalid characters'**
+  String get licensePlateInvalid;
+
+  /// No description provided for @selectVehicleTypeFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select vehicle type first'**
+  String get selectVehicleTypeFirst;
+
+  /// No description provided for @priceFor12HoursRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 12 hours is required'**
+  String get priceFor12HoursRequired;
+
+  /// No description provided for @priceFor2DaysRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Price for 2 days is required'**
+  String get priceFor2DaysRequired;
+
+  /// No description provided for @anotherPriceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Another price range'**
+  String get anotherPriceRange;
+
   /// No description provided for @noAccount.
   ///
   /// In en, this message translates to:

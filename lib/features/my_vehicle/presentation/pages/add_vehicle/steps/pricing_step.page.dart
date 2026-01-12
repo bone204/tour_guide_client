@@ -197,11 +197,34 @@ class _PricingStepState extends State<PricingStep> {
             ],
           ),
           SizedBox(height: 16.h),
+          Row(
+            children: [
+              Expanded(
+                child: _buildPriceField(
+                  controller: _priceFor12HoursController,
+                  label: locale.priceFor12Hours,
+                  locale: locale,
+                  isRequired: true,
+                  requiredMessage: locale.priceFor12HoursRequired,
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: _buildPriceField(
+                  controller: _priceFor2DaysController,
+                  label: locale.priceFor2Days,
+                  locale: locale,
+                  isRequired: true,
+                  requiredMessage: locale.priceFor2DaysRequired,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16.h),
 
           ExpansionTile(
             title: Text(
-              locale
-                  .priceRange, // Using generic 'Price range' or similar if existing, else 'More Pricing Options'
+              locale.anotherPriceRange,
               style: Theme.of(context).textTheme.titleSmall,
             ),
             childrenPadding: EdgeInsets.zero,
@@ -222,26 +245,6 @@ class _PricingStepState extends State<PricingStep> {
                     child: _buildPriceField(
                       controller: _priceFor8HoursController,
                       label: locale.priceFor8Hours,
-                      locale: locale,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 12.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildPriceField(
-                      controller: _priceFor12HoursController,
-                      label: locale.priceFor12Hours,
-                      locale: locale,
-                    ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: _buildPriceField(
-                      controller: _priceFor2DaysController,
-                      label: locale.priceFor2Days,
                       locale: locale,
                     ),
                   ),
@@ -366,6 +369,7 @@ class _PricingStepState extends State<PricingStep> {
     required String label,
     required AppLocalizations locale,
     bool isRequired = false,
+    String? requiredMessage,
   }) {
     return CustomTextField(
       label: label,
@@ -394,7 +398,7 @@ class _PricingStepState extends State<PricingStep> {
       validator: (val) {
         if (isRequired) {
           if (val == null || val.isEmpty) {
-            return locale.fieldRequired(label);
+            return requiredMessage ?? locale.fieldRequired(label);
           }
         }
         if (val != null &&

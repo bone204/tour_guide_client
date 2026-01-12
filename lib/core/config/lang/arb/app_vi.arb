@@ -66,6 +66,12 @@
   "forgotPassword": "Quên mật khẩu?",
 
   "signIn": "Đăng nhập",
+  "licensePlateInvalid": "Biển số xe chứa ký tự không hợp lệ",
+  "selectVehicleTypeFirst": "Vui lòng chọn loại xe trước",
+  "priceFor12HoursRequired": "Giá thuê 12 giờ là bắt buộc",
+  "priceFor2DaysRequired": "Giá thuê 2 ngày là bắt buộc",
+  "anotherPriceRange": "Khung giá khác",
+  "priceFor2DaysRequired": "Giá thuê 2 ngày là bắt buộc",
 
   "noAccount": "Chưa có tài khoản?",
 
