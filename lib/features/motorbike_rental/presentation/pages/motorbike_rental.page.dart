@@ -8,6 +8,7 @@ import 'package:tour_guide_app/common/widgets/picker/date_and_hour_picker.dart';
 import 'package:tour_guide_app/common/widgets/slider/price_range_slider.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/selector/rent_type.widget.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/features/motorbike_rental/data/models/motorbike_search_request.dart';
 
 class MotorbikeRentalPage extends StatefulWidget {
@@ -51,44 +52,38 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
 
   void _navigateToMotorbikeListPage(BuildContext context) {
     if (_selectedLocation == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.selectPickupLocation),
-          backgroundColor: AppColors.primaryRed,
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.selectPickupLocation,
+        type: SnackbarType.error,
       );
       return;
     }
 
     if (startDateTime == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.selectStartDate),
-          backgroundColor: AppColors.primaryRed,
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.selectStartDate,
+        type: SnackbarType.error,
       );
       return;
     }
 
     if (endDateTime == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.selectEndDate),
-          backgroundColor: AppColors.primaryRed,
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.selectEndDate,
+        type: SnackbarType.error,
       );
       return;
     }
 
     if (endDateTime!.isBefore(startDateTime!) ||
         endDateTime!.isAtSameMomentAs(startDateTime!)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(context)!.endDateMustBeAfterStartDate,
-          ),
-          backgroundColor: AppColors.primaryRed,
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.endDateMustBeAfterStartDate,
+        type: SnackbarType.error,
       );
       return;
     }

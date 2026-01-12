@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/card/vehicle_card.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/motorbike_rental/data/models/motorbike_search_request.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/bloc/search_motorbike/search_motorbike_cubit.dart';
@@ -32,8 +33,10 @@ class MotorbikeListPage extends StatelessWidget {
     double? longitude,
   ) {
     if (rentalType == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.selectRentType)),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.selectRentType,
+        type: SnackbarType.error,
       );
       return;
     }

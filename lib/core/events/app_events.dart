@@ -57,6 +57,9 @@ class CheckInSuccessEvent {
   CheckInSuccessEvent({required this.itineraryId, required this.stopId});
 }
 
+// Event when a rental notification is received via socket
+class RentalSocketNotificationReceivedEvent {}
+
 // Singleton EventBus
 class AppEventBus {
   static final AppEventBus _instance = AppEventBus._internal();

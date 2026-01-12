@@ -51,11 +51,11 @@ class _LocationMapPageState extends State<LocationMapPage>
 
   Future<void> _searchAddress(String query) async {
     if (query.isEmpty) {
-      setState(() => _searchResults = []);
+      if (mounted) setState(() => _searchResults = []);
       return;
     }
 
-    setState(() => _isLoading = true);
+    if (mounted) setState(() => _isLoading = true);
 
     try {
       final url = Uri.parse(
@@ -66,7 +66,7 @@ class _LocationMapPageState extends State<LocationMapPage>
         headers: {'User-Agent': 'TourGuideApp/1.0'},
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && mounted) {
         setState(() {
           _searchResults = json.decode(response.body);
         });
@@ -74,7 +74,7 @@ class _LocationMapPageState extends State<LocationMapPage>
     } catch (e) {
       debugPrint('Error searching address: $e');
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -88,7 +88,7 @@ class _LocationMapPageState extends State<LocationMapPage>
         headers: {'User-Agent': 'TourGuideApp/1.0'},
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && mounted) {
         final data = json.decode(response.body);
         setState(() {
           _address = data['display_name'];
@@ -111,13 +111,6 @@ class _LocationMapPageState extends State<LocationMapPage>
     final lat = double.parse(result['lat']);
     final lon = double.parse(result['lon']);
     final newLocation = LatLng(lat, lon);
-
-    setState(() {
-      _selectedLocation = newLocation;
-      _address = result['display_name'];
-      _searchResults = [];
-      _searchController.text = result['display_name'];
-    });
 
     setState(() {
       _selectedLocation = newLocation;
@@ -194,7 +187,7 @@ class _LocationMapPageState extends State<LocationMapPage>
   }
 
   Future<void> _getCurrentLocation() async {
-    setState(() => _isLoading = true);
+    if (mounted) setState(() => _isLoading = true);
     try {
       bool serviceEnabled;
       LocationPermission permission;
@@ -246,11 +239,13 @@ class _LocationMapPageState extends State<LocationMapPage>
       final position = await Geolocator.getCurrentPosition();
       final newLocation = LatLng(position.latitude, position.longitude);
 
-      setState(() {
-        _selectedLocation = newLocation;
-      });
-      _animateTo(newLocation, zoom: 16.0);
-      _getAddress(newLocation);
+      if (mounted) {
+        setState(() {
+          _selectedLocation = newLocation;
+        });
+        _animateTo(newLocation, zoom: 16.0);
+        _getAddress(newLocation);
+      }
     } catch (e) {
       debugPrint('Error getting current location: $e');
     } finally {

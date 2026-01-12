@@ -8,18 +8,27 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/g
 class GetMyRentalBillsCubit extends Cubit<RentalBillListState> {
   final GetMyRentalBillsUseCase _getMyRentalBillsUseCase;
 
-  StreamSubscription? _statusSubscription;
+  final List<StreamSubscription> _subscriptions = [];
 
   GetMyRentalBillsCubit(this._getMyRentalBillsUseCase)
     : super(const RentalBillListState()) {
-    _statusSubscription = eventBus.on<RentalBillUpdatedEvent>().listen((event) {
-      loadMyBills();
-    });
+    _subscriptions.add(
+      eventBus.on<RentalBillUpdatedEvent>().listen((event) {
+        loadMyBills();
+      }),
+    );
+    _subscriptions.add(
+      eventBus.on<RentalSocketNotificationReceivedEvent>().listen((event) {
+        loadMyBills();
+      }),
+    );
   }
 
   @override
   Future<void> close() {
-    _statusSubscription?.cancel();
+    for (var s in _subscriptions) {
+      s.cancel();
+    }
     return super.close();
   }
 

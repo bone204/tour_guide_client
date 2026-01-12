@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
@@ -46,11 +47,25 @@ class _OwnerRentalRequestDetailPageState
   final RefreshController _refreshController = RefreshController();
   bool _isActionLoading = false;
   LatLng? _currentPosition;
+  StreamSubscription? _subscription;
 
   @override
   void initState() {
     super.initState();
     _initLocation();
+    _subscription = eventBus.on<RentalSocketNotificationReceivedEvent>().listen(
+      (event) {
+        if (mounted) {
+          _onRefresh(context);
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
   }
 
   Future<void> _initLocation() async {
@@ -386,7 +401,7 @@ class _OwnerRentalRequestDetailPageState
           _buildDetailRow(
             context,
             AppLocalizations.of(context)!.phoneNumber,
-            bill.contactPhone ?? '-',
+            bill.contactPhone ?? bill.user?.phone ?? '-',
           ),
           if (bill.notes != null && bill.notes!.isNotEmpty)
             _buildDetailRow(

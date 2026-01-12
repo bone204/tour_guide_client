@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/common_libs.dart'; // For AppLocalizations, AppColors, etc.
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_payment/rental_payment_cubit.dart';
@@ -89,10 +90,10 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
                 _phoneController.text,
                 _notesController.text,
               );
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context)!.updateSuccess),
-                ),
+              CustomSnackbar.show(
+                context,
+                message: AppLocalizations.of(context)!.updateSuccess,
+                type: SnackbarType.success,
               );
             },
           ),

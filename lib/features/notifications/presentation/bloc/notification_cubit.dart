@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tour_guide_app/core/usecases/no_params.dart';
@@ -5,6 +6,7 @@ import 'package:tour_guide_app/features/notifications/data/data_source/notificat
 import 'package:tour_guide_app/features/notifications/data/models/notification.dart';
 import 'package:tour_guide_app/features/notifications/domain/usecases/get_my_notifications.dart';
 import 'package:tour_guide_app/features/notifications/domain/usecases/mark_notification_read.dart';
+import 'package:tour_guide_app/core/events/app_events.dart';
 
 part 'notification_state.dart';
 
@@ -12,6 +14,7 @@ class NotificationCubit extends Cubit<NotificationState> {
   final GetMyNotificationsUseCase getMyNotificationsUseCase;
   final MarkNotificationReadUseCase markNotificationReadUseCase;
   final NotificationSocketService socketService;
+  Timer? _pollingTimer;
 
   NotificationCubit({
     required this.getMyNotificationsUseCase,
@@ -19,6 +22,12 @@ class NotificationCubit extends Cubit<NotificationState> {
     required this.socketService,
   }) : super(NotificationInitial()) {
     _initSocket();
+    // Poll notifications every 5 seconds
+    _pollingTimer = Timer.periodic(const Duration(seconds: 5), (_) {
+      if (!isClosed) {
+        getNotifications();
+      }
+    });
   }
 
   Future<void> _initSocket() async {
@@ -28,6 +37,10 @@ class NotificationCubit extends Cubit<NotificationState> {
       if (isClosed) return;
       // Refresh notifications when a new one arrives
       getNotifications();
+
+      // Trigger event to refresh rental lists/details if related
+      // Assuming all notifications might be relevant or we just trigger refresh safely
+      eventBus.fire(RentalSocketNotificationReceivedEvent());
     });
   }
 
@@ -105,6 +118,7 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   @override
   Future<void> close() {
+    _pollingTimer?.cancel();
     socketService.disconnect();
     return super.close();
   }

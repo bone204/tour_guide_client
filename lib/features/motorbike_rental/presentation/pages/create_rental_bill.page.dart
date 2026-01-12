@@ -8,6 +8,7 @@ import 'package:tour_guide_app/common/constants/app_route.constant.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/core/utils/money_formatter.dart';
@@ -206,8 +207,10 @@ class _CreateRentalBillPageState extends State<CreateRentalBillPage> {
       child: BlocListener<CreateRentalBillCubit, CreateRentalBillState>(
         listener: (context, state) {
           if (state is CreateRentalBillSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(locale.rentalBillCreatedSuccess)),
+            CustomSnackbar.show(
+              context,
+              message: locale.rentalBillCreatedSuccess,
+              type: SnackbarType.success,
             );
             Navigator.of(context).pushNamedAndRemoveUntil(
               AppRouteConstant.rentalBillList,
@@ -218,9 +221,11 @@ class _CreateRentalBillPageState extends State<CreateRentalBillPage> {
               arguments: state.bill.id,
             );
           } else if (state is CreateRentalBillFailure) {
-            ScaffoldMessenger.of(
+            CustomSnackbar.show(
               context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+              message: state.message,
+              type: SnackbarType.error,
+            );
           }
         },
         child: GestureDetector(
@@ -535,10 +540,10 @@ class _CreateRentalBillPageState extends State<CreateRentalBillPage> {
                           ? null
                           : () {
                             if (_selectedPackage == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(locale.pleaseSelectPackage),
-                                ),
+                              CustomSnackbar.show(
+                                context,
+                                message: locale.pleaseSelectPackage,
+                                type: SnackbarType.error,
                               );
                               return;
                             }

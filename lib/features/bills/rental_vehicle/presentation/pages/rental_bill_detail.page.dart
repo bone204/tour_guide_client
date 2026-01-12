@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -54,6 +55,25 @@ class RentalBillDetailPage extends StatefulWidget {
 class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
   final RefreshController _refreshController = RefreshController();
   bool _isActionLoading = false;
+  StreamSubscription? _subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _subscription = eventBus.on<RentalSocketNotificationReceivedEvent>().listen(
+      (event) {
+        if (mounted) {
+          _onRefresh(context);
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
 
   void _onRefresh(BuildContext context) {
     context.read<GetRentalBillDetailCubit>().getBillDetail(widget.id);
