@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
 import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
@@ -94,12 +95,12 @@ class _VehicleInfoStepState extends State<VehicleInfoStep> {
       );
     } else {
       if (_selectedContract == null || _selectedCatalog == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.fieldRequired('Contract/Catalog'),
-            ),
-          ),
+        CustomSnackbar.show(
+          context,
+          message: AppLocalizations.of(
+            context,
+          )!.fieldRequired('Contract/Catalog'),
+          type: SnackbarType.error,
         );
       }
     }

@@ -4,6 +4,8 @@
   "updateContactInfo": "Cập nhật thông tin liên hệ",
   "update": "Cập nhật",
   "youHaveNotVerifiedIdentity": "Bạn chưa xác thực danh tính",
+  "emailNotVerified": "Email của bạn chưa được xác thực",
+  "phoneNotVerified": "Số điện thoại của bạn chưa được xác thực",
   "deleteStopSuccess": "Đã xóa điểm dừng",
   "deleteStopConfirmTitle": "Xóa điểm dừng",
   "deleteStopConfirmMessage": "Bạn có chắc chắn muốn xóa điểm dừng này không?",

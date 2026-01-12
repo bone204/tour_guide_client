@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
-import 'package:tour_guide_app/common/widgets/loading/dialog_loading.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/contract_params.dart';
@@ -89,18 +88,23 @@ class _CreateContractPageState extends State<CreateContractPage> {
   Widget build(BuildContext context) {
     return BlocListener<CreateContractCubit, CreateContractState>(
       listener: (context, state) {
-        if (state is CreateContractLoading) {
-          LoadingDialog.show(context);
-        } else if (state is CreateContractSuccess) {
+        if (state is CreateContractSuccess) {
           if (mounted) {
             eventBus.fire(ContractRegisteredEvent());
-            Navigator.of(context).pop(); // Close loading dialog
             _showSuccessDialog();
           }
         } else if (state is CreateContractFailure) {
           if (mounted) {
-            Navigator.of(context).pop(); // Close loading dialog
-            _showErrorDialog(state.errorMessage);
+            String errorMessage = state.errorMessage;
+            if (errorMessage == 'emailNotVerified') {
+              errorMessage = AppLocalizations.of(context)!.emailNotVerified;
+            } else if (errorMessage == 'phoneNotVerified') {
+              errorMessage = AppLocalizations.of(context)!.phoneNotVerified;
+            } else if (errorMessage == 'youHaveNotVerifiedIdentity') {
+              errorMessage =
+                  AppLocalizations.of(context)!.youHaveNotVerifiedIdentity;
+            }
+            _showErrorDialog(errorMessage);
           }
         }
       },
@@ -152,7 +156,15 @@ class _CreateContractPageState extends State<CreateContractPage> {
                   ),
                 ),
                 // Step Content
-                Expanded(child: _buildStepContent()),
+                Expanded(
+                  child: BlocBuilder<CreateContractCubit, CreateContractState>(
+                    builder: (context, state) {
+                      return _buildStepContent(
+                        isLoading: state is CreateContractLoading,
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
@@ -219,7 +231,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
     );
   }
 
-  Widget _buildStepContent() {
+  Widget _buildStepContent({bool isLoading = false}) {
     switch (_currentStep) {
       case 0:
         return CitizenInfoStep(
@@ -283,6 +295,7 @@ class _CreateContractPageState extends State<CreateContractPage> {
           bankAccountNumber: _bankAccountNumber,
           bankAccountName: _bankAccountName,
           termsAccepted: _termsAccepted,
+          isLoading: isLoading,
           onSubmit: ({
             String? bankName,
             String? bankAccountNumber,

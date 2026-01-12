@@ -11,6 +11,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/enable_disa
 // Reuse contract detail shimmer for now or create specific one
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/contract_detail_shimmer.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:intl/intl.dart';
 
 class VehicleDetailPage extends StatelessWidget {
@@ -69,11 +70,10 @@ class _VehicleDetailViewState extends State<_VehicleDetailView> {
     return BlocListener<EnableDisableVehicleCubit, EnableDisableVehicleState>(
       listener: (context, edState) {
         if (edState.status == EnableDisableVehicleStatus.error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(edState.message ?? "An error occurred"),
-              backgroundColor: AppColors.primaryRed,
-            ),
+          CustomSnackbar.show(
+            context,
+            message: edState.message ?? "An error occurred",
+            type: SnackbarType.error,
           );
         }
       },

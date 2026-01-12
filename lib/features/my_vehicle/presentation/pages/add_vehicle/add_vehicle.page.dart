@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/add_vehicle/add_vehicle_state.dart';
@@ -48,14 +49,16 @@ class _AddVehicleViewState extends State<_AddVehicleView> {
           listener: (context, state) {
             if (state.status == AddVehicleStatus.success) {
               Navigator.pop(context);
-              ScaffoldMessenger.of(
+              CustomSnackbar.show(
                 context,
-              ).showSnackBar(SnackBar(content: Text(locale.actionSuccess)));
+                message: locale.actionSuccess,
+                type: SnackbarType.success,
+              );
             } else if (state.status == AddVehicleStatus.failure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.errorMessage ?? locale.errorOccurred),
-                ),
+              CustomSnackbar.show(
+                context,
+                message: state.errorMessage ?? locale.errorOccurred,
+                type: SnackbarType.error,
               );
             }
           },

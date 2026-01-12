@@ -24,6 +24,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get youHaveNotVerifiedIdentity => 'Bạn chưa xác thực danh tính';
 
   @override
+  String get emailNotVerified => 'Email của bạn chưa được xác thực';
+
+  @override
+  String get phoneNotVerified => 'Số điện thoại của bạn chưa được xác thực';
+
+  @override
   String get deleteStopSuccess => 'Đã xóa điểm dừng';
 
   @override

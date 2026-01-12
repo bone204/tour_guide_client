@@ -4,6 +4,7 @@ import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/bank_dropdown.widget.dart';
 import 'package:tour_guide_app/core/services/bank/data/models/bank.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_banks/get_banks_cubit.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_banks/get_banks_state.dart';
 
@@ -12,6 +13,7 @@ class BankingInfoStep extends StatefulWidget {
   final String? bankAccountNumber;
   final String? bankAccountName;
   final bool termsAccepted;
+  final bool isLoading;
   final Function({
     String? bankName,
     String? bankAccountNumber,
@@ -27,6 +29,7 @@ class BankingInfoStep extends StatefulWidget {
     this.bankAccountNumber,
     this.bankAccountName,
     required this.termsAccepted,
+    this.isLoading = false,
     required this.onSubmit,
     required this.onBack,
   });
@@ -88,24 +91,21 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
   void _handleSubmit() {
     final bankError = _validateBankSelection();
     if (!_formKey.currentState!.validate() || bankError != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
+      CustomSnackbar.show(
+        context,
+        message:
             bankError ??
-                AppLocalizations.of(context)!.pleaseFillAllRequiredFields,
-          ),
-          backgroundColor: AppColors.primaryRed,
-        ),
+            AppLocalizations.of(context)!.pleaseFillAllRequiredFields,
+        type: SnackbarType.error,
       );
       return;
     }
 
     if (!_validateAllConfirmations()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.pleaseConfirmPolicies),
-          backgroundColor: AppColors.primaryRed,
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.pleaseConfirmPolicies,
+        type: SnackbarType.error,
       );
       return;
     }
@@ -255,7 +255,7 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
                   Expanded(
                     flex: 2,
                     child: ElevatedButton(
-                      onPressed: _handleSubmit,
+                      onPressed: widget.isLoading ? null : _handleSubmit,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryBlue,
                         padding: EdgeInsets.symmetric(vertical: 14.h),
@@ -263,13 +263,25 @@ class _BankingInfoStepState extends State<BankingInfoStep> {
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                       ),
-                      child: Text(
-                        AppLocalizations.of(context)!.submit,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: AppColors.primaryWhite,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                      child:
+                          widget.isLoading
+                              ? SizedBox(
+                                width: 20.w,
+                                height: 20.w,
+                                child: const CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: AppColors.primaryWhite,
+                                ),
+                              )
+                              : Text(
+                                AppLocalizations.of(context)!.submit,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyLarge?.copyWith(
+                                  color: AppColors.primaryWhite,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
                     ),
                   ),
                 ],

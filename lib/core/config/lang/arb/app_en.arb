@@ -4,6 +4,8 @@
   "updateContactInfo": "Update Contact Info",
   "update": "Update",
   "youHaveNotVerifiedIdentity": "You have not verified your identity",
+  "emailNotVerified": "Your email has not been verified",
+  "phoneNotVerified": "Your phone number has not been verified",
   "deleteStopSuccess": "Delete stop successfully",
   "deleteStopConfirmTitle": "Delete Stop",
   "deleteStopConfirmMessage": "Are you sure you want to delete this stop?",

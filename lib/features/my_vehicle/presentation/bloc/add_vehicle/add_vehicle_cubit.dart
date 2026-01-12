@@ -28,6 +28,7 @@ class AddVehicleCubit extends Cubit<AddVehicleState> {
 
     // Fetch approved contracts (fetch all and filter locally for safety)
     final contractsResult = await _getMyContractsUseCase(null);
+    if (isClosed) return;
     final catalogsResult = await _getVehicleCatalogsUseCase();
 
     if (isClosed) return;

@@ -10,14 +10,16 @@ class GetBanksCubit extends Cubit<GetBanksState> {
 
   Future<void> getBanks() async {
     try {
+      if (isClosed) return;
       emit(GetBanksLoading());
       final result = await _getBanksUseCase(NoParams());
+      if (isClosed) return;
       result.fold(
         (failure) => emit(GetBanksError(failure.message)),
         (banks) => emit(GetBanksLoaded(banks)),
       );
     } catch (e) {
-      emit(GetBanksError(e.toString()));
+      if (!isClosed) emit(GetBanksError(e.toString()));
     }
   }
 }

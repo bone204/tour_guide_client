@@ -67,9 +67,31 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);
     } on DioException catch (e) {
+      if (e.response?.statusCode == 403) {
+        final message =
+            e.response?.data['message']?.toString().toLowerCase() ?? '';
+        String errorKey =
+            'emailNotVerified'; // Default to email as per previous behavior
+        if (message.contains('phone') || message.contains('điện thoại')) {
+          errorKey = 'phoneNotVerified';
+        } else if (message.contains('identity') ||
+            message.contains('danh tính') ||
+            message.contains('cccd') ||
+            message.contains('cmnd') ||
+            message.contains('căn cước')) {
+          errorKey = 'youHaveNotVerifiedIdentity';
+        }
+
+        return Left(
+          ServerFailure(message: errorKey, statusCode: e.response?.statusCode),
+        );
+      }
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
@@ -90,7 +112,10 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
@@ -110,7 +135,10 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
@@ -133,7 +161,10 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
@@ -153,7 +184,10 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
@@ -176,7 +210,10 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
@@ -198,7 +235,10 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
@@ -220,7 +260,10 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );
@@ -242,7 +285,10 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );

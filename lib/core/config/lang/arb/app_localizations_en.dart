@@ -24,6 +24,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get youHaveNotVerifiedIdentity => 'You have not verified your identity';
 
   @override
+  String get emailNotVerified => 'Your email has not been verified';
+
+  @override
+  String get phoneNotVerified => 'Your phone number has not been verified';
+
+  @override
   String get deleteStopSuccess => 'Delete stop successfully';
 
   @override

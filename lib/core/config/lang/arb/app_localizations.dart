@@ -125,6 +125,18 @@ abstract class AppLocalizations {
   /// **'You have not verified your identity'**
   String get youHaveNotVerifiedIdentity;
 
+  /// No description provided for @emailNotVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email has not been verified'**
+  String get emailNotVerified;
+
+  /// No description provided for @phoneNotVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone number has not been verified'**
+  String get phoneNotVerified;
+
   /// No description provided for @deleteStopSuccess.
   ///
   /// In en, this message translates to:

@@ -9,9 +9,12 @@ class GetOwnerRentalBillsCubit extends Cubit<GetOwnerRentalBillsState> {
     : super(const GetOwnerRentalBillsState());
 
   Future<void> getBills({String? status}) async {
+    if (isClosed) return;
     emit(state.copyWith(status: GetOwnerRentalBillsStatus.loading));
 
     final result = await _getOwnerRentalBillsUseCase(status);
+
+    if (isClosed) return;
 
     result.fold(
       (failure) => emit(
