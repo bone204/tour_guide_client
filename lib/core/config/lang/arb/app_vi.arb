@@ -910,6 +910,7 @@
 
   "passwordMismatch": "Mật khẩu không khớp",
 
+  "invalidCredentials": "Tên đăng nhập hoặc mật khẩu không đúng",
   "pleaseEnterEmailOrUsername": "Vui lòng nhập email hoặc tên đăng nhập",
 
   "pleaseEnterValidEmailOrUsername": "Vui lòng nhập email hoặc tên đăng nhập hợp lệ",
@@ -1697,6 +1698,7 @@
   "selectVoucher": "Chọn mã giảm giá",
   "voucherDiscount": "Giảm giá voucher",
   "pointDiscount": "Giảm giá điểm thưởng",
+  "memoryLane": "Góc Kỷ Niệm",
   "noMemoriesToday": "Hôm nay không có kỷ niệm nào",
   "sinceYouCompleted": "Kể từ khi bạn hoàn thành",
   "getDirections": "Tìm đường đi",

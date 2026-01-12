@@ -13,6 +13,8 @@ import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'package:tour_guide_app/core/events/app_events.dart' as app_events;
+
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 
 class StopVideosPage extends StatefulWidget {
@@ -69,6 +71,9 @@ class _StopVideosPageState extends State<StopVideosPage> {
                       context,
                     ).showSnackBar(SnackBar(content: Text(state.message)));
                   } else if (state is StopMediaUploaded) {
+                    app_events.eventBus.fire(
+                      app_events.StopUpdatedEvent(widget.stop.id),
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(

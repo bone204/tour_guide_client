@@ -189,6 +189,7 @@
   "selectRentalProvince": "Select rental province",
 
   "rent": "Rent",
+  "useItinerarySuccess": "Use itinerary successfully!",
 
   "details": "Details",
 
@@ -799,6 +800,7 @@
 
   "passwordMismatch": "Passwords do not match",
 
+  "invalidCredentials": "Invalid username or password",
   "pleaseEnterEmailOrUsername": "Please enter email or username",
 
   "pleaseEnterValidEmailOrUsername": "Please enter a valid email or username",

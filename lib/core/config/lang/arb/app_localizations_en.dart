@@ -368,6 +368,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rent => 'Rent';
 
   @override
+  String get useItinerarySuccess => 'Itinerary used successfully!';
+
+  @override
   String get details => 'Details';
 
   @override
@@ -1271,6 +1274,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordMismatch => 'Passwords do not match';
 
   @override
+  String get invalidCredentials => 'Invalid username or password';
+
+  @override
   String get pleaseEnterEmailOrUsername => 'Please enter email or username';
 
   @override
@@ -1489,9 +1495,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmUseItinerary => 'Are you sure you want to use this itinerary?';
-
-  @override
-  String get useItinerarySuccess => 'Itinerary used successfully!';
 
   @override
   String get itineraryPublicizedSuccess => 'Itinerary publicized successfully!';

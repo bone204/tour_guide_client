@@ -368,6 +368,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get rent => 'Thuê';
 
   @override
+  String get useItinerarySuccess => 'Sử dụng lộ trình thành công!';
+
+  @override
   String get details => 'Chi tiết';
 
   @override
@@ -1271,6 +1274,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get passwordMismatch => 'Mật khẩu không khớp';
 
   @override
+  String get invalidCredentials => 'Tên đăng nhập hoặc mật khẩu không đúng';
+
+  @override
   String get pleaseEnterEmailOrUsername => 'Vui lòng nhập email hoặc tên đăng nhập';
 
   @override
@@ -1322,7 +1328,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get next => 'Tiếp theo';
 
   @override
-  String get memoryLane => 'Memory Lane';
+  String get memoryLane => 'Góc Kỷ Niệm';
 
   @override
   String get noMemoriesToday => 'Hôm nay không có kỷ niệm nào';
@@ -1495,9 +1501,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get confirmUseItinerary => 'Bạn có chắc chắn muốn sử dụng lộ trình này không?';
-
-  @override
-  String get useItinerarySuccess => 'Sử dụng lộ trình thành công!';
 
   @override
   String get itineraryPublicizedSuccess => 'Lộ trình đã được công khai thành công!';

@@ -18,7 +18,10 @@ class LoggerInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    final requestPath = '${options.baseUrl}${options.path}';
+    final requestPath =
+        options.path.startsWith('http')
+            ? options.path
+            : '${options.baseUrl}${options.path}';
     logger.i('''
 ➡️ ${options.method} $requestPath
 Headers: ${options.headers}

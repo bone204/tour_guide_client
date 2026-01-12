@@ -45,7 +45,7 @@ class SuggestItineraryPreviewPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                AppLocalizations.of(context)!.bookingSuccess,
+                AppLocalizations.of(context)!.useItinerarySuccess,
               ), // Placeholder for success
               backgroundColor: AppColors.primaryGreen,
             ),

@@ -809,6 +809,12 @@ abstract class AppLocalizations {
   /// **'Rent'**
   String get rent;
 
+  /// No description provided for @useItinerarySuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Itinerary used successfully!'**
+  String get useItinerarySuccess;
+
   /// No description provided for @details.
   ///
   /// In en, this message translates to:
@@ -2591,6 +2597,12 @@ abstract class AppLocalizations {
   /// **'Passwords do not match'**
   String get passwordMismatch;
 
+  /// No description provided for @invalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid username or password'**
+  String get invalidCredentials;
+
   /// No description provided for @pleaseEnterEmailOrUsername.
   ///
   /// In en, this message translates to:
@@ -3010,12 +3022,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to use this itinerary?'**
   String get confirmUseItinerary;
-
-  /// No description provided for @useItinerarySuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Itinerary used successfully!'**
-  String get useItinerarySuccess;
 
   /// No description provided for @itineraryPublicizedSuccess.
   ///

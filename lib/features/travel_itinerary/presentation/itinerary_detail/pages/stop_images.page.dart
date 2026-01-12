@@ -11,6 +11,7 @@ import 'package:tour_guide_app/service_locator.dart';
 
 import 'package:shimmer/shimmer.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
+import 'package:tour_guide_app/core/events/app_events.dart' as app_events;
 
 class StopImagesPage extends StatefulWidget {
   final Stop stop;
@@ -66,6 +67,9 @@ class _StopImagesPageState extends State<StopImagesPage> {
                       context,
                     ).showSnackBar(SnackBar(content: Text(state.message)));
                   } else if (state is StopMediaUploaded) {
+                    app_events.eventBus.fire(
+                      app_events.StopUpdatedEvent(widget.stop.id),
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
@@ -241,8 +245,6 @@ class _StopImagesPageState extends State<StopImagesPage> {
     List<String> images,
     int index,
   ) {
-    // Implement full screen image view if needed, or use a package like photo_view
-    // For now, we can just show a dialog or simple page
     Navigator.push(
       context,
       MaterialPageRoute(

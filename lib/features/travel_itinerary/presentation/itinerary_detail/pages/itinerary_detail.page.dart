@@ -12,7 +12,6 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/common/widgets/menu/itinerary_action_menu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
 import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/core/utils/date_formatter.dart';
 
@@ -55,6 +54,14 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
   void initState() {
     super.initState();
     _busSubscription = eventBus.on<StopAddedEvent>().listen((_) {
+      if (mounted) {
+        context.read<GetItineraryDetailCubit>().getItineraryDetail(
+          widget.itineraryId,
+        );
+      }
+    });
+
+    eventBus.on<StopUpdatedEvent>().listen((_) {
       if (mounted) {
         context.read<GetItineraryDetailCubit>().getItineraryDetail(
           widget.itineraryId,

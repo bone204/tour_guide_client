@@ -128,10 +128,16 @@ class _SignInPageState extends State<SignInPage> {
                   }
                 }
                 if (state is ButtonFailureState) {
+                  String errorMessage = state.errorMessage;
+                  if (state.statusCode == 401) {
+                    errorMessage =
+                        AppLocalizations.of(context)!.invalidCredentials;
+                  }
+
                   showAppDialog(
                     context: context,
                     title: AppLocalizations.of(context)!.error,
-                    content: state.errorMessage,
+                    content: errorMessage,
                     icon: Icons.error_outline,
                     iconColor: Colors.red,
                     actions: [
