@@ -18,6 +18,7 @@ import 'package:tour_guide_app/features/profile/presentation/widgets/profile_tex
 import 'package:tour_guide_app/features/profile/presentation/widgets/citizen_images_section.dart';
 import 'package:tour_guide_app/common/widgets/picker/date_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:tour_guide_app/common/widgets/dropdown/country_dropdown.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/core/events/app_events.dart';
 
@@ -81,6 +82,18 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
     // Assuming citizen ID is 9 or 12 digits
     final idRegex = RegExp(r'^\d{9}$|^\d{12}$');
     return idRegex.hasMatch(id);
+  }
+
+  String _getIdentityLabel() {
+    final nationality = _nationalityController.text.toLowerCase();
+    if (nationality.isEmpty ||
+        nationality == 'vietnam' ||
+        nationality == 'việt nam') {
+      return AppLocalizations.of(
+        context,
+      )!.citizenId; 
+    }
+    return 'Passport';
   }
 
   void _updateControllers(User user) {
@@ -387,19 +400,28 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
             label: AppLocalizations.of(context)!.address,
             controller: _addressController,
           ),
-          ProfileTextField(
+          CountryDropdown(
             label: AppLocalizations.of(context)!.nationality,
-            controller: _nationalityController,
+            initialValue: _nationalityController.text,
+            onChanged: (country) {
+              setState(() {
+                if (country != null) {
+                  _nationalityController.text = country.getvietnameseName();
+                } else {
+                  _nationalityController.text = '';
+                }
+              });
+            },
           ),
+          SizedBox(height: 16.h),
           ProfileTextField(
-            label: AppLocalizations.of(context)!.citizenId,
+            label: _getIdentityLabel(),
             controller: _citizenIdController,
             validator: (value) {
               if (value != null &&
                   value.isNotEmpty &&
                   !_isValidCitizenId(value)) {
-                // You might need a key for Citizen ID Invalid, using generic error or adding one
-                return 'Invalid Citizen ID';
+                return 'Invalid ${_getIdentityLabel()}';
               }
               return null;
             },

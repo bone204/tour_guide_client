@@ -12,11 +12,16 @@ class UpdateContactInfoCubit extends Cubit<UpdateContactInfoState> {
   Future<void> updateContactInfo({
     required String email,
     required String phone,
+    String? nationality,
   }) async {
     if (isClosed) return;
     emit(UpdateContactInfoLoading());
     final result = await updateInitialProfileUseCase(
-      UpdateInitialProfileModel(email: email, phone: phone),
+      UpdateInitialProfileModel(
+        email: email,
+        phone: phone,
+        nationality: nationality,
+      ),
     );
 
     if (isClosed) return;

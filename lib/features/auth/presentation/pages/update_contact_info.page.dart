@@ -7,6 +7,9 @@ import 'package:tour_guide_app/features/auth/presentation/bloc/update_contact_in
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:tour_guide_app/common/widgets/dropdown/country_dropdown.dart';
+import 'package:tour_guide_app/features/auth/data/models/country.dart';
+
 class UpdateContactInfoPage extends StatefulWidget {
   const UpdateContactInfoPage({super.key});
 
@@ -17,6 +20,7 @@ class UpdateContactInfoPage extends StatefulWidget {
 class _UpdateContactInfoPageState extends State<UpdateContactInfoPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  Country? _selectedCountry;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -104,6 +108,13 @@ class _UpdateContactInfoPageState extends State<UpdateContactInfoPage> {
                         validator: _validatePhone,
                         keyboardType: TextInputType.phone,
                       ),
+                      SizedBox(height: 20.h),
+                      CountryDropdown(
+                        label: AppLocalizations.of(context)!.nationality,
+                        onChanged: (country) {
+                          _selectedCountry = country;
+                        },
+                      ),
                       const Spacer(),
                       PrimaryButton(
                         title: AppLocalizations.of(context)!.update,
@@ -114,6 +125,8 @@ class _UpdateContactInfoPageState extends State<UpdateContactInfoPage> {
                                 .updateContactInfo(
                                   email: _emailController.text,
                                   phone: _phoneController.text,
+                                  nationality:
+                                      _selectedCountry?.getvietnameseName(),
                                 );
                           }
                         },
