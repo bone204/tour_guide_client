@@ -58,6 +58,7 @@ class AppRouteConstant {
   static const String stopImages = '/stop_images';
   static const String stopVideos = '/stop_videos';
   static const String foodWheel = '/food_wheel';
+  static const String mappingAddress = '/mapping_address';
 
   static const String splash = '/splash';
   static const String verifyEmail = '/verify_email';

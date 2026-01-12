@@ -10,6 +10,7 @@ import 'package:tour_guide_app/features/auth/presentation/pages/interest_selecti
 import 'package:tour_guide_app/features/auth/presentation/pages/update_contact_info.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_list.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_rental.page.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/pages/mapping_address.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_rental.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_list.page.dart';
 import 'package:tour_guide_app/features/motorbike_rental/presentation/pages/motorbike_detail.page.dart';
@@ -209,6 +210,12 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => BusSearchPage(),
+        );
+
+      case AppRouteConstant.mappingAddress:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => MappingAddressPage(),
         );
 
       case AppRouteConstant.carList:

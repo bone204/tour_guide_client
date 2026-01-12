@@ -201,6 +201,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signUpDescription => 'Vui lòng điền thông tin và tạo tài khoản';
 
   @override
+  String get mappingAddress => 'Chuyển địa chỉ';
+
+  @override
   String get email => 'Email';
 
   @override

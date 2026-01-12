@@ -201,6 +201,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signUpDescription => 'Please fill the details and create account';
 
   @override
+  String get mappingAddress => 'Transfer Address';
+
+  @override
   String get email => 'Email';
 
   @override

@@ -94,6 +94,13 @@ class _NavigationCardState extends State<NavigationCard> {
         'color': AppColors.primaryOrange,
         'isIconData': true,
       },
+      {
+        'icon': Icons.map,
+        'title': AppLocalizations.of(context)!.mappingAddress,
+        'route': AppRouteConstant.mappingAddress,
+        'color': AppColors.primaryGreen,
+        'isIconData': true,
+      },
     ];
 
     final int totalPages = (navItems.length / itemsPerPage).ceil();

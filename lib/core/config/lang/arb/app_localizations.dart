@@ -479,6 +479,12 @@ abstract class AppLocalizations {
   /// **'Please fill the details and create account'**
   String get signUpDescription;
 
+  /// No description provided for @mappingAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer Address'**
+  String get mappingAddress;
+
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
