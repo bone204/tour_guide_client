@@ -10,6 +10,7 @@ import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_phone/verify_phone_cubit.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_phone/verify_phone_state.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class VerifyPhonePage extends StatelessWidget {
   final String phoneNumber;
@@ -92,20 +93,26 @@ class _VerifyPhoneViewState extends State<_VerifyPhoneView> {
         body: BlocConsumer<VerifyPhoneCubit, VerifyPhoneState>(
           listener: (context, state) {
             if (state is VerifyPhoneFailure) {
-              ScaffoldMessenger.of(
+              CustomSnackbar.show(
                 context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
+                message: state.message,
+                type: SnackbarType.error,
+              );
             } else if (state is VerifyPhoneSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.phoneVerificationSuccess)),
+              CustomSnackbar.show(
+                context,
+                message: l10n.phoneVerificationSuccess,
+                type: SnackbarType.success,
               );
               Navigator.pop(context, true); // Return success
             } else if (state is VerifyPhoneCodeSent) {
               _sessionInfo = state.sessionInfo;
               _startTimer();
-              ScaffoldMessenger.of(
+              CustomSnackbar.show(
                 context,
-              ).showSnackBar(SnackBar(content: Text(l10n.codeSentSuccess)));
+                message: l10n.codeSentSuccess,
+                type: SnackbarType.success,
+              );
             }
           },
           builder: (context, state) {
@@ -231,15 +238,19 @@ class _VerifyPhoneViewState extends State<_VerifyPhoneView> {
             onPressed: () {
               final pin = _otpController.text;
               if (pin.length != 6) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.enterValid6DigitCode)),
+                CustomSnackbar.show(
+                  context,
+                  message: l10n.enterValid6DigitCode,
+                  type: SnackbarType.warning,
                 );
                 return;
               }
               if (_sessionInfo == null) {
-                ScaffoldMessenger.of(
+                CustomSnackbar.show(
                   context,
-                ).showSnackBar(SnackBar(content: Text(l10n.requestCodeFirst)));
+                  message: l10n.requestCodeFirst,
+                  type: SnackbarType.warning,
+                );
                 return;
               }
               context.read<VerifyPhoneCubit>().verifyCode(

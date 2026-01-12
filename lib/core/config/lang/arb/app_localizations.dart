@@ -2591,11 +2591,23 @@ abstract class AppLocalizations {
   /// **'Please confirm password'**
   String get pleaseConfirmPassword;
 
+  /// No description provided for @passwordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMinLength;
+
   /// No description provided for @passwordMismatch.
   ///
   /// In en, this message translates to:
   /// **'Passwords do not match'**
   String get passwordMismatch;
+
+  /// No description provided for @usernameAlreadyExists.
+  ///
+  /// In en, this message translates to:
+  /// **'Username already exists'**
+  String get usernameAlreadyExists;
 
   /// No description provided for @invalidCredentials.
   ///

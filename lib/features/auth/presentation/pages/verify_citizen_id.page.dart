@@ -6,6 +6,7 @@ import 'package:tour_guide_app/common/pages/selfie_camera.page.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_citizen_id/verify_citizen_id_cubit.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_citizen_id/verify_citizen_id_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
@@ -59,21 +60,18 @@ class _VerifyCitizenIdView extends StatelessWidget {
       body: BlocConsumer<VerifyCitizenIdCubit, VerifyCitizenIdState>(
         listener: (context, state) {
           if (state.status == VerifyCitizenIdStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(AppLocalizations.of(context)!.verifySuccess),
-                backgroundColor: Colors.green,
-              ),
+            CustomSnackbar.show(
+              context,
+              message: AppLocalizations.of(context)!.verifySuccess,
+              type: SnackbarType.success,
             );
             Navigator.pop(context, true);
           } else if (state.status == VerifyCitizenIdStatus.failure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
+            CustomSnackbar.show(
+              context,
+              message:
                   state.errorMessage ?? AppLocalizations.of(context)!.error,
-                ),
-                backgroundColor: Colors.red,
-              ),
+              type: SnackbarType.error,
             );
           }
         },

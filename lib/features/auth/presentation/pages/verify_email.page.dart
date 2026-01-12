@@ -10,6 +10,7 @@ import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_email/verify_email_cubit.dart';
 import 'package:tour_guide_app/features/auth/presentation/bloc/verify_email/verify_email_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class VerifyEmailPage extends StatelessWidget {
   final String email;
@@ -117,18 +118,24 @@ class _VerifyEmailBodyState extends State<_VerifyEmailBody> {
             if (state is SendCodeSuccess) {
               _token = state.token;
               _startTimer();
-              ScaffoldMessenger.of(
+              CustomSnackbar.show(
                 context,
-              ).showSnackBar(SnackBar(content: Text(l10n.codeSentSuccess)));
+                message: l10n.codeSentSuccess,
+                type: SnackbarType.success,
+              );
             } else if (state is VerifyEmailSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.emailVerifiedSuccess)),
+              CustomSnackbar.show(
+                context,
+                message: l10n.emailVerifiedSuccess,
+                type: SnackbarType.success,
               );
               Navigator.pop(context, true);
             } else if (state is VerifyEmailFailure) {
-              ScaffoldMessenger.of(
+              CustomSnackbar.show(
                 context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
+                message: state.message,
+                type: SnackbarType.error,
+              );
             }
           },
           child: SingleChildScrollView(
@@ -228,14 +235,18 @@ class _VerifyEmailBodyState extends State<_VerifyEmailBody> {
                       onPressed: () {
                         final code = _pinController.text;
                         if (code.length != 6) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(l10n.enterValid6DigitCode)),
+                          CustomSnackbar.show(
+                            context,
+                            message: l10n.enterValid6DigitCode,
+                            type: SnackbarType.warning,
                           );
                           return;
                         }
                         if (_token == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(l10n.requestCodeFirst)),
+                          CustomSnackbar.show(
+                            context,
+                            message: l10n.requestCodeFirst,
+                            type: SnackbarType.warning,
                           );
                           return;
                         }

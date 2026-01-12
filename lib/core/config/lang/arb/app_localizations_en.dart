@@ -1271,7 +1271,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseConfirmPassword => 'Please confirm password';
 
   @override
+  String get passwordMinLength => 'Password must be at least 6 characters';
+
+  @override
   String get passwordMismatch => 'Passwords do not match';
+
+  @override
+  String get usernameAlreadyExists => 'Username already exists';
 
   @override
   String get invalidCredentials => 'Invalid username or password';

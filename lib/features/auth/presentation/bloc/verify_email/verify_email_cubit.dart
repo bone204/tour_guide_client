@@ -18,8 +18,10 @@ class VerifyEmailCubit extends Cubit<VerifyEmailState> {
        super(VerifyEmailInitial());
 
   Future<void> sendVerificationCode() async {
+    if (isClosed) return;
     emit(SendCodeLoading());
     final result = await _emailStartUseCase(NoParams());
+    if (isClosed) return;
     result.fold(
       (failure) => emit(VerifyEmailFailure(failure.message)),
       (response) => emit(
@@ -36,10 +38,12 @@ class VerifyEmailCubit extends Cubit<VerifyEmailState> {
     required String code,
     required String token,
   }) async {
+    if (isClosed) return;
     emit(VerifyCodeLoading());
     final result = await _verifyEmailUseCase(
       EmailVerification(email: email, code: code, token: token),
     );
+    if (isClosed) return;
     result.fold(
       (failure) => emit(VerifyEmailFailure(failure.message)),
       (success) => emit(VerifyEmailSuccess(message: success.message)),

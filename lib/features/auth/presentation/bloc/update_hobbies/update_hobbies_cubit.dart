@@ -9,8 +9,10 @@ class UpdateHobbiesCubit extends Cubit<UpdateHobbiesState> {
     : super(UpdateHobbiesInitial());
 
   Future<void> updateHobbies(List<String> hobbies) async {
+    if (isClosed) return;
     emit(UpdateHobbiesLoading());
     final result = await updateHobbiesUseCase(hobbies);
+    if (isClosed) return;
     result.fold(
       (failure) => emit(UpdateHobbiesFailure(errorMessage: failure.message)),
       (success) => emit(UpdateHobbiesSuccess()),

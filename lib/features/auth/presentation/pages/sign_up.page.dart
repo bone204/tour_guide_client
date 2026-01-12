@@ -47,7 +47,9 @@ class _SignUpPageState extends State<SignUpPage> {
     if (!_isFormSubmitted) return null;
     if (value == null || value.isEmpty)
       return AppLocalizations.of(context)!.pleaseEnterPassword;
-    // if (value.length < 8) return 'Mật khẩu phải có ít nhất 8 ký tự';
+    if (value.length < 6) {
+      return AppLocalizations.of(context)!.passwordMinLength;
+    }
     // if (value.length > 50) return 'Mật khẩu không được vượt quá 50 ký tự';
     // if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)').hasMatch(value)) {
     //   return 'Phải có ít nhất 1 chữ hoa, 1 chữ thường và 1 số';
@@ -103,10 +105,16 @@ class _SignUpPageState extends State<SignUpPage> {
               Navigator.pushReplacementNamed(context, AppRouteConstant.signIn);
             }
             if (state is ButtonFailureState) {
+              String errorMessage = state.errorMessage;
+              if (state.statusCode == 409) {
+                errorMessage =
+                    AppLocalizations.of(context)!.usernameAlreadyExists;
+              }
+
               showAppDialog(
                 context: context,
                 title: AppLocalizations.of(context)!.error,
-                content: state.errorMessage,
+                content: errorMessage,
                 icon: Icons.error_outline,
                 iconColor: Colors.red,
                 actions: [

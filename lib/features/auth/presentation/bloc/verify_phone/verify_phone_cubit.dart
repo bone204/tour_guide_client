@@ -10,8 +10,10 @@ class VerifyPhoneCubit extends Cubit<VerifyPhoneState> {
   VerifyPhoneCubit() : super(VerifyPhoneInitial());
 
   Future<void> sendCode(String phone) async {
+    if (isClosed) return;
     emit(VerifyPhoneLoading());
     final result = await sl<PhoneStartUseCase>().call(NoParams());
+    if (isClosed) return;
     result.fold(
       (failure) => emit(VerifyPhoneFailure(failure.message)),
       (response) => emit(
@@ -21,6 +23,7 @@ class VerifyPhoneCubit extends Cubit<VerifyPhoneState> {
   }
 
   Future<void> verifyCode(String code, String phone, String sessionInfo) async {
+    if (isClosed) return;
     emit(VerifyPhoneVerifying());
     final verificationModel = PhoneVerification(
       phone: phone,
@@ -28,6 +31,7 @@ class VerifyPhoneCubit extends Cubit<VerifyPhoneState> {
       sessionInfo: sessionInfo,
     );
     final result = await sl<VerifyPhoneUseCase>().call(verificationModel);
+    if (isClosed) return;
     result.fold(
       (failure) => emit(VerifyPhoneFailure(failure.message)),
       (success) => emit(VerifyPhoneSuccess()),
@@ -35,6 +39,7 @@ class VerifyPhoneCubit extends Cubit<VerifyPhoneState> {
   }
 
   void reset() {
+    if (isClosed) return;
     emit(VerifyPhoneInitial());
   }
 }

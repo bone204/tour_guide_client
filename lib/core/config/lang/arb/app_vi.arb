@@ -908,8 +908,10 @@
 
   "pleaseConfirmPassword": "Vui lòng xác nhận mật khẩu",
 
+  "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
   "passwordMismatch": "Mật khẩu không khớp",
 
+  "usernameAlreadyExists": "Tên đăng nhập đã tồn tại",
   "invalidCredentials": "Tên đăng nhập hoặc mật khẩu không đúng",
   "pleaseEnterEmailOrUsername": "Vui lòng nhập email hoặc tên đăng nhập",
 

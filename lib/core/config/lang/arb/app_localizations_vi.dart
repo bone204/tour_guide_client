@@ -1271,7 +1271,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get pleaseConfirmPassword => 'Vui lòng xác nhận mật khẩu';
 
   @override
+  String get passwordMinLength => 'Mật khẩu phải có ít nhất 6 ký tự';
+
+  @override
   String get passwordMismatch => 'Mật khẩu không khớp';
+
+  @override
+  String get usernameAlreadyExists => 'Tên đăng nhập đã tồn tại';
 
   @override
   String get invalidCredentials => 'Tên đăng nhập hoặc mật khẩu không đúng';

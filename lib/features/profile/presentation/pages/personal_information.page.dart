@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
@@ -124,22 +125,20 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
             if (state is EditProfileLoading) {
               // Show loading overlay or handled by button
             } else if (state is EditProfileSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
+              CustomSnackbar.show(
+                context,
+                message:
                     AppLocalizations.of(context)!.profileUpdatedSuccessfully,
-                  ),
-                ),
+                type: SnackbarType.success,
               );
               context.read<GetMyProfileCubit>().getMyProfile();
               eventBus.fire(ProfileUpdatedEvent());
             } else if (state is EditProfileFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
+              CustomSnackbar.show(
+                context,
+                message:
                     '${AppLocalizations.of(context)!.errorPrefix}${state.message}',
-                  ),
-                ),
+                type: SnackbarType.error,
               );
             }
           },
@@ -569,10 +568,10 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
         avatarFile: _avatarFile,
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.noChangesToUpdate),
-        ),
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.noChangesToUpdate,
+        type: SnackbarType.info,
       );
     }
   }

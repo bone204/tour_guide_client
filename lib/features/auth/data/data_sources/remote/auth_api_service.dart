@@ -52,7 +52,7 @@ class AuthApiServiceImpl extends AuthApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: _getErrorMessage(e),
           statusCode: e.response?.statusCode,
         ),
       );
@@ -76,7 +76,7 @@ class AuthApiServiceImpl extends AuthApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: _getErrorMessage(e),
           statusCode: e.response?.statusCode,
         ),
       );
@@ -96,7 +96,7 @@ class AuthApiServiceImpl extends AuthApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: _getErrorMessage(e),
           statusCode: e.response?.statusCode,
         ),
       );
@@ -119,7 +119,7 @@ class AuthApiServiceImpl extends AuthApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: _getErrorMessage(e),
           statusCode: e.response?.statusCode,
         ),
       );
@@ -139,7 +139,7 @@ class AuthApiServiceImpl extends AuthApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: _getErrorMessage(e),
           statusCode: e.response?.statusCode,
         ),
       );
@@ -162,7 +162,7 @@ class AuthApiServiceImpl extends AuthApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: _getErrorMessage(e),
           statusCode: e.response?.statusCode,
         ),
       );
@@ -185,7 +185,7 @@ class AuthApiServiceImpl extends AuthApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? 'Unknown error',
+          message: _getErrorMessage(e),
           statusCode: e.response?.statusCode,
         ),
       );
@@ -219,7 +219,7 @@ class AuthApiServiceImpl extends AuthApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message: e.response?.data['message'] ?? e.message ?? "Unknown Error",
+          message: _getErrorMessage(e),
           statusCode: e.response?.statusCode,
         ),
       );
@@ -240,15 +240,20 @@ class AuthApiServiceImpl extends AuthApiService {
     } on DioException catch (e) {
       return Left(
         ServerFailure(
-          message:
-              e.response?.data['message'] is List
-                  ? (e.response?.data['message'] as List).join(', ')
-                  : e.response?.data['message'] ?? 'Unknown error',
+          message: _getErrorMessage(e),
           statusCode: e.response?.statusCode,
         ),
       );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
+  }
+
+  String _getErrorMessage(DioException e) {
+    final message = e.response?.data['message'];
+    if (message is List) {
+      return message.join(', ');
+    }
+    return message?.toString() ?? e.message ?? 'Unknown error';
   }
 }

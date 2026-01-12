@@ -798,8 +798,10 @@
 
   "pleaseConfirmPassword": "Please confirm password",
 
+  "passwordMinLength": "Password must be at least 6 characters",
   "passwordMismatch": "Passwords do not match",
 
+  "usernameAlreadyExists": "Username already exists",
   "invalidCredentials": "Invalid username or password",
   "pleaseEnterEmailOrUsername": "Please enter email or username",
 
