@@ -5830,6 +5830,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Map Type'**
   String get selectMapType;
+
+  /// No description provided for @verifyEmailMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the code sent to {email}'**
+  String verifyEmailMessage(String email);
+
+  /// No description provided for @verifyPhoneMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the code sent to {phone}'**
+  String verifyPhoneMessage(String phone);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

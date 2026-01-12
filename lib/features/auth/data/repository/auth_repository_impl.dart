@@ -62,10 +62,8 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(
-    String recapchaToken,
-  ) async {
-    return await _apiService.phoneStart(recapchaToken);
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart() async {
+    return await _apiService.phoneStart();
   }
 
   @override

@@ -5,9 +5,14 @@ import 'package:tour_guide_app/features/auth/data/models/phone_verification_resp
 import 'package:tour_guide_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
-class PhoneStartUseCase implements UseCase<Either<Failure, PhoneVerificationResponse>, String> {
+import 'package:tour_guide_app/core/usecases/no_params.dart';
+
+class PhoneStartUseCase
+    implements UseCase<Either<Failure, PhoneVerificationResponse>, NoParams> {
   @override
-  Future<Either<Failure, PhoneVerificationResponse>> call(String params) async {
-    return await sl<AuthRepository>().phoneStart(params);
+  Future<Either<Failure, PhoneVerificationResponse>> call(
+    NoParams params,
+  ) async {
+    return await sl<AuthRepository>().phoneStart();
   }
 }

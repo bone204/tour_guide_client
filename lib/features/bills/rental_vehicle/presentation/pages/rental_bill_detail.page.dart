@@ -1110,7 +1110,11 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
               ),
             ],
           ),
-    );
+    ).then((_) {
+      if (context.mounted) {
+        _onRefresh(context);
+      }
+    });
   }
 
   Widget _buildDetailRow(

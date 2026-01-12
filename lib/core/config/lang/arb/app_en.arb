@@ -1715,5 +1715,21 @@
   "selectMapType": "Select Map Type",
   "mapTypeNormal": "Default",
   "mapTypeSatellite": "Satellite",
-  "mapTypeTerrain": "Terrain"
+  "mapTypeTerrain": "Terrain",
+  "verifyEmailMessage": "Please enter the code sent to {email}",
+  "@verifyEmailMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyPhoneMessage": "Please enter the code sent to {phone}",
+  "@verifyPhoneMessage": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  }
 }

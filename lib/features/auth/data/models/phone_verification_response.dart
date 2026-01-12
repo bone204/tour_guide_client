@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class PhoneVerificationResponse {
   final bool ok;
   final String sessionInfo;
@@ -13,7 +15,7 @@ class PhoneVerificationResponse {
     return PhoneVerificationResponse(
       ok: json['ok'] ?? false,
       sessionInfo: json['sessionInfo'] ?? '',
-      expiresAt: DateTime.parse(json['expiresAt']),
+      expiresAt: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['expiresAt']),
     );
   }
 

@@ -121,9 +121,9 @@ class _VerifyEmailBodyState extends State<_VerifyEmailBody> {
                 context,
               ).showSnackBar(SnackBar(content: Text(l10n.codeSentSuccess)));
             } else if (state is VerifyEmailSuccess) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(l10n.emailVerifiedSuccess)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.emailVerifiedSuccess)),
+              );
               Navigator.pop(context, true);
             } else if (state is VerifyEmailFailure) {
               ScaffoldMessenger.of(
@@ -137,10 +137,10 @@ class _VerifyEmailBodyState extends State<_VerifyEmailBody> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  l10n.enterCodeSentToEmail,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(color: AppColors.textSubtitle),
+                  l10n.verifyEmailMessage(widget.email),
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: AppColors.textSubtitle,
+                  ),
                 ),
                 SizedBox(height: 16.h),
                 Center(
@@ -158,7 +158,7 @@ class _VerifyEmailBodyState extends State<_VerifyEmailBody> {
                     },
                   ),
                 ),
-      
+
                 SizedBox(height: 30.h),
                 Align(
                   alignment: Alignment.centerRight,
@@ -216,9 +216,9 @@ class _VerifyEmailBodyState extends State<_VerifyEmailBody> {
                     },
                   ),
                 ),
-      
+
                 SizedBox(height: 50.h),
-      
+
                 BlocBuilder<VerifyEmailCubit, VerifyEmailState>(
                   builder: (context, state) {
                     final isLoading = state is VerifyCodeLoading;
@@ -239,7 +239,7 @@ class _VerifyEmailBodyState extends State<_VerifyEmailBody> {
                           );
                           return;
                         }
-      
+
                         context.read<VerifyEmailCubit>().verifyEmail(
                           email: widget.email,
                           code: code,

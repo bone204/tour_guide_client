@@ -1722,5 +1722,21 @@
   "selectMapType": "Chọn loại bản đồ",
   "mapTypeNormal": "Mặc định",
   "mapTypeSatellite": "Vệ tinh",
-  "mapTypeTerrain": "Địa hình"
+  "mapTypeTerrain": "Địa hình",
+  "verifyEmailMessage": "Vui lòng nhập mã được gửi đến {email}",
+  "@verifyEmailMessage": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyPhoneMessage": "Vui lòng nhập mã được gửi đến {phone}",
+  "@verifyPhoneMessage": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  }
 }

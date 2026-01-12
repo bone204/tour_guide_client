@@ -2963,4 +2963,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectMapType => 'Select Map Type';
+
+  @override
+  String verifyEmailMessage(String email) {
+    return 'Please enter the code sent to $email';
+  }
+
+  @override
+  String verifyPhoneMessage(String phone) {
+    return 'Please enter the code sent to $phone';
+  }
 }

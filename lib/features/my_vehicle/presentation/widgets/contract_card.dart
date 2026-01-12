@@ -170,6 +170,7 @@ class ContractCard extends StatelessWidget {
 
   Widget _buildInfoRow(BuildContext context, String icon, String text) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: EdgeInsets.all(6.w),
@@ -188,8 +189,10 @@ class ContractCard extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: Theme.of(context).textTheme.displayLarge,
-            maxLines: 1,
+            style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                  height: 1.5,
+                ),
+            maxLines: 5,
             overflow: TextOverflow.ellipsis,
           ),
         ),

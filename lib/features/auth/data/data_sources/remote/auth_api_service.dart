@@ -23,9 +23,7 @@ abstract class AuthApiService {
   Future<Either<Failure, SuccessResponse>> emailVerify(
     EmailVerification emailVerification,
   );
-  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(
-    String recapchaToken,
-  );
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart();
   Future<Either<Failure, SuccessResponse>> phoneVerify(
     PhoneVerification phoneVerification,
   );
@@ -131,14 +129,9 @@ class AuthApiServiceImpl extends AuthApiService {
   }
 
   @override
-  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(
-    String recapchaToken,
-  ) async {
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart() async {
     try {
-      final response = await sl<DioClient>().post(
-        ApiUrls.phoneStart,
-        data: {'recapchaToken': recapchaToken},
-      );
+      final response = await sl<DioClient>().post(ApiUrls.phoneStart);
       final phoneVerificationResponse = PhoneVerificationResponse.fromJson(
         response.data,
       );

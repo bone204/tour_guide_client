@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class EmailVerificationResponse {
   final bool ok;
   final String token;
@@ -13,7 +15,7 @@ class EmailVerificationResponse {
     return EmailVerificationResponse(
       ok: json['ok'] ?? false,
       token: json['token'] ?? '',
-      expiresAt: DateTime.parse(json['expiresAt']),
+      expiresAt: DateFormat('dd-MM-yyyy HH:mm:ss').parse(json['expiresAt']),
     );
   }
 

@@ -2969,4 +2969,14 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get selectMapType => 'Chọn loại bản đồ';
+
+  @override
+  String verifyEmailMessage(String email) {
+    return 'Vui lòng nhập mã được gửi đến $email';
+  }
+
+  @override
+  String verifyPhoneMessage(String phone) {
+    return 'Vui lòng nhập mã được gửi đến $phone';
+  }
 }

@@ -404,24 +404,20 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
               }
               return null;
             },
-            suffixIcon:
-                (_currentUser?.citizenId != null &&
-                        _currentUser!.citizenId!.isNotEmpty)
-                    ? ProfileVerificationBadge(
-                      isVerified: _currentUser?.isCitizenIdVerified ?? false,
-                      onTap: () async {
-                        if (!(_currentUser?.isCitizenIdVerified ?? false)) {
-                          final result = await Navigator.pushNamed(
-                            context,
-                            AppRouteConstant.verifyCitizenId,
-                          );
-                          if (result == true && context.mounted) {
-                            context.read<GetMyProfileCubit>().getMyProfile();
-                          }
-                        }
-                      },
-                    )
-                    : null,
+            suffixIcon: ProfileVerificationBadge(
+              isVerified: _currentUser?.isCitizenIdVerified ?? false,
+              onTap: () async {
+                if (!(_currentUser?.isCitizenIdVerified ?? false)) {
+                  final result = await Navigator.pushNamed(
+                    context,
+                    AppRouteConstant.verifyCitizenId,
+                  );
+                  if (result == true && context.mounted) {
+                    context.read<GetMyProfileCubit>().getMyProfile();
+                  }
+                }
+              },
+            ),
           ),
 
           SizedBox(height: 10.h),

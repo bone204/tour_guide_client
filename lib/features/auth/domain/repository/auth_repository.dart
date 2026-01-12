@@ -22,9 +22,7 @@ abstract class AuthRepository {
     EmailVerification emailVerification,
   );
 
-  Future<Either<Failure, PhoneVerificationResponse>> phoneStart(
-    String recapchaToken,
-  );
+  Future<Either<Failure, PhoneVerificationResponse>> phoneStart();
   Future<Either<Failure, SuccessResponse>> phoneVerify(
     PhoneVerification phoneVerification,
   );
