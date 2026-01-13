@@ -1286,31 +1286,31 @@ class AppLocalizationsVi extends AppLocalizations {
   String get mappingAddressTitle => 'Chuyển Đổi Địa Chỉ';
 
   @override
-  String get convertOldToNewAddressTitle => 'Chuyển đổi ĐC Cũ -> Mới';
+  String get convertOldToNewAddressTitle => 'Tra cứu: Địa chỉ Cũ → Mới';
 
   @override
-  String get convertOldToNewAddressDesc => 'Chuyển đổi địa chỉ đầy đủ';
+  String get convertOldToNewAddressDesc => 'Nhập địa chỉ cũ để tìm địa chỉ mới tương ứng';
 
   @override
-  String get convertNewToOldAddressTitle => 'Chuyển đổi ĐC Mới -> Cũ';
+  String get convertNewToOldAddressTitle => 'Tra cứu: Địa chỉ Mới → Cũ';
 
   @override
-  String get convertNewToOldAddressDesc => 'Chuyển đổi thành phần địa chỉ';
+  String get convertNewToOldAddressDesc => 'Nhập địa chỉ mới để tìm các địa chỉ cũ tương ứng';
 
   @override
-  String get convertOldToNewDetailsTitle => 'Chuyển đổi Chi tiết Cũ -> Mới';
+  String get convertOldToNewDetailsTitle => 'Tra cứu chi tiết: Cũ → Mới';
 
   @override
-  String get convertOldToNewDetailsDesc => 'Chuyển đổi từng phần địa chỉ';
+  String get convertOldToNewDetailsDesc => 'Chọn Tỉnh/Huyện/Xã cũ để lấy thông tin mới';
 
   @override
-  String get convertNewToOldDetailsTitle => 'Chuyển đổi Chi tiết Mới -> Cũ';
+  String get convertNewToOldDetailsTitle => 'Tra cứu chi tiết: Mới → Cũ';
 
   @override
-  String get convertNewToOldDetailsDesc => 'Chuyển đổi địa chỉ phụ thuộc';
+  String get convertNewToOldDetailsDesc => 'Chọn đơn vị hành chính mới để xem lịch sử sáp nhập';
 
   @override
-  String get convertOldToNewAddressPageTitle => 'Chuyển đổi Cũ -> Mới (Địa chỉ)';
+  String get convertOldToNewAddressPageTitle => 'Tra cứu: Địa chỉ Cũ → Mới';
 
   @override
   String get enterOldAddressPlaceholder => 'Nhập địa chỉ cũ (vd: Phường...)';
@@ -1328,13 +1328,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get newAddressLabel => 'Địa chỉ mới:';
 
   @override
-  String get convertNewToOldAddressPageTitle => 'Chuyển đổi Mới -> Cũ (Địa chỉ)';
+  String get convertNewToOldAddressPageTitle => 'Tra cứu: Địa chỉ Mới → Cũ';
 
   @override
   String get enterNewAddressPlaceholder => 'Nhập địa chỉ mới (vd: Xã...)';
 
   @override
-  String get convertOldToNewDetailsPageTitle => 'Chuyển đổi Cũ -> Mới';
+  String get convertOldToNewDetailsPageTitle => 'Tra cứu chi tiết: Cũ → Mới';
 
   @override
   String get enterLegacyProvincePlaceholder => 'Chọn Tỉnh/TP Cũ';
@@ -1367,7 +1367,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get communeLabel => 'Xã/Phường';
 
   @override
-  String get convertNewToOldDetailsPageTitle => 'Chuyển đổi Mới -> Cũ';
+  String get convertNewToOldDetailsPageTitle => 'Tra cứu chi tiết: Mới → Cũ';
 
   @override
   String get enterReformProvincePlaceholder => 'Chọn Tỉnh/TP Mới';

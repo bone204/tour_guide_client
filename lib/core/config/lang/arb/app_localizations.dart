@@ -482,7 +482,7 @@ abstract class AppLocalizations {
   /// No description provided for @mappingAddress.
   ///
   /// In en, this message translates to:
-  /// **'Transfer Address'**
+  /// **'Convert Address'**
   String get mappingAddress;
 
   /// No description provided for @email.
@@ -2618,61 +2618,61 @@ abstract class AppLocalizations {
   /// No description provided for @mappingAddressTitle.
   ///
   /// In en, this message translates to:
-  /// **'Mapping Address'**
+  /// **'Convert Address'**
   String get mappingAddressTitle;
 
   /// No description provided for @convertOldToNewAddressTitle.
   ///
   /// In en, this message translates to:
-  /// **'Convert Old -> New Address'**
+  /// **'Lookup: Old → New Address'**
   String get convertOldToNewAddressTitle;
 
   /// No description provided for @convertOldToNewAddressDesc.
   ///
   /// In en, this message translates to:
-  /// **'Convert full address string'**
+  /// **'Enter an old address to find the new one'**
   String get convertOldToNewAddressDesc;
 
   /// No description provided for @convertNewToOldAddressTitle.
   ///
   /// In en, this message translates to:
-  /// **'Convert New -> Old Address'**
+  /// **'Lookup: New → Old Address'**
   String get convertNewToOldAddressTitle;
 
   /// No description provided for @convertNewToOldAddressDesc.
   ///
   /// In en, this message translates to:
-  /// **'Convert address components'**
+  /// **'Enter a new address to find historical ones'**
   String get convertNewToOldAddressDesc;
 
   /// No description provided for @convertOldToNewDetailsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Convert Old -> New Details'**
+  /// **'Detailed Lookup: Old → New'**
   String get convertOldToNewDetailsTitle;
 
   /// No description provided for @convertOldToNewDetailsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Convert individual address parts'**
+  /// **'Select old admin units to find new details'**
   String get convertOldToNewDetailsDesc;
 
   /// No description provided for @convertNewToOldDetailsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Convert New -> Old Details'**
+  /// **'Detailed Lookup: New → Old'**
   String get convertNewToOldDetailsTitle;
 
   /// No description provided for @convertNewToOldDetailsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Convert dependent address parts'**
+  /// **'Select new admin units to view history'**
   String get convertNewToOldDetailsDesc;
 
   /// No description provided for @convertOldToNewAddressPageTitle.
   ///
   /// In en, this message translates to:
-  /// **'Convert Old -> New Address'**
+  /// **'Lookup: Old → New Address'**
   String get convertOldToNewAddressPageTitle;
 
   /// No description provided for @enterOldAddressPlaceholder.
@@ -2708,7 +2708,7 @@ abstract class AppLocalizations {
   /// No description provided for @convertNewToOldAddressPageTitle.
   ///
   /// In en, this message translates to:
-  /// **'Convert New -> Old Address'**
+  /// **'Lookup: New → Old Address'**
   String get convertNewToOldAddressPageTitle;
 
   /// No description provided for @enterNewAddressPlaceholder.
@@ -2720,7 +2720,7 @@ abstract class AppLocalizations {
   /// No description provided for @convertOldToNewDetailsPageTitle.
   ///
   /// In en, this message translates to:
-  /// **'Convert Old -> New Details'**
+  /// **'Detailed Lookup: Old → New'**
   String get convertOldToNewDetailsPageTitle;
 
   /// No description provided for @enterLegacyProvincePlaceholder.
@@ -2786,7 +2786,7 @@ abstract class AppLocalizations {
   /// No description provided for @convertNewToOldDetailsPageTitle.
   ///
   /// In en, this message translates to:
-  /// **'Convert New -> Old Details'**
+  /// **'Detailed Lookup: New → Old'**
   String get convertNewToOldDetailsPageTitle;
 
   /// No description provided for @enterReformProvincePlaceholder.

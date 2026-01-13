@@ -44,6 +44,7 @@ class MappingNavigationButton extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   padding: EdgeInsets.all(10.w),
@@ -65,13 +66,13 @@ class MappingNavigationButton extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
-                      SizedBox(height: 8.h),
+                      SizedBox(height: 6.h),
                       Text(
                         description,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.displayLarge
-                            ?.copyWith(color: AppColors.textSubtitle),
+                            ?.copyWith(color: AppColors.textSubtitle, height: 1.5),
                       ),
                     ],
                   ),

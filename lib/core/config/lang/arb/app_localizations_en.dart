@@ -201,7 +201,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signUpDescription => 'Please fill the details and create account';
 
   @override
-  String get mappingAddress => 'Transfer Address';
+  String get mappingAddress => 'Convert Address';
 
   @override
   String get email => 'Email';
@@ -1283,34 +1283,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usernameMinLength => 'Username must be at least 3 characters';
 
   @override
-  String get mappingAddressTitle => 'Mapping Address';
+  String get mappingAddressTitle => 'Convert Address';
 
   @override
-  String get convertOldToNewAddressTitle => 'Convert Old -> New Address';
+  String get convertOldToNewAddressTitle => 'Lookup: Old → New Address';
 
   @override
-  String get convertOldToNewAddressDesc => 'Convert full address string';
+  String get convertOldToNewAddressDesc => 'Enter an old address to find the new one';
 
   @override
-  String get convertNewToOldAddressTitle => 'Convert New -> Old Address';
+  String get convertNewToOldAddressTitle => 'Lookup: New → Old Address';
 
   @override
-  String get convertNewToOldAddressDesc => 'Convert address components';
+  String get convertNewToOldAddressDesc => 'Enter a new address to find historical ones';
 
   @override
-  String get convertOldToNewDetailsTitle => 'Convert Old -> New Details';
+  String get convertOldToNewDetailsTitle => 'Detailed Lookup: Old → New';
 
   @override
-  String get convertOldToNewDetailsDesc => 'Convert individual address parts';
+  String get convertOldToNewDetailsDesc => 'Select old admin units to find new details';
 
   @override
-  String get convertNewToOldDetailsTitle => 'Convert New -> Old Details';
+  String get convertNewToOldDetailsTitle => 'Detailed Lookup: New → Old';
 
   @override
-  String get convertNewToOldDetailsDesc => 'Convert dependent address parts';
+  String get convertNewToOldDetailsDesc => 'Select new admin units to view history';
 
   @override
-  String get convertOldToNewAddressPageTitle => 'Convert Old -> New Address';
+  String get convertOldToNewAddressPageTitle => 'Lookup: Old → New Address';
 
   @override
   String get enterOldAddressPlaceholder => 'Enter old address (e.g., Ward...)';
@@ -1328,13 +1328,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newAddressLabel => 'New Address:';
 
   @override
-  String get convertNewToOldAddressPageTitle => 'Convert New -> Old Address';
+  String get convertNewToOldAddressPageTitle => 'Lookup: New → Old Address';
 
   @override
   String get enterNewAddressPlaceholder => 'Enter new address (e.g., Commune...)';
 
   @override
-  String get convertOldToNewDetailsPageTitle => 'Convert Old -> New Details';
+  String get convertOldToNewDetailsPageTitle => 'Detailed Lookup: Old → New';
 
   @override
   String get enterLegacyProvincePlaceholder => 'Select Legacy Province';
@@ -1367,7 +1367,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get communeLabel => 'Commune';
 
   @override
-  String get convertNewToOldDetailsPageTitle => 'Convert New -> Old Details';
+  String get convertNewToOldDetailsPageTitle => 'Detailed Lookup: New → Old';
 
   @override
   String get enterReformProvincePlaceholder => 'Select Reform Province';

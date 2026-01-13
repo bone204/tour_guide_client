@@ -78,7 +78,7 @@
 
   "signUpDescription": "Please fill the details and create account",
 
-  "mappingAddress": "Transfer Address",
+  "mappingAddress": "Convert Address",
 
   "email": "Email",
 
@@ -798,7 +798,7 @@
 
   "usernameMinLength": "Username must be at least 3 characters",
 
-  "mappingAddressTitle": "Mapping Address",
+  "mappingAddressTitle": "Convert Address",
   "convertOldToNewAddressTitle": "Old -> New\nAddress",
   "convertOldToNewAddressDesc": "Convert old address string to new address string",
   "convertNewToOldAddressTitle": "New -> Old\nAddress",
@@ -1781,8 +1781,8 @@
       }
     }
   },
-  "convertOldToNewDetailsPageTitle": "Convert Old -> New Details",
-  "convertNewToOldDetailsPageTitle": "Convert New -> Old Details",
+  "convertOldToNewDetailsPageTitle": "Detailed Lookup: Old → New",
+  "convertNewToOldDetailsPageTitle": "Detailed Lookup: New → Old",
   "legacyProvinceLabel": "Legacy Province",
   "legacyDistrictLabel": "Legacy District",
   "legacyWardLabel": "Legacy Ward",
@@ -1800,15 +1800,17 @@
   "communeLabel": "Commune",
   "districtLabel": "District",
   "wardLabel": "Ward",
-  "convertOldToNewAddressTitle": "Convert Old -> New Address",
-  "convertOldToNewAddressDesc": "Convert full address string",
-  "convertNewToOldAddressTitle": "Convert New -> Old Address",
-  "convertNewToOldAddressDesc": "Convert address components",
-  "convertOldToNewDetailsTitle": "Convert Old -> New Details",
-  "convertOldToNewDetailsDesc": "Convert individual address parts",
-  "convertNewToOldDetailsTitle": "Convert New -> Old Details",
-  "convertNewToOldDetailsDesc": "Convert dependent address parts",
+  "convertOldToNewAddressTitle": "Lookup: Old → New Address",
+  "convertOldToNewAddressDesc": "Enter an old address to find the new one",
+  "convertNewToOldAddressTitle": "Lookup: New → Old Address",
+  "convertNewToOldAddressDesc": "Enter a new address to find historical ones",
+  "convertOldToNewDetailsTitle": "Detailed Lookup: Old → New",
+  "convertOldToNewDetailsDesc": "Select old admin units to find new details",
+  "convertNewToOldDetailsTitle": "Detailed Lookup: New → Old",
+  "convertNewToOldDetailsDesc": "Select new admin units to view history",
   "convertFailed": "Cannot convert this address",
   "addressTooShort": "Address is too short (should include at least Ward, District, Province)",
-  "addressTooShortNewToOld": "Address is too short"
+  "addressTooShortNewToOld": "Address is too short",
+  "convertOldToNewAddressPageTitle": "Lookup: Old → New Address",
+  "convertNewToOldAddressPageTitle": "Lookup: New → Old Address"
 }

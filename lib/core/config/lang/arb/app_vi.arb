@@ -1788,8 +1788,8 @@
       }
     }
   },
-  "convertOldToNewDetailsPageTitle": "Chuyển đổi Cũ -> Mới",
-  "convertNewToOldDetailsPageTitle": "Chuyển đổi Mới -> Cũ",
+  "convertOldToNewDetailsPageTitle": "Tra cứu chi tiết: Cũ → Mới",
+  "convertNewToOldDetailsPageTitle": "Tra cứu chi tiết: Mới → Cũ",
   "legacyProvinceLabel": "Tỉnh/TP Cũ",
   "legacyDistrictLabel": "Quận/Huyện Cũ",
   "legacyWardLabel": "Phường/Xã Cũ",
@@ -1807,15 +1807,17 @@
   "communeLabel": "Xã/Phường",
   "districtLabel": "Quận/Huyện",
   "wardLabel": "Phường/Xã",
-  "convertOldToNewAddressTitle": "Chuyển đổi ĐC Cũ -> Mới",
-  "convertOldToNewAddressDesc": "Chuyển đổi địa chỉ đầy đủ",
-  "convertNewToOldAddressTitle": "Chuyển đổi ĐC Mới -> Cũ",
-  "convertNewToOldAddressDesc": "Chuyển đổi thành phần địa chỉ",
-  "convertOldToNewDetailsTitle": "Chuyển đổi Chi tiết Cũ -> Mới",
-  "convertOldToNewDetailsDesc": "Chuyển đổi từng phần địa chỉ",
-  "convertNewToOldDetailsTitle": "Chuyển đổi Chi tiết Mới -> Cũ",
-  "convertNewToOldDetailsDesc": "Chuyển đổi địa chỉ phụ thuộc",
+  "convertOldToNewAddressTitle": "Tra cứu: Địa chỉ Cũ → Mới",
+  "convertOldToNewAddressDesc": "Nhập địa chỉ cũ để tìm địa chỉ mới tương ứng",
+  "convertNewToOldAddressTitle": "Tra cứu: Địa chỉ Mới → Cũ",
+  "convertNewToOldAddressDesc": "Nhập địa chỉ mới để tìm các địa chỉ cũ tương ứng",
+  "convertOldToNewDetailsTitle": "Tra cứu chi tiết: Cũ → Mới",
+  "convertOldToNewDetailsDesc": "Chọn Tỉnh/Huyện/Xã cũ để lấy thông tin mới",
+  "convertNewToOldDetailsTitle": "Tra cứu chi tiết: Mới → Cũ",
+  "convertNewToOldDetailsDesc": "Chọn đơn vị hành chính mới để xem lịch sử sáp nhập",
   "convertFailed": "Không thể chuyển đổi địa chỉ này",
   "addressTooShort": "Địa chỉ quá ngắn (cần ít nhất Xã, Huyện, Tỉnh)",
-  "addressTooShortNewToOld": "Địa chỉ quá ngắn"
+  "addressTooShortNewToOld": "Địa chỉ quá ngắn",
+  "convertOldToNewAddressPageTitle": "Tra cứu: Địa chỉ Cũ → Mới",
+  "convertNewToOldAddressPageTitle": "Tra cứu: Địa chỉ Mới → Cũ"
 }
