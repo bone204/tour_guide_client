@@ -55,8 +55,10 @@ class _ConvertOldToNewAddressPageState
               CustomSnackbar.show(
                 context,
                 message:
-                    state.errorMessage ??
-                    AppLocalizations.of(context)!.errorOccurred,
+                    (state.errorMessage != null &&
+                            state.errorMessage!.contains('Address too short'))
+                        ? AppLocalizations.of(context)!.addressTooShort
+                        : AppLocalizations.of(context)!.convertFailed,
                 type: SnackbarType.error,
               );
             }
@@ -116,17 +118,16 @@ class _ConvertOldToNewAddressPageState
         color: AppColors.secondaryGrey.withOpacity(0.1),
 
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: AppColors.primaryBlue),
+        border: Border.all(color: AppColors.primaryBlue, width: 1.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             AppLocalizations.of(context)!.newAddressLabel,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
           ),
           SizedBox(height: 8.h),
           Text(

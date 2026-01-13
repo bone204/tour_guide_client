@@ -92,11 +92,13 @@ class LegacyLocationsCubit extends Cubit<LegacyLocationsState> {
 
   void selectProvince(LegacyProvince? province) {
     emit(
-      state.copyWith(
+      LegacyLocationsState(
+        status: state.status,
+        provinces: state.provinces,
         selectedProvince: province,
-        // Reset dependent fields
-        districts: [],
-        wards: [],
+        // Explicitly clear dependent fields
+        districts: const [],
+        wards: const [],
         selectedDistrict: null,
         selectedWard: null,
       ),
@@ -108,10 +110,14 @@ class LegacyLocationsCubit extends Cubit<LegacyLocationsState> {
 
   void selectDistrict(LegacyDistrict? district) {
     emit(
-      state.copyWith(
+      LegacyLocationsState(
+        status: state.status,
+        provinces: state.provinces,
+        districts: state.districts,
+        selectedProvince: state.selectedProvince,
         selectedDistrict: district,
-        // Reset dependent fields
-        wards: [],
+        // Explicitly clear dependent fields
+        wards: const [],
         selectedWard: null,
       ),
     );

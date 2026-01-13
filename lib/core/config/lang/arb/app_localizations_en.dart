@@ -3111,4 +3111,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String verifyPhoneMessage(String phone) {
     return 'Please enter the code sent to $phone';
   }
+
+  @override
+  String get convertFailed => 'Cannot convert this address';
+
+  @override
+  String get addressTooShort => 'Address is too short (should include at least Ward, District, Province)';
+
+  @override
+  String get addressTooShortNewToOld => 'Address is too short';
 }

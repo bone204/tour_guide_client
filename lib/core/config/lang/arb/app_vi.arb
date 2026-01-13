@@ -1814,5 +1814,8 @@
   "convertOldToNewDetailsTitle": "Chuyển đổi Chi tiết Cũ -> Mới",
   "convertOldToNewDetailsDesc": "Chuyển đổi từng phần địa chỉ",
   "convertNewToOldDetailsTitle": "Chuyển đổi Chi tiết Mới -> Cũ",
-  "convertNewToOldDetailsDesc": "Chuyển đổi địa chỉ phụ thuộc"
+  "convertNewToOldDetailsDesc": "Chuyển đổi địa chỉ phụ thuộc",
+  "convertFailed": "Không thể chuyển đổi địa chỉ này",
+  "addressTooShort": "Địa chỉ quá ngắn (cần ít nhất Xã, Huyện, Tỉnh)",
+  "addressTooShortNewToOld": "Địa chỉ quá ngắn"
 }

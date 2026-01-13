@@ -67,10 +67,12 @@ class ReformLocationsCubit extends Cubit<ReformLocationsState> {
 
   void selectProvince(ReformProvince? province) {
     emit(
-      state.copyWith(
+      ReformLocationsState(
+        status: state.status,
+        provinces: state.provinces,
         selectedProvince: province,
-        // Reset dependent fields
-        communes: [],
+        // Explicitly clear dependent fields
+        communes: const [],
         selectedCommune: null,
       ),
     );

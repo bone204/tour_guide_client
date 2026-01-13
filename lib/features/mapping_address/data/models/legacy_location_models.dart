@@ -1,4 +1,6 @@
-class LegacyProvince {
+import 'package:equatable/equatable.dart';
+
+class LegacyProvince extends Equatable {
   final String code;
   final String name;
   final String? nameEn;
@@ -7,7 +9,7 @@ class LegacyProvince {
   final String? codeName;
   final String? avatarUrl;
 
-  LegacyProvince({
+  const LegacyProvince({
     required this.code,
     required this.name,
     this.nameEn,
@@ -28,9 +30,20 @@ class LegacyProvince {
       avatarUrl: json['avatar_url'],
     );
   }
+
+  @override
+  List<Object?> get props => [
+    code,
+    name,
+    nameEn,
+    fullName,
+    fullNameEn,
+    codeName,
+    avatarUrl,
+  ];
 }
 
-class LegacyDistrict {
+class LegacyDistrict extends Equatable {
   final String code;
   final String name;
   final String? nameEn;
@@ -40,7 +53,7 @@ class LegacyDistrict {
   final String? provinceCode;
   final LegacyProvince? province;
 
-  LegacyDistrict({
+  const LegacyDistrict({
     required this.code,
     required this.name,
     this.nameEn,
@@ -66,9 +79,21 @@ class LegacyDistrict {
               : null,
     );
   }
+
+  @override
+  List<Object?> get props => [
+    code,
+    name,
+    nameEn,
+    fullName,
+    fullNameEn,
+    codeName,
+    provinceCode,
+    province,
+  ];
 }
 
-class LegacyWard {
+class LegacyWard extends Equatable {
   final String code;
   final String name;
   final String? nameEn;
@@ -78,7 +103,7 @@ class LegacyWard {
   final String? districtCode;
   final LegacyDistrict? district;
 
-  LegacyWard({
+  const LegacyWard({
     required this.code,
     required this.name,
     this.nameEn,
@@ -104,4 +129,16 @@ class LegacyWard {
               : null,
     );
   }
+
+  @override
+  List<Object?> get props => [
+    code,
+    name,
+    nameEn,
+    fullName,
+    fullNameEn,
+    codeName,
+    districtCode,
+    district,
+  ];
 }

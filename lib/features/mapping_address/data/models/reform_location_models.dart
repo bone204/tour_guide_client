@@ -1,4 +1,6 @@
-class ReformProvince {
+import 'package:equatable/equatable.dart';
+
+class ReformProvince extends Equatable {
   final String code;
   final String name;
   final String? nameEn;
@@ -7,7 +9,7 @@ class ReformProvince {
   final String? codeName;
   final String? avatarUrl;
 
-  ReformProvince({
+  const ReformProvince({
     required this.code,
     required this.name,
     this.nameEn,
@@ -28,9 +30,20 @@ class ReformProvince {
       avatarUrl: json['avatar_url'],
     );
   }
+
+  @override
+  List<Object?> get props => [
+    code,
+    name,
+    nameEn,
+    fullName,
+    fullNameEn,
+    codeName,
+    avatarUrl,
+  ];
 }
 
-class ReformCommune {
+class ReformCommune extends Equatable {
   final String code;
   final String name;
   final String? nameEn;
@@ -40,7 +53,7 @@ class ReformCommune {
   final String? provinceCode;
   final ReformProvince? province;
 
-  ReformCommune({
+  const ReformCommune({
     required this.code,
     required this.name,
     this.nameEn,
@@ -66,4 +79,16 @@ class ReformCommune {
               : null,
     );
   }
+
+  @override
+  List<Object?> get props => [
+    code,
+    name,
+    nameEn,
+    fullName,
+    fullNameEn,
+    codeName,
+    provinceCode,
+    province,
+  ];
 }

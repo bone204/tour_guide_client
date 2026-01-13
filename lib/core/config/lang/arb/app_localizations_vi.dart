@@ -3117,4 +3117,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String verifyPhoneMessage(String phone) {
     return 'Vui lòng nhập mã được gửi đến $phone';
   }
+
+  @override
+  String get convertFailed => 'Không thể chuyển đổi địa chỉ này';
+
+  @override
+  String get addressTooShort => 'Địa chỉ quá ngắn (cần ít nhất Xã, Huyện, Tỉnh)';
+
+  @override
+  String get addressTooShortNewToOld => 'Địa chỉ quá ngắn';
 }

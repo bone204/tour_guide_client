@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart'; // Added import
+import 'package:tour_guide_app/features/mapping_address/presentation/widgets/mapping_address_dropdown.dart'; // Added import
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/features/mapping_address/data/models/legacy_location_models.dart';
 import 'package:tour_guide_app/features/mapping_address/presentation/bloc/convert_old_to_new_details/convert_old_to_new_details_cubit.dart';
@@ -60,8 +60,10 @@ class _ConvertOldToNewDetailsPageState
               CustomSnackbar.show(
                 context,
                 message:
-                    state.errorMessage ??
-                    AppLocalizations.of(context)!.errorOccurred,
+                    (state.errorMessage != null &&
+                            state.errorMessage!.contains('Address too short'))
+                        ? AppLocalizations.of(context)!.addressTooShort
+                        : AppLocalizations.of(context)!.convertFailed,
                 type: SnackbarType.error,
               );
             }
@@ -74,7 +76,7 @@ class _ConvertOldToNewDetailsPageState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      _buildDropdown<LegacyProvince>(
+                      MappingAddressDropdown<LegacyProvince>(
                         label:
                             AppLocalizations.of(context)!.legacyProvinceLabel,
                         hint:
@@ -92,7 +94,7 @@ class _ConvertOldToNewDetailsPageState
                       ),
 
                       SizedBox(height: 16.h),
-                      _buildDropdown<LegacyDistrict>(
+                      MappingAddressDropdown<LegacyDistrict>(
                         label:
                             AppLocalizations.of(context)!.legacyDistrictLabel,
                         hint:
@@ -110,7 +112,7 @@ class _ConvertOldToNewDetailsPageState
                       ),
 
                       SizedBox(height: 16.h),
-                      _buildDropdown<LegacyWard>(
+                      MappingAddressDropdown<LegacyWard>(
                         label: AppLocalizations.of(context)!.legacyWardLabel,
                         hint:
                             AppLocalizations.of(
@@ -169,87 +171,6 @@ class _ConvertOldToNewDetailsPageState
     );
   }
 
-  Widget _buildDropdown<T>({
-    required T? value,
-    required List<T> items,
-    required String label,
-    required String hint,
-    required Function(T?) onChanged,
-    required String Function(T) itemLabel,
-    bool isLoading = false,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: Theme.of(context).textTheme.bodyMedium),
-        SizedBox(height: 6.h),
-        DropdownButtonHideUnderline(
-          child: DropdownButton2<T>(
-            isExpanded: true,
-            hint:
-                isLoading
-                    ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                    : Text(
-                      hint,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSubtitle,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-            items:
-                items
-                    .map(
-                      (item) => DropdownMenuItem<T>(
-                        value: item,
-                        child: Text(
-                          itemLabel(item),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    )
-                    .toList(),
-            value: value,
-            onChanged: onChanged,
-            buttonStyleData: ButtonStyleData(
-              height: 48.h,
-              padding: EdgeInsets.only(left: 12.w, right: 12.w),
-              decoration: BoxDecoration(
-                color: AppColors.primaryWhite,
-                borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: AppColors.secondaryGrey, width: 1.w),
-              ),
-            ),
-            iconStyleData: IconStyleData(
-              icon: const Icon(Icons.arrow_drop_down_sharp),
-              iconSize: 24.w,
-            ),
-            dropdownStyleData: DropdownStyleData(
-              maxHeight: 300.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.r),
-                color: AppColors.primaryWhite,
-              ),
-              offset: const Offset(0, 0),
-              scrollbarTheme: ScrollbarThemeData(
-                radius: const Radius.circular(40),
-                thickness: MaterialStateProperty.all(6),
-                thumbVisibility: MaterialStateProperty.all(true),
-              ),
-            ),
-            menuItemStyleData: MenuItemStyleData(
-              padding: EdgeInsets.symmetric(horizontal: 12.w),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildResult(dynamic result) {
     // Should be properly typed
     final province = result.province;
@@ -261,22 +182,27 @@ class _ConvertOldToNewDetailsPageState
         color: AppColors.secondaryGrey.withOpacity(0.1),
 
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: AppColors.primaryBlue),
+        border: Border.all(color: AppColors.primaryBlue, width: 1.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             AppLocalizations.of(context)!.newAdminUnitLabel,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
           ),
           SizedBox(height: 12.h),
-          _buildRow(AppLocalizations.of(context)!.provinceLabel, province.name),
+          _buildRow(
+            "${AppLocalizations.of(context)!.provinceLabel}:",
+            province.name,
+          ),
           SizedBox(height: 8.h),
-          _buildRow(AppLocalizations.of(context)!.communeLabel, commune.name),
+          _buildRow(
+            "${AppLocalizations.of(context)!.communeLabel}:",
+            commune.name,
+          ),
         ],
       ),
     );
@@ -284,24 +210,23 @@ class _ConvertOldToNewDetailsPageState
 
   Widget _buildRow(String label, String value) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          width: 80.w,
+          width: 120.w,
           child: Text(
             label,
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
+            ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
           ),
         ),
         Expanded(
           child: Text(
             value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              color: AppColors.textPrimary,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: AppColors.textPrimary),
           ),
         ),
       ],

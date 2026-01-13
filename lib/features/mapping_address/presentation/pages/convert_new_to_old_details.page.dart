@@ -1,4 +1,3 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +10,7 @@ import 'package:tour_guide_app/features/mapping_address/data/models/convert_deta
 import 'package:tour_guide_app/features/mapping_address/data/models/reform_location_models.dart';
 import 'package:tour_guide_app/features/mapping_address/presentation/bloc/convert_new_to_old_details/convert_new_to_old_details_cubit.dart';
 import 'package:tour_guide_app/features/mapping_address/presentation/bloc/reform_locations/reform_locations_cubit.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/widgets/mapping_address_dropdown.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class ConvertNewToOldDetailsPage extends StatefulWidget {
@@ -58,8 +58,10 @@ class _ConvertNewToOldDetailsPageState
               CustomSnackbar.show(
                 context,
                 message:
-                    state.errorMessage ??
-                    AppLocalizations.of(context)!.errorOccurred,
+                    (state.errorMessage != null &&
+                            state.errorMessage!.contains('Address too short'))
+                        ? AppLocalizations.of(context)!.addressTooShortNewToOld
+                        : AppLocalizations.of(context)!.convertFailed,
                 type: SnackbarType.error,
               );
             }
@@ -72,7 +74,7 @@ class _ConvertNewToOldDetailsPageState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      _buildDropdown<ReformProvince>(
+                      MappingAddressDropdown<ReformProvince>(
                         label:
                             AppLocalizations.of(context)!.reformProvinceLabel,
                         hint:
@@ -90,7 +92,7 @@ class _ConvertNewToOldDetailsPageState
                       ),
 
                       SizedBox(height: 16.h),
-                      _buildDropdown<ReformCommune>(
+                      MappingAddressDropdown<ReformCommune>(
                         label: AppLocalizations.of(context)!.reformCommuneLabel,
                         hint:
                             AppLocalizations.of(
@@ -157,94 +159,13 @@ class _ConvertNewToOldDetailsPageState
     );
   }
 
-  Widget _buildDropdown<T>({
-    required T? value,
-    required List<T> items,
-    required String label,
-    required String hint,
-    required Function(T?) onChanged,
-    required String Function(T) itemLabel,
-    bool isLoading = false,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: Theme.of(context).textTheme.bodyMedium),
-        SizedBox(height: 6.h),
-        DropdownButtonHideUnderline(
-          child: DropdownButton2<T>(
-            isExpanded: true,
-            hint:
-                isLoading
-                    ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                    : Text(
-                      hint,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSubtitle,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-            items:
-                items
-                    .map(
-                      (item) => DropdownMenuItem<T>(
-                        value: item,
-                        child: Text(
-                          itemLabel(item),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    )
-                    .toList(),
-            value: value,
-            onChanged: onChanged,
-            buttonStyleData: ButtonStyleData(
-              height: 48.h,
-              padding: EdgeInsets.only(left: 12.w, right: 12.w),
-              decoration: BoxDecoration(
-                color: AppColors.primaryWhite,
-                borderRadius: BorderRadius.circular(8.r),
-                border: Border.all(color: AppColors.secondaryGrey, width: 1.w),
-              ),
-            ),
-            iconStyleData: IconStyleData(
-              icon: const Icon(Icons.arrow_drop_down_sharp),
-              iconSize: 24.w,
-            ),
-            dropdownStyleData: DropdownStyleData(
-              maxHeight: 300.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.r),
-                color: AppColors.primaryWhite,
-              ),
-              offset: const Offset(0, 0),
-              scrollbarTheme: ScrollbarThemeData(
-                radius: const Radius.circular(40),
-                thickness: MaterialStateProperty.all(6),
-                thumbVisibility: MaterialStateProperty.all(true),
-              ),
-            ),
-            menuItemStyleData: MenuItemStyleData(
-              padding: EdgeInsets.symmetric(horizontal: 12.w),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildResultItem(ConvertNewToOldDetailsItem item) {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: AppColors.secondaryGrey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: AppColors.primaryBlue),
+        border: Border.all(color: AppColors.primaryBlue, width: 1.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,22 +191,23 @@ class _ConvertNewToOldDetailsPageState
 
   Widget _buildRow(String label, String value) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          width: 70.w,
+          width: 120.w,
           child: Text(
             label,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppColors.textPrimary),
           ),
         ),
         Expanded(
           child: Text(
             value,
-            style: TextStyle(fontSize: 14.sp, color: AppColors.textPrimary),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: AppColors.textPrimary),
           ),
         ),
       ],

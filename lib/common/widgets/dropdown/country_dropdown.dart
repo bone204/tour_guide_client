@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/auth/data/models/country.dart';
 import 'package:tour_guide_app/common/services/country_service.dart';
@@ -95,10 +96,17 @@ class _CountryDropdownState extends State<CountryDropdown> {
             isExpanded: true,
             hint:
                 _isLoading
-                    ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ? Shimmer.fromColors(
+                      baseColor: AppColors.secondaryGrey.withOpacity(0.3),
+                      highlightColor: AppColors.secondaryGrey.withOpacity(0.1),
+                      child: Container(
+                        width: 120.w,
+                        height: 20.h,
+                        decoration: BoxDecoration(
+                          color: AppColors.secondaryGrey,
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                      ),
                     )
                     : Text(
                       isVietnamese ? 'Chọn quốc gia' : 'Select Country',

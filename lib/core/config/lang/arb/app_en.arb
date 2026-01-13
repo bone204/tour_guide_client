@@ -1807,5 +1807,8 @@
   "convertOldToNewDetailsTitle": "Convert Old -> New Details",
   "convertOldToNewDetailsDesc": "Convert individual address parts",
   "convertNewToOldDetailsTitle": "Convert New -> Old Details",
-  "convertNewToOldDetailsDesc": "Convert dependent address parts"
+  "convertNewToOldDetailsDesc": "Convert dependent address parts",
+  "convertFailed": "Cannot convert this address",
+  "addressTooShort": "Address is too short (should include at least Ward, District, Province)",
+  "addressTooShortNewToOld": "Address is too short"
 }

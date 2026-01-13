@@ -6118,6 +6118,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter the code sent to {phone}'**
   String verifyPhoneMessage(String phone);
+
+  /// No description provided for @convertFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot convert this address'**
+  String get convertFailed;
+
+  /// No description provided for @addressTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Address is too short (should include at least Ward, District, Province)'**
+  String get addressTooShort;
+
+  /// No description provided for @addressTooShortNewToOld.
+  ///
+  /// In en, this message translates to:
+  /// **'Address is too short'**
+  String get addressTooShortNewToOld;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
