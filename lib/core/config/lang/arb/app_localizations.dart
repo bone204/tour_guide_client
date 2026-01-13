@@ -2615,6 +2615,216 @@ abstract class AppLocalizations {
   /// **'Username must be at least 3 characters'**
   String get usernameMinLength;
 
+  /// No description provided for @mappingAddressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mapping Address'**
+  String get mappingAddressTitle;
+
+  /// No description provided for @convertOldToNewAddressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert Old -> New Address'**
+  String get convertOldToNewAddressTitle;
+
+  /// No description provided for @convertOldToNewAddressDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert full address string'**
+  String get convertOldToNewAddressDesc;
+
+  /// No description provided for @convertNewToOldAddressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert New -> Old Address'**
+  String get convertNewToOldAddressTitle;
+
+  /// No description provided for @convertNewToOldAddressDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert address components'**
+  String get convertNewToOldAddressDesc;
+
+  /// No description provided for @convertOldToNewDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert Old -> New Details'**
+  String get convertOldToNewDetailsTitle;
+
+  /// No description provided for @convertOldToNewDetailsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert individual address parts'**
+  String get convertOldToNewDetailsDesc;
+
+  /// No description provided for @convertNewToOldDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert New -> Old Details'**
+  String get convertNewToOldDetailsTitle;
+
+  /// No description provided for @convertNewToOldDetailsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert dependent address parts'**
+  String get convertNewToOldDetailsDesc;
+
+  /// No description provided for @convertOldToNewAddressPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert Old -> New Address'**
+  String get convertOldToNewAddressPageTitle;
+
+  /// No description provided for @enterOldAddressPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter old address (e.g., Ward...)'**
+  String get enterOldAddressPlaceholder;
+
+  /// No description provided for @oldAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Old Address'**
+  String get oldAddressLabel;
+
+  /// No description provided for @convertButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert'**
+  String get convertButton;
+
+  /// No description provided for @pleaseEnterAddressError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter an address'**
+  String get pleaseEnterAddressError;
+
+  /// No description provided for @newAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New Address:'**
+  String get newAddressLabel;
+
+  /// No description provided for @convertNewToOldAddressPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert New -> Old Address'**
+  String get convertNewToOldAddressPageTitle;
+
+  /// No description provided for @enterNewAddressPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new address (e.g., Commune...)'**
+  String get enterNewAddressPlaceholder;
+
+  /// No description provided for @convertOldToNewDetailsPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert Old -> New Details'**
+  String get convertOldToNewDetailsPageTitle;
+
+  /// No description provided for @enterLegacyProvincePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Legacy Province'**
+  String get enterLegacyProvincePlaceholder;
+
+  /// No description provided for @legacyProvinceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Legacy Province'**
+  String get legacyProvinceLabel;
+
+  /// No description provided for @enterLegacyDistrictPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Legacy District'**
+  String get enterLegacyDistrictPlaceholder;
+
+  /// No description provided for @legacyDistrictLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Legacy District'**
+  String get legacyDistrictLabel;
+
+  /// No description provided for @enterLegacyWardPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Legacy Ward'**
+  String get enterLegacyWardPlaceholder;
+
+  /// No description provided for @legacyWardLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Legacy Ward'**
+  String get legacyWardLabel;
+
+  /// No description provided for @pleaseFillAllFieldsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all fields'**
+  String get pleaseFillAllFieldsError;
+
+  /// No description provided for @newAdminUnitLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New Administrative Unit'**
+  String get newAdminUnitLabel;
+
+  /// No description provided for @provinceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Province'**
+  String get provinceLabel;
+
+  /// No description provided for @communeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Commune'**
+  String get communeLabel;
+
+  /// No description provided for @convertNewToOldDetailsPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert New -> Old Details'**
+  String get convertNewToOldDetailsPageTitle;
+
+  /// No description provided for @enterReformProvincePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Reform Province'**
+  String get enterReformProvincePlaceholder;
+
+  /// No description provided for @reformProvinceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reform Province'**
+  String get reformProvinceLabel;
+
+  /// No description provided for @enterReformCommunePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Reform Commune'**
+  String get enterReformCommunePlaceholder;
+
+  /// No description provided for @reformCommuneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reform Commune'**
+  String get reformCommuneLabel;
+
+  /// No description provided for @districtLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'District'**
+  String get districtLabel;
+
+  /// No description provided for @wardLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ward'**
+  String get wardLabel;
+
   /// No description provided for @usernameMaxLength.
   ///
   /// In en, this message translates to:

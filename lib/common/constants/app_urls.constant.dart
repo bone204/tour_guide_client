@@ -61,4 +61,10 @@ class ApiUrls {
 
   //Notification URLs
   static const notifications = "$baseURL/notifications";
+
+  //Administrative Mapping URLs
+  static const vnAdmin = "$baseURL/vn-admin";
+  static const mapping = "$vnAdmin/mapping";
+  static const legacy = "$vnAdmin/legacy";
+  static const reform = "$vnAdmin/reform";
 }

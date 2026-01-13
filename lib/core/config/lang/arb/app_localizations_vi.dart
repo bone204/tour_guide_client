@@ -1283,6 +1283,111 @@ class AppLocalizationsVi extends AppLocalizations {
   String get usernameMinLength => 'Tên đăng nhập phải có ít nhất 3 ký tự';
 
   @override
+  String get mappingAddressTitle => 'Chuyển Đổi Địa Chỉ';
+
+  @override
+  String get convertOldToNewAddressTitle => 'Chuyển đổi ĐC Cũ -> Mới';
+
+  @override
+  String get convertOldToNewAddressDesc => 'Chuyển đổi địa chỉ đầy đủ';
+
+  @override
+  String get convertNewToOldAddressTitle => 'Chuyển đổi ĐC Mới -> Cũ';
+
+  @override
+  String get convertNewToOldAddressDesc => 'Chuyển đổi thành phần địa chỉ';
+
+  @override
+  String get convertOldToNewDetailsTitle => 'Chuyển đổi Chi tiết Cũ -> Mới';
+
+  @override
+  String get convertOldToNewDetailsDesc => 'Chuyển đổi từng phần địa chỉ';
+
+  @override
+  String get convertNewToOldDetailsTitle => 'Chuyển đổi Chi tiết Mới -> Cũ';
+
+  @override
+  String get convertNewToOldDetailsDesc => 'Chuyển đổi địa chỉ phụ thuộc';
+
+  @override
+  String get convertOldToNewAddressPageTitle => 'Chuyển đổi Cũ -> Mới (Địa chỉ)';
+
+  @override
+  String get enterOldAddressPlaceholder => 'Nhập địa chỉ cũ (vd: Phường...)';
+
+  @override
+  String get oldAddressLabel => 'Địa chỉ cũ';
+
+  @override
+  String get convertButton => 'Chuyển đổi';
+
+  @override
+  String get pleaseEnterAddressError => 'Vui lòng nhập địa chỉ';
+
+  @override
+  String get newAddressLabel => 'Địa chỉ mới:';
+
+  @override
+  String get convertNewToOldAddressPageTitle => 'Chuyển đổi Mới -> Cũ (Địa chỉ)';
+
+  @override
+  String get enterNewAddressPlaceholder => 'Nhập địa chỉ mới (vd: Xã...)';
+
+  @override
+  String get convertOldToNewDetailsPageTitle => 'Chuyển đổi Cũ -> Mới';
+
+  @override
+  String get enterLegacyProvincePlaceholder => 'Chọn Tỉnh/TP Cũ';
+
+  @override
+  String get legacyProvinceLabel => 'Tỉnh/TP Cũ';
+
+  @override
+  String get enterLegacyDistrictPlaceholder => 'Chọn Quận/Huyện Cũ';
+
+  @override
+  String get legacyDistrictLabel => 'Quận/Huyện Cũ';
+
+  @override
+  String get enterLegacyWardPlaceholder => 'Chọn Phường/Xã Cũ';
+
+  @override
+  String get legacyWardLabel => 'Phường/Xã Cũ';
+
+  @override
+  String get pleaseFillAllFieldsError => 'Vui lòng điền đầy đủ thông tin';
+
+  @override
+  String get newAdminUnitLabel => 'Đơn vị hành chính mới';
+
+  @override
+  String get provinceLabel => 'Tỉnh/TP';
+
+  @override
+  String get communeLabel => 'Xã/Phường';
+
+  @override
+  String get convertNewToOldDetailsPageTitle => 'Chuyển đổi Mới -> Cũ';
+
+  @override
+  String get enterReformProvincePlaceholder => 'Chọn Tỉnh/TP Mới';
+
+  @override
+  String get reformProvinceLabel => 'Tỉnh/TP Mới';
+
+  @override
+  String get enterReformCommunePlaceholder => 'Chọn Xã/Phường Mới';
+
+  @override
+  String get reformCommuneLabel => 'Xã/Phường Mới';
+
+  @override
+  String get districtLabel => 'Quận/Huyện';
+
+  @override
+  String get wardLabel => 'Phường/Xã';
+
+  @override
   String get usernameMaxLength => 'Tên đăng nhập không được vượt quá 20 ký tự';
 
   @override

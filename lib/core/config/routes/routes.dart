@@ -79,6 +79,10 @@ import 'package:tour_guide_app/features/eatery/data/models/eatery.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/rental_request_detail/owner_rental_request_detail.page.dart';
 import 'package:tour_guide_app/features/notifications/presentation/pages/notification.page.dart';
 import 'package:tour_guide_app/features/settings/presentation/pages/change_password.page.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_old_to_new_address.page.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_new_to_old_address.page.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_old_to_new_details.page.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_new_to_old_details.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -215,7 +219,31 @@ class AppRouter {
       case AppRouteConstant.mappingAddress:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => MappingAddressPage(),
+          builder: (_) => const MappingAddressPage(),
+        );
+
+      case AppRouteConstant.convertOldToNewAddress:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const ConvertOldToNewAddressPage(),
+        );
+
+      case AppRouteConstant.convertNewToOldAddress:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const ConvertNewToOldAddressPage(),
+        );
+
+      case AppRouteConstant.convertOldToNewDetails:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const ConvertOldToNewDetailsPage(),
+        );
+
+      case AppRouteConstant.convertNewToOldDetails:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const ConvertNewToOldDetailsPage(),
         );
 
       case AppRouteConstant.carList:

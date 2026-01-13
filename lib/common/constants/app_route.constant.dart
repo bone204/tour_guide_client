@@ -59,6 +59,14 @@ class AppRouteConstant {
   static const String stopVideos = '/stop_videos';
   static const String foodWheel = '/food_wheel';
   static const String mappingAddress = '/mapping_address';
+  static const String convertOldToNewAddress =
+      '/mapping_address/convert_old_to_new_address';
+  static const String convertNewToOldAddress =
+      '/mapping_address/convert_new_to_old_address';
+  static const String convertOldToNewDetails =
+      '/mapping_address/convert_old_to_new_details';
+  static const String convertNewToOldDetails =
+      '/mapping_address/convert_new_to_old_details';
 
   static const String splash = '/splash';
   static const String verifyEmail = '/verify_email';

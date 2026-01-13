@@ -210,6 +210,29 @@ import 'package:tour_guide_app/features/notifications/data/data_source/notificat
 import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_cubit.dart';
 import 'package:tour_guide_app/features/notifications/presentation/bloc/notification_cubit.dart';
 
+import 'package:tour_guide_app/features/mapping_address/data/data_source/mapping_address_api_service.dart';
+import 'package:tour_guide_app/features/mapping_address/data/repository/mapping_address_repository_impl.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/repository/mapping_address_repository.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/convert_old_to_new_address_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/convert_new_to_old_address_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/convert_old_to_new_details_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/convert_new_to_old_details_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/get_legacy_provinces_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/get_legacy_district_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/get_legacy_wards_of_district_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/get_reform_provinces_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/get_reform_province_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/get_reform_communes_of_province_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/find_by_legacy_ward_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/find_by_reform_commune_usecase.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/bloc/convert_old_to_new_address/convert_old_to_new_address_cubit.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/bloc/convert_new_to_old_address/convert_new_to_old_address_cubit.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/bloc/convert_old_to_new_details/convert_old_to_new_details_cubit.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/bloc/convert_new_to_old_details/convert_new_to_old_details_cubit.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/bloc/legacy_locations/legacy_locations_cubit.dart';
+import 'package:tour_guide_app/features/mapping_address/presentation/bloc/reform_locations/reform_locations_cubit.dart';
+import 'package:tour_guide_app/features/mapping_address/domain/usecases/get_legacy_districts_of_province_usecase.dart';
+
 final sl = GetIt.instance;
 
 void setUpServiceLocator(SharedPreferences prefs) {
@@ -236,6 +259,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<NotificationApiService>(NotificationApiServiceImpl());
   sl.registerSingleton<NotificationSocketService>(NotificationSocketService());
   sl.registerSingleton<BankApiService>(BankApiServiceImpl());
+  sl.registerSingleton<MappingAddressApiService>(
+    MappingAddressApiServiceImpl(),
+  );
 
   // Repositories
   sl.registerSingleton<BankRepository>(BankRepositoryImpl(sl()));
@@ -256,6 +282,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<CooperationRepository>(CooperationRepositoryImpl());
   sl.registerSingleton<NotificationRepository>(
     NotificationRepositoryImpl(apiService: sl()),
+  );
+  sl.registerSingleton<MappingAddressRepository>(
+    MappingAddressRepositoryImpl(),
   );
 
   // Usecases
@@ -409,6 +438,37 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<OwnerConfirmReturnUseCase>(OwnerConfirmReturnUseCase());
   sl.registerSingleton<OwnerCancelBillUseCase>(OwnerCancelBillUseCase(sl()));
   sl.registerSingleton<CancelRentalBillUseCase>(CancelRentalBillUseCase(sl()));
+
+  // Mapping Address
+  sl.registerSingleton<ConvertOldToNewAddressUseCase>(
+    ConvertOldToNewAddressUseCase(),
+  );
+  sl.registerSingleton<ConvertNewToOldAddressUseCase>(
+    ConvertNewToOldAddressUseCase(),
+  );
+  sl.registerSingleton<ConvertOldToNewDetailsUseCase>(
+    ConvertOldToNewDetailsUseCase(),
+  );
+  sl.registerSingleton<ConvertNewToOldDetailsUseCase>(
+    ConvertNewToOldDetailsUseCase(),
+  );
+  sl.registerSingleton<GetLegacyProvincesUseCase>(GetLegacyProvincesUseCase());
+  sl.registerSingleton<GetLegacyDistrictUseCase>(GetLegacyDistrictUseCase());
+  sl.registerSingleton<GetLegacyDistrictsOfProvinceUseCase>(
+    GetLegacyDistrictsOfProvinceUseCase(),
+  );
+  sl.registerSingleton<GetLegacyWardsOfDistrictUseCase>(
+    GetLegacyWardsOfDistrictUseCase(),
+  );
+  sl.registerSingleton<GetReformProvincesUseCase>(GetReformProvincesUseCase());
+  sl.registerSingleton<GetReformProvinceUseCase>(GetReformProvinceUseCase());
+  sl.registerSingleton<GetReformCommunesOfProvinceUseCase>(
+    GetReformCommunesOfProvinceUseCase(),
+  );
+  sl.registerSingleton<FindByLegacyWardUseCase>(FindByLegacyWardUseCase());
+  sl.registerSingleton<FindByReformCommuneUseCase>(
+    FindByReformCommuneUseCase(),
+  );
 
   // Cubits
   sl.registerFactory<CooperationDetailCubit>(
@@ -572,4 +632,31 @@ void setUpServiceLocator(SharedPreferences prefs) {
     ),
   );
   sl.registerFactory<AnniversaryCubit>(() => AnniversaryCubit(sl()));
+
+  // Mapping Address
+  sl.registerFactory<ConvertOldToNewAddressCubit>(
+    () => ConvertOldToNewAddressCubit(sl()),
+  );
+  sl.registerFactory<ConvertNewToOldAddressCubit>(
+    () => ConvertNewToOldAddressCubit(sl()),
+  );
+  sl.registerFactory<ConvertOldToNewDetailsCubit>(
+    () => ConvertOldToNewDetailsCubit(sl()),
+  );
+  sl.registerFactory<ConvertNewToOldDetailsCubit>(
+    () => ConvertNewToOldDetailsCubit(sl()),
+  );
+  sl.registerFactory<LegacyLocationsCubit>(
+    () => LegacyLocationsCubit(
+      getProvincesUseCase: sl(),
+      getDistrictsUseCase: sl(),
+      getWardsUseCase: sl(),
+    ),
+  );
+  sl.registerFactory<ReformLocationsCubit>(
+    () => ReformLocationsCubit(
+      getProvincesUseCase: sl(),
+      getCommunesUseCase: sl(),
+    ),
+  );
 }

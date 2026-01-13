@@ -1283,6 +1283,111 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usernameMinLength => 'Username must be at least 3 characters';
 
   @override
+  String get mappingAddressTitle => 'Mapping Address';
+
+  @override
+  String get convertOldToNewAddressTitle => 'Convert Old -> New Address';
+
+  @override
+  String get convertOldToNewAddressDesc => 'Convert full address string';
+
+  @override
+  String get convertNewToOldAddressTitle => 'Convert New -> Old Address';
+
+  @override
+  String get convertNewToOldAddressDesc => 'Convert address components';
+
+  @override
+  String get convertOldToNewDetailsTitle => 'Convert Old -> New Details';
+
+  @override
+  String get convertOldToNewDetailsDesc => 'Convert individual address parts';
+
+  @override
+  String get convertNewToOldDetailsTitle => 'Convert New -> Old Details';
+
+  @override
+  String get convertNewToOldDetailsDesc => 'Convert dependent address parts';
+
+  @override
+  String get convertOldToNewAddressPageTitle => 'Convert Old -> New Address';
+
+  @override
+  String get enterOldAddressPlaceholder => 'Enter old address (e.g., Ward...)';
+
+  @override
+  String get oldAddressLabel => 'Old Address';
+
+  @override
+  String get convertButton => 'Convert';
+
+  @override
+  String get pleaseEnterAddressError => 'Please enter an address';
+
+  @override
+  String get newAddressLabel => 'New Address:';
+
+  @override
+  String get convertNewToOldAddressPageTitle => 'Convert New -> Old Address';
+
+  @override
+  String get enterNewAddressPlaceholder => 'Enter new address (e.g., Commune...)';
+
+  @override
+  String get convertOldToNewDetailsPageTitle => 'Convert Old -> New Details';
+
+  @override
+  String get enterLegacyProvincePlaceholder => 'Select Legacy Province';
+
+  @override
+  String get legacyProvinceLabel => 'Legacy Province';
+
+  @override
+  String get enterLegacyDistrictPlaceholder => 'Select Legacy District';
+
+  @override
+  String get legacyDistrictLabel => 'Legacy District';
+
+  @override
+  String get enterLegacyWardPlaceholder => 'Select Legacy Ward';
+
+  @override
+  String get legacyWardLabel => 'Legacy Ward';
+
+  @override
+  String get pleaseFillAllFieldsError => 'Please fill all fields';
+
+  @override
+  String get newAdminUnitLabel => 'New Administrative Unit';
+
+  @override
+  String get provinceLabel => 'Province';
+
+  @override
+  String get communeLabel => 'Commune';
+
+  @override
+  String get convertNewToOldDetailsPageTitle => 'Convert New -> Old Details';
+
+  @override
+  String get enterReformProvincePlaceholder => 'Select Reform Province';
+
+  @override
+  String get reformProvinceLabel => 'Reform Province';
+
+  @override
+  String get enterReformCommunePlaceholder => 'Select Reform Commune';
+
+  @override
+  String get reformCommuneLabel => 'Reform Commune';
+
+  @override
+  String get districtLabel => 'District';
+
+  @override
+  String get wardLabel => 'Ward';
+
+  @override
   String get usernameMaxLength => 'Username must not exceed 20 characters';
 
   @override
