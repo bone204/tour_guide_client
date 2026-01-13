@@ -79,6 +79,9 @@ import 'package:tour_guide_app/features/eatery/data/models/eatery.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/rental_request_detail/owner_rental_request_detail.page.dart';
 import 'package:tour_guide_app/features/notifications/presentation/pages/notification.page.dart';
 import 'package:tour_guide_app/features/settings/presentation/pages/change_password.page.dart';
+import 'package:tour_guide_app/features/settings/presentation/pages/terms_and_conditions.page.dart';
+import 'package:tour_guide_app/features/settings/presentation/pages/privacy_policy.page.dart';
+import 'package:tour_guide_app/features/settings/presentation/pages/contact_support.page.dart';
 import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_old_to_new_address.page.dart';
 import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_new_to_old_address.page.dart';
 import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_old_to_new_details.page.dart';
@@ -636,6 +639,24 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const ChangePasswordPage(),
+        );
+
+      case AppRouteConstant.termsAndConditions:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const TermsAndConditionsPage(),
+        );
+
+      case AppRouteConstant.privacyPolicy:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const PrivacyPolicyPage(),
+        );
+
+      case AppRouteConstant.contactSupport:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const ContactSupportPage(),
         );
 
       default:

@@ -104,21 +104,36 @@ class SettingsPage extends StatelessWidget {
                     icon: AppIcons.term,
                     title: AppLocalizations.of(context)!.terms,
                     trailingIcon: AppIcons.arrowRight,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(
+                        context,
+                        rootNavigator: true,
+                      ).pushNamed(AppRouteConstant.termsAndConditions);
+                    },
                   ),
                   SizedBox(height: 12.w),
                   NavigationButton(
                     icon: AppIcons.policy,
                     title: AppLocalizations.of(context)!.policy,
                     trailingIcon: AppIcons.arrowRight,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(
+                        context,
+                        rootNavigator: true,
+                      ).pushNamed(AppRouteConstant.privacyPolicy);
+                    },
                   ),
                   SizedBox(height: 12.w),
                   NavigationButton(
                     icon: AppIcons.contact,
                     title: AppLocalizations.of(context)!.contact,
                     trailingIcon: AppIcons.arrowRight,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(
+                        context,
+                        rootNavigator: true,
+                      ).pushNamed(AppRouteConstant.contactSupport);
+                    },
                   ),
                   SizedBox(height: 12.w),
                   Builder(

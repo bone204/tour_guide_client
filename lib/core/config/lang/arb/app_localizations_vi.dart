@@ -1331,10 +1331,166 @@ class AppLocalizationsVi extends AppLocalizations {
   String get convertNewToOldAddressPageTitle => 'Tra cứu: Địa chỉ Mới → Cũ';
 
   @override
-  String get enterNewAddressPlaceholder => 'Nhập địa chỉ mới (vd: Xã...)';
+  String get convertOldToNewDetailsPageTitle => 'Tra cứu: Chi tiết Địa chỉ';
 
   @override
-  String get convertOldToNewDetailsPageTitle => 'Tra cứu chi tiết: Cũ → Mới';
+  String get convertNewToOldDetailsPageTitle => 'Tra cứu: Chi tiết Địa chỉ';
+
+  @override
+  String get termsAndPolicies => 'Điều khoản và Chính sách';
+
+  @override
+  String get termsAndPoliciesTitle => 'ĐIỀU KHOẢN VÀ CHÍNH SÁCH SỬ DỤNG DỊCH VỤ';
+
+  @override
+  String get termsScopePurpose => '1. Phạm vi và mục đích';
+
+  @override
+  String get termsScopeContent => '1.1. Điều khoản và chính sách này thiết lập quyền và nghĩa vụ pháp lý giữa Người dùng (Renter/Cơ quan/Đối tác) và Ứng dụng (sau đây gọi là “Chúng tôi”, “Traveline”, “Hệ thống”) đối với các dịch vụ do Traveline cung cấp, bao gồm:\n• Thuê xe tự lái\n• Dịch vụ đặt phòng khách sạn\n• Đặt vé nhà hàng / dịch vụ ăn uống\n• Đặt tour / vé tham quan\n• Đặt vé di chuyển / chuyển phát nhanh\n• Các dịch vụ phụ trợ khác liên quan ngành du lịch\n\n1.2. Việc sử dụng App, đăng ký tài khoản, đặt dịch vụ hoặc ký hợp đồng dịch vụ có nghĩa bạn đã đọc, hiểu và chấp nhận tuân thủ các điều khoản này.\n\n1.3. Chúng tôi có quyền sửa đổi điều khoản và chính sách bất kỳ lúc nào để phù hợp với yêu cầu pháp luật, thay đổi sản phẩm/dịch vụ. Mỗi phiên bản mới có hiệu lực kể từ ngày công bố trên Traveline.';
+
+  @override
+  String get termsUserRights => '2. Quyền và nghĩa vụ của người dùng';
+
+  @override
+  String get termsUserRightsContent => '2.1. Người dùng cam kết cung cấp thông tin chính xác, đầy đủ và hợp pháp khi đăng ký tài khoản và khi ký hợp đồng thuê dịch vụ. Thông tin bao gồm:\n• Họ tên, số điện thoại, địa chỉ email\n• CMND/CCCD/Hộ chiếu (nếu yêu cầu)\n• Thông tin thanh toán\n• Các dữ liệu eKYC theo yêu cầu của từng dịch vụ\n\n2.2. Người dùng chịu trách nhiệm về:\n• Mọi hoạt động phát sinh từ tài khoản của mình\n• Thanh toán đầy đủ phí dịch vụ theo hợp đồng\n• Việc trả lại phương tiện/dịch vụ đúng điều kiện hợp đồng\n\n2.3. Người dùng không được phép:\n• Sử dụng dịch vụ với mục đích bất hợp pháp\n• Gửi dữ liệu sai sự thật\n• Gian lận, lợi dụng hệ thống để bồi thường sai';
+
+  @override
+  String get termsServiceContract => '3. Điều kiện ký hợp đồng dịch vụ (bao gồm thuê xe)';
+
+  @override
+  String get termsServiceContractContent => '3.1. Hợp đồng thuê dịch vụ được hình thành khi:\n• Người dùng chọn dịch vụ\n• Xác nhận thông tin\n• Thanh toán thành công (hoặc ký quỹ nếu có)\n• Hệ thống gửi “Xác nhận hợp đồng”\n\n3.2. Đối với thuê xe:\n• Người dùng phải có bằng lái hợp lệ và tuân thủ pháp luật hiện hành.\n• App có thể yêu cầu thêm xác thực eKYC để hoàn tất thủ tục.\n• Chủ xe cá nhân/công ty không bắt buộc phải có giấy phép kinh doanh nếu là giao dịch dân sự; trong trường hợp hợp tác với đối tác chuyên nghiệp, App có thể yêu cầu giấy tờ pháp lý bổ sung.';
+
+  @override
+  String get termsPaymentDeposit => '4. Thanh toán, đặt cọc và phí dịch vụ';
+
+  @override
+  String get termsPaymentDepositContent => '4.1. Thanh toán chính thức:\n• Thực hiện qua cổng thanh toán hợp lệ (ví dụ MoMo, QR code, ngân hàng)\n• App giữ quyền xác minh giao dịch thanh toán trước khi xác nhận hợp đồng.\n\n4.2. Tiền đặt cọc (nếu có):\n• Có thể yêu cầu đối với các dịch vụ giá trị cao như thuê xe\n• Có thể thực hiện bằng VND hoặc tùy chọn blockchain (ETH)\n• Việc hoàn trả/cấn trừ tiền đặt cọc tuân theo điều kiện đã ghi trong hợp đồng\n\n4.3. Phí dịch vụ có thể bao gồm:\n• Phí xử lý, phí giao dịch\n• Phí thay đổi/hủy theo điều kiện hợp đồng\n• Phí giao xe (nếu áp dụng)';
+
+  @override
+  String get termsCancellationRefund => '5. Hủy, thay đổi và hoàn tiền';
+
+  @override
+  String get termsCancellationRefundContent => '5.1. Người dùng có quyền yêu cầu:\n• Thay đổi chi tiết hợp đồng\n• Hủy dịch vụ\n\n5.2. Điều kiện hủy và hoàn tiền:\n• Phải phù hợp với điều khoản sản phẩm (nội dung chi tiết phí hủy/hoàn tiền được ghi trong hợp đồng)\n• Phí hủy có thể phát sinh theo quy định\n• Việc hoàn tiền thực hiện qua phương thức thanh toán ban đầu\n\n5.3. Trường hợp giao dịch không thành công do lỗi của người dùng, App có quyền từ chối hoàn tiền.\n\n5.4. App có thể áp dụng phí dịch vụ bổ sung khi thay đổi/hủy hợp đồng nếu cơ sở đã phát sinh chi phí liên quan.';
+
+  @override
+  String get termsSecurityData => '6. Bảo mật và dữ liệu';
+
+  @override
+  String get termsSecurityDataContent => '6.1. App thu thập một số dữ liệu cá nhân (ví dụ eKYC, ảnh xác thực, GPS) phục vụ nghiệp vụ (nhận/trả xe).\n\n6.2. Dữ liệu này được xử lý theo chính sách quyền riêng tư riêng (Privacy Policy).';
+
+  @override
+  String get termsLiabilityLimitation => '7. Giới hạn trách nhiệm';
+
+  @override
+  String get termsLiabilityLimitationContent => '7.1. App chỉ là nền tảng trung gian kết nối người dùng với người cung cấp dịch vụ; App không trực tiếp sở hữu/điều hành phương tiện/dịch vụ đó khi không được ghi rõ.\n\n7.2. App có thể cung cấp thông tin về nhiều đối tác khác nhau; mỗi đối tác có thể có điều khoản sản phẩm riêng mà người dùng phải chấp nhận khi đặt dịch vụ.\n\n7.3. App không chịu trách nhiệm trực tiếp về các sự cố phát sinh từ dịch vụ do đối tác cung cấp, trừ khi lỗi do App.';
+
+  @override
+  String get termsCancellationRights => '8. Quyền hủy và từ chối dịch vụ';
+
+  @override
+  String get termsCancellationRightsContent => '8.1. App có quyền hủy/thay đổi dịch vụ nếu:\n• Người dùng cung cấp thông tin sai\n• Thanh toán không được xác minh\n• Nguy cơ pháp lý/phạm tội\n\n8.2. App sẽ thông báo và xử lý theo quy định phù hợp.';
+
+  @override
+  String get termsLegalDispute => '9. Điều khoản pháp lý và giải quyết tranh chấp';
+
+  @override
+  String get termsLegalDisputeContent => '9.1. Điều khoản này bị điều chỉnh theo pháp luật Việt Nam.\n\n9.2. Trong trường hợp tranh chấp phát sinh từ điều khoản/hợp đồng, các bên cố gắng thương lượng trước 60 ngày. Nếu không giải quyết được, tranh chấp được đưa ra cơ quan có thẩm quyền tại Việt Nam.';
+
+  @override
+  String get specificTermsCarRental => 'ĐIỀU KHOẢN CỤ THỂ CHO THUÊ XE';
+
+  @override
+  String get contractAddendum => '(PHẦN THÊM CHO HỢP ĐỒNG)';
+
+  @override
+  String get contractAddendumRef => 'Trích phần này vào ngay dưới mục hợp đồng để làm rõ quyền – trách nhiệm bên thuê xe.';
+
+  @override
+  String get renterResponsibility => 'A. Trách nhiệm của Người Thuê';
+
+  @override
+  String get renterResponsibilityContent => '• Tuân thủ luật giao thông\n• Bảo quản xe trong thời gian thuê\n• Bồi thường thiệt hại ngoài phạm vi thoả thuận\n• Chấp hành việc eKYC theo yêu cầu';
+
+  @override
+  String get ownerResponsibility => 'B. Trách nhiệm của Người Cho Thuê';
+
+  @override
+  String get ownerResponsibilityContent => '• Giao xe đúng thông tin thoả thuận\n• Cung cấp thông tin pháp lý nếu là doanh nghiệp\n• Không chiếm giữ tiền đặt cọc trái điều kiện hợp đồng';
+
+  @override
+  String get depositTerms => 'C. Tiền đặt cọc';
+
+  @override
+  String get depositTermsContent => '• Tiền đặt cọc được giữ theo điều kiện hợp đồng\n• Trường hợp tranh chấp, App giữ quyền xử lý theo bằng chứng kỹ thuật\n• Việc giải ngân/hoàn trả được thực hiện khi điều kiện hoàn tất';
+
+  @override
+  String get privacyPolicyTitle => 'CHÍNH SÁCH BẢO MẬT & QUYỀN RIÊNG TƯ';
+
+  @override
+  String get privacyOverview => '1. Tổng quan';
+
+  @override
+  String get privacyOverviewContent => 'Traveline cam kết bảo vệ quyền riêng tư và thông tin cá nhân của bạn. Chính sách này giải thích cách chúng tôi thu thập, sử dụng và bảo vệ dữ liệu khi bạn sử dụng ứng dụng Traveline.';
+
+  @override
+  String get privacyCollection => '2. Thông tin chúng tôi thu thập';
+
+  @override
+  String get privacyCollectionContent => 'Chúng tôi có thể thu thập các loại thông tin sau:\n• Thông tin cá nhân: Họ tên, số điện thoại, địa chỉ email, thông tin giấy tờ tùy thân (CMND/CCCD/Hộ chiếu) để xác minh danh tính (eKYC).\n• Thông tin thanh toán: Chi tiết tài khoản ngân hàng hoặc ví điện tử để xử lý giao dịch.\n• Thông tin vị trí: Dữ liệu GPS để hỗ trợ tính năng định vị xe, tìm kiếm dịch vụ quanh bạn.\n• Thông tin thiết bị: Dữ liệu về thiết bị bạn sử dụng để truy cập ứng dụng nhằm cải thiện trải nghiệm và bảo mật.';
+
+  @override
+  String get privacyUsage => '3. Cách chúng tôi sử dụng thông tin';
+
+  @override
+  String get privacyUsageContent => 'Thông tin của bạn được sử dụng cho các mục đích:\n• Cung cấp và quản lý dịch vụ thuê xe, đặt phòng, đặt vé.\n• Xác minh danh tính và đảm bảo an toàn cho các giao dịch.\n• Liên lạc với bạn về đơn hàng, cập nhật dịch vụ hoặc hỗ trợ khách hàng.\n• Cải thiện chất lượng ứng dụng và phát triển các tính năng mới.';
+
+  @override
+  String get privacySharing => '4. Chia sẻ thông tin';
+
+  @override
+  String get privacySharingContent => 'Chúng tôi chỉ chia sẻ thông tin của bạn trong các trường hợp cần thiết:\n• Với đối tác cung cấp dịch vụ (Chủ xe, Khách sạn, Nhà hàng) để thực hiện yêu cầu đặt dịch vụ của bạn.\n• Với các đơn vị cung cấp dịch vụ thanh toán để xử lý giao dịch.\n• Khi có yêu cầu của cơ quan pháp luật có thẩm quyền.';
+
+  @override
+  String get privacySecurity => '5. Bảo mật thông tin';
+
+  @override
+  String get privacySecurityContent => 'Traveline áp dụng các biện pháp kỹ thuật và tổ chức phù hợp để bảo vệ thông tin cá nhân của bạn khỏi mất mát, đánh cắp hoặc truy cập trái phép. Dữ liệu quan trọng được mã hóa và lưu trữ an toàn.';
+
+  @override
+  String get privacyRights => '6. Quyền của người dùng';
+
+  @override
+  String get privacyRightsContent => 'Bạn có quyền:\n• Yêu cầu truy cập và xem thông tin cá nhân chúng tôi đang lưu trữ.\n• Yêu cầu chỉnh sửa hoặc cập nhật thông tin nếu có sai sót.\n• Yêu cầu xóa tài khoản và dữ liệu cá nhân (tùy thuộc vào quy định pháp luật và nghĩa vụ hợp đồng).\n• Gửi phản hồi hoặc khiếu nại về việc xử lý dữ liệu.';
+
+  @override
+  String get privacyContact => '7. Liên hệ';
+
+  @override
+  String get privacyContactContent => 'Nếu bạn có bất kỳ câu hỏi nào về Chính sách bảo mật này, vui lòng liên hệ với chúng tôi qua:\n• Email: support@traveline.vn\n• Hotline: 1900 xxxx';
+
+  @override
+  String get contactSupportTitle => 'Liên hệ hỗ trợ';
+
+  @override
+  String get contactUsTitle => 'LIÊN HỆ VỚI CHÚNG TÔI';
+
+  @override
+  String get contactUsSubtitle => 'Chúng tôi luôn sẵn sàng hỗ trợ giải đáp mọi thắc mắc của bạn.';
+
+  @override
+  String get supportHotline => 'Tổng đài hỗ trợ';
+
+  @override
+  String get supportEmail => 'Email hỗ trợ';
+
+  @override
+  String get callNow => 'Gọi ngay';
+
+  @override
+  String get sendEmail => 'Gửi Email';
+
+  @override
+  String get enterNewAddressPlaceholder => 'Nhập địa chỉ mới (vd: Xã...)';
 
   @override
   String get enterLegacyProvincePlaceholder => 'Chọn Tỉnh/TP Cũ';
@@ -1365,9 +1521,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get communeLabel => 'Xã/Phường';
-
-  @override
-  String get convertNewToOldDetailsPageTitle => 'Tra cứu chi tiết: Mới → Cũ';
 
   @override
   String get enterReformProvincePlaceholder => 'Chọn Tỉnh/TP Mới';

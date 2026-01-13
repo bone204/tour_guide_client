@@ -1331,10 +1331,166 @@ class AppLocalizationsEn extends AppLocalizations {
   String get convertNewToOldAddressPageTitle => 'Lookup: New → Old Address';
 
   @override
-  String get enterNewAddressPlaceholder => 'Enter new address (e.g., Commune...)';
+  String get convertOldToNewDetailsPageTitle => 'Detailed Lookup: Old → New';
 
   @override
-  String get convertOldToNewDetailsPageTitle => 'Detailed Lookup: Old → New';
+  String get convertNewToOldDetailsPageTitle => 'Detailed Lookup: New → Old';
+
+  @override
+  String get termsAndPolicies => 'Terms and Policies';
+
+  @override
+  String get termsAndPoliciesTitle => 'TERMS AND POLICIES OF SERVICE';
+
+  @override
+  String get termsScopePurpose => '1. Scope and Purpose';
+
+  @override
+  String get termsScopeContent => '1.1. These terms and policies establish the legal rights and obligations between the User (Renter/Agency/Partner) and the Application (hereinafter referred to as “We”, “Traveline”, “System”) regarding services provided by Traveline, including:\n• Self-driving car rental\n• Hotel booking\n• Restaurant/dining booking\n• Tour/ticket booking\n• Transportation/express delivery booking\n• Other tourism-related auxiliary services\n\n1.2. Accessing the App, registering an account, booking services, or signing a service contract means you have read, understood, and agreed to these terms.\n\n1.3. We reserve the right to amend the terms and policies at any time to comply with legal requirements or product/service changes. Each new version is effective from the date of publication on Traveline.';
+
+  @override
+  String get termsUserRights => '2. Rights and Obligations of Users';
+
+  @override
+  String get termsUserRightsContent => '2.1. Users commit to providing accurate, complete, and legal information when registering an account and signing service contracts. Information includes:\n• Full name, phone number, email address\n• ID card/passport (if required)\n• Payment information\n• eKYC data as required by each service\n\n2.2. Users are responsible for:\n• All activities arising from their account\n• Full payment of service fees according to the contract\n• Returning the vehicle/service in the correct contractual condition\n\n2.3. Users are not allowed to:\n• Use services for illegal purposes\n• Submit false data\n• Cheat or exploit the system for wrongful compensation';
+
+  @override
+  String get termsServiceContract => '3. Conditions for Service Contract (including Car Rental)';
+
+  @override
+  String get termsServiceContractContent => '3.1. A service contract is formed when:\n• User selects a service\n• Confirms information\n• Successfully pays (or deposits if applicable)\n• System sends “Contract Confirmation”\n\n3.2. For car rental:\n• User must have a valid driving license and comply with current laws.\n• The App may require additional eKYC verification to complete the procedure.\n• Individual/company car owners are not required to have a business license for civil transactions; in case of cooperation with professional partners, the App may require additional legal documents.';
+
+  @override
+  String get termsPaymentDeposit => '4. Payment, Deposit, and Service Fees';
+
+  @override
+  String get termsPaymentDepositContent => '4.1. Official Payment:\n• Performed via valid payment gateways (e.g., MoMo, QR code, bank transfer)\n• App reserves the right to verify payment transactions before confirming the contract.\n\n4.2. Deposit (if any):\n• May be required for high-value services such as car rental\n• Can be made in VND or blockchain options (ETH)\n• Deposit refund/offset follows conditions stated in the contract\n\n4.3. Service fees may include:\n• Processing fees, transaction fees\n• Change/cancellation fees according to contract conditions\n• Delivery fees (if applicable)';
+
+  @override
+  String get termsCancellationRefund => '5. Cancellation, Change, and Refund';
+
+  @override
+  String get termsCancellationRefundContent => '5.1. Users have the right to request:\n• Changes to contract details\n• Service cancellation\n\n5.2. Cancellation and refund conditions:\n• Must comply with product terms (detailed cancellation/refund fees stated in the contract)\n• Cancellation fees may apply according to regulations\n• Refunds are processed via the original payment method\n\n5.3. In case of failed transactions due to user error, App reserves the right to refuse refunds.\n\n5.4. App may apply additional service fees when changing/canceling contracts if the facility has incurred related costs.';
+
+  @override
+  String get termsSecurityData => '6. Security and Data';
+
+  @override
+  String get termsSecurityDataContent => '6.1. App collects certain personal data (e.g., eKYC, verification photos, GPS) for operational purposes (pickup/return).\n\n6.2. This data is processed according to a separate Privacy Policy.';
+
+  @override
+  String get termsLiabilityLimitation => '7. Limitation of Liability';
+
+  @override
+  String get termsLiabilityLimitationContent => '7.1. App is only an intermediary platform connecting users with service providers; App does not directly own/operate such vehicles/services unless explicitly stated.\n\n7.2. App may provide information about various partners; each partner may have its own product terms that users must accept when booking services.\n\n7.3. App is not directly responsible for incidents arising from services provided by partners, unless the fault lies with the App.';
+
+  @override
+  String get termsCancellationRights => '8. Cancellation and Refusal Rights';
+
+  @override
+  String get termsCancellationRightsContent => '8.1. App reserves the right to cancel/change services if:\n• User provides false information\n• Payment is not verified\n• Legal/criminal risk\n\n8.2. App will notify and handle according to appropriate regulations.';
+
+  @override
+  String get termsLegalDispute => '9. Legal Terms and Dispute Resolution';
+
+  @override
+  String get termsLegalDisputeContent => '9.1. These terms are governed by Vietnamese law.\n\n9.2. In case of disputes arising from terms/contracts, parties agree to negotiate within 60 days. If not resolved, disputes will be referred to competent authorities in Vietnam.';
+
+  @override
+  String get specificTermsCarRental => 'SPECIFIC TERMS FOR CAR RENTAL';
+
+  @override
+  String get contractAddendum => '(CONTRACT ADDENDUM)';
+
+  @override
+  String get contractAddendumRef => 'Extract this section immediately below the contract to clarify rights – responsibilities of the renter.';
+
+  @override
+  String get renterResponsibility => 'A. Renter\'s Responsibility';
+
+  @override
+  String get renterResponsibilityContent => '• Comply with traffic laws\n• Preserve the vehicle during the rental period\n• Compensate for damages outside the agreed scope\n• Comply with eKYC requirements';
+
+  @override
+  String get ownerResponsibility => 'B. Owner\'s Responsibility';
+
+  @override
+  String get ownerResponsibilityContent => '• Deliver the vehicle according to agreed information\n• Provide legal information if a business\n• Do not withhold deposit money contrary to contract conditions';
+
+  @override
+  String get depositTerms => 'C. Deposit';
+
+  @override
+  String get depositTermsContent => '• Deposit is held according to contract conditions\n• In case of dispute, App reserves the right to handle based on technical evidence\n• Disbursement/refund is performed when conditions are met';
+
+  @override
+  String get privacyPolicyTitle => 'PRIVACY POLICY & RIGHTS';
+
+  @override
+  String get privacyOverview => '1. Overview';
+
+  @override
+  String get privacyOverviewContent => 'Traveline is committed to protecting your privacy and personal data. This policy explains how we collect, use, and protect data when you use the Traveline application.';
+
+  @override
+  String get privacyCollection => '2. Information We Collect';
+
+  @override
+  String get privacyCollectionContent => 'We may collect the following types of information:\n• Personal Information: Name, phone number, email address, ID documents (ID card/Passport) to verify identity (eKYC).\n• Payment Information: Bank account or e-wallet details to process transactions.\n• Location Information: GPS data to support vehicle tracking and nearby service search.\n• Device Information: Data about the device you use to access the app to improve experience and security.';
+
+  @override
+  String get privacyUsage => '3. How We Use Information';
+
+  @override
+  String get privacyUsageContent => 'Your information is used for the following purposes:\n• Providing and managing car rental, booking, and ticket services.\n• Verifying identity and ensuring transaction safety.\n• Contacting you about orders, service updates, or customer support.\n• Improving app quality and developing new features.';
+
+  @override
+  String get privacySharing => '4. Sharing Information';
+
+  @override
+  String get privacySharingContent => 'We only share your information in necessary cases:\n• With service partners (Car Owners, Hotels, Restaurants) to fulfill your booking requests.\n• With payment service providers to process transactions.\n• When required by competent legal authorities.';
+
+  @override
+  String get privacySecurity => '5. Data Security';
+
+  @override
+  String get privacySecurityContent => 'Traveline applies appropriate technical and organizational measures to protect your personal data from loss, theft, or unauthorized access. Important data is encrypted and stored securely.';
+
+  @override
+  String get privacyRights => '6. User Rights';
+
+  @override
+  String get privacyRightsContent => 'You have the right to:\n• Request access to and view personal information we hold.\n• Request correction or update of information if incorrect.\n• Request deletion of account and personal data (subject to legal regulations and contractual obligations).\n• Send feedback or complaints about data processing.';
+
+  @override
+  String get privacyContact => '7. Contact';
+
+  @override
+  String get privacyContactContent => 'If you have any questions about this Privacy Policy, please contact us via:\n• Email: support@traveline.vn\n• Hotline: 1900 xxxx';
+
+  @override
+  String get contactSupportTitle => 'Contact Support';
+
+  @override
+  String get contactUsTitle => 'CONTACT US';
+
+  @override
+  String get contactUsSubtitle => 'We are always ready to support you with any questions.';
+
+  @override
+  String get supportHotline => 'Support Hotline';
+
+  @override
+  String get supportEmail => 'Support Email';
+
+  @override
+  String get callNow => 'Call Now';
+
+  @override
+  String get sendEmail => 'Send Email';
+
+  @override
+  String get enterNewAddressPlaceholder => 'Enter new address (e.g., Commune...)';
 
   @override
   String get enterLegacyProvincePlaceholder => 'Select Legacy Province';
@@ -1365,9 +1521,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get communeLabel => 'Commune';
-
-  @override
-  String get convertNewToOldDetailsPageTitle => 'Detailed Lookup: New → Old';
 
   @override
   String get enterReformProvincePlaceholder => 'Select Reform Province';

@@ -2711,17 +2711,329 @@ abstract class AppLocalizations {
   /// **'Lookup: New → Old Address'**
   String get convertNewToOldAddressPageTitle;
 
-  /// No description provided for @enterNewAddressPlaceholder.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter new address (e.g., Commune...)'**
-  String get enterNewAddressPlaceholder;
-
   /// No description provided for @convertOldToNewDetailsPageTitle.
   ///
   /// In en, this message translates to:
   /// **'Detailed Lookup: Old → New'**
   String get convertOldToNewDetailsPageTitle;
+
+  /// No description provided for @convertNewToOldDetailsPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed Lookup: New → Old'**
+  String get convertNewToOldDetailsPageTitle;
+
+  /// No description provided for @termsAndPolicies.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and Policies'**
+  String get termsAndPolicies;
+
+  /// No description provided for @termsAndPoliciesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'TERMS AND POLICIES OF SERVICE'**
+  String get termsAndPoliciesTitle;
+
+  /// No description provided for @termsScopePurpose.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Scope and Purpose'**
+  String get termsScopePurpose;
+
+  /// No description provided for @termsScopeContent.
+  ///
+  /// In en, this message translates to:
+  /// **'1.1. These terms and policies establish the legal rights and obligations between the User (Renter/Agency/Partner) and the Application (hereinafter referred to as “We”, “Traveline”, “System”) regarding services provided by Traveline, including:\n• Self-driving car rental\n• Hotel booking\n• Restaurant/dining booking\n• Tour/ticket booking\n• Transportation/express delivery booking\n• Other tourism-related auxiliary services\n\n1.2. Accessing the App, registering an account, booking services, or signing a service contract means you have read, understood, and agreed to these terms.\n\n1.3. We reserve the right to amend the terms and policies at any time to comply with legal requirements or product/service changes. Each new version is effective from the date of publication on Traveline.'**
+  String get termsScopeContent;
+
+  /// No description provided for @termsUserRights.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Rights and Obligations of Users'**
+  String get termsUserRights;
+
+  /// No description provided for @termsUserRightsContent.
+  ///
+  /// In en, this message translates to:
+  /// **'2.1. Users commit to providing accurate, complete, and legal information when registering an account and signing service contracts. Information includes:\n• Full name, phone number, email address\n• ID card/passport (if required)\n• Payment information\n• eKYC data as required by each service\n\n2.2. Users are responsible for:\n• All activities arising from their account\n• Full payment of service fees according to the contract\n• Returning the vehicle/service in the correct contractual condition\n\n2.3. Users are not allowed to:\n• Use services for illegal purposes\n• Submit false data\n• Cheat or exploit the system for wrongful compensation'**
+  String get termsUserRightsContent;
+
+  /// No description provided for @termsServiceContract.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Conditions for Service Contract (including Car Rental)'**
+  String get termsServiceContract;
+
+  /// No description provided for @termsServiceContractContent.
+  ///
+  /// In en, this message translates to:
+  /// **'3.1. A service contract is formed when:\n• User selects a service\n• Confirms information\n• Successfully pays (or deposits if applicable)\n• System sends “Contract Confirmation”\n\n3.2. For car rental:\n• User must have a valid driving license and comply with current laws.\n• The App may require additional eKYC verification to complete the procedure.\n• Individual/company car owners are not required to have a business license for civil transactions; in case of cooperation with professional partners, the App may require additional legal documents.'**
+  String get termsServiceContractContent;
+
+  /// No description provided for @termsPaymentDeposit.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Payment, Deposit, and Service Fees'**
+  String get termsPaymentDeposit;
+
+  /// No description provided for @termsPaymentDepositContent.
+  ///
+  /// In en, this message translates to:
+  /// **'4.1. Official Payment:\n• Performed via valid payment gateways (e.g., MoMo, QR code, bank transfer)\n• App reserves the right to verify payment transactions before confirming the contract.\n\n4.2. Deposit (if any):\n• May be required for high-value services such as car rental\n• Can be made in VND or blockchain options (ETH)\n• Deposit refund/offset follows conditions stated in the contract\n\n4.3. Service fees may include:\n• Processing fees, transaction fees\n• Change/cancellation fees according to contract conditions\n• Delivery fees (if applicable)'**
+  String get termsPaymentDepositContent;
+
+  /// No description provided for @termsCancellationRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Cancellation, Change, and Refund'**
+  String get termsCancellationRefund;
+
+  /// No description provided for @termsCancellationRefundContent.
+  ///
+  /// In en, this message translates to:
+  /// **'5.1. Users have the right to request:\n• Changes to contract details\n• Service cancellation\n\n5.2. Cancellation and refund conditions:\n• Must comply with product terms (detailed cancellation/refund fees stated in the contract)\n• Cancellation fees may apply according to regulations\n• Refunds are processed via the original payment method\n\n5.3. In case of failed transactions due to user error, App reserves the right to refuse refunds.\n\n5.4. App may apply additional service fees when changing/canceling contracts if the facility has incurred related costs.'**
+  String get termsCancellationRefundContent;
+
+  /// No description provided for @termsSecurityData.
+  ///
+  /// In en, this message translates to:
+  /// **'6. Security and Data'**
+  String get termsSecurityData;
+
+  /// No description provided for @termsSecurityDataContent.
+  ///
+  /// In en, this message translates to:
+  /// **'6.1. App collects certain personal data (e.g., eKYC, verification photos, GPS) for operational purposes (pickup/return).\n\n6.2. This data is processed according to a separate Privacy Policy.'**
+  String get termsSecurityDataContent;
+
+  /// No description provided for @termsLiabilityLimitation.
+  ///
+  /// In en, this message translates to:
+  /// **'7. Limitation of Liability'**
+  String get termsLiabilityLimitation;
+
+  /// No description provided for @termsLiabilityLimitationContent.
+  ///
+  /// In en, this message translates to:
+  /// **'7.1. App is only an intermediary platform connecting users with service providers; App does not directly own/operate such vehicles/services unless explicitly stated.\n\n7.2. App may provide information about various partners; each partner may have its own product terms that users must accept when booking services.\n\n7.3. App is not directly responsible for incidents arising from services provided by partners, unless the fault lies with the App.'**
+  String get termsLiabilityLimitationContent;
+
+  /// No description provided for @termsCancellationRights.
+  ///
+  /// In en, this message translates to:
+  /// **'8. Cancellation and Refusal Rights'**
+  String get termsCancellationRights;
+
+  /// No description provided for @termsCancellationRightsContent.
+  ///
+  /// In en, this message translates to:
+  /// **'8.1. App reserves the right to cancel/change services if:\n• User provides false information\n• Payment is not verified\n• Legal/criminal risk\n\n8.2. App will notify and handle according to appropriate regulations.'**
+  String get termsCancellationRightsContent;
+
+  /// No description provided for @termsLegalDispute.
+  ///
+  /// In en, this message translates to:
+  /// **'9. Legal Terms and Dispute Resolution'**
+  String get termsLegalDispute;
+
+  /// No description provided for @termsLegalDisputeContent.
+  ///
+  /// In en, this message translates to:
+  /// **'9.1. These terms are governed by Vietnamese law.\n\n9.2. In case of disputes arising from terms/contracts, parties agree to negotiate within 60 days. If not resolved, disputes will be referred to competent authorities in Vietnam.'**
+  String get termsLegalDisputeContent;
+
+  /// No description provided for @specificTermsCarRental.
+  ///
+  /// In en, this message translates to:
+  /// **'SPECIFIC TERMS FOR CAR RENTAL'**
+  String get specificTermsCarRental;
+
+  /// No description provided for @contractAddendum.
+  ///
+  /// In en, this message translates to:
+  /// **'(CONTRACT ADDENDUM)'**
+  String get contractAddendum;
+
+  /// No description provided for @contractAddendumRef.
+  ///
+  /// In en, this message translates to:
+  /// **'Extract this section immediately below the contract to clarify rights – responsibilities of the renter.'**
+  String get contractAddendumRef;
+
+  /// No description provided for @renterResponsibility.
+  ///
+  /// In en, this message translates to:
+  /// **'A. Renter\'s Responsibility'**
+  String get renterResponsibility;
+
+  /// No description provided for @renterResponsibilityContent.
+  ///
+  /// In en, this message translates to:
+  /// **'• Comply with traffic laws\n• Preserve the vehicle during the rental period\n• Compensate for damages outside the agreed scope\n• Comply with eKYC requirements'**
+  String get renterResponsibilityContent;
+
+  /// No description provided for @ownerResponsibility.
+  ///
+  /// In en, this message translates to:
+  /// **'B. Owner\'s Responsibility'**
+  String get ownerResponsibility;
+
+  /// No description provided for @ownerResponsibilityContent.
+  ///
+  /// In en, this message translates to:
+  /// **'• Deliver the vehicle according to agreed information\n• Provide legal information if a business\n• Do not withhold deposit money contrary to contract conditions'**
+  String get ownerResponsibilityContent;
+
+  /// No description provided for @depositTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'C. Deposit'**
+  String get depositTerms;
+
+  /// No description provided for @depositTermsContent.
+  ///
+  /// In en, this message translates to:
+  /// **'• Deposit is held according to contract conditions\n• In case of dispute, App reserves the right to handle based on technical evidence\n• Disbursement/refund is performed when conditions are met'**
+  String get depositTermsContent;
+
+  /// No description provided for @privacyPolicyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PRIVACY POLICY & RIGHTS'**
+  String get privacyPolicyTitle;
+
+  /// No description provided for @privacyOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Overview'**
+  String get privacyOverview;
+
+  /// No description provided for @privacyOverviewContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Traveline is committed to protecting your privacy and personal data. This policy explains how we collect, use, and protect data when you use the Traveline application.'**
+  String get privacyOverviewContent;
+
+  /// No description provided for @privacyCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Information We Collect'**
+  String get privacyCollection;
+
+  /// No description provided for @privacyCollectionContent.
+  ///
+  /// In en, this message translates to:
+  /// **'We may collect the following types of information:\n• Personal Information: Name, phone number, email address, ID documents (ID card/Passport) to verify identity (eKYC).\n• Payment Information: Bank account or e-wallet details to process transactions.\n• Location Information: GPS data to support vehicle tracking and nearby service search.\n• Device Information: Data about the device you use to access the app to improve experience and security.'**
+  String get privacyCollectionContent;
+
+  /// No description provided for @privacyUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'3. How We Use Information'**
+  String get privacyUsage;
+
+  /// No description provided for @privacyUsageContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your information is used for the following purposes:\n• Providing and managing car rental, booking, and ticket services.\n• Verifying identity and ensuring transaction safety.\n• Contacting you about orders, service updates, or customer support.\n• Improving app quality and developing new features.'**
+  String get privacyUsageContent;
+
+  /// No description provided for @privacySharing.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Sharing Information'**
+  String get privacySharing;
+
+  /// No description provided for @privacySharingContent.
+  ///
+  /// In en, this message translates to:
+  /// **'We only share your information in necessary cases:\n• With service partners (Car Owners, Hotels, Restaurants) to fulfill your booking requests.\n• With payment service providers to process transactions.\n• When required by competent legal authorities.'**
+  String get privacySharingContent;
+
+  /// No description provided for @privacySecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Data Security'**
+  String get privacySecurity;
+
+  /// No description provided for @privacySecurityContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Traveline applies appropriate technical and organizational measures to protect your personal data from loss, theft, or unauthorized access. Important data is encrypted and stored securely.'**
+  String get privacySecurityContent;
+
+  /// No description provided for @privacyRights.
+  ///
+  /// In en, this message translates to:
+  /// **'6. User Rights'**
+  String get privacyRights;
+
+  /// No description provided for @privacyRightsContent.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to:\n• Request access to and view personal information we hold.\n• Request correction or update of information if incorrect.\n• Request deletion of account and personal data (subject to legal regulations and contractual obligations).\n• Send feedback or complaints about data processing.'**
+  String get privacyRightsContent;
+
+  /// No description provided for @privacyContact.
+  ///
+  /// In en, this message translates to:
+  /// **'7. Contact'**
+  String get privacyContact;
+
+  /// No description provided for @privacyContactContent.
+  ///
+  /// In en, this message translates to:
+  /// **'If you have any questions about this Privacy Policy, please contact us via:\n• Email: support@traveline.vn\n• Hotline: 1900 xxxx'**
+  String get privacyContactContent;
+
+  /// No description provided for @contactSupportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get contactSupportTitle;
+
+  /// No description provided for @contactUsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'CONTACT US'**
+  String get contactUsTitle;
+
+  /// No description provided for @contactUsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We are always ready to support you with any questions.'**
+  String get contactUsSubtitle;
+
+  /// No description provided for @supportHotline.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Hotline'**
+  String get supportHotline;
+
+  /// No description provided for @supportEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Email'**
+  String get supportEmail;
+
+  /// No description provided for @callNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Now'**
+  String get callNow;
+
+  /// No description provided for @sendEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Email'**
+  String get sendEmail;
+
+  /// No description provided for @enterNewAddressPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new address (e.g., Commune...)'**
+  String get enterNewAddressPlaceholder;
 
   /// No description provided for @enterLegacyProvincePlaceholder.
   ///
@@ -2782,12 +3094,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Commune'**
   String get communeLabel;
-
-  /// No description provided for @convertNewToOldDetailsPageTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Detailed Lookup: New → Old'**
-  String get convertNewToOldDetailsPageTitle;
 
   /// No description provided for @enterReformProvincePlaceholder.
   ///

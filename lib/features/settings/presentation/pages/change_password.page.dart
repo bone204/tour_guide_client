@@ -57,60 +57,63 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<ChangePasswordCubit>(),
-      child: Scaffold(
-        appBar: CustomAppBar(
-          title: AppLocalizations.of(context)!.changePassword,
-          onBackPressed: () => Navigator.pop(context),
-        ),
-        body: BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
-          listener: (context, state) {
-            if (state is ChangePasswordSuccess) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
-              Navigator.of(context).pop();
-            } else if (state is ChangePasswordFailure) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
-            }
-          },
-          builder: (context, state) {
-            return SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-              child: Column(
-                children: [
-                  CustomTextField(
-                    controller: _currentPasswordController,
-                    label: AppLocalizations.of(context)!.currentPassword,
-                    obscureText: true,
-                    placeholder: AppLocalizations.of(context)!.enterPassword,
-                  ),
-                  SizedBox(height: 16.h),
-                  CustomTextField(
-                    controller: _newPasswordController,
-                    label: AppLocalizations.of(context)!.newPassword,
-                    obscureText: true,
-                    placeholder: AppLocalizations.of(context)!.enterPassword,
-                  ),
-                  SizedBox(height: 16.h),
-                  CustomTextField(
-                    controller: _confirmPasswordController,
-                    label: AppLocalizations.of(context)!.confirmPassword,
-                    obscureText: true,
-                    placeholder:
-                        AppLocalizations.of(context)!.enterConfirmPassword,
-                  ),
-                  SizedBox(height: 32.h),
-                  PrimaryButton(
-                    title: AppLocalizations.of(context)!.changePassword,
-                    onPressed: () => _onChangePasswordPressed(context),
-                    isLoading: state is ChangePasswordLoading,
-                  ),
-                ],
-              ),
-            );
-          },
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          appBar: CustomAppBar(
+            title: AppLocalizations.of(context)!.changePassword,
+            onBackPressed: () => Navigator.pop(context),
+          ),
+          body: BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
+            listener: (context, state) {
+              if (state is ChangePasswordSuccess) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.message)));
+                Navigator.of(context).pop();
+              } else if (state is ChangePasswordFailure) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.message)));
+              }
+            },
+            builder: (context, state) {
+              return SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+                child: Column(
+                  children: [
+                    CustomTextField(
+                      controller: _currentPasswordController,
+                      label: AppLocalizations.of(context)!.currentPassword,
+                      obscureText: true,
+                      placeholder: AppLocalizations.of(context)!.enterPassword,
+                    ),
+                    SizedBox(height: 16.h),
+                    CustomTextField(
+                      controller: _newPasswordController,
+                      label: AppLocalizations.of(context)!.newPassword,
+                      obscureText: true,
+                      placeholder: AppLocalizations.of(context)!.enterPassword,
+                    ),
+                    SizedBox(height: 16.h),
+                    CustomTextField(
+                      controller: _confirmPasswordController,
+                      label: AppLocalizations.of(context)!.confirmPassword,
+                      obscureText: true,
+                      placeholder:
+                          AppLocalizations.of(context)!.enterConfirmPassword,
+                    ),
+                    SizedBox(height: 32.h),
+                    PrimaryButton(
+                      title: AppLocalizations.of(context)!.changePassword,
+                      onPressed: () => _onChangePasswordPressed(context),
+                      isLoading: state is ChangePasswordLoading,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
