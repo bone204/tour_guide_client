@@ -2,19 +2,17 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tour_guide_app/common/constants/app_lotties.constant.dart';
 import 'package:tour_guide_app/core/config/lang/arb/app_localizations.dart';
 import 'package:tour_guide_app/core/config/theme/color.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_check_response.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_cubit.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_state.dart';
-import 'package:tour_guide_app/service_locator.dart';
 
 class AnniversaryPage extends StatefulWidget {
-  const AnniversaryPage({super.key});
+  final List<AnniversaryCheckRoute> routes;
+  const AnniversaryPage({super.key, required this.routes});
 
   @override
   State<AnniversaryPage> createState() => _AnniversaryPageState();
@@ -23,15 +21,13 @@ class AnniversaryPage extends StatefulWidget {
 class _AnniversaryPageState extends State<AnniversaryPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<AnniversaryCubit>()..checkAnniversaries(),
-      child: const _AnniversaryPageContent(),
-    );
+    return _AnniversaryPageContent(routes: widget.routes);
   }
 }
 
 class _AnniversaryPageContent extends StatefulWidget {
-  const _AnniversaryPageContent();
+  final List<AnniversaryCheckRoute> routes;
+  const _AnniversaryPageContent({required this.routes});
 
   @override
   State<_AnniversaryPageContent> createState() =>
@@ -51,6 +47,7 @@ class _AnniversaryPageContentState extends State<_AnniversaryPageContent>
   @override
   void initState() {
     super.initState();
+    _routes = widget.routes;
     _progressController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
@@ -61,6 +58,8 @@ class _AnniversaryPageContentState extends State<_AnniversaryPageContent>
         _nextMedia();
       }
     });
+
+    _preloadImages(_routes);
   }
 
   @override
@@ -172,54 +171,18 @@ class _AnniversaryPageContentState extends State<_AnniversaryPageContent>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: BlocConsumer<AnniversaryCubit, AnniversaryState>(
-        listener: (context, state) {
-          if (state is AnniversarySuccess &&
-              state.response.matchedRoutes.isNotEmpty) {
-            setState(() {
-              _routes = state.response.matchedRoutes;
-            });
-            _preloadImages(_routes);
-          }
-        },
-        builder: (context, state) {
-          if (state is AnniversaryLoading ||
-              (state is AnniversarySuccess &&
-                  _routes.isNotEmpty &&
-                  !_imagesLoaded)) {
-            return Center(
-              child: Lottie.asset(
-                AppLotties.anniversary,
-                width: 200.w,
-                height: 200.h,
-              ),
-            );
-          } else if (state is AnniversaryFailure) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    state.message,
-                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
-                  ),
-                  SizedBox(height: 16.h),
-                  ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(AppLocalizations.of(context)!.close),
-                  ),
-                ],
-              ),
-            );
-          } else if (state is AnniversarySuccess) {
-            if (_routes.isEmpty) {
-              return _buildEmptyState(context);
-            }
-            return _buildStoryView(context);
-          }
-          return const SizedBox.shrink();
-        },
-      ),
+      body:
+          !_imagesLoaded
+              ? Center(
+                child: Lottie.asset(
+                  AppLotties.anniversary,
+                  width: 200.w,
+                  height: 200.h,
+                ),
+              )
+              : _routes.isEmpty
+              ? _buildEmptyState(context)
+              : _buildStoryView(context),
     );
   }
 

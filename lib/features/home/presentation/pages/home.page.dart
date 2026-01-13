@@ -15,6 +15,8 @@ import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_header.widget.dart';
 import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_state.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/pages/anniversary.page.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/hotel_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/rating_destination_list.dart';
@@ -52,6 +54,7 @@ class HomePage extends StatefulWidget {
         BlocProvider(
           create: (context) => sl<FavoriteCooperationsCubit>()..loadFavorites(),
         ),
+        BlocProvider(create: (context) => sl<AnniversaryCubit>()),
       ],
       child: const HomePage(),
     );
@@ -69,6 +72,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _setupScrollListener();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AnniversaryCubit>().checkAnniversaries();
+    });
   }
 
   void _setupScrollListener() {
@@ -194,28 +200,40 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          // Anniversary FAB is always shown for now
-          Positioned(
-            bottom: 90.h + 56.h + 16.h,
-            right: 16.w,
-            child: FloatingActionButton(
-              heroTag: 'anniversary_fab',
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(builder: (_) => const AnniversaryPage()),
+          // Anniversary FAB
+          BlocBuilder<AnniversaryCubit, AnniversaryState>(
+            builder: (context, state) {
+              if (state is AnniversarySuccess &&
+                  state.response.matchedRoutes.isNotEmpty) {
+                return Positioned(
+                  bottom: 90.h + 56.h + 16.h,
+                  right: 16.w,
+                  child: FloatingActionButton(
+                    heroTag: 'anniversary_fab',
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).push(
+                        MaterialPageRoute(
+                          builder:
+                              (_) => AnniversaryPage(
+                                routes: state.response.matchedRoutes,
+                              ),
+                        ),
+                      );
+                    },
+                    backgroundColor: Colors.white,
+                    child: Lottie.asset(
+                      AppLotties.anniversary,
+                      width: 40.w,
+                      height: 40.w,
+                    ),
+                  ),
                 );
-              },
-              backgroundColor: Colors.white,
-              child: Lottie.asset(
-                AppLotties.anniversary,
-                width: 40.w,
-                height: 40.w,
-              ),
-            ),
+              }
+              return const SizedBox.shrink();
+            },
           ),
           Positioned(
-            bottom:
-                0.h, 
+            bottom: 0.h,
             right: 4.w,
             child: GestureDetector(
               onTap: () {
