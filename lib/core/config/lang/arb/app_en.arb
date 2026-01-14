@@ -1868,5 +1868,6 @@
   "addressTooShort": "Address is too short (should include at least Ward, District, Province)",
   "addressTooShortNewToOld": "Address is too short",
   "convertOldToNewAddressPageTitle": "Lookup: Old → New Address",
-  "convertNewToOldAddressPageTitle": "Lookup: New → Old Address"
+  "convertNewToOldAddressPageTitle": "Lookup: New → Old Address",
+  "paymentSuccess": "Payment successful"
 }

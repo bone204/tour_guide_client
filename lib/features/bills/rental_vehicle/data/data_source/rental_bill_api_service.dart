@@ -33,7 +33,7 @@ abstract class RentalBillApiService {
     double latitude,
     double longitude,
   );
-  Future<Either<Failure, SuccessResponse>> cancelBill(int id);
+  Future<Either<Failure, SuccessResponse>> cancelBill(int id, String reason);
 }
 
 class RentalBillApiServiceImpl implements RentalBillApiService {
@@ -290,10 +290,14 @@ class RentalBillApiServiceImpl implements RentalBillApiService {
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> cancelBill(int id) async {
+  Future<Either<Failure, SuccessResponse>> cancelBill(
+    int id,
+    String reason,
+  ) async {
     try {
       final response = await sl<DioClient>().patch(
         '${ApiUrls.rentalBills}/$id/cancel',
+        data: {'reason': reason},
       );
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);

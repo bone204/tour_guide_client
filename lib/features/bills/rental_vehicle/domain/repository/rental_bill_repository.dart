@@ -26,5 +26,5 @@ abstract class RentalBillRepository {
     double latitude,
     double longitude,
   );
-  Future<Either<Failure, SuccessResponse>> cancelBill(int id);
+  Future<Either<Failure, SuccessResponse>> cancelBill(int id, String reason);
 }

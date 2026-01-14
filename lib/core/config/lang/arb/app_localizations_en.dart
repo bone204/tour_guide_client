@@ -3273,4 +3273,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addressTooShortNewToOld => 'Address is too short';
+
+  @override
+  String get paymentSuccess => 'Payment successful';
 }

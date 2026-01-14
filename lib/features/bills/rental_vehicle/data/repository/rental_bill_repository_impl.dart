@@ -72,7 +72,11 @@ class RentalBillRepositoryImpl implements RentalBillRepository {
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> cancelBill(int id) async {
-    return await _apiService.cancelBill(id);
+  @override
+  Future<Either<Failure, SuccessResponse>> cancelBill(
+    int id,
+    String reason,
+  ) async {
+    return await _apiService.cancelBill(id, reason);
   }
 }

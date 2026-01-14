@@ -8,7 +8,7 @@ class CancelRentalBillUseCase {
 
   CancelRentalBillUseCase(this.repository);
 
-  Future<Either<Failure, SuccessResponse>> call(int id) {
-    return repository.cancelBill(id);
+  Future<Either<Failure, SuccessResponse>> call(int id, String reason) {
+    return repository.cancelBill(id, reason);
   }
 }

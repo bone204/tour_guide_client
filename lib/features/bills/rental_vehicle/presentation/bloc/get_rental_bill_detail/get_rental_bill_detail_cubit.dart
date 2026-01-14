@@ -28,4 +28,24 @@ class GetRentalBillDetailCubit extends Cubit<RentalBillDetailState> {
       ),
     );
   }
+
+  Future<void> refreshBillDetail(int id) async {
+    if (isClosed) return;
+    // Do not emit loading state to avoid shimmering
+    final result = await _getRentalBillDetailUseCase(id);
+
+    if (isClosed) return;
+
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: RentalBillDetailInitStatus.failure,
+          errorMessage: failure.message,
+        ),
+      ),
+      (bill) => emit(
+        state.copyWith(status: RentalBillDetailInitStatus.success, bill: bill),
+      ),
+    );
+  }
 }

@@ -6442,6 +6442,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Address is too short'**
   String get addressTooShortNewToOld;
+
+  /// No description provided for @paymentSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment successful'**
+  String get paymentSuccess;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

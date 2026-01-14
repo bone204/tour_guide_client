@@ -3279,4 +3279,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get addressTooShortNewToOld => 'Địa chỉ quá ngắn';
+
+  @override
+  String get paymentSuccess => 'Thanh toán thành công';
 }

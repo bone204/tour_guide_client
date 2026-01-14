@@ -734,7 +734,7 @@ class _OwnerRentalRequestDetailPageState
   Widget _buildWorkflowActions(BuildContext context, RentalBill bill) {
     return BlocBuilder<OwnerRentalWorkflowCubit, OwnerRentalWorkflowState>(
       builder: (context, state) {
-        final isLoading =
+        final isWorkflowLoading =
             _isActionLoading ||
             state.status == OwnerRentalWorkflowStatus.loading;
 
@@ -745,14 +745,14 @@ class _OwnerRentalRequestDetailPageState
               children: [
                 PrimaryButton(
                   title: AppLocalizations.of(context)!.rentalStartDelivery,
-                  isLoading: isLoading,
+                  isLoading: isWorkflowLoading,
                   onPressed:
-                      isLoading
+                      isWorkflowLoading
                           ? null
                           : () => _onStartDelivery(context, bill.id),
                 ),
                 SizedBox(height: 12.h),
-                _buildCancelButton(context, bill, isLoading),
+                _buildCancelButton(context, bill, isWorkflowLoading),
               ],
             ),
           );
@@ -762,9 +762,11 @@ class _OwnerRentalRequestDetailPageState
             padding: EdgeInsets.only(top: 16.h),
             child: PrimaryButton(
               title: AppLocalizations.of(context)!.rentalDelivered,
-              isLoading: isLoading,
+              isLoading: isWorkflowLoading,
               onPressed:
-                  isLoading ? null : () => _onDelivered(context, bill.id),
+                  isWorkflowLoading
+                      ? null
+                      : () => _onDelivered(context, bill.id),
             ),
           );
         }
@@ -773,15 +775,17 @@ class _OwnerRentalRequestDetailPageState
             padding: EdgeInsets.only(top: 16.h),
             child: PrimaryButton(
               title: AppLocalizations.of(context)!.rentalConfirmReturn,
-              isLoading: isLoading,
+              isLoading: isWorkflowLoading,
               onPressed:
-                  isLoading ? null : () => _onConfirmReturn(context, bill.id),
+                  isWorkflowLoading
+                      ? null
+                      : () => _onConfirmReturn(context, bill.id),
             ),
           );
         }
 
         if (bill.status == RentalBillStatus.pending) {
-          return _buildCancelButton(context, bill, isLoading);
+          return _buildCancelButton(context, bill, isWorkflowLoading);
         }
 
         return const SizedBox.shrink();
@@ -792,16 +796,24 @@ class _OwnerRentalRequestDetailPageState
   Widget _buildCancelButton(
     BuildContext context,
     RentalBill bill,
-    bool isLoading,
+    bool isExternalLoading,
   ) {
-    return SizedBox(
-      width: double.infinity,
-      child: PrimaryButton(
-        title: AppLocalizations.of(context)!.cancel,
-        backgroundColor: AppColors.primaryRed,
-        isLoading: isLoading,
-        onPressed: isLoading ? null : () => _onCancelBill(context, bill.id),
-      ),
+    return BlocBuilder<OwnerCancelBillCubit, OwnerCancelBillState>(
+      builder: (context, state) {
+        final isCancelLoading = state is OwnerCancelBillLoading;
+        final isDisabled = isExternalLoading || isCancelLoading;
+
+        return SizedBox(
+          width: double.infinity,
+          child: PrimaryButton(
+            title: AppLocalizations.of(context)!.cancel,
+            backgroundColor: AppColors.primaryRed,
+            isLoading: isCancelLoading,
+            onPressed:
+                isDisabled ? null : () => _onCancelBill(context, bill.id),
+          ),
+        );
+      },
     );
   }
 

@@ -42,42 +42,12 @@ import 'package:tour_guide_app/common/pages/selfie_camera.page.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/cancel_rental_bill/cancel_rental_bill_cubit.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/cancel_rental_bill/cancel_rental_bill_state.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
+import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
 
-class RentalBillDetailPage extends StatefulWidget {
+class RentalBillDetailPage extends StatelessWidget {
   final int id;
 
   const RentalBillDetailPage({super.key, required this.id});
-
-  @override
-  State<RentalBillDetailPage> createState() => _RentalBillDetailPageState();
-}
-
-class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
-  final RefreshController _refreshController = RefreshController();
-  bool _isActionLoading = false;
-  StreamSubscription? _subscription;
-
-  @override
-  void initState() {
-    super.initState();
-    _subscription = eventBus.on<RentalSocketNotificationReceivedEvent>().listen(
-      (event) {
-        if (mounted) {
-          _onRefresh(context);
-        }
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
-  }
-
-  void _onRefresh(BuildContext context) {
-    context.read<GetRentalBillDetailCubit>().getBillDetail(widget.id);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +55,7 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
       providers: [
         BlocProvider(
           create:
-              (context) =>
-                  sl<GetRentalBillDetailCubit>()..getBillDetail(widget.id),
+              (context) => sl<GetRentalBillDetailCubit>()..getBillDetail(id),
         ),
         BlocProvider(
           create: (context) => sl<GetVouchersCubit>()..getVouchers(),
@@ -111,164 +80,227 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
         ),
         BlocProvider(create: (context) => sl<CancelRentalBillCubit>()),
       ],
-      child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          backgroundColor: AppColors.backgroundColor,
-          appBar: CustomAppBar(
-            title: AppLocalizations.of(context)!.rentalBillDetail,
-            showBackButton: true,
-            onBackPressed: () => Navigator.pop(context),
-          ),
-          body: MultiBlocListener(
-            listeners: [
-              BlocListener<GetRentalBillDetailCubit, RentalBillDetailState>(
-                listener: (context, state) {
-                  if (state.status == RentalBillDetailInitStatus.success ||
-                      state.status == RentalBillDetailInitStatus.failure) {
-                    _refreshController.refreshCompleted();
-                  }
-                },
-              ),
-              BlocListener<RentalWorkflowCubit, RentalWorkflowState>(
-                listener: (context, state) {
-                  if (state.status == RentalWorkflowStatus.success) {
-                    eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
+      child: _RentalBillContent(id: id),
+    );
+  }
+}
 
-                    String message =
-                        AppLocalizations.of(context)!.actionSuccess;
-                    if (state.action == RentalWorkflowAction.pickup) {
-                      message =
-                          AppLocalizations.of(context)!.rentalPickupSuccess;
-                    } else if (state.action ==
-                        RentalWorkflowAction.returnRequest) {
-                      message =
-                          AppLocalizations.of(
-                            context,
-                          )!.rentalReturnRequestSuccess;
-                    }
+class _RentalBillContent extends StatefulWidget {
+  final int id;
+  const _RentalBillContent({required this.id});
 
+  @override
+  State<_RentalBillContent> createState() => _RentalBillContentState();
+}
+
+class _RentalBillContentState extends State<_RentalBillContent> {
+  final RefreshController _refreshController = RefreshController();
+  bool _isActionLoading = false;
+  StreamSubscription? _subscription;
+  Timer? _paymentPollingTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _subscription = eventBus.on<RentalSocketNotificationReceivedEvent>().listen(
+      (event) {
+        if (mounted) {
+          _onRefresh(context);
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _paymentPollingTimer?.cancel();
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  void _onRefresh(BuildContext context) {
+    context.read<GetRentalBillDetailCubit>().getBillDetail(widget.id);
+  }
+
+  void _startPaymentPolling() {
+    _paymentPollingTimer?.cancel();
+    // Poll every 5 seconds
+    _paymentPollingTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (mounted) {
+        context.read<GetRentalBillDetailCubit>().refreshBillDetail(widget.id);
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        appBar: CustomAppBar(
+          title: AppLocalizations.of(context)!.rentalBillDetail,
+          showBackButton: true,
+          onBackPressed: () => Navigator.pop(context),
+        ),
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<GetRentalBillDetailCubit, RentalBillDetailState>(
+              listener: (context, state) {
+                if (state.status == RentalBillDetailInitStatus.success ||
+                    state.status == RentalBillDetailInitStatus.failure) {
+                  _refreshController.refreshCompleted();
+                }
+
+                if (state.status == RentalBillDetailInitStatus.success &&
+                    state.bill?.status == RentalBillStatus.paid) {
+                  if (_paymentPollingTimer != null &&
+                      _paymentPollingTimer!.isActive) {
+                    _paymentPollingTimer?.cancel();
                     CustomSnackbar.show(
                       context,
-                      message: message,
+                      message: AppLocalizations.of(context)!.paymentSuccess,
                       type: SnackbarType.success,
                     );
-                    _onRefresh(context);
-                  } else if (state.status == RentalWorkflowStatus.failure) {
-                    CustomSnackbar.show(
-                      context,
-                      message:
-                          state.errorMessage ??
-                          AppLocalizations.of(context)!.errorOccurred,
-                      type: SnackbarType.error,
-                    );
-                  }
-                },
-              ),
-              BlocListener<CancelRentalBillCubit, CancelRentalBillState>(
-                listener: (context, state) {
-                  if (state is CancelRentalBillSuccess) {
-                    Navigator.pop(context); // Close dialog
-                    CustomSnackbar.show(
-                      context,
-                      message: AppLocalizations.of(context)!.cancelSuccess,
-                      type: SnackbarType.success,
-                    );
-                    _onRefresh(context);
+                    // If we are showing a dialog (like QR code), we might want to pop it.
+                    // However, managing dialog state is tricky. User can close it.
                     eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
-                  } else if (state is CancelRentalBillFailure) {
-                    Navigator.pop(context); // Close dialog
-                    CustomSnackbar.show(
-                      context,
-                      message: state.message,
-                      type: SnackbarType.error,
-                    );
                   }
-                },
-              ),
-            ],
-            child:
-                BlocConsumer<GetRentalBillDetailCubit, RentalBillDetailState>(
-                  listener: (context, state) {
-                    if (state.status == RentalBillDetailInitStatus.success &&
-                        state.bill != null) {
-                      context.read<RentalPaymentCubit>().init(state.bill!);
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state.status == RentalBillDetailInitStatus.loading) {
-                      return const RentalBillDetailShimmer();
-                    } else if (state.status ==
-                            RentalBillDetailInitStatus.failure &&
-                        state.bill == null) {
-                      return Center(child: Text(state.errorMessage ?? 'Error'));
-                    } else if (state.bill != null) {
-                      final bill = state.bill!;
-                      // Assume single vehicle flow as per user request
-                      final RentalVehicle? vehicle =
-                          bill.details.isNotEmpty
-                              ? bill.details.first.vehicle
-                              : null;
-                      final String licensePlate =
-                          bill.details.isNotEmpty
-                              ? bill.details.first.licensePlate
-                              : '';
+                }
+              },
+            ),
+            BlocListener<RentalWorkflowCubit, RentalWorkflowState>(
+              listener: (context, state) {
+                if (state.status == RentalWorkflowStatus.success) {
+                  eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
 
-                      return SmartRefresher(
-                        controller: _refreshController,
-                        onRefresh: () => _onRefresh(context),
-                        child: SingleChildScrollView(
-                          padding: EdgeInsets.all(16.w),
-                          child: Column(
+                  String message = AppLocalizations.of(context)!.actionSuccess;
+                  if (state.action == RentalWorkflowAction.pickup) {
+                    message = AppLocalizations.of(context)!.rentalPickupSuccess;
+                  } else if (state.action ==
+                      RentalWorkflowAction.returnRequest) {
+                    message =
+                        AppLocalizations.of(
+                          context,
+                        )!.rentalReturnRequestSuccess;
+                  }
+
+                  CustomSnackbar.show(
+                    context,
+                    message: message,
+                    type: SnackbarType.success,
+                  );
+                  _onRefresh(context);
+                } else if (state.status == RentalWorkflowStatus.failure) {
+                  CustomSnackbar.show(
+                    context,
+                    message:
+                        state.errorMessage ??
+                        AppLocalizations.of(context)!.errorOccurred,
+                    type: SnackbarType.error,
+                  );
+                }
+              },
+            ),
+            BlocListener<CancelRentalBillCubit, CancelRentalBillState>(
+              listener: (context, state) {
+                if (state is CancelRentalBillSuccess) {
+                  Navigator.pop(context); // Close dialog
+                  CustomSnackbar.show(
+                    context,
+                    message: AppLocalizations.of(context)!.cancelSuccess,
+                    type: SnackbarType.success,
+                  );
+                  _onRefresh(context);
+                  eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
+                } else if (state is CancelRentalBillFailure) {
+                  Navigator.pop(context); // Close dialog
+                  CustomSnackbar.show(
+                    context,
+                    message: state.message,
+                    type: SnackbarType.error,
+                  );
+                }
+              },
+            ),
+          ],
+          child: BlocConsumer<GetRentalBillDetailCubit, RentalBillDetailState>(
+            listener: (context, state) {
+              if (state.status == RentalBillDetailInitStatus.success &&
+                  state.bill != null) {
+                context.read<RentalPaymentCubit>().init(state.bill!);
+              }
+            },
+            builder: (context, state) {
+              if (state.status == RentalBillDetailInitStatus.loading) {
+                return const RentalBillDetailShimmer();
+              } else if (state.status == RentalBillDetailInitStatus.failure &&
+                  state.bill == null) {
+                return Center(child: Text(state.errorMessage ?? 'Error'));
+              } else if (state.bill != null) {
+                final bill = state.bill!;
+                // Assume single vehicle flow as per user request
+                final RentalVehicle? vehicle =
+                    bill.details.isNotEmpty ? bill.details.first.vehicle : null;
+                final String licensePlate =
+                    bill.details.isNotEmpty
+                        ? bill.details.first.licensePlate
+                        : '';
+
+                return SmartRefresher(
+                  controller: _refreshController,
+                  onRefresh: () => _onRefresh(context),
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      children: [
+                        // 1. Vehicle Info Card
+                        _buildVehicleInfoCard(
+                          context,
+                          vehicle,
+                          licensePlate,
+                          bill,
+                        ),
+                        SizedBox(height: 16.h),
+
+                        // 2. Owner Info Card
+                        if (vehicle?.contract != null)
+                          Column(
                             children: [
-                              // 1. Vehicle Info Card
-                              _buildVehicleInfoCard(
-                                context,
-                                vehicle,
-                                licensePlate,
-                                bill,
-                              ),
+                              _buildOwnerInfoCard(context, vehicle!.contract!),
                               SizedBox(height: 16.h),
-
-                              // 2. Owner Info Card
-                              if (vehicle?.contract != null)
-                                Column(
-                                  children: [
-                                    _buildOwnerInfoCard(
-                                      context,
-                                      vehicle!.contract!,
-                                    ),
-                                    SizedBox(height: 16.h),
-                                  ],
-                                ),
-
-                              // 3. Rental Details (Status, Dates, etc.)
-                              _buildRentalDetailsCard(context, bill),
-                              SizedBox(height: 16.h),
-
-                              ContactInfoForm(bill: bill),
-                              SizedBox(height: 16.h),
-                              // 4. Payment Details
-                              if (bill.status != RentalBillStatus.cancelled)
-                                _buildPaymentDetailsCard(context, bill),
-
-                              // 5. Tracking Images
-                              _buildTrackingImagesCard(context, bill),
-
-                              SizedBox(height: 32.h),
-                              // 5. Workflow Actions
-                              _buildWorkflowActions(context, bill),
-
-                              // 4. Contact/Notes if any
-                              // 4. Contact Info Update
                             ],
                           ),
-                        ),
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
+
+                        // 3. Rental Details (Status, Dates, etc.)
+                        _buildRentalDetailsCard(context, bill),
+                        SizedBox(height: 16.h),
+
+                        ContactInfoForm(bill: bill),
+                        SizedBox(height: 16.h),
+                        // 4. Payment Details
+                        if (bill.status != RentalBillStatus.cancelled)
+                          _buildPaymentDetailsCard(context, bill),
+
+                        // 5. Tracking Images
+                        _buildTrackingImagesCard(context, bill),
+
+                        SizedBox(height: 32.h),
+                        // 5. Workflow Actions
+                        _buildWorkflowActions(context, bill),
+
+                        // 4. Contact/Notes if any
+                        // 4. Contact Info Update
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
         ),
       ),
@@ -1044,6 +1076,7 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
           } else {
             _launchUrl(context, state.payUrl!);
           }
+          _startPaymentPolling();
         } else if (state.status == RentalPaymentStatus.failure) {
           CustomSnackbar.show(
             context,
@@ -1317,6 +1350,7 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
   }
 
   void _onCancelBill(BuildContext context, int id) {
+    final reasonController = TextEditingController();
     showAppDialog(
       context: context,
       title: AppLocalizations.of(context)!.cancelBill,
@@ -1327,6 +1361,12 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
             AppLocalizations.of(context)!.confirmCancelBill,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          SizedBox(height: 16.h),
+          CustomTextField(
+            controller: reasonController,
+            placeholder: AppLocalizations.of(context)!.reason(''),
+            maxLines: 3,
           ),
         ],
       ),
@@ -1347,8 +1387,19 @@ class _RentalBillDetailPageState extends State<RentalBillDetailPage> {
                 title: AppLocalizations.of(context)!.confirm,
                 backgroundColor: AppColors.primaryRed,
                 onPressed: () {
+                  final reason = reasonController.text.trim();
+                  if (reason.length < 10) {
+                    CustomSnackbar.show(
+                      context,
+                      message:
+                          AppLocalizations.of(context)!.cancelReasonTooShort,
+                      type: SnackbarType.error,
+                      onTop: true,
+                    );
+                    return;
+                  }
                   Navigator.pop(context);
-                  context.read<CancelRentalBillCubit>().cancelBill(id);
+                  context.read<CancelRentalBillCubit>().cancelBill(id, reason);
                 },
               ),
             ),

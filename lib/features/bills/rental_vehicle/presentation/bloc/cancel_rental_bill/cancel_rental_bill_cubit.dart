@@ -7,10 +7,10 @@ class CancelRentalBillCubit extends Cubit<CancelRentalBillState> {
 
   CancelRentalBillCubit(this._useCase) : super(CancelRentalBillInitial());
 
-  Future<void> cancelBill(int id) async {
+  Future<void> cancelBill(int id, String reason) async {
     if (isClosed) return;
     emit(CancelRentalBillLoading());
-    final result = await _useCase(id);
+    final result = await _useCase(id, reason);
     if (isClosed) return;
     result.fold(
       (failure) {

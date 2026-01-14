@@ -14,7 +14,6 @@ class NotificationCubit extends Cubit<NotificationState> {
   final GetMyNotificationsUseCase getMyNotificationsUseCase;
   final MarkNotificationReadUseCase markNotificationReadUseCase;
   final NotificationSocketService socketService;
-  Timer? _pollingTimer;
 
   NotificationCubit({
     required this.getMyNotificationsUseCase,
@@ -22,12 +21,6 @@ class NotificationCubit extends Cubit<NotificationState> {
     required this.socketService,
   }) : super(NotificationInitial()) {
     _initSocket();
-    // Poll notifications every 5 seconds
-    _pollingTimer = Timer.periodic(const Duration(seconds: 5), (_) {
-      if (!isClosed) {
-        getNotifications();
-      }
-    });
   }
 
   Future<void> _initSocket() async {
@@ -118,7 +111,6 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   @override
   Future<void> close() {
-    _pollingTimer?.cancel();
     socketService.disconnect();
     return super.close();
   }

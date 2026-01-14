@@ -1874,5 +1874,6 @@
   "addressTooShort": "Địa chỉ quá ngắn (cần ít nhất Xã, Huyện, Tỉnh)",
   "addressTooShortNewToOld": "Địa chỉ quá ngắn",
   "convertOldToNewAddressPageTitle": "Tra cứu: Địa chỉ Cũ → Mới",
-  "convertNewToOldAddressPageTitle": "Tra cứu: Địa chỉ Mới → Cũ"
+  "convertNewToOldAddressPageTitle": "Tra cứu: Địa chỉ Mới → Cũ",
+  "paymentSuccess": "Thanh toán thành công"
 }

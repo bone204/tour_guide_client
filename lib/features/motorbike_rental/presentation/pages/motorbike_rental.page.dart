@@ -251,7 +251,7 @@ class _MotorbikeRentalPageState extends State<MotorbikeRentalPage> {
                                             ? Colors.grey.shade400
                                             : AppColors.primaryBlack,
                                   ),
-                                  maxLines: 2,
+                                  maxLines: 5,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
