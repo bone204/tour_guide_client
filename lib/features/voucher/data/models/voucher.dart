@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 enum VoucherDiscountType { percentage, fixed }
 
@@ -36,6 +37,15 @@ class Voucher extends Equatable {
   });
 
   factory Voucher.fromJson(Map<String, dynamic> json) {
+    DateTime? parseDate(dynamic date) {
+      if (date == null) return null;
+      try {
+        return DateFormat('dd-MM-yyyy HH:mm:ss').parse(date.toString());
+      } catch (_) {
+        return DateTime.tryParse(date.toString());
+      }
+    }
+
     return Voucher(
       id: json['id'],
       code: json['code'],
@@ -55,13 +65,11 @@ class Voucher extends Equatable {
               : null,
       usedCount: json['usedCount'] ?? 0,
       maxUsage: json['maxUsage'] ?? 0,
-      startsAt:
-          json['startsAt'] != null ? DateTime.parse(json['startsAt']) : null,
-      expiresAt:
-          json['expiresAt'] != null ? DateTime.parse(json['expiresAt']) : null,
+      startsAt: parseDate(json['startsAt']),
+      expiresAt: parseDate(json['expiresAt']),
       active: json['active'] ?? false,
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: parseDate(json['createdAt']) ?? DateTime.now(),
+      updatedAt: parseDate(json['updatedAt']) ?? DateTime.now(),
     );
   }
 

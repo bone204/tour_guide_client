@@ -45,9 +45,12 @@ class OwnerRentalRequestDetailPage extends StatefulWidget {
 class _OwnerRentalRequestDetailPageState
     extends State<OwnerRentalRequestDetailPage> {
   final RefreshController _refreshController = RefreshController();
+  final MapController _mapController = MapController();
   bool _isActionLoading = false;
   LatLng? _currentPosition;
+  LatLng? _initialPosition;
   StreamSubscription? _subscription;
+  StreamSubscription<Position>? _positionSubscription;
 
   @override
   void initState() {
@@ -64,7 +67,9 @@ class _OwnerRentalRequestDetailPageState
 
   @override
   void dispose() {
+    _positionSubscription?.cancel();
     _subscription?.cancel();
+    _mapController.dispose();
     super.dispose();
   }
 
@@ -83,14 +88,41 @@ class _OwnerRentalRequestDetailPageState
         return;
       }
 
+      // Get initial position
       final position = await Geolocator.getCurrentPosition();
       if (mounted) {
+        final startPos = LatLng(position.latitude, position.longitude);
         setState(() {
-          _currentPosition = LatLng(position.latitude, position.longitude);
+          _currentPosition = startPos;
+          _initialPosition = startPos;
         });
       }
+
+      // Listen for updates
+      _positionSubscription = Geolocator.getPositionStream(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 10,
+        ),
+      ).listen((Position position) {
+        if (mounted) {
+          final newLocation = LatLng(position.latitude, position.longitude);
+
+          setState(() {
+            _currentPosition = newLocation;
+            // Ensure initial position is set if it wasn't already (corner case)
+            _initialPosition ??= newLocation;
+          });
+
+          try {
+            _mapController.move(newLocation, 15.0);
+          } catch (e) {
+            // Controller might not be ready yet
+          }
+        }
+      });
     } catch (_) {
-      // Ignore errors for preview
+      // Ignore errors
     }
   }
 
@@ -912,51 +944,45 @@ class _OwnerRentalRequestDetailPageState
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16.r),
-            child: IgnorePointer(
-              child: FlutterMap(
-                options: MapOptions(
-                  initialCenter: _currentPosition!,
-                  initialZoom: 15.0,
-                  interactionOptions: const InteractionOptions(
-                    flags: InteractiveFlag.none,
-                  ),
+            child: FlutterMap(
+              mapController: _mapController,
+              options: MapOptions(
+                initialCenter: _initialPosition!,
+                initialZoom: 15.0,
+                backgroundColor: Colors.white,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.tourguide.app',
                 ),
-                children: [
-                  TileLayer(
-                    urlTemplate: MapType.normal.urlTemplate,
-                    userAgentPackageName: 'tour_guide_app',
-                  ),
-                  MarkerLayer(
-                    markers: [
-                      Marker(
-                        point: _currentPosition!,
-                        width: 60,
-                        height: 60,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blue.withOpacity(0.3),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Container(
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryBlue,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 2,
-                                ),
-                              ),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: _currentPosition!,
+                      width: 60,
+                      height: 60,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.3),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Container(
+                            width: 20,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryBlue,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 2),
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           Positioned.fill(
@@ -1008,7 +1034,10 @@ class _OwnerRentalRequestDetailPageState
     );
   }
 
-  void _navigateToTrackingMap(BuildContext context, RentalBill bill) {
+  Future<void> _navigateToTrackingMap(
+    BuildContext context,
+    RentalBill bill,
+  ) async {
     final vehicle = bill.details.isNotEmpty ? bill.details.first.vehicle : null;
     final contract = vehicle?.contract;
 

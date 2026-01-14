@@ -25,6 +25,8 @@ class ChatCubit extends Cubit<ChatState> {
       limit: 3 - state.selectedImages.length,
     );
 
+    if (isClosed) return;
+
     if (images.isNotEmpty) {
       final currentList = List<String>.from(state.selectedImages);
       final availableSlots = 3 - currentList.length;
@@ -77,6 +79,8 @@ class ChatCubit extends Cubit<ChatState> {
         images: imagesToSend,
       ),
     );
+
+    if (isClosed) return;
 
     result.fold(
       (failure) {

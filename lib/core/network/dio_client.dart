@@ -31,9 +31,9 @@ class DioClient {
     dio = Dio(
       BaseOptions(
         baseUrl: ApiUrls.baseURL,
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-        sendTimeout: const Duration(seconds: 30),
+        connectTimeout: const Duration(seconds: 60),
+        receiveTimeout: const Duration(seconds: 60),
+        sendTimeout: const Duration(seconds: 60),
         validateStatus:
             (status) => status != null && status >= 200 && status < 300,
         contentType: Headers.jsonContentType,

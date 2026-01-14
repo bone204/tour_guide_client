@@ -41,7 +41,6 @@ class _TrackingMapPageState extends State<TrackingMapPage>
   OSRMRoute? _currentRoute;
   bool _isRouteLoading = false;
   double _traveledDistance = 0;
-  bool _isFirstLocationUpdate = true;
   MapType _currentMapType = MapType.normal;
 
   StreamSubscription<Position>? _positionStreamSubscription;
@@ -116,6 +115,12 @@ class _TrackingMapPageState extends State<TrackingMapPage>
   }
 
   void _startTracking() {
+    // Initial fetch if we have position
+    if (_currentPosition != null) {
+      _fetchRoute();
+      _updateTraveledDistance();
+    }
+
     // Compass
     _compassStreamSubscription = FlutterCompass.events?.listen((event) {
       if (mounted && event.heading != null) {
@@ -145,20 +150,19 @@ class _TrackingMapPageState extends State<TrackingMapPage>
 
       _updateRouteProgress(newDetail);
 
-      if (_currentRoute == null || _isFirstLocationUpdate) {
+      if (_currentRoute == null) {
         _fetchRoute();
       }
 
       if (_isAutoCenter) {
         _mapController.move(newDetail, _mapController.camera.zoom);
       }
-
-      _isFirstLocationUpdate = false;
     });
   }
 
   Future<void> _fetchRoute() async {
     if (_currentPosition == null) return;
+    if (_isRouteLoading) return;
 
     setState(() => _isRouteLoading = true);
 
@@ -469,10 +473,7 @@ class _TrackingMapPageState extends State<TrackingMapPage>
               heroTag: 'tracking_map_fab',
               onPressed: _recenter,
               backgroundColor: AppColors.primaryBlue,
-              child: Icon(
-                Icons.my_location,
-                color: AppColors.primaryWhite,
-              ),
+              child: Icon(Icons.my_location, color: AppColors.primaryWhite),
             ),
           ),
 
