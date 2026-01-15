@@ -78,7 +78,7 @@ class _StopImagesPageState extends State<StopImagesPage> {
                       message:
                           AppLocalizations.of(
                             context,
-                          )!.mediaUpdatedSuccessfully,
+                          )!.imagesUploadedSuccessfully,
                       type: SnackbarType.success,
                     );
                   }

@@ -99,6 +99,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loading => 'Loading...';
 
   @override
+  String get processing => 'Processing...';
+
+  @override
   String get discardChangesTitle => 'Discard changes?';
 
   @override
@@ -396,6 +399,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get useItinerarySuccess => 'Itinerary used successfully!';
+
+  @override
+  String get mediaUpdatedSuccessfully => 'Media updated successfully';
+
+  @override
+  String get imagesUploadedSuccessfully => 'Images uploaded successfully';
+
+  @override
+  String get videosUploadedSuccessfully => 'Videos uploaded successfully';
 
   @override
   String get details => 'Details';
@@ -1999,9 +2011,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String itemsCount(int count) {
     return '$count items';
   }
-
-  @override
-  String get mediaUpdatedSuccessfully => 'Media updated successfully';
 
   @override
   String photosCount(int count) {

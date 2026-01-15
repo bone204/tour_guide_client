@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
+import 'package:tour_guide_app/common_libs.dart';
 
 class LoadingDialog {
-  static void show(BuildContext context, {String message = 'Đang xử lý...'}) {
+  static void show(BuildContext context, {String? message}) {
     showAppDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -13,7 +14,7 @@ class LoadingDialog {
           const CircularProgressIndicator(),
           const SizedBox(height: 16),
           Text(
-            message,
+            message ?? AppLocalizations.of(context)!.processing,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
@@ -25,4 +26,3 @@ class LoadingDialog {
     Navigator.of(context, rootNavigator: true).pop();
   }
 }
-

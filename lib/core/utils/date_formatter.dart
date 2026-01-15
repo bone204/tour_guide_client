@@ -7,7 +7,12 @@ class DateFormatter {
       final startDate = parse(start);
       final endDate = parse(end);
       final formatter = DateFormat('dd/MM/yyyy');
-      return '${formatter.format(startDate)} - ${formatter.format(endDate)}';
+      final startStr = formatter.format(startDate);
+      final endStr = formatter.format(endDate);
+      if (startStr == endStr) {
+        return startStr;
+      }
+      return '$startStr - $endStr';
     } catch (e) {
       return '$start - $end'; // Fallback to original string if parsing fails
     }
@@ -25,21 +30,21 @@ class DateFormatter {
     if (dateStr == null || dateStr.isEmpty) return DateTime.now();
 
     try {
-      // First try standard ISO 8601
       return DateTime.parse(dateStr);
-    } catch (_) {
-      try {
-        // Try the custom format from server: dd-MM-yyyy HH:mm:ss
-        return DateFormat("dd-MM-yyyy HH:mm:ss").parse(dateStr);
-      } catch (_) {
-        try {
-          // Try another common format: dd/MM/yyyy HH:mm:ss
-          return DateFormat("dd/MM/yyyy HH:mm:ss").parse(dateStr);
-        } catch (e) {
-          // print("Error parsing date: $dateStr, error: $e");
-          return DateTime.now();
-        }
-      }
-    }
+    } catch (_) {}
+
+    try {
+      return DateFormat("dd-MM-yyyy HH:mm:ss").parse(dateStr);
+    } catch (_) {}
+
+    try {
+      return DateFormat("dd/MM/yyyy HH:mm:ss").parse(dateStr);
+    } catch (_) {}
+
+    try {
+      return DateFormat("dd/MM/yyyy").parse(dateStr);
+    } catch (_) {}
+
+    return DateTime.now();
   }
 }

@@ -167,6 +167,7 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                   context.read<GetItineraryDetailCubit>().getItineraryDetail(
                     widget.itineraryId,
                   );
+                  eventBus.fire(ItineraryUpdatedEvent());
                 } else if (publicizeState is PublicizeItineraryFailure) {
                   CustomSnackbar.show(
                     context,
@@ -303,7 +304,7 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                                                 bottom: 8.h,
                                               ),
                                               decoration: BoxDecoration(
-                                                color: AppColors.primaryBlue,
+                                                color: _getStatusColor(status),
                                                 borderRadius:
                                                     BorderRadius.circular(8.r),
                                               ),
@@ -581,6 +582,24 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
         return AppLocalizations.of(context)!.statusMissed;
       default:
         return status;
+    }
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'upcoming':
+        return AppColors.primaryBlue;
+      case 'in_progress':
+      case 'ongoing':
+        return AppColors.primaryOrange;
+      case 'completed':
+        return AppColors.primaryGreen;
+      case 'cancelled':
+        return AppColors.primaryRed;
+      case 'draft':
+        return AppColors.primaryGrey;
+      default:
+        return AppColors.primaryBlue;
     }
   }
 }

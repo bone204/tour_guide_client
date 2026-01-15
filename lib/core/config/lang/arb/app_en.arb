@@ -34,6 +34,7 @@
   "statusBooked": "Booked",
   "statusDelivering": "Delivering",
   "loading": "Loading...",
+  "processing": "Processing...",
   "discardChangesTitle": "Discard changes?",
   "discardChangesMessage": "Are you sure you want to discard your changes?",
   "endDateMustBeAfterStartDate": "End date must be after start date",
@@ -199,6 +200,9 @@
 
   "rent": "Rent",
   "useItinerarySuccess": "Use itinerary successfully!",
+  "mediaUpdatedSuccessfully": "Media updated successfully",
+  "imagesUploadedSuccessfully": "Images uploaded successfully",
+  "videosUploadedSuccessfully": "Videos uploaded successfully",
 
   "details": "Details",
 

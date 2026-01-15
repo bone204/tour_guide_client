@@ -99,6 +99,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get loading => 'Đang tải...';
 
   @override
+  String get processing => 'Đang xử lý...';
+
+  @override
   String get discardChangesTitle => 'Hủy bỏ thay đổi?';
 
   @override
@@ -396,6 +399,15 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get useItinerarySuccess => 'Sử dụng lộ trình thành công!';
+
+  @override
+  String get mediaUpdatedSuccessfully => 'Cập nhật media thành công';
+
+  @override
+  String get imagesUploadedSuccessfully => 'Tải ảnh lên thành công';
+
+  @override
+  String get videosUploadedSuccessfully => 'Tải video lên thành công';
 
   @override
   String get details => 'Chi tiết';
@@ -2005,9 +2017,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String itemsCount(int count) {
     return '$count mục';
   }
-
-  @override
-  String get mediaUpdatedSuccessfully => 'Cập nhật media thành công';
 
   @override
   String photosCount(int count) {

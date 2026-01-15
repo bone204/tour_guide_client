@@ -82,7 +82,7 @@ class _StopVideosPageState extends State<StopVideosPage> {
                       message:
                           AppLocalizations.of(
                             context,
-                          )!.mediaUpdatedSuccessfully,
+                          )!.videosUploadedSuccessfully,
                       type: SnackbarType.success,
                     );
                   }

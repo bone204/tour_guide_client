@@ -151,6 +151,8 @@ class _StopDetailPageState extends State<StopDetailPage> {
                   stopId: widget.stop.id,
                 ),
               );
+              // Fire event to refresh global itinerary list
+              eventBus.fire(ItineraryUpdatedEvent());
               // Navigate back after short delay
               Future.delayed(const Duration(milliseconds: 500), () {
                 if (mounted) {

@@ -75,11 +75,11 @@ class ItineraryCard extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 10.w,
-                        vertical: 6.h,
+                        vertical: 4.h,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.r),
+                        color: _getStatusColor(status),
+                        borderRadius: BorderRadius.circular(8.r),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.1),
@@ -90,12 +90,9 @@ class ItineraryCard extends StatelessWidget {
                       ),
                       child: Text(
                         _getTranslatedStatus(context, status),
-                        style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                          color:
-                              status == 'Upcoming'
-                                  ? AppColors.primaryBlue
-                                  : AppColors.primaryGreen,
-                        ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelSmall?.copyWith(color: Colors.white),
                       ),
                     ),
                   ),
@@ -190,6 +187,24 @@ class ItineraryCard extends StatelessWidget {
       case 'public':
       default:
         return status;
+    }
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'upcoming':
+        return AppColors.primaryBlue;
+      case 'in_progress':
+      case 'ongoing':
+        return AppColors.primaryOrange;
+      case 'completed':
+        return AppColors.primaryGreen;
+      case 'cancelled':
+        return AppColors.primaryRed;
+      case 'draft':
+        return AppColors.primaryGrey;
+      default:
+        return AppColors.primaryBlue;
     }
   }
 }

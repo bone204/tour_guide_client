@@ -275,6 +275,12 @@ abstract class AppLocalizations {
   /// **'Loading...'**
   String get loading;
 
+  /// No description provided for @processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get processing;
+
   /// No description provided for @discardChangesTitle.
   ///
   /// In en, this message translates to:
@@ -868,6 +874,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Itinerary used successfully!'**
   String get useItinerarySuccess;
+
+  /// No description provided for @mediaUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Media updated successfully'**
+  String get mediaUpdatedSuccessfully;
+
+  /// No description provided for @imagesUploadedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Images uploaded successfully'**
+  String get imagesUploadedSuccessfully;
+
+  /// No description provided for @videosUploadedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos uploaded successfully'**
+  String get videosUploadedSuccessfully;
 
   /// No description provided for @details.
   ///
@@ -4006,12 +4030,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} items'**
   String itemsCount(int count);
-
-  /// No description provided for @mediaUpdatedSuccessfully.
-  ///
-  /// In en, this message translates to:
-  /// **'Media updated successfully'**
-  String get mediaUpdatedSuccessfully;
 
   /// No description provided for @photosCount.
   ///
