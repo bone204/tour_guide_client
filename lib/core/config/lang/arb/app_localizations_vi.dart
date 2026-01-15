@@ -777,6 +777,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get findHotel => 'Tìm khách sạn';
 
   @override
+  String get noRoomsFound => 'Không tìm thấy phòng nào';
+
+  @override
   String get selectTable => 'Chọn bàn';
 
   @override

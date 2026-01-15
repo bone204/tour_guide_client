@@ -4,7 +4,6 @@ import 'package:tour_guide_app/core/utils/money_formatter.dart';
 
 class HotelCard extends StatelessWidget {
   final String name;
-  final String type;
   final String location;
   final double pricePerNight;
   final double rating;
@@ -14,7 +13,6 @@ class HotelCard extends StatelessWidget {
   const HotelCard({
     super.key,
     required this.name,
-    required this.type,
     required this.location,
     required this.pricePerNight,
     required this.rating,
@@ -47,18 +45,36 @@ class HotelCard extends StatelessWidget {
               borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
               child: Stack(
                 children: [
-                  Image.asset(
-                    imageUrl,
-                    width: double.infinity,
-                    height: 120.h,
-                    fit: BoxFit.cover,
-                  ),
+                  imageUrl.startsWith('http')
+                      ? Image.network(
+                        imageUrl,
+                        width: double.infinity,
+                        height: 120.h,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            AppImage.defaultHotel,
+                            width: double.infinity,
+                            height: 120.h,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      )
+                      : Image.asset(
+                        imageUrl,
+                        width: double.infinity,
+                        height: 120.h,
+                        fit: BoxFit.cover,
+                      ),
                   // Rating badge
                   Positioned(
                     top: 8.h,
                     right: 8.w,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 4.h,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryBlack.withOpacity(0.6),
                         borderRadius: BorderRadius.circular(12.r),
@@ -77,9 +93,8 @@ class HotelCard extends StatelessWidget {
                           SizedBox(width: 6.w),
                           Text(
                             rating.toStringAsFixed(1),
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(color: AppColors.textSecondary),
                           ),
                         ],
                       ),
@@ -102,14 +117,6 @@ class HotelCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 8.h),
-                  // Type
-                  Text(
-                    type,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSubtitle,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
                   // Location
                   Row(
                     children: [
@@ -126,9 +133,8 @@ class HotelCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           location,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSubtitle,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: AppColors.textSubtitle),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -152,4 +158,3 @@ class HotelCard extends StatelessWidget {
     );
   }
 }
-

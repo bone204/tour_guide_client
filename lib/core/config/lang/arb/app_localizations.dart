@@ -1607,6 +1607,12 @@ abstract class AppLocalizations {
   /// **'Find Hotel'**
   String get findHotel;
 
+  /// No description provided for @noRoomsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No rooms found'**
+  String get noRoomsFound;
+
   /// No description provided for @selectTable.
   ///
   /// In en, this message translates to:

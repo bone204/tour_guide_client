@@ -777,6 +777,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get findHotel => 'Find Hotel';
 
   @override
+  String get noRoomsFound => 'No rooms found';
+
+  @override
   String get selectTable => 'Select Table';
 
   @override

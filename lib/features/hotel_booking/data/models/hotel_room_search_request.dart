@@ -1,43 +1,31 @@
 class HotelRoomSearchRequest {
-  final int? cooperationId;
-  final String? provinceId;
-  final String? districtId;
-  final int? maxPeople;
-  final int? numberOfBeds;
-  final double? minPrice;
-  final double? maxPrice;
-  final String? status;
+  final double? latitude;
+  final double? longitude;
   final String? checkInDate;
   final String? checkOutDate;
-  final int? quantity;
+  final int? guests;
+  final double? minPrice;
+  final double? maxPrice;
 
   HotelRoomSearchRequest({
-    this.cooperationId,
-    this.provinceId,
-    this.districtId,
-    this.maxPeople,
-    this.numberOfBeds,
-    this.minPrice,
-    this.maxPrice,
-    this.status,
+    this.latitude,
+    this.longitude,
     this.checkInDate,
     this.checkOutDate,
-    this.quantity,
+    this.guests,
+    this.minPrice,
+    this.maxPrice,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      if (cooperationId != null) 'cooperationId': cooperationId,
-      if (provinceId != null) 'provinceId': provinceId,
-      if (districtId != null) 'districtId': districtId,
-      if (maxPeople != null) 'maxPeople': maxPeople,
-      if (numberOfBeds != null) 'numberOfBeds': numberOfBeds,
-      if (minPrice != null) 'minPrice': minPrice,
-      if (maxPrice != null) 'maxPrice': maxPrice,
-      if (status != null) 'status': status,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
       if (checkInDate != null) 'checkInDate': checkInDate,
       if (checkOutDate != null) 'checkOutDate': checkOutDate,
-      if (quantity != null) 'quantity': quantity,
+      if (guests != null) 'guests': guests,
+      if (minPrice != null) 'minPrice': minPrice,
+      if (maxPrice != null) 'maxPrice': maxPrice,
     };
   }
 }

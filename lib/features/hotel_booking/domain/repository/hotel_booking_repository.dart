@@ -3,8 +3,10 @@ import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_room_search_request.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
 
+import 'package:tour_guide_app/features/hotel_booking/data/models/hotel.dart';
+
 abstract class HotelBookingRepository {
-  Future<Either<Failure, List<HotelRoom>>> getHotelRooms(
+  Future<Either<Failure, List<Hotel>>> getHotelRooms(
     HotelRoomSearchRequest request,
   );
   Future<Either<Failure, HotelRoom>> getHotelRoomDetail(

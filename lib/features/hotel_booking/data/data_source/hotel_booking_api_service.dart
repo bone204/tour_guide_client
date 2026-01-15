@@ -4,11 +4,12 @@ import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_room_search_request.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/hotel.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class HotelBookingApiService {
-  Future<Either<Failure, List<HotelRoom>>> getHotelRooms(
+  Future<Either<Failure, List<Hotel>>> getHotelRooms(
     HotelRoomSearchRequest request,
   );
   Future<Either<Failure, HotelRoom>> getHotelRoomDetail(
@@ -20,17 +21,17 @@ abstract class HotelBookingApiService {
 
 class HotelBookingApiServiceImpl extends HotelBookingApiService {
   @override
-  Future<Either<Failure, List<HotelRoom>>> getHotelRooms(
+  Future<Either<Failure, List<Hotel>>> getHotelRooms(
     HotelRoomSearchRequest request,
   ) async {
     try {
       final response = await sl<DioClient>().get(
-        ApiUrls.hotelRooms,
+        "${ApiUrls.hotelRooms}/search",
         queryParameters: request.toJson(),
       );
       final List<dynamic> data = response.data;
-      final rooms = data.map((json) => HotelRoom.fromJson(json)).toList();
-      return Right(rooms);
+      final hotels = data.map((json) => Hotel.fromJson(json)).toList();
+      return Right(hotels);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

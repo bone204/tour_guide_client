@@ -37,6 +37,7 @@ import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_d
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_room_list.page.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_booking_info.page.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_room_search_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/presentation/itinerary_explore.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/presentation/itinerary_explore_detail.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/create_itinerary.page.dart';
@@ -352,21 +353,30 @@ class AppRouter {
         );
 
       case AppRouteConstant.hotelList:
+        final request = settings.arguments as HotelRoomSearchRequest?;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const HotelListPage(),
+          builder: (_) => HotelListPage(request: request),
         );
 
       case AppRouteConstant.hotelDetail:
+        final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const HotelDetailPage(),
+          builder:
+              (_) =>
+                  HotelDetailPage(hotel: args?['hotel'], rooms: args?['rooms']),
         );
 
       case AppRouteConstant.hotelRoomList:
+        final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const HotelRoomListPage(),
+          builder:
+              (_) => HotelRoomListPage(
+                request: args?['request'],
+                rooms: args?['rooms'],
+              ),
         );
 
       case AppRouteConstant.hotelBookingInfo:

@@ -1,24 +1,17 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/hotel.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
-import 'package:tour_guide_app/common/widgets/tab_item/videos_tab.widget.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
 
 class HotelDetailPage extends StatefulWidget {
-  final String? imageUrl;
-  final String? name;
-  final String? location;
-  final String? type;
+  final Hotel? hotel;
+  final List<HotelRoom>? rooms;
 
-  const HotelDetailPage({
-    super.key,
-    this.imageUrl,
-    this.name,
-    this.location,
-    this.type,
-  });
+  const HotelDetailPage({super.key, this.hotel, this.rooms});
 
   @override
   State<HotelDetailPage> createState() => _HotelDetailPageState();
@@ -34,7 +27,7 @@ class _HotelDetailPageState extends State<HotelDetailPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -48,16 +41,18 @@ class _HotelDetailPageState extends State<HotelDetailPage>
     Navigator.of(
       context,
       rootNavigator: true,
-    ).pushNamed(AppRouteConstant.hotelRoomList);
+    ).pushNamed(AppRouteConstant.hotelRoomList, arguments: widget.rooms);
   }
 
   @override
   Widget build(BuildContext context) {
+    // If no cooperation passed (e.g. mock or error), use fallbacks temporarily
+    // or handle error. Assuming correct usage from HotelListPage.
     final localizations = AppLocalizations.of(context)!;
-    final displayImageUrl = widget.imageUrl ?? AppImage.defaultHotel;
-    final displayName = widget.name ?? localizations.continentalHotel;
-    final displayLocation = widget.location ?? localizations.district1Hcm;
-    final displayType = widget.type ?? localizations.fiveStarHotel;
+    final displayName = widget.hotel?.name ?? localizations.continentalHotel;
+    final displayLocation = widget.hotel?.address ?? localizations.district1Hcm;
+    final displayType = localizations.hotelNearbyDes;
+    final displayImageUrl = widget.hotel?.photo ?? AppImage.defaultHotel;
 
     return Scaffold(
       body: Stack(
@@ -78,8 +73,20 @@ class _HotelDetailPageState extends State<HotelDetailPage>
   Widget _buildHeaderImage(String imageUrl) {
     return Positioned.fill(
       child: Hero(
-        tag: 'hotel_${widget.name}',
-        child: Image.asset(imageUrl, fit: BoxFit.cover),
+        tag: 'hotel_${widget.hotel?.id ?? "default"}',
+        child:
+            imageUrl.startsWith('http')
+                ? Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      AppImage.defaultHotel,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                )
+                : Image.asset(imageUrl, fit: BoxFit.cover),
       ),
     );
   }
@@ -303,7 +310,6 @@ class _HotelDetailPageState extends State<HotelDetailPage>
           Tab(text: AppLocalizations.of(context)!.aboutTab),
           Tab(text: AppLocalizations.of(context)!.reviewsTab),
           Tab(text: AppLocalizations.of(context)!.photosTab),
-          Tab(text: AppLocalizations.of(context)!.videosTab),
         ],
       ),
     );
@@ -317,17 +323,22 @@ class _HotelDetailPageState extends State<HotelDetailPage>
           case 0:
             return AboutTab(
               description:
+                  widget.hotel?.introduction ??
                   'Discover the beauty of $name. This stunning destination offers breathtaking views, rich cultural experiences, and unforgettable memories. Perfect for travelers seeking adventure and relaxation.\n\nWhether you\'re exploring historic landmarks, enjoying local cuisine, or simply taking in the scenery, this location has something special for everyone.\n\nThe destination is known for its unique charm and exceptional experiences that leave lasting impressions on every visitor. From morning till evening, there are countless activities and sights to explore.',
             );
           case 1:
             return const ReviewsTab();
           case 2:
-            return PhotosTab();
-          case 3:
-            return VideosTab();
+            return PhotosTab(
+              photos:
+                  widget.hotel?.photo != null && widget.hotel!.photo!.isNotEmpty
+                      ? [widget.hotel!.photo!]
+                      : [],
+            );
           default:
             return AboutTab(
               description:
+                  widget.hotel?.introduction ??
                   'Discover the beauty of $name. This stunning destination offers breathtaking views, rich cultural experiences, and unforgettable memories. Perfect for travelers seeking adventure and relaxation.\n\nWhether you\'re exploring historic landmarks, enjoying local cuisine, or simply taking in the scenery, this location has something special for everyone.\n\nThe destination is known for its unique charm and exceptional experiences that leave lasting impressions on every visitor. From morning till evening, there are countless activities and sights to explore.',
             );
         }

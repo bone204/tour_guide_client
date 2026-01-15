@@ -168,6 +168,42 @@ class RoomCard extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Hotel Name and Address
+                          if (room.cooperation != null) ...[
+                            Text(
+                              room.cooperation!.name,
+                              style: theme.titleSmall?.copyWith(
+                                color: AppColors.textSubtitle,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 4.h),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  size: 12.sp,
+                                  color: AppColors.textSubtitle,
+                                ),
+                                SizedBox(width: 4.w),
+                                Expanded(
+                                  child: Text(
+                                    room.cooperation!.address ?? '',
+                                    style: theme.bodySmall?.copyWith(
+                                      color: AppColors.textSubtitle,
+                                      fontSize: 10.sp,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8.h),
+                          ],
+
                           Text(room.name, style: theme.titleMedium?.copyWith()),
                           // Removed room.type as it is not in HotelRoom
                         ],

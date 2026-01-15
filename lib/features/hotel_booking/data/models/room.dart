@@ -57,17 +57,44 @@ class HotelRoom {
           json['area'] != null
               ? double.tryParse(json['area'].toString())
               : null,
-      price: double.parse(json['price'].toString()),
+      price: double.tryParse(json['price']?.toString() ?? '0') ?? 0.0,
       numberOfRooms: json['numberOfRooms'] ?? 1,
       photo: json['photo'],
       description: json['description'],
       amenities: List<String>.from(json['amenities'] ?? []),
-      status: json['status'],
+      status: json['status'] ?? 'active',
       totalBookings: json['totalBookings'] ?? 0,
-      totalRevenue: double.parse((json['totalRevenue'] ?? 0).toString()),
+      totalRevenue:
+          double.tryParse((json['totalRevenue'] ?? 0).toString()) ?? 0.0,
       availableRooms: json['availableRooms'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt:
+          DateTime.tryParse(json['createdAt']?.toString() ?? '') ??
+          DateTime.now(),
+      updatedAt:
+          DateTime.tryParse(json['updatedAt']?.toString() ?? '') ??
+          DateTime.now(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'cooperation': cooperation?.toJson(),
+      'numberOfBeds': numberOfBeds,
+      'maxPeople': maxPeople,
+      'area': area,
+      'price': price,
+      'numberOfRooms': numberOfRooms,
+      'photo': photo,
+      'description': description,
+      'amenities': amenities,
+      'status': status,
+      'totalBookings': totalBookings,
+      'totalRevenue': totalRevenue,
+      'availableRooms': availableRooms,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
   }
 }

@@ -27,6 +27,9 @@ class Cooperation {
   final String? createdAt;
   final String? updatedAt;
 
+  final double? latitude;
+  final double? longitude;
+
   const Cooperation({
     required this.id,
     required this.name,
@@ -55,6 +58,8 @@ class Cooperation {
     this.active = true,
     this.createdAt,
     this.updatedAt,
+    this.latitude,
+    this.longitude,
   });
 
   factory Cooperation.fromJson(Map<String, dynamic> json) {
@@ -86,6 +91,14 @@ class Cooperation {
       active: json['active'] ?? true,
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
+      latitude:
+          json['latitude'] != null
+              ? double.tryParse(json['latitude'].toString())
+              : null,
+      longitude:
+          json['longitude'] != null
+              ? double.tryParse(json['longitude'].toString())
+              : null,
     );
   }
 
@@ -118,6 +131,8 @@ class Cooperation {
       'active': active,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'latitude': latitude,
+      'longitude': longitude,
     };
   }
 }

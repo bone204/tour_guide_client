@@ -240,6 +240,7 @@ import 'package:tour_guide_app/features/hotel_booking/data/repository/hotel_book
 import 'package:tour_guide_app/features/hotel_booking/domain/repository/hotel_booking_repository.dart';
 import 'package:tour_guide_app/features/hotel_booking/domain/usecases/get_hotel_room_detail_usecase.dart';
 import 'package:tour_guide_app/features/hotel_booking/domain/usecases/get_hotel_rooms_usecase.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/find_hotel/find_hotel_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -684,4 +685,5 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<UpdateItineraryInfoCubit>(
     () => UpdateItineraryInfoCubit(updateItineraryInfoUseCase: sl()),
   );
+  sl.registerFactory<FindHotelCubit>(() => FindHotelCubit(sl()));
 }
