@@ -1283,6 +1283,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usernameMinLength => 'Username must be at least 3 characters';
 
   @override
+  String get cannotCancelAfterDeliveryDate => 'Cannot cancel after the delivery date';
+
+  @override
   String get mappingAddressTitle => 'Convert Address';
 
   @override

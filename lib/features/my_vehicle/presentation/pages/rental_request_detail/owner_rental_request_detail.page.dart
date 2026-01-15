@@ -220,9 +220,16 @@ class _OwnerRentalRequestDetailPageState
                   eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
                 } else if (state is OwnerCancelBillFailure) {
                   Navigator.pop(context); // Close dialog if open
+                  String message = state.message;
+                  if (message == 'cannotCancelAfterDeliveryDate') {
+                    message =
+                        AppLocalizations.of(
+                          context,
+                        )!.cannotCancelAfterDeliveryDate;
+                  }
                   CustomSnackbar.show(
                     context,
-                    message: state.message,
+                    message: message,
                     type: SnackbarType.error,
                   );
                 }

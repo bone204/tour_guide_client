@@ -943,6 +943,7 @@
   },
 
   "usernameMinLength": "Tên đăng nhập phải có ít nhất 3 ký tự",
+  "cannotCancelAfterDeliveryDate": "Không thể hủy sau ngày giao xe",
 
   "usernameMaxLength": "Tên đăng nhập không được vượt quá 20 ký tự",
 

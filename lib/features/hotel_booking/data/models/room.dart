@@ -1,85 +1,73 @@
-import 'package:flutter/material.dart';
-import 'package:tour_guide_app/common_libs.dart';
-import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
+import 'package:tour_guide_app/features/cooperations/data/models/cooperation.dart';
 
-class Room {
-  final String id;
+class HotelRoom {
+  final int id;
   final String name;
-  final String type;
-  final int capacity;
-  final double pricePerNight;
+  final Cooperation? cooperation;
+  final int numberOfBeds;
+  final int maxPeople;
+  final double? area;
+  final double price;
+  final int numberOfRooms;
+  final String? photo;
+  final String? description;
   final List<String> amenities;
-  final String description;
-  final bool isAvailable;
-  final String image;
+  final String status;
+  final int totalBookings;
+  final double totalRevenue;
+  final int? availableRooms;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-  Room({
+  HotelRoom({
     required this.id,
     required this.name,
-    required this.type,
-    required this.capacity,
-    required this.pricePerNight,
+    this.cooperation,
+    required this.numberOfBeds,
+    required this.maxPeople,
+    this.area,
+    required this.price,
+    required this.numberOfRooms,
+    this.photo,
+    this.description,
     required this.amenities,
-    required this.description,
-    required this.isAvailable,
-    required this.image,
+    required this.status,
+    required this.totalBookings,
+    required this.totalRevenue,
+    this.availableRooms,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
-  // Mock data
-  static List<Room> getMockRooms(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-    return [
-      Room(
-        id: '1',
-        name: localizations.roomSuperior,
-        type: 'Superior',
-        capacity: 2,
-        pricePerNight: 800000,
-        amenities: ['WiFi', 'Điều hòa', 'TV', 'Minibar'],
-        description: 'Phòng cao cấp với view thành phố',
-        isAvailable: true,
-        image: AppImage.defaultHotel,
-      ),
-      Room(
-        id: '2',
-        name: localizations.roomDeluxe,
-        type: 'Deluxe',
-        capacity: 2,
-        pricePerNight: 1200000,
-        amenities: ['WiFi', 'Điều hòa', 'TV', 'Minibar', 'Bồn tắm'],
-        description: 'Phòng sang trọng với không gian rộng rãi',
-        isAvailable: true,
-        image: AppImage.defaultHotel,
-      ),
-      Room(
-        id: '3',
-        name: localizations.roomSuite,
-        type: 'Suite',
-        capacity: 4,
-        pricePerNight: 2000000,
-        amenities: [
-          'WiFi',
-          'Điều hòa',
-          'TV',
-          'Minibar',
-          'Bồn tắm',
-          'Phòng khách',
-        ],
-        description: 'Suite cao cấp với phòng khách riêng',
-        isAvailable: true,
-        image: AppImage.defaultHotel,
-      ),
-      Room(
-        id: '4',
-        name: localizations.roomFamily,
-        type: 'Family',
-        capacity: 4,
-        pricePerNight: 1500000,
-        amenities: ['WiFi', 'Điều hòa', 'TV', '2 Giường đôi'],
-        description: 'Phòng gia đình rộng rãi',
-        isAvailable: false,
-        image: AppImage.defaultHotel,
-      ),
-    ];
+  bool get isAvailable =>
+      status.toUpperCase() == 'AVAILABLE' ||
+      (availableRooms != null && availableRooms! > 0);
+
+  factory HotelRoom.fromJson(Map<String, dynamic> json) {
+    return HotelRoom(
+      id: json['id'],
+      name: json['name'],
+      cooperation:
+          json['cooperation'] != null
+              ? Cooperation.fromJson(json['cooperation'])
+              : null,
+      numberOfBeds: json['numberOfBeds'] ?? 1,
+      maxPeople: json['maxPeople'] ?? 1,
+      area:
+          json['area'] != null
+              ? double.tryParse(json['area'].toString())
+              : null,
+      price: double.parse(json['price'].toString()),
+      numberOfRooms: json['numberOfRooms'] ?? 1,
+      photo: json['photo'],
+      description: json['description'],
+      amenities: List<String>.from(json['amenities'] ?? []),
+      status: json['status'],
+      totalBookings: json['totalBookings'] ?? 0,
+      totalRevenue: double.parse((json['totalRevenue'] ?? 0).toString()),
+      availableRooms: json['availableRooms'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+    );
   }
 }

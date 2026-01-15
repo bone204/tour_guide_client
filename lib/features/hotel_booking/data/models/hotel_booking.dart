@@ -1,15 +1,12 @@
 import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
 
 class RoomBooking {
-  final Room room;
+  final HotelRoom room;
   final int quantity;
 
-  RoomBooking({
-    required this.room,
-    required this.quantity,
-  });
+  RoomBooking({required this.room, required this.quantity});
 
-  double get totalPrice => room.pricePerNight * quantity;
+  double get totalPrice => room.price * quantity;
 }
 
 class HotelBooking {
@@ -67,6 +64,6 @@ class HotelBooking {
     );
   }
 
-  int get totalRooms => selectedRooms.fold(0, (sum, booking) => sum + booking.quantity);
+  int get totalRooms =>
+      selectedRooms.fold(0, (sum, booking) => sum + booking.quantity);
 }
-

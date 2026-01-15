@@ -2615,6 +2615,12 @@ abstract class AppLocalizations {
   /// **'Username must be at least 3 characters'**
   String get usernameMinLength;
 
+  /// No description provided for @cannotCancelAfterDeliveryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot cancel after the delivery date'**
+  String get cannotCancelAfterDeliveryDate;
+
   /// No description provided for @mappingAddressTitle.
   ///
   /// In en, this message translates to:

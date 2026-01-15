@@ -3,7 +3,7 @@ import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
 
 class RoomCard extends StatelessWidget {
-  final Room room;
+  final HotelRoom room;
   final int selectedQuantity;
   final Function(int) onQuantityChanged;
 
@@ -44,12 +44,38 @@ class RoomCard extends StatelessWidget {
             borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
             child: Stack(
               children: [
-                Image.asset(
-                  room.image,
-                  width: double.infinity,
-                  height: 160.h,
-                  fit: BoxFit.cover,
-                ),
+                if (room.photo != null && room.photo!.isNotEmpty)
+                  Image.network(
+                    room.photo!,
+                    width: double.infinity,
+                    height: 160.h,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: double.infinity,
+                        height: 160.h,
+                        color: AppColors.secondaryGrey,
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.image_not_supported,
+                          color: AppColors.textSubtitle,
+                        ),
+                      );
+                    },
+                  )
+                else
+                  Container(
+                    width: double.infinity,
+                    height: 160.h,
+                    color: AppColors.secondaryGrey,
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.hotel,
+                      size: 48.sp,
+                      color: AppColors.textSubtitle,
+                    ),
+                  ),
+
                 // Available/Unavailable badge
                 Positioned(
                   top: 12.h,
@@ -143,13 +169,7 @@ class RoomCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(room.name, style: theme.titleMedium?.copyWith()),
-                          SizedBox(height: 4.h),
-                          Text(
-                            room.type,
-                            style: theme.displayMedium?.copyWith(
-                              color: AppColors.textSubtitle,
-                            ),
-                          ),
+                          // Removed room.type as it is not in HotelRoom
                         ],
                       ),
                     ),
@@ -164,7 +184,7 @@ class RoomCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(
-                        "${Formatter.currency(room.pricePerNight)}/đêm",
+                        "${Formatter.currency(room.price)}/đêm",
                         style: theme.displayLarge?.copyWith(
                           color: AppColors.primaryOrange,
                         ),
@@ -189,7 +209,7 @@ class RoomCard extends StatelessWidget {
                     ),
                     SizedBox(width: 8.w),
                     Text(
-                      'Tối đa ${room.capacity} người',
+                      'Tối đa ${room.maxPeople} người',
                       style: theme.displayLarge?.copyWith(
                         color: AppColors.textPrimary,
                       ),
@@ -347,9 +367,7 @@ class RoomCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            Formatter.currency(
-                              room.pricePerNight * selectedQuantity,
-                            ),
+                            Formatter.currency(room.price * selectedQuantity),
                             style: theme.titleSmall?.copyWith(
                               color: AppColors.primaryBlue,
                             ),

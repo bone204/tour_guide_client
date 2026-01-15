@@ -1283,6 +1283,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get usernameMinLength => 'Tên đăng nhập phải có ít nhất 3 ký tự';
 
   @override
+  String get cannotCancelAfterDeliveryDate => 'Không thể hủy sau ngày giao xe';
+
+  @override
   String get mappingAddressTitle => 'Chuyển Đổi Địa Chỉ';
 
   @override

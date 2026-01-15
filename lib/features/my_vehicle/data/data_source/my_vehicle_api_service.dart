@@ -455,6 +455,19 @@ class MyVehicleApiServiceImpl extends MyVehicleApiService {
       final successResponse = SuccessResponse.fromJson(response.data);
       return Right(successResponse);
     } on DioException catch (e) {
+      final data = e.response?.data;
+      if (e.response?.statusCode == 400 &&
+          data != null &&
+          data['message'].toString().contains(
+            'Cannot cancel after the delivery date',
+          )) {
+        return Left(
+          ServerFailure(
+            message: 'cannotCancelAfterDeliveryDate',
+            statusCode: e.response?.statusCode,
+          ),
+        );
+      }
       return Left(
         ServerFailure(
           message:
