@@ -45,6 +45,7 @@ class AppRouteConstant {
   static const String itineraryDetail = '/itinerary_detail';
   static const String addStop = '/add_stop';
   static const String editItinerary = '/edit_itinerary';
+  static const String editItineraryInfo = '/edit_itinerary_info';
   static const String createItinerary = '/create_itinerary';
   static const String itineraryExplore = '/itinerary_explore';
   static const String favouriteDestinations = '/favourite_destinations';

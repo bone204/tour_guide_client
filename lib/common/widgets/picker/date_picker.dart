@@ -1,3 +1,4 @@
+import 'package:tour_guide_app/core/utils/date_formatter.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
 
@@ -70,8 +71,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
   Widget build(BuildContext context) {
     String displayText = widget.placeholder;
     if (selectedDate != null) {
-      displayText =
-          '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}';
+      displayText = DateFormatter.formatDate(selectedDate!);
     }
 
     return Column(

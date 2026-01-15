@@ -36,6 +36,7 @@
   "loading": "Loading...",
   "discardChangesTitle": "Discard changes?",
   "discardChangesMessage": "Are you sure you want to discard your changes?",
+  "endDateMustBeAfterStartDate": "End date must be after start date",
   "statusDelivered": "Delivered",
   "statusInProgress": "In Progress",
   "statusReturnRequested": "Return Requested",
@@ -1870,5 +1871,12 @@
   "addressTooShortNewToOld": "Address is too short",
   "convertOldToNewAddressPageTitle": "Lookup: Old → New Address",
   "convertNewToOldAddressPageTitle": "Lookup: New → Old Address",
-  "paymentSuccess": "Payment successful"
+  "paymentSuccess": "Payment successful",
+  "warning": "Warning",
+  "discardChanges": "Discard changes?",
+  "updateSuccess": "Update successful",
+  "requiredFields": "Please fill in all required fields",
+  "itineraryName": "Itinerary Name",
+  "addStop": "Add Stop",
+  "editItinerary": "Edit Itinerary"
 }

@@ -1876,5 +1876,12 @@
   "addressTooShortNewToOld": "Địa chỉ quá ngắn",
   "convertOldToNewAddressPageTitle": "Tra cứu: Địa chỉ Cũ → Mới",
   "convertNewToOldAddressPageTitle": "Tra cứu: Địa chỉ Mới → Cũ",
-  "paymentSuccess": "Thanh toán thành công"
+  "paymentSuccess": "Thanh toán thành công",
+  "warning": "Cảnh báo",
+  "discardChanges": "Hủy thay đổi?",
+  "updateSuccess": "Cập nhật thành công",
+  "requiredFields": "Vui lòng điền đầy đủ thông tin",
+  "itineraryName": "Tên lộ trình",
+  "addStop": "Thêm điểm dừng",
+  "editItinerary": "Chỉnh sửa lộ trình"
 }

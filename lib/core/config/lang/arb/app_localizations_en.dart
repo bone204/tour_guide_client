@@ -105,6 +105,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get discardChangesMessage => 'Are you sure you want to discard your changes?';
 
   @override
+  String get endDateMustBeAfterStartDate => 'End date must be after start date';
+
+  @override
   String get statusDelivered => 'Delivered';
 
   @override
@@ -1818,9 +1821,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectEndDate => 'Please select end date';
 
   @override
-  String get endDateMustBeAfterStartDate => 'End date must be after start date';
-
-  @override
   String get rentalType => 'Rental Type';
 
   @override
@@ -3279,4 +3279,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentSuccess => 'Payment successful';
+
+  @override
+  String get warning => 'Warning';
+
+  @override
+  String get discardChanges => 'Discard changes?';
+
+  @override
+  String get requiredFields => 'Please fill in all required fields';
 }

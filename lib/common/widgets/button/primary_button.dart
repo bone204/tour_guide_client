@@ -61,9 +61,9 @@ class PrimaryButton extends StatelessWidget {
                   ],
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleSmall?.copyWith(color: textColor),
                   ),
                 ],
               ),

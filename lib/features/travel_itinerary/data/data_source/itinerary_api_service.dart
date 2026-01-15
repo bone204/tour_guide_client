@@ -21,6 +21,7 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/claim_itine
 import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_detail.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/checkin_stop_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/checkin_stop_response.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/update_travel_route_request.dart';
 
 abstract class ItineraryApiService {
   Future<Either<Failure, ItineraryResponse>> getItineraryMe();
@@ -93,6 +94,11 @@ abstract class ItineraryApiService {
     int itineraryId,
     int stopId,
     CheckInStopRequest request,
+  );
+
+  Future<Either<Failure, Itinerary>> patchTravelRoute(
+    int id,
+    UpdateTravelRouteRequest request,
   );
 }
 
@@ -644,6 +650,33 @@ class ItineraryApiServiceImpl extends ItineraryApiService {
       return Left(
         ServerFailure(
           message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Itinerary>> patchTravelRoute(
+    int id,
+    UpdateTravelRouteRequest request,
+  ) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.itinerary}/$id',
+        data: request.toJson(),
+      );
+      final itinerary = Itinerary.fromJson(response.data);
+      return Right(itinerary);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message'] ?? 'Unknown error',
           statusCode: e.response?.statusCode,
         ),
       );

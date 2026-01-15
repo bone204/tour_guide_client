@@ -19,6 +19,7 @@ import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary
 import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_detail.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/checkin_stop_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/checkin_stop_response.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/update_travel_route_request.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class ItineraryRepositoryImpl extends ItineraryRepository {
@@ -196,5 +197,13 @@ class ItineraryRepositoryImpl extends ItineraryRepository {
       toleranceMeters: toleranceMeters,
     );
     return _apiService.checkInStop(itineraryId, stopId, request);
+  }
+
+  @override
+  Future<Either<Failure, Itinerary>> updateTravelRoute(
+    int id,
+    UpdateTravelRouteRequest request,
+  ) {
+    return _apiService.patchTravelRoute(id, request);
   }
 }

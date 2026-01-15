@@ -16,6 +16,7 @@ class CustomTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool enabled;
   final bool readOnly;
+  final VoidCallback? onTap;
 
   const CustomTextField({
     super.key,
@@ -33,6 +34,7 @@ class CustomTextField extends StatelessWidget {
     this.inputFormatters,
     this.enabled = true,
     this.readOnly = false,
+    this.onTap,
   });
 
   @override
@@ -75,6 +77,7 @@ class CustomTextField extends StatelessWidget {
           inputFormatters: inputFormatters,
           enabled: enabled,
           readOnly: readOnly,
+          onTap: onTap,
           style: Theme.of(context).textTheme.bodyMedium,
           maxLines: maxLines ?? 1,
           decoration: InputDecoration(

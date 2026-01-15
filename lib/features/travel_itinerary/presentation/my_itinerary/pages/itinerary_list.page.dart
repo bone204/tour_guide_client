@@ -32,6 +32,12 @@ class _ItineraryListPageState extends State<ItineraryListPage> {
         _cubit.getItineraryMe();
       }
     });
+    // Listen to update event to refresh list
+    eventBus.on<ItineraryUpdatedEvent>().listen((_) {
+      if (mounted) {
+        _cubit.getItineraryMe();
+      }
+    });
     // Also listen to CreateItinerarySuccessEvent if needed, but sticking to Delete for now
   }
 

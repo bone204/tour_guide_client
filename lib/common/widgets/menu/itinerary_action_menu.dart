@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItineraryActionMenu extends StatefulWidget {
   final VoidCallback onEdit;
+  final VoidCallback? onEditInfo;
   final VoidCallback onDelete;
   final VoidCallback? onPublicize;
   final bool canPublicize;
@@ -12,6 +13,7 @@ class ItineraryActionMenu extends StatefulWidget {
   const ItineraryActionMenu({
     super.key,
     required this.onEdit,
+    this.onEditInfo,
     required this.onDelete,
     this.onPublicize,
     this.canPublicize = false,
@@ -72,6 +74,17 @@ class _ItineraryActionMenuState extends State<ItineraryActionMenu>
       children: [
         if (_isOpen) ...[
           if (widget.canEdit) ...[
+            _buildMenuItem(
+              onPressed: () {
+                _toggleMenu();
+                widget.onEditInfo?.call();
+              },
+              icon: Icons.edit_note_rounded,
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              iconColor: Theme.of(context).colorScheme.secondary,
+              heroTag: 'edit_info_fab',
+            ),
+            SizedBox(height: 12.h),
             _buildMenuItem(
               onPressed: () {
                 _toggleMenu();

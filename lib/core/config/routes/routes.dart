@@ -43,6 +43,7 @@ import 'package:tour_guide_app/features/travel_itinerary/presentation/update_iti
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_detail/pages/itinerary_detail.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/add_stop.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/edit_itinerary.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/edit_itinerary_info.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/province_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/itinerary.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination.dart';
@@ -128,6 +129,13 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => EditItineraryPage(itinerary: itinerary),
+        );
+
+      case AppRouteConstant.editItineraryInfo:
+        final itinerary = settings.arguments as Itinerary;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => EditItineraryInfoPage(itinerary: itinerary),
         );
 
       case AppRouteConstant.createItinerary:

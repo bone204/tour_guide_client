@@ -23,6 +23,9 @@ class StopAddedEvent {}
 // Event when an itinerary is deleted
 class ItineraryDeletedEvent {}
 
+// Event when an itinerary is updated
+class ItineraryUpdatedEvent {}
+
 // Event when a stop is updated (e.g. media added)
 class StopUpdatedEvent {
   final int stopId;

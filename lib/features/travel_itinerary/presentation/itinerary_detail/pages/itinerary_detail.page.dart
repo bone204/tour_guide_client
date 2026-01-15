@@ -472,12 +472,29 @@ class _ItineraryDetailViewState extends State<_ItineraryDetailView> {
                                 status != 'in_progress' &&
                                 status != 'completed' &&
                                 status != 'missed',
-                            onEdit: () {
-                              Navigator.pushNamed(
+                            onEditInfo: () async {
+                              final result = await Navigator.pushNamed(
+                                context,
+                                AppRouteConstant.editItineraryInfo,
+                                arguments: itinerary,
+                              );
+                              if (result == true && context.mounted) {
+                                context
+                                    .read<GetItineraryDetailCubit>()
+                                    .getItineraryDetail(widget.itineraryId);
+                              }
+                            },
+                            onEdit: () async {
+                              final result = await Navigator.pushNamed(
                                 context,
                                 AppRouteConstant.editItinerary,
                                 arguments: itinerary,
                               );
+                              if (result == true && context.mounted) {
+                                context
+                                    .read<GetItineraryDetailCubit>()
+                                    .getItineraryDetail(widget.itineraryId);
+                              }
                             },
                             onDelete: () {
                               showDialog(

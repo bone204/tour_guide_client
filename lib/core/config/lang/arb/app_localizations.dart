@@ -287,6 +287,12 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to discard your changes?'**
   String get discardChangesMessage;
 
+  /// No description provided for @endDateMustBeAfterStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End date must be after start date'**
+  String get endDateMustBeAfterStartDate;
+
   /// No description provided for @statusDelivered.
   ///
   /// In en, this message translates to:
@@ -3665,12 +3671,6 @@ abstract class AppLocalizations {
   /// **'Please select end date'**
   String get selectEndDate;
 
-  /// No description provided for @endDateMustBeAfterStartDate.
-  ///
-  /// In en, this message translates to:
-  /// **'End date must be after start date'**
-  String get endDateMustBeAfterStartDate;
-
   /// No description provided for @rentalType.
   ///
   /// In en, this message translates to:
@@ -6454,6 +6454,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payment successful'**
   String get paymentSuccess;
+
+  /// No description provided for @warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get warning;
+
+  /// No description provided for @discardChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get discardChanges;
+
+  /// No description provided for @requiredFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in all required fields'**
+  String get requiredFields;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

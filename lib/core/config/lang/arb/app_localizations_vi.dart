@@ -105,6 +105,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get discardChangesMessage => 'Bạn có chắc chắn muốn hủy bỏ các thay đổi không?';
 
   @override
+  String get endDateMustBeAfterStartDate => 'Ngày kết thúc phải sau ngày bắt đầu';
+
+  @override
   String get statusDelivered => 'Đã giao xe';
 
   @override
@@ -1824,9 +1827,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get selectEndDate => 'Vui lòng chọn ngày kết thúc';
 
   @override
-  String get endDateMustBeAfterStartDate => 'Ngày kết thúc phải sau ngày bắt đầu';
-
-  @override
   String get rentalType => 'Loại hình thuê';
 
   @override
@@ -2362,7 +2362,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get selectStartEndTimeError => 'Vui lòng chọn cả thời gian bắt đầu và kết thúc';
 
   @override
-  String get editItinerary => 'Chỉnh sửa lịch trình';
+  String get editItinerary => 'Chỉnh sửa lộ trình';
 
   @override
   String get itineraryUpdated => 'Lịch trình đã được cập nhật';
@@ -3285,4 +3285,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get paymentSuccess => 'Thanh toán thành công';
+
+  @override
+  String get warning => 'Cảnh báo';
+
+  @override
+  String get discardChanges => 'Hủy thay đổi?';
+
+  @override
+  String get requiredFields => 'Vui lòng điền đầy đủ thông tin';
 }
