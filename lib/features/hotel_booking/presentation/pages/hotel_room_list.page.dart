@@ -3,8 +3,8 @@ import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
-import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/widgets/room_card.widget.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/hotel.dart';
 import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_room_search_request.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/find_hotel/find_hotel_cubit.dart';
@@ -14,8 +14,9 @@ import 'package:tour_guide_app/service_locator.dart';
 class HotelRoomListPage extends StatefulWidget {
   final HotelRoomSearchRequest? request;
   final List<HotelRoom>? rooms;
+  final Hotel? hotel;
 
-  const HotelRoomListPage({super.key, this.request, this.rooms});
+  const HotelRoomListPage({super.key, this.request, this.rooms, this.hotel});
 
   @override
   State<HotelRoomListPage> createState() => _HotelRoomListPageState();
@@ -65,34 +66,62 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
       return;
     }
 
-    // Calculate total
-    final totalCost = selectedRoomBookings.fold<double>(
-      0,
-      (sum, booking) => sum + booking.totalPrice,
-    );
+    // Get dates from request or default
+    final now = DateTime.now();
+    DateTime checkInDate = now.add(const Duration(days: 1));
+    DateTime checkOutDate = now.add(const Duration(days: 2));
 
-    // Use the first room's cooperation info as the hotel info if available
-    // Assuming rooms belong to same hotel in this context or handle multiple hotels logic
-    String hotelName = AppLocalizations.of(context)!.continentalHotel;
-    String hotelAddress = AppLocalizations.of(context)!.district1Hcm;
-
-    if (selectedRoomBookings.isNotEmpty &&
-        selectedRoomBookings.first.room.cooperation != null) {
-      hotelName = selectedRoomBookings.first.room.cooperation!.name;
-      hotelAddress = selectedRoomBookings.first.room.cooperation!.address ?? '';
+    if (widget.request?.checkInDate != null) {
+      try {
+        checkInDate = DateTime.parse(widget.request!.checkInDate!);
+      } catch (_) {}
     }
 
-    final booking = HotelBooking(
-      hotelName: hotelName,
-      hotelAddress: hotelAddress,
-      selectedRooms: selectedRoomBookings,
-      totalCost: totalCost,
-      numberOfNights: 1, // Logic to be improved later
-    );
+    if (widget.request?.checkOutDate != null) {
+      try {
+        checkOutDate = DateTime.parse(widget.request!.checkOutDate!);
+      } catch (_) {}
+    }
 
-    Navigator.of(
-      context,
-    ).pushNamed(AppRouteConstant.hotelBookingInfo, arguments: booking);
+    // Improve logic: if checkOut is before checkIn, set it to checkIn + 1
+    if (checkOutDate.isBefore(checkInDate)) {
+      checkOutDate = checkInDate.add(const Duration(days: 1));
+    }
+
+    // Use passed hotel or fallback logic (though hotel should be passed preferably)
+    Hotel currentHotel =
+        widget.hotel ??
+        Hotel(
+          id: 0,
+          name: AppLocalizations.of(context)!.continentalHotel,
+          address: AppLocalizations.of(context)!.district1Hcm,
+        );
+
+    // If hotel was not passed but rooms have cooperation info, update info
+    if (widget.hotel == null &&
+        selectedRoomBookings.isNotEmpty &&
+        selectedRoomBookings.first.room.cooperation != null) {
+      // Ideally we should have the full hotel object.
+      // For now, creating a temporary one based on available info if needed,
+      // but typically we should ensure 'hotel' is passed to this page.
+      final cooperation = selectedRoomBookings.first.room.cooperation!;
+      currentHotel = Hotel(
+        id: currentHotel.id,
+        name: cooperation.name,
+        address: cooperation.address,
+        photo: cooperation.photo,
+      );
+    }
+
+    Navigator.of(context).pushNamed(
+      AppRouteConstant.hotelBookingInfo,
+      arguments: {
+        'hotel': currentHotel,
+        'selectedRooms': selectedRoomBookings,
+        'checkInDate': checkInDate,
+        'checkOutDate': checkOutDate,
+      },
+    );
   }
 
   double _getTotalPrice() {

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination_query.dart';
-import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_cubit.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destination/favorite_destinations_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/pages/destination_detail.page.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_state.dart';

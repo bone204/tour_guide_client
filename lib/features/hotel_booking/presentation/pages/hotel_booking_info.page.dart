@@ -1,220 +1,489 @@
+import 'package:intl/intl.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
 import 'package:tour_guide_app/core/utils/money_formatter.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/widgets/bill_info_item.widget.dart';
-import 'package:tour_guide_app/features/car_rental/presentation/widgets/payment_method_selector.widget.dart';
-import 'package:tour_guide_app/features/car_rental/presentation/widgets/reward_point_selector.widget.dart';
-import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/hotel.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
 import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 
 class HotelBookingInfoPage extends StatefulWidget {
-  final HotelBooking hotelBooking;
+  final Hotel hotel;
+  final List<RoomBooking> selectedRooms;
+  final DateTime checkInDate;
+  final DateTime checkOutDate;
 
-  const HotelBookingInfoPage({super.key, required this.hotelBooking});
+  const HotelBookingInfoPage({
+    super.key,
+    required this.hotel,
+    required this.selectedRooms,
+    required this.checkInDate,
+    required this.checkOutDate,
+  });
 
   @override
   State<HotelBookingInfoPage> createState() => _HotelBookingInfoPageState();
 }
 
 class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
-  String? selectedBank;
-  int travelPoint = 5000;
-  int travelPointToUse = 0;
+  late TextEditingController _checkInController;
+  late TextEditingController _checkOutController;
+  late DateTime _checkInDate;
+  late DateTime _checkOutDate;
+  late List<RoomBooking> _selectedRooms;
 
-  final List<Map<String, String>> bankOptions = [
-    {'id': 'visa', 'image': AppImage.visa},
-    {'id': 'mastercard', 'image': AppImage.mastercard},
-    {'id': 'paypal', 'image': AppImage.paypal},
-    {'id': 'momo', 'image': AppImage.momo},
-    {'id': 'zalopay', 'image': AppImage.zalopay},
-    {'id': 'shopee', 'image': AppImage.shopee},
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _checkInDate = DateTime(
+      widget.checkInDate.year,
+      widget.checkInDate.month,
+      widget.checkInDate.day,
+      14,
+      0,
+    );
+    _checkOutDate = DateTime(
+      widget.checkOutDate.year,
+      widget.checkOutDate.month,
+      widget.checkOutDate.day,
+      12,
+      0,
+    );
+    _selectedRooms = List.from(widget.selectedRooms);
+    _checkInController = TextEditingController(
+      text: DateFormat('dd/MM/yyyy - HH:mm').format(_checkInDate),
+    );
+    _checkOutController = TextEditingController(
+      text: DateFormat('dd/MM/yyyy - HH:mm').format(_checkOutDate),
+    );
+  }
+
+  @override
+  void dispose() {
+    _checkInController.dispose();
+    _checkOutController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectCheckInDate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _checkInDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    if (picked != null) {
+      final newCheckIn = DateTime(
+        picked.year,
+        picked.month,
+        picked.day,
+        14,
+        0,
+      ); // 14:00
+
+      if (newCheckIn.isAfter(_checkOutDate)) {
+        // If check-in is after check-out, reset check-out to check-in + 1 day
+        setState(() {
+          _checkInDate = newCheckIn;
+          _checkOutDate = DateTime(
+            newCheckIn.year,
+            newCheckIn.month,
+            newCheckIn.day + 1,
+            12,
+            0,
+          );
+          _checkInController.text = DateFormat(
+            'dd/MM/yyyy - HH:mm',
+          ).format(_checkInDate);
+          _checkOutController.text = DateFormat(
+            'dd/MM/yyyy - HH:mm',
+          ).format(_checkOutDate);
+        });
+      } else {
+        setState(() {
+          _checkInDate = newCheckIn;
+          _checkInController.text = DateFormat(
+            'dd/MM/yyyy - HH:mm',
+          ).format(_checkInDate);
+        });
+      }
+    }
+  }
+
+  Future<void> _selectCheckOutDate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _checkOutDate,
+      firstDate: _checkInDate.add(const Duration(days: 1)),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    if (picked != null) {
+      final newCheckOut = DateTime(
+        picked.year,
+        picked.month,
+        picked.day,
+        12,
+        0,
+      ); // 12:00
+
+      if (newCheckOut.isBefore(_checkInDate)) {
+        CustomSnackbar.show(
+          context,
+          message: AppLocalizations.of(context)!.checkOutMustBeAfterCheckIn,
+          type: SnackbarType.warning,
+        );
+      } else {
+        setState(() {
+          _checkOutDate = newCheckOut;
+          _checkOutController.text = DateFormat(
+            'dd/MM/yyyy - HH:mm',
+          ).format(_checkOutDate);
+        });
+      }
+    }
+  }
+
+  void _updateRoomQuantity(int index, int change) {
+    setState(() {
+      final currentBooking = _selectedRooms[index];
+      final newQuantity = currentBooking.quantity + change;
+
+      if (newQuantity <= 0) {
+        _selectedRooms.removeAt(index);
+      } else {
+        _selectedRooms[index] = RoomBooking(
+          room: currentBooking.room,
+          quantity: newQuantity,
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
-    final booking = widget.hotelBooking;
 
-    final totalAmount = booking.totalCost;
-    final totalAfterPoint = (totalAmount - travelPointToUse).clamp(
+    final numberOfNights = _checkOutDate.difference(_checkInDate).inDays;
+    final actualNights = numberOfNights > 0 ? numberOfNights : 1;
+
+    final pricePerNight = _selectedRooms.fold<double>(
       0,
-      totalAmount,
+      (sum, booking) => sum + booking.totalPrice,
     );
+    final totalAmount = pricePerNight * actualNights;
 
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: CustomAppBar(
-        title: AppLocalizations.of(context)!.bookingInfo,
-        showBackButton: true,
-        onBackPressed: () => Navigator.pop(context),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Hotel image
-            Container(
-              width: double.infinity,
-              height: 236.h,
-              color: AppColors.primaryBlue.withOpacity(0.1),
-              child: Image.asset(AppImage.defaultHotel, fit: BoxFit.cover),
-            ),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        appBar: CustomAppBar(
+          title: AppLocalizations.of(context)!.bookingInfo,
+          showBackButton: true,
+          onBackPressed: () => Navigator.pop(context),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Hotel image
+              Container(
+                width: double.infinity,
+                height: 236.h,
+                color: AppColors.primaryBlue.withOpacity(0.1),
+                child:
+                    widget.hotel.photo != null
+                        ? Image.network(
+                          widget.hotel.photo!,
+                          fit: BoxFit.cover,
+                          errorBuilder:
+                              (context, url, error) => Image.asset(
+                                AppImage.defaultHotel,
+                                fit: BoxFit.cover,
+                              ),
+                        )
+                        : Image.asset(AppImage.defaultHotel, fit: BoxFit.cover),
+              ),
 
-            Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Hotel name
-                  Text(
-                    booking.hotelName ?? AppLocalizations.of(context)!.hotel,
-                    style: theme.titleLarge,
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    booking.hotelAddress ??
-                        AppLocalizations.of(context)!.district1Hcm,
-                    style: theme.bodyMedium?.copyWith(
-                      color: AppColors.textSubtitle,
+              Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Hotel name
+                    Text(widget.hotel.name, style: theme.titleLarge),
+                    SizedBox(height: 8.h),
+                    Text(
+                      widget.hotel.province ??
+                          AppLocalizations.of(context)!.district1Hcm,
+                      style: theme.bodyMedium?.copyWith(
+                        color: AppColors.textSubtitle,
+                      ),
                     ),
-                  ),
 
-                  SizedBox(height: 16.h),
-                  Divider(height: 2.h, color: AppColors.primaryGrey),
-                  SizedBox(height: 8.h),
+                    SizedBox(height: 16.h),
+                    Divider(height: 2.h, color: AppColors.primaryGrey),
+                    SizedBox(height: 16.h),
 
-                  // Guest info (mock data)
-                  BillInfo(
-                    label: AppLocalizations.of(context)!.customer,
-                    value: "Nguyễn Văn A",
-                  ),
-                  BillInfo(
-                    label: AppLocalizations.of(context)!.phoneNumber,
-                    value: "0909123456",
-                  ),
-                  BillInfo(
-                    label: AppLocalizations.of(context)!.email,
-                    value: "nguyenvana@gmail.com",
-                  ),
-
-                  SizedBox(height: 8.h),
-                  Divider(height: 2.h, color: AppColors.primaryGrey),
-                  SizedBox(height: 8.h),
-
-                  // Booking details
-                  BillInfo(
-                    label: AppLocalizations.of(context)!.checkIn,
-                    value: "14:00 - 01/11/2025",
-                  ),
-                  BillInfo(
-                    label: AppLocalizations.of(context)!.checkOut,
-                    value: "12:00 - 03/11/2025",
-                  ),
-                  BillInfo(
-                    label: AppLocalizations.of(context)!.numberOfNights,
-                    value: "${booking.numberOfNights ?? 2}",
-                  ),
-
-                  SizedBox(height: 8.h),
-                  Divider(height: 2.h, color: AppColors.primaryGrey),
-                  SizedBox(height: 8.h),
-
-                  // Room details
-                  Text(
-                    AppLocalizations.of(context)!.selectedRoom,
-                    style: theme.titleMedium,
-                  ),
-                  SizedBox(height: 8.h),
-                  ...booking.selectedRooms.map((roomBooking) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 8.h),
+                    // Booking details
+                    Column(
+                      children: [
+                        CustomTextField(
+                          label: AppLocalizations.of(context)!.checkIn,
+                          placeholder: '',
+                          controller: _checkInController,
+                          readOnly: true,
+                          onTap: _selectCheckInDate,
+                        ),
+                        SizedBox(height: 16.h),
+                        CustomTextField(
+                          label: AppLocalizations.of(context)!.checkOut,
+                          placeholder: '',
+                          controller: _checkOutController,
+                          readOnly: true,
+                          onTap: _selectCheckOutDate,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.h),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.h,
+                        horizontal: 16.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryBlue.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                          color: AppColors.primaryBlue.withOpacity(0.3),
+                        ),
+                      ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Text(
-                              '${roomBooking.room.name} x${roomBooking.quantity}',
-                              style: theme.bodyMedium,
-                            ),
+                          Icon(
+                            Icons.nights_stay_rounded,
+                            color: AppColors.primaryBlue,
+                            size: 20.sp,
                           ),
+                          SizedBox(width: 8.w),
                           Text(
-                            Formatter.currency(roomBooking.totalPrice),
-                            style: theme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
+                            "${AppLocalizations.of(context)!.numberOfNights}: ${numberOfNights > 0 ? numberOfNights : 1}",
+                            style: theme.titleMedium?.copyWith(
+                              color: AppColors.primaryBlue,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
                         ],
                       ),
-                    );
-                  }).toList(),
-
-                  SizedBox(height: 8.h),
-                  Divider(height: 2.h, color: AppColors.primaryGrey),
-                  SizedBox(height: 16.h),
-
-                  // Reward points
-                  if (travelPoint > 0) ...[
-                    RewardPointSelector(
-                      travelPoint: travelPoint,
-                      travelPointToUse: travelPointToUse,
-                      onChanged:
-                          (value) => setState(() => travelPointToUse = value),
                     ),
+
                     SizedBox(height: 16.h),
-                  ],
+                    Divider(height: 2.h, color: AppColors.primaryGrey),
+                    SizedBox(height: 8.h),
 
-                  // Price summary
-                  BillInfo(
-                    label: AppLocalizations.of(context)!.totalRoomPrice,
-                    value: Formatter.currency(totalAmount),
-                  ),
-                  if (travelPointToUse > 0)
-                    BillInfo(
-                      label: AppLocalizations.of(context)!.discountPointsLabel,
-                      value: "-${Formatter.currency(travelPointToUse)}",
+                    // Room details
+                    Text(
+                      AppLocalizations.of(context)!.selectedRoom,
+                      style: theme.titleMedium,
                     ),
-                  SizedBox(height: 8.h),
-                  Divider(height: 2.h, color: AppColors.primaryGrey),
-                  SizedBox(height: 8.h),
-                  BillInfo(
-                    label: AppLocalizations.of(context)!.totalPayment,
-                    value: Formatter.currency(totalAfterPoint),
-                  ),
+                    SizedBox(height: 8.h),
+                    ..._selectedRooms.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final roomBooking = entry.value;
 
-                  SizedBox(height: 24.h),
-
-                  // Payment method
-                  Text(
-                    AppLocalizations.of(context)!.payment,
-                    style: theme.titleMedium,
-                  ),
-                  SizedBox(height: 16.h),
-                  PaymentMethodSelector(
-                    bankOptions: bankOptions,
-                    selectedBank: selectedBank,
-                    onSelect: (id) => setState(() => selectedBank = id),
-                  ),
-
-                  SizedBox(height: 24.h),
-
-                  // Confirm button
-                  PrimaryButton(
-                    title: AppLocalizations.of(context)!.confirmBooking,
-                    onPressed: () {
-                      CustomSnackbar.show(
-                        context,
-                        message: AppLocalizations.of(context)!.bookingSuccess,
-                        type: SnackbarType.success,
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 12.h),
+                        padding: EdgeInsets.all(12.w),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhite,
+                          borderRadius: BorderRadius.circular(12.r),
+                          border: Border.all(color: AppColors.secondaryGrey),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8.r),
+                              child:
+                                  roomBooking.room.photo != null
+                                      ? Image.network(
+                                        roomBooking.room.photo!,
+                                        width: 80.w,
+                                        height: 80.w,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, url, error) =>
+                                                Image.asset(
+                                                  AppImage.defaultHotel,
+                                                  width: 80.w,
+                                                  height: 80.w,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                      )
+                                      : Image.asset(
+                                        AppImage.defaultHotel,
+                                        width: 80.w,
+                                        height: 80.w,
+                                        fit: BoxFit.cover,
+                                      ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    roomBooking.room.name,
+                                    style: theme.titleSmall?.copyWith(
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    Formatter.currency(roomBooking.room.price),
+                                    style: theme.bodySmall?.copyWith(
+                                      color: AppColors.primaryBlue,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      InkWell(
+                                        onTap:
+                                            () =>
+                                                _updateRoomQuantity(index, -1),
+                                        child: Container(
+                                          padding: EdgeInsets.all(4.w),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.secondaryGrey
+                                                .withOpacity(0.3),
+                                            borderRadius: BorderRadius.circular(
+                                              4.r,
+                                            ),
+                                          ),
+                                          child: Icon(
+                                            Icons.remove,
+                                            size: 16.sp,
+                                            color: AppColors.textPrimary,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${roomBooking.quantity}',
+                                        style: theme.bodyMedium?.copyWith(
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap:
+                                            () => _updateRoomQuantity(index, 1),
+                                        child: Container(
+                                          padding: EdgeInsets.all(4.w),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primaryBlue,
+                                            borderRadius: BorderRadius.circular(
+                                              4.r,
+                                            ),
+                                          ),
+                                          child: Icon(
+                                            Icons.add,
+                                            size: 16.sp,
+                                            color: AppColors.primaryWhite,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       );
-                    },
-                    backgroundColor: AppColors.primaryBlue,
-                    textColor: AppColors.textSecondary,
-                  ),
-                ],
+                    }).toList(),
+
+                    SizedBox(height: 8.h),
+                    Divider(height: 2.h, color: AppColors.primaryGrey),
+                    SizedBox(height: 16.h),
+
+                    ..._selectedRooms.map((roomBooking) {
+                      final itemTotal = roomBooking.totalPrice * actualNights;
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 12.h),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    roomBooking.room.name,
+                                    style: theme.bodyMedium?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    '${Formatter.currency(roomBooking.room.price)} x ${roomBooking.quantity} x $actualNights ${AppLocalizations.of(context)!.nightUnit}',
+                                    style: theme.bodySmall?.copyWith(
+                                      color: AppColors.textSubtitle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              Formatter.currency(itemTotal),
+                              style: theme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                    Divider(height: 2.h, color: AppColors.primaryGrey),
+                    SizedBox(height: 8.h),
+                    BillInfo(
+                      label: AppLocalizations.of(context)!.totalPayment,
+                      value: Formatter.currency(totalAmount),
+                    ),
+
+                    SizedBox(height: 24.h),
+
+                    // Confirm button
+                    PrimaryButton(
+                      title: AppLocalizations.of(context)!.confirmBooking,
+                      onPressed: () {
+                        CustomSnackbar.show(
+                          context,
+                          message: AppLocalizations.of(context)!.bookingSuccess,
+                          type: SnackbarType.success,
+                        );
+                      },
+                      backgroundColor: AppColors.primaryBlue,
+                      textColor: AppColors.textSecondary,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

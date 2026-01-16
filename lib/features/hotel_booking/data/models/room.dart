@@ -98,3 +98,12 @@ class HotelRoom {
     };
   }
 }
+
+class RoomBooking {
+  final HotelRoom room;
+  final int quantity;
+
+  RoomBooking({required this.room, required this.quantity});
+
+  double get totalPrice => room.price * quantity;
+}

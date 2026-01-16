@@ -11,20 +11,27 @@ import 'package:tour_guide_app/features/destination/data/models/feedback_request
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class DestinationApiService {
-  Future<Either<Failure, DestinationResponse>> getDestinations(DestinationQuery destinationQuery);
-  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(DestinationQuery destinationQuery);
+  Future<Either<Failure, DestinationResponse>> getDestinations(
+    DestinationQuery destinationQuery,
+  );
+  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(
+    DestinationQuery destinationQuery,
+  );
   Future<Either<Failure, Destination>> getDestinationById(int id);
   Future<Either<Failure, DestinationResponse>> getFavorites();
   Future<Either<Failure, Destination>> favoriteDestination(int id);
+  Future<Either<Failure, SuccessResponse>> deleteFavoriteDestination(int id);
 
-  Future<Either<Failure, SuccessResponse>> createFeedback(AddFeedbackRequest addFeedbackRequest);
-  
+  Future<Either<Failure, SuccessResponse>> createFeedback(
+    AddFeedbackRequest addFeedbackRequest,
+  );
 }
 
 class DestinationApiServiceImpl extends DestinationApiService {
-
   @override
-  Future<Either<Failure, DestinationResponse>> getDestinations(DestinationQuery destinationQuery) async {
+  Future<Either<Failure, DestinationResponse>> getDestinations(
+    DestinationQuery destinationQuery,
+  ) async {
     try {
       final response = await sl<DioClient>().get(
         ApiUrls.getDestinations,
@@ -45,7 +52,9 @@ class DestinationApiServiceImpl extends DestinationApiService {
   }
 
   @override
-  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(DestinationQuery destinationQuery) async {
+  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(
+    DestinationQuery destinationQuery,
+  ) async {
     try {
       final response = await sl<DioClient>().get(
         "${ApiUrls.getDestinations}/recommend",
@@ -64,7 +73,6 @@ class DestinationApiServiceImpl extends DestinationApiService {
       return Left(ServerFailure(message: e.toString()));
     }
   }
-
 
   @override
   Future<Either<Failure, Destination>> getDestinationById(int id) async {
@@ -116,6 +124,29 @@ class DestinationApiServiceImpl extends DestinationApiService {
 
       final destination = Destination.fromJson(response.data);
       return Right(destination);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> deleteFavoriteDestination(
+    int id,
+  ) async {
+    try {
+      final response = await sl<DioClient>().delete(
+        ApiUrls.favoriteDestination(id),
+      );
+
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

@@ -1,9 +1,12 @@
+import 'package:dartz/dartz.dart';
+import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/core/usecases/no_params.dart';
 import 'package:tour_guide_app/features/destination/data/models/destination_response.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/favorite_destination.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_favorites.dart';
-import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_state.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destination/favorite_destinations_state.dart';
+import 'package:tour_guide_app/features/destination/domain/usecases/delete_favorite_destination.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class FavoriteDestinationsCubit extends Cubit<FavoriteDestinationsState> {
@@ -46,7 +49,12 @@ class FavoriteDestinationsCubit extends Cubit<FavoriteDestinationsState> {
 
     emit(state.copyWith(favoriteIds: updatedIds, resetError: true));
 
-    final result = await sl<FavoriteDestinationUseCase>().call(destinationId);
+    final Either<Failure, dynamic> result;
+    if (isCurrentlyFavorite) {
+      result = await sl<DeleteFavoriteDestinationUseCase>().call(destinationId);
+    } else {
+      result = await sl<FavoriteDestinationUseCase>().call(destinationId);
+    }
 
     return result.fold((failure) {
       emit(

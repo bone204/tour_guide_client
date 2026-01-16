@@ -7,10 +7,17 @@ import 'package:tour_guide_app/features/destination/data/models/destination_resp
 import 'package:tour_guide_app/features/destination/data/models/feedback_request.dart';
 
 abstract class DestinationRepository {
-  Future<Either<Failure, DestinationResponse>> getDestinations(DestinationQuery destinationQuery);
-  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(DestinationQuery destinationQuery);
+  Future<Either<Failure, DestinationResponse>> getDestinations(
+    DestinationQuery destinationQuery,
+  );
+  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(
+    DestinationQuery destinationQuery,
+  );
   Future<Either<Failure, Destination>> getDestinationById(int id);
   Future<Either<Failure, DestinationResponse>> getFavorites();
   Future<Either<Failure, Destination>> favoriteDestination(int id);
-  Future<Either<Failure, SuccessResponse>> createFeedback(AddFeedbackRequest params);
+  Future<Either<Failure, SuccessResponse>> deleteFavoriteDestination(int id);
+  Future<Either<Failure, SuccessResponse>> createFeedback(
+    AddFeedbackRequest params,
+  );
 }

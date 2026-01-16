@@ -3306,4 +3306,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get requiredFields => 'Vui lòng điền đầy đủ thông tin';
+
+  @override
+  String get checkOutMustBeAfterCheckIn => 'Ngày trả phòng phải sau ngày nhận phòng';
+
+  @override
+  String get pricePerNight => 'Giá mỗi đêm';
+
+  @override
+  String get nightUnit => 'đêm';
 }

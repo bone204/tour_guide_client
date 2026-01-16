@@ -1883,5 +1883,8 @@
   "requiredFields": "Please fill in all required fields",
   "itineraryName": "Itinerary Name",
   "addStop": "Add Stop",
-  "editItinerary": "Edit Itinerary"
+  "editItinerary": "Edit Itinerary",
+  "checkOutMustBeAfterCheckIn": "Check-out date must be after check-in date",
+  "pricePerNight": "Price per night",
+  "nightUnit": "night(s)"
 }

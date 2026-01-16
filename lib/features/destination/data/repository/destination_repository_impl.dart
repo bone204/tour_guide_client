@@ -13,12 +13,16 @@ class DestinationRepositoryImpl extends DestinationRepository {
   final _apiService = sl<DestinationApiService>();
 
   @override
-  Future<Either<Failure, DestinationResponse>> getDestinations(DestinationQuery destinationQuery) async {
+  Future<Either<Failure, DestinationResponse>> getDestinations(
+    DestinationQuery destinationQuery,
+  ) async {
     return await _apiService.getDestinations(destinationQuery);
   }
 
   @override
-  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(DestinationQuery destinationQuery) async {
+  Future<Either<Failure, DestinationResponse>> getRecommendDestinations(
+    DestinationQuery destinationQuery,
+  ) async {
     return await _apiService.getRecommendDestinations(destinationQuery);
   }
 
@@ -38,7 +42,16 @@ class DestinationRepositoryImpl extends DestinationRepository {
   }
 
   @override
-  Future<Either<Failure, SuccessResponse>> createFeedback(AddFeedbackRequest params) async {
+  Future<Either<Failure, SuccessResponse>> deleteFavoriteDestination(
+    int id,
+  ) async {
+    return await _apiService.deleteFavoriteDestination(id);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> createFeedback(
+    AddFeedbackRequest params,
+  ) async {
     return await _apiService.createFeedback(params);
   }
 }

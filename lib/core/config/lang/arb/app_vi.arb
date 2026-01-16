@@ -1888,5 +1888,8 @@
   "requiredFields": "Vui lòng điền đầy đủ thông tin",
   "itineraryName": "Tên lộ trình",
   "addStop": "Thêm điểm dừng",
-  "editItinerary": "Chỉnh sửa lộ trình"
+  "editItinerary": "Chỉnh sửa lộ trình",
+  "checkOutMustBeAfterCheckIn": "Ngày trả phòng phải sau ngày nhận phòng",
+  "pricePerNight": "Giá mỗi đêm",
+  "nightUnit": "đêm"
 }

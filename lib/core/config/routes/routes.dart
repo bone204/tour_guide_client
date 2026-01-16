@@ -36,7 +36,8 @@ import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_l
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_detail.page.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_room_list.page.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_booking_info.page.dart';
-import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_booking.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/hotel.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_room_search_request.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/presentation/itinerary_explore.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/presentation/itinerary_explore_detail.page.dart';
@@ -364,8 +365,11 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder:
-              (_) =>
-                  HotelDetailPage(hotel: args?['hotel'], rooms: args?['rooms']),
+              (_) => HotelDetailPage(
+                hotel: args?['hotel'],
+                rooms: args?['rooms'],
+                request: args?['request'],
+              ),
         );
 
       case AppRouteConstant.hotelRoomList:
@@ -376,14 +380,21 @@ class AppRouter {
               (_) => HotelRoomListPage(
                 request: args?['request'],
                 rooms: args?['rooms'],
+                hotel: args?['hotel'],
               ),
         );
 
       case AppRouteConstant.hotelBookingInfo:
-        final booking = settings.arguments as HotelBooking;
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => HotelBookingInfoPage(hotelBooking: booking),
+          builder:
+              (_) => HotelBookingInfoPage(
+                hotel: args['hotel'] as Hotel,
+                selectedRooms: args['selectedRooms'] as List<RoomBooking>,
+                checkInDate: args['checkInDate'] as DateTime,
+                checkOutDate: args['checkOutDate'] as DateTime,
+              ),
         );
 
       case AppRouteConstant.flightBooking:

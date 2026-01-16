@@ -6,12 +6,14 @@ import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_room_search_request.dart';
 
 class HotelDetailPage extends StatefulWidget {
   final Hotel? hotel;
   final List<HotelRoom>? rooms;
+  final HotelRoomSearchRequest? request;
 
-  const HotelDetailPage({super.key, this.hotel, this.rooms});
+  const HotelDetailPage({super.key, this.hotel, this.rooms, this.request});
 
   @override
   State<HotelDetailPage> createState() => _HotelDetailPageState();
@@ -38,10 +40,14 @@ class _HotelDetailPageState extends State<HotelDetailPage>
   }
 
   void _navigateToRoomList(BuildContext context) {
-    Navigator.of(
-      context,
-      rootNavigator: true,
-    ).pushNamed(AppRouteConstant.hotelRoomList, arguments: widget.rooms);
+    Navigator.of(context, rootNavigator: true).pushNamed(
+      AppRouteConstant.hotelRoomList,
+      arguments: {
+        'request': widget.request,
+        'rooms': widget.rooms,
+        'hotel': widget.hotel,
+      },
+    );
   }
 
   @override
@@ -50,7 +56,7 @@ class _HotelDetailPageState extends State<HotelDetailPage>
     // or handle error. Assuming correct usage from HotelListPage.
     final localizations = AppLocalizations.of(context)!;
     final displayName = widget.hotel?.name ?? localizations.continentalHotel;
-    final displayLocation = widget.hotel?.address ?? localizations.district1Hcm;
+    final displayLocation = widget.hotel?.province ?? localizations.district1Hcm;
     final displayType = localizations.hotelNearbyDes;
     final displayImageUrl = widget.hotel?.photo ?? AppImage.defaultHotel;
 

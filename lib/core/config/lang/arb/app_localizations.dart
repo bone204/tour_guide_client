@@ -6496,6 +6496,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please fill in all required fields'**
   String get requiredFields;
+
+  /// No description provided for @checkOutMustBeAfterCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-out date must be after check-in date'**
+  String get checkOutMustBeAfterCheckIn;
+
+  /// No description provided for @pricePerNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Price per night'**
+  String get pricePerNight;
+
+  /// No description provided for @nightUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'night(s)'**
+  String get nightUnit;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

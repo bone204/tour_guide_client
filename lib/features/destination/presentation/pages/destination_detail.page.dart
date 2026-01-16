@@ -5,10 +5,10 @@ import 'package:tour_guide_app/common/widgets/button/like_button.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
-import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_cubit.dart';
-import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destinations_state.dart';
-import 'package:tour_guide_app/features/destination/presentation/bloc/get_destination_by_id_cubit.dart';
-import 'package:tour_guide_app/features/destination/presentation/bloc/get_destination_by_id_state.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destination/favorite_destinations_cubit.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destination/favorite_destinations_state.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/get_destination_by_id/get_destination_by_id_cubit.dart';
+import 'package:tour_guide_app/features/destination/presentation/bloc/get_destination_by_id/get_destination_by_id_state.dart';
 
 class DestinationDetailPage extends StatefulWidget {
   final int destinationId;

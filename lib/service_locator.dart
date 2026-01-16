@@ -38,6 +38,7 @@ import 'package:tour_guide_app/features/destination/domain/repository/destinatio
 import 'package:tour_guide_app/features/destination/domain/usecases/get_destination_by_id.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_favorites.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/favorite_destination.dart';
+import 'package:tour_guide_app/features/destination/domain/usecases/delete_favorite_destination.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_destinations.dart';
 import 'package:tour_guide_app/features/destination/domain/usecases/get_recommend_destinations.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_destinations/get_destination_cubit.dart';
@@ -310,6 +311,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<GetFavoritesUseCase>(GetFavoritesUseCase());
   sl.registerSingleton<FavoriteDestinationUseCase>(
     FavoriteDestinationUseCase(),
+  );
+  sl.registerSingleton<DeleteFavoriteDestinationUseCase>(
+    DeleteFavoriteDestinationUseCase(),
   );
   sl.registerSingleton<SendChatMessageUseCase>(SendChatMessageUseCase());
   sl.registerSingleton<GetProvincesUseCase>(GetProvincesUseCase());

@@ -3300,4 +3300,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get requiredFields => 'Please fill in all required fields';
+
+  @override
+  String get checkOutMustBeAfterCheckIn => 'Check-out date must be after check-in date';
+
+  @override
+  String get pricePerNight => 'Price per night';
+
+  @override
+  String get nightUnit => 'night(s)';
 }

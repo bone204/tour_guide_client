@@ -45,7 +45,11 @@ class _HotelListPageState extends State<HotelListPage> {
   void _navigateToHotelDetail(BuildContext context, Hotel hotel) {
     Navigator.of(context, rootNavigator: true).pushNamed(
       AppRouteConstant.hotelDetail,
-      arguments: {'hotel': hotel, 'rooms': hotel.rooms},
+      arguments: {
+        'hotel': hotel,
+        'rooms': hotel.rooms,
+        'request': widget.request,
+      },
     );
   }
 
