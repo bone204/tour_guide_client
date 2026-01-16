@@ -239,8 +239,10 @@ import 'package:tour_guide_app/features/mapping_address/domain/usecases/get_lega
 import 'package:tour_guide_app/features/hotel_booking/data/data_source/hotel_booking_api_service.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/repository/hotel_booking_repository_impl.dart';
 import 'package:tour_guide_app/features/hotel_booking/domain/repository/hotel_booking_repository.dart';
-import 'package:tour_guide_app/features/hotel_booking/domain/usecases/get_hotel_room_detail_usecase.dart';
+
+import 'package:tour_guide_app/features/hotel_booking/domain/usecases/create_hotel_bill_usecase.dart';
 import 'package:tour_guide_app/features/hotel_booking/domain/usecases/get_hotel_rooms_usecase.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/create_hotel_bill/create_hotel_bill_cubit.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/find_hotel/find_hotel_cubit.dart';
 
 final sl = GetIt.instance;
@@ -683,11 +685,12 @@ void setUpServiceLocator(SharedPreferences prefs) {
     () => HotelBookingRepositoryImpl(),
   );
   sl.registerLazySingleton<GetHotelRoomsUseCase>(() => GetHotelRoomsUseCase());
-  sl.registerLazySingleton<GetHotelRoomDetailUseCase>(
-    () => GetHotelRoomDetailUseCase(),
+  sl.registerLazySingleton<CreateHotelBillUseCase>(
+    () => CreateHotelBillUseCase(),
   );
   sl.registerFactory<UpdateItineraryInfoCubit>(
     () => UpdateItineraryInfoCubit(updateItineraryInfoUseCase: sl()),
   );
   sl.registerFactory<FindHotelCubit>(() => FindHotelCubit(sl()));
+  sl.registerFactory<CreateHotelBillCubit>(() => CreateHotelBillCubit(sl()));
 }

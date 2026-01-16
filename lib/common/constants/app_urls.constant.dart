@@ -27,6 +27,7 @@ class ApiUrls {
 
   //Hotel Rooms URLs
   static const hotelRooms = "$baseURL/hotel-rooms";
+  static const hotelBills = "$baseURL/hotel-bills";
 
   //Rental Vehicles URLs
   static const rentalVehicles = "$baseURL/rental-vehicles";

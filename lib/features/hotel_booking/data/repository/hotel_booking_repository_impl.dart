@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/data_source/hotel_booking_api_service.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/create_hotel_bill_request.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_room_search_request.dart';
-import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
+
 import 'package:tour_guide_app/features/hotel_booking/domain/repository/hotel_booking_repository.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -19,15 +20,7 @@ class HotelBookingRepositoryImpl extends HotelBookingRepository {
   }
 
   @override
-  Future<Either<Failure, HotelRoom>> getHotelRoomDetail(
-    int id, {
-    String? checkInDate,
-    String? checkOutDate,
-  }) {
-    return _apiService.getHotelRoomDetail(
-      id,
-      checkInDate: checkInDate,
-      checkOutDate: checkOutDate,
-    );
+  Future<Either<Failure, int>> createHotelBill(CreateHotelBillRequest request) {
+    return _apiService.createHotelBill(request);
   }
 }

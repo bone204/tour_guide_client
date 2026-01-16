@@ -3,20 +3,17 @@ import 'package:dio/dio.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/models/create_hotel_bill_request.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_room_search_request.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel.dart';
-import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
+
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class HotelBookingApiService {
   Future<Either<Failure, List<Hotel>>> getHotelRooms(
     HotelRoomSearchRequest request,
   );
-  Future<Either<Failure, HotelRoom>> getHotelRoomDetail(
-    int id, {
-    String? checkInDate,
-    String? checkOutDate,
-  });
+  Future<Either<Failure, int>> createHotelBill(CreateHotelBillRequest request);
 }
 
 class HotelBookingApiServiceImpl extends HotelBookingApiService {
@@ -46,28 +43,21 @@ class HotelBookingApiServiceImpl extends HotelBookingApiService {
   }
 
   @override
-  Future<Either<Failure, HotelRoom>> getHotelRoomDetail(
-    int id, {
-    String? checkInDate,
-    String? checkOutDate,
-  }) async {
+  Future<Either<Failure, int>> createHotelBill(
+    CreateHotelBillRequest request,
+  ) async {
     try {
-      final queryParameters = <String, dynamic>{};
-      if (checkInDate != null) queryParameters['checkInDate'] = checkInDate;
-      if (checkOutDate != null) queryParameters['checkOutDate'] = checkOutDate;
-
-      final response = await sl<DioClient>().get(
-        "${ApiUrls.hotelRooms}/$id",
-        queryParameters: queryParameters,
+      final response = await sl<DioClient>().post(
+        ApiUrls.hotelBills,
+        data: request.toJson(),
       );
-      final room = HotelRoom.fromJson(response.data);
-      return Right(room);
+      return Right(response.data['id']);
     } on DioException catch (e) {
       return Left(
         ServerFailure(
           message:
               e.response?.data['message'] ??
-              'An error occurred while fetching details',
+              'An error occurred while creating hotel bill',
           statusCode: e.response?.statusCode,
         ),
       );
