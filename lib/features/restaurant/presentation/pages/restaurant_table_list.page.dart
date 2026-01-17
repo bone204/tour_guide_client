@@ -4,7 +4,9 @@ import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/restaurant/data/models/restaurant_search_response.dart';
 import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table_search_request.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/bloc/search_restaurant_tables/search_restaurant_tables_cubit.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/bloc/search_restaurant_tables/search_restaurant_tables_state.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/widgets/restaurant_card.widget.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/widgets/restaurant_list_shimmer.widget.dart';
@@ -23,6 +25,7 @@ class RestaurantTableListPage extends StatefulWidget {
 class _RestaurantTableListPageState extends State<RestaurantTableListPage> {
   List<RestaurantSearchResponse> _restaurants = [];
   late SearchRestaurantTablesCubit _searchCubit;
+  bool _isLoadingLocation = false;
 
   @override
   void initState() {
@@ -31,9 +34,39 @@ class _RestaurantTableListPageState extends State<RestaurantTableListPage> {
     _fetchRestaurants();
   }
 
-  void _fetchRestaurants() {
-    final searchRequest = widget.request ?? RestaurantTableSearchRequest();
-    _searchCubit.searchRestaurants(searchRequest);
+  Future<void> _fetchRestaurants() async {
+    if (widget.request != null) {
+      _searchCubit.searchRestaurants(widget.request!);
+      return;
+    }
+
+    setState(() {
+      _isLoadingLocation = true;
+    });
+
+    try {
+      final position = await Geolocator.getCurrentPosition();
+      if (!mounted) return;
+
+      final searchRequest = RestaurantTableSearchRequest(
+        latitude: position.latitude,
+        longitude: position.longitude,
+      );
+      _searchCubit.searchRestaurants(searchRequest);
+    } catch (e) {
+      if (!mounted) return;
+      CustomSnackbar.show(
+        context,
+        message: AppLocalizations.of(context)!.pleaseSelectLocation,
+        type: SnackbarType.error,
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingLocation = false;
+        });
+      }
+    }
   }
 
   @override
@@ -70,26 +103,25 @@ class _RestaurantTableListPageState extends State<RestaurantTableListPage> {
           SearchRestaurantTablesState
         >(
           listener: (context, state) {
-            if (state.status == SearchRestaurantTablesStatus.failure) {
+            if (state is SearchRestaurantTablesFailure) {
               CustomSnackbar.show(
                 context,
-                message:
-                    state.errorMessage ??
-                    AppLocalizations.of(context)!.errorOccurred,
+                message: state.message,
                 type: SnackbarType.error,
               );
-            } else if (state.status == SearchRestaurantTablesStatus.success) {
+            } else if (state is SearchRestaurantTablesSuccess) {
               setState(() {
                 _restaurants = state.restaurants;
               });
             }
           },
           builder: (context, state) {
-            if (state.status == SearchRestaurantTablesStatus.loading) {
+            if (state is SearchRestaurantTablesLoading || _isLoadingLocation) {
               return const RestaurantListShimmer();
             }
 
-            if (_restaurants.isEmpty) {
+            if (_restaurants.isEmpty &&
+                state is! SearchRestaurantTablesLoading) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -1,18 +1,22 @@
 // ignore_for_file: deprecated_member_use
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:tour_guide_app/common_libs.dart';
-import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_list/cooperation_list_cubit.dart';
-import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_list/cooperation_list_state.dart';
-import 'package:tour_guide_app/features/cooperations/presentation/pages/cooperation_detail.page.dart';
-import 'package:tour_guide_app/features/cooperations/presentation/widgets/cooperation_card.widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/home_restaurant_card.widget.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/bloc/search_restaurant_tables/search_restaurant_tables_cubit.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/bloc/search_restaurant_tables/search_restaurant_tables_state.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_detail.page.dart';
 
 class SliverRestaurantNearbyDestinationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CooperationListCubit, CooperationListState>(
+    return BlocBuilder<
+      SearchRestaurantTablesCubit,
+      SearchRestaurantTablesState
+    >(
       builder: (context, state) {
-        if (state is! CooperationListLoaded || state.restaurants.isEmpty) {
+        if (state is! SearchRestaurantTablesSuccess ||
+            state.restaurants.isEmpty) {
           return const SliverToBoxAdapter(child: SizedBox.shrink());
         }
 
@@ -93,9 +97,10 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
                           child: CarouselSlider.builder(
                             itemCount: restaurants.length,
                             itemBuilder: (context, index, realIndex) {
-                              final cooperation = restaurants[index];
-                              return CooperationCard(
-                                cooperation: cooperation,
+                              final restaurant = restaurants[index];
+
+                              return HomeRestaurantCard(
+                                restaurant: restaurant,
                                 onTap: () {
                                   Navigator.of(
                                     context,
@@ -103,10 +108,9 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
                                   ).push(
                                     MaterialPageRoute(
                                       builder:
-                                          (context) =>
-                                              CooperationDetailPage.withProvider(
-                                                id: cooperation.id,
-                                              ),
+                                          (context) => RestaurantDetailPage(
+                                            restaurant: restaurant,
+                                          ),
                                     ),
                                   );
                                 },

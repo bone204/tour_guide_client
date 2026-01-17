@@ -1,27 +1,31 @@
-part of 'search_restaurant_tables_cubit.dart';
+import 'package:equatable/equatable.dart';
+import 'package:tour_guide_app/features/restaurant/data/models/restaurant_search_response.dart';
 
-enum SearchRestaurantTablesStatus { initial, loading, success, failure }
+abstract class SearchRestaurantTablesState extends Equatable {
+  const SearchRestaurantTablesState();
 
-class SearchRestaurantTablesState {
-  final SearchRestaurantTablesStatus status;
+  @override
+  List<Object> get props => [];
+}
+
+class SearchRestaurantTablesInitial extends SearchRestaurantTablesState {}
+
+class SearchRestaurantTablesLoading extends SearchRestaurantTablesState {}
+
+class SearchRestaurantTablesSuccess extends SearchRestaurantTablesState {
   final List<RestaurantSearchResponse> restaurants;
-  final String? errorMessage;
 
-  const SearchRestaurantTablesState({
-    this.status = SearchRestaurantTablesStatus.initial,
-    this.restaurants = const [],
-    this.errorMessage,
-  });
+  const SearchRestaurantTablesSuccess(this.restaurants);
 
-  SearchRestaurantTablesState copyWith({
-    SearchRestaurantTablesStatus? status,
-    List<RestaurantSearchResponse>? restaurants,
-    String? errorMessage,
-  }) {
-    return SearchRestaurantTablesState(
-      status: status ?? this.status,
-      restaurants: restaurants ?? this.restaurants,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
-  }
+  @override
+  List<Object> get props => [restaurants];
+}
+
+class SearchRestaurantTablesFailure extends SearchRestaurantTablesState {
+  final String message;
+
+  const SearchRestaurantTablesFailure(this.message);
+
+  @override
+  List<Object> get props => [message];
 }

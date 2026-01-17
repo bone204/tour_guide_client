@@ -12,6 +12,7 @@ import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_list/cooperation_list_cubit.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/hotel_rooms_search/hotel_rooms_search_cubit.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table_search_request.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.widget.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
@@ -26,6 +27,7 @@ import 'package:tour_guide_app/features/home/presentation/widgets/popular_destin
 import 'package:tour_guide_app/features/home/presentation/widgets/restaurant_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/shimmer_widgets.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/voucher_carousel.widget.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/bloc/search_restaurant_tables/search_restaurant_tables_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -51,12 +53,17 @@ class HomePage extends StatefulWidget {
           create: (context) => sl<GetVouchersCubit>()..getVouchers(),
         ),
         BlocProvider(
-          create: (context) => sl<CooperationListCubit>()..getCooperations(),
+          create:
+              (context) =>
+                  sl<
+                    CooperationListCubit
+                  >(), // No longer auto-fetching cooperation restaurants
         ),
         BlocProvider(
           create: (context) => sl<FavoriteCooperationsCubit>()..loadFavorites(),
         ),
         BlocProvider(create: (context) => sl<HotelRoomsSearchCubit>()),
+        BlocProvider(create: (context) => sl<SearchRestaurantTablesCubit>()),
         BlocProvider(create: (context) => sl<AnniversaryCubit>()),
       ],
       child: const HomePage(),
@@ -76,6 +83,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _setupScrollListener();
     _searchNearbyHotels();
+    _searchNearbyRestaurants();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<AnniversaryCubit>().checkAnniversaries();
     });
@@ -88,6 +96,22 @@ class _HomePageState extends State<HomePage> {
         context.read<HotelRoomsSearchCubit>().searchHotels(
           latitude: position.latitude,
           longitude: position.longitude,
+        );
+      }
+    } catch (e) {
+      // Silently fail if location not available
+    }
+  }
+
+  Future<void> _searchNearbyRestaurants() async {
+    try {
+      final position = await Geolocator.getCurrentPosition();
+      if (mounted) {
+        context.read<SearchRestaurantTablesCubit>().searchRestaurants(
+          RestaurantTableSearchRequest(
+            latitude: position.latitude,
+            longitude: position.longitude,
+          ),
         );
       }
     } catch (e) {
@@ -143,9 +167,10 @@ class _HomePageState extends State<HomePage> {
         query: DestinationQuery(limit: 10, offset: 0),
       ),
       context.read<GetVouchersCubit>().getVouchers(),
-      context.read<CooperationListCubit>().getCooperations(),
+      // context.read<CooperationListCubit>().getCooperations(), // Removed
       context.read<FavoriteCooperationsCubit>().loadFavorites(),
       _searchNearbyHotels(),
+      _searchNearbyRestaurants(),
     ]);
   }
 
