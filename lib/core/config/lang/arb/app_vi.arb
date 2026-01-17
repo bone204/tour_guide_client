@@ -3,6 +3,7 @@
   "emailInvalid": "Định dạng email không hợp lệ",
   "updateContactInfo": "Cập nhật thông tin liên hệ",
   "update": "Cập nhật",
+  "updateSuccess": "Cập nhật thành công",
   "youHaveNotVerifiedIdentity": "Bạn chưa xác thực danh tính",
   "emailNotVerified": "Email của bạn chưa được xác thực",
   "phoneNotVerified": "Số điện thoại của bạn chưa được xác thực",
@@ -739,6 +740,7 @@
   "contactInfo": "Thông tin liên hệ",
   "vehicleList": "Danh sách xe",
   "noRentalBills": "Không có hóa đơn nào",
+  "noBookingsFound": "Không tìm thấy đặt phòng nào",
   "paid": "Đã thanh toán",
   "cancelled": "Đã hủy",
   "completed": "Hoàn thành",
@@ -1751,6 +1753,7 @@
   },
   "actionSuccess": "Thành công",
   "actionFailed": "Thao tác thất bại",
+  "paymentSuccess": "Thanh toán thành công",
   "paymentFailed": "Thanh toán thất bại",
   "paymentGatewayError": "Không thể mở cổng thanh toán",
   "notifications": "Thông báo",
@@ -1893,7 +1896,6 @@
   "addressTooShortNewToOld": "Địa chỉ quá ngắn",
   "convertOldToNewAddressPageTitle": "Tra cứu: Địa chỉ Cũ → Mới",
   "convertNewToOldAddressPageTitle": "Tra cứu: Địa chỉ Mới → Cũ",
-  "paymentSuccess": "Thanh toán thành công",
   "warning": "Cảnh báo",
   "discardChanges": "Hủy thay đổi?",
   "updateSuccess": "Cập nhật thành công",
@@ -1903,5 +1905,10 @@
   "editItinerary": "Chỉnh sửa lộ trình",
   "checkOutMustBeAfterCheckIn": "Ngày trả phòng phải sau ngày nhận phòng",
   "pricePerNight": "Giá mỗi đêm",
-  "nightUnit": "đêm"
+  "nightUnit": "đêm",
+  "payNow": "Thanh toán ngay",
+  "cancelSuccess": "Hủy thành công",
+  "confirmCancelBill": "Bạn có chắc chắn muốn hủy hóa đơn này?",
+  "noBookingsFound": "Không tìm thấy đặt phòng nào",
+  "error": "Lỗi"
 }

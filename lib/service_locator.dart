@@ -239,6 +239,8 @@ import 'package:tour_guide_app/features/mapping_address/domain/usecases/get_lega
 import 'package:tour_guide_app/features/hotel_booking/data/data_source/hotel_booking_api_service.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/get_my_hotel_bills/get_my_hotel_bills_cubit.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/get_hotel_bill_detail/get_hotel_bill_detail_cubit.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/hotel_payment/hotel_payment_cubit.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/cancel_hotel_bill/cancel_hotel_bill_cubit.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/book_hotel_workflow/book_hotel_workflow_cubit.dart';
 
 import 'package:tour_guide_app/features/bills/book_hotel/data/data_source/book_hotel_api_service.dart';
@@ -746,6 +748,13 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<GetHotelBillDetailCubit>(
     () => GetHotelBillDetailCubit(sl()),
   );
+  sl.registerFactory<HotelPaymentCubit>(
+    () => HotelPaymentCubit(
+      payHotelBillUseCase: sl(),
+      updateHotelBillUseCase: sl(),
+    ),
+  );
+  sl.registerFactory<CancelHotelBillCubit>(() => CancelHotelBillCubit(sl()));
   sl.registerFactory<BookHotelWorkflowCubit>(
     () => BookHotelWorkflowCubit(
       confirmHotelBillUseCase: sl(),

@@ -1179,7 +1179,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get cancelBill => 'Hủy đơn';
 
   @override
-  String get confirmCancelBill => 'Bạn có chắc chắn muốn hủy đơn không?';
+  String get confirmCancelBill => 'Bạn có chắc chắn muốn hủy hóa đơn này?';
 
   @override
   String get cancelReasonTooShort => 'Lý do phải dài hơn 10 ký tự';
@@ -1920,6 +1920,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get noRentalBills => 'Không có hóa đơn nào';
 
   @override
+  String get noBookingsFound => 'Không tìm thấy đặt phòng nào';
+
+  @override
   String get document => 'Giấy tờ';
 
   @override
@@ -1927,6 +1930,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get profileUpdatedSuccessfully => 'Cập nhật hồ sơ thành công';
+
+  @override
+  String get updateSuccess => 'Cập nhật thành công';
 
   @override
   String get unsavedChangesMessage => 'Bạn có thay đổi chưa lưu. Bạn có muốn hủy không?';
@@ -2969,9 +2975,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get disableRental => 'Tạm ngưng cho thuê';
-
-  @override
-  String get updateSuccess => 'Cập nhật thành công';
 
   @override
   String get payNow => 'Thanh toán ngay';

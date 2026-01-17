@@ -21,7 +21,7 @@ abstract class BookHotelApiService {
   });
   Future<Either<Failure, HotelBill>> confirm(int id, String paymentMethod);
   Future<Either<Failure, HotelBill>> pay(int id);
-  Future<Either<Failure, HotelBill>> cancel(int id);
+  Future<Either<Failure, HotelBill>> cancel(int id, {String? reason});
   Future<Either<Failure, HotelBill>> checkIn(int id);
   Future<Either<Failure, HotelBill>> checkOut(int id);
 }
@@ -176,10 +176,15 @@ class BookHotelApiServiceImpl implements BookHotelApiService {
   }
 
   @override
-  Future<Either<Failure, HotelBill>> cancel(int id) async {
+  Future<Either<Failure, HotelBill>> cancel(int id, {String? reason}) async {
     try {
+      final data = <String, dynamic>{};
+      if (reason != null) {
+        data['reason'] = reason;
+      }
       final response = await sl<DioClient>().patch(
         '${ApiUrls.hotelBills}/$id/cancel',
+        data: data,
       );
       final bill = HotelBill.fromJson(response.data);
       return Right(bill);

@@ -3857,6 +3857,12 @@ abstract class AppLocalizations {
   /// **'No rental bills found'**
   String get noRentalBills;
 
+  /// No description provided for @noBookingsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookings found'**
+  String get noBookingsFound;
+
   /// No description provided for @document.
   ///
   /// In en, this message translates to:
@@ -3874,6 +3880,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile updated successfully'**
   String get profileUpdatedSuccessfully;
+
+  /// No description provided for @updateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Update successful'**
+  String get updateSuccess;
 
   /// No description provided for @unsavedChangesMessage.
   ///
@@ -5830,12 +5842,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Disable Rental'**
   String get disableRental;
-
-  /// No description provided for @updateSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Update successful'**
-  String get updateSuccess;
 
   /// No description provided for @payNow.
   ///

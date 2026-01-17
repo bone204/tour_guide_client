@@ -11,6 +11,7 @@ class PrimaryButton extends StatelessWidget {
   final double? width;
   final String? icon;
   final bool isLoading;
+  final Color? borderColor;
 
   const PrimaryButton({
     Key? key,
@@ -23,6 +24,7 @@ class PrimaryButton extends StatelessWidget {
     this.width,
     this.icon,
     this.isLoading = false,
+    this.borderColor,
   }) : super(key: key);
 
   @override
@@ -31,10 +33,15 @@ class PrimaryButton extends StatelessWidget {
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
+        surfaceTintColor: backgroundColor, // To ensure color is consistent
         minimumSize: Size(width ?? double.infinity, height.h),
         padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius.r),
+          side:
+              borderColor != null
+                  ? BorderSide(color: borderColor!)
+                  : BorderSide.none,
         ),
       ),
       child:

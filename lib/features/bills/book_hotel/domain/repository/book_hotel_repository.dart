@@ -17,7 +17,7 @@ abstract class BookHotelRepository {
   });
   Future<Either<Failure, HotelBill>> confirm(int id, String paymentMethod);
   Future<Either<Failure, HotelBill>> pay(int id);
-  Future<Either<Failure, HotelBill>> cancel(int id);
+  Future<Either<Failure, HotelBill>> cancel(int id, {String? reason});
   Future<Either<Failure, HotelBill>> checkIn(int id);
   Future<Either<Failure, HotelBill>> checkOut(int id);
 }

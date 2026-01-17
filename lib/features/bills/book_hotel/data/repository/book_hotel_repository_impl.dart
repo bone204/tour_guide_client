@@ -51,8 +51,8 @@ class BookHotelRepositoryImpl implements BookHotelRepository {
   }
 
   @override
-  Future<Either<Failure, HotelBill>> cancel(int id) {
-    return apiService.cancel(id);
+  Future<Either<Failure, HotelBill>> cancel(int id, {String? reason}) {
+    return apiService.cancel(id, reason: reason);
   }
 
   @override

@@ -1,0 +1,630 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
+import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
+import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
+import 'package:tour_guide_app/common/widgets/button/secondary_button.dart';
+import 'package:tour_guide_app/core/utils/date_formatter.dart';
+import 'package:tour_guide_app/core/utils/money_formatter.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/data/models/hotel_bill.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/get_hotel_bill_detail/get_hotel_bill_detail_cubit.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/utils/hotel_status_helper.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/hotel_payment/hotel_payment_cubit.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/cancel_hotel_bill/cancel_hotel_bill_cubit.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
+import 'package:tour_guide_app/service_locator.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:tour_guide_app/common/widgets/dialog/custom_dialog.dart';
+import 'package:tour_guide_app/common/widgets/textfield/custom_textfield.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/widgets/hotel_bill_detail_shimmer.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/widgets/contact_info_form.dart';
+
+class HotelBillDetailPage extends StatelessWidget {
+  final int id;
+
+  const HotelBillDetailPage({super.key, required this.id});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<GetHotelBillDetailCubit>()..getBillDetail(id),
+        ),
+        BlocProvider(create: (context) => sl<HotelPaymentCubit>()),
+        BlocProvider(create: (context) => sl<CancelHotelBillCubit>()),
+      ],
+      child: _HotelBillContent(id: id),
+    );
+  }
+}
+
+class _HotelBillContent extends StatefulWidget {
+  final int id;
+  const _HotelBillContent({required this.id});
+
+  @override
+  State<_HotelBillContent> createState() => _HotelBillContentState();
+}
+
+class _HotelBillContentState extends State<_HotelBillContent> {
+  final RefreshController _refreshController = RefreshController();
+  PaymentMethod? _selectedPaymentMethod;
+  Timer? _paymentPollingTimer;
+
+  @override
+  void dispose() {
+    _paymentPollingTimer?.cancel();
+    super.dispose();
+  }
+
+  void _onRefresh(BuildContext context) {
+    context.read<GetHotelBillDetailCubit>().getBillDetail(widget.id);
+  }
+
+  void _startPaymentPolling() {
+    _paymentPollingTimer?.cancel();
+    _paymentPollingTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (mounted) {
+        context.read<GetHotelBillDetailCubit>().refreshBillDetail(widget.id);
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundColor,
+        appBar: CustomAppBar(
+          title: AppLocalizations.of(context)!.hotelBooking,
+          showBackButton: true,
+          onBackPressed: () => Navigator.pop(context),
+        ),
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<GetHotelBillDetailCubit, HotelBillDetailState>(
+              listener: (context, state) {
+                if (state.status == HotelBillDetailInitStatus.success ||
+                    state.status == HotelBillDetailInitStatus.failure) {
+                  _refreshController.refreshCompleted();
+                }
+
+                if (state.status == HotelBillDetailInitStatus.success &&
+                    state.bill?.status == HotelBillStatus.paid) {
+                  if (_paymentPollingTimer != null &&
+                      _paymentPollingTimer!.isActive) {
+                    _paymentPollingTimer?.cancel();
+                    CustomSnackbar.show(
+                      context,
+                      message: AppLocalizations.of(context)!.paymentSuccess,
+                      type: SnackbarType.success,
+                    );
+                    // Refresh parent list if needed using EventBus
+                    // eventBus.fire(HotelBillUpdatedEvent(billId: widget.id));
+                  }
+                }
+
+                // Initialize payment cubit with bill data
+                if (state.status == HotelBillDetailInitStatus.success &&
+                    state.bill != null) {
+                  context.read<HotelPaymentCubit>().init(state.bill!);
+                }
+              },
+            ),
+
+            BlocListener<HotelPaymentCubit, HotelPaymentState>(
+              listener: (context, state) {
+                if (state.status == HotelPaymentStatus.success) {
+                  _onRefresh(context);
+                  CustomSnackbar.show(
+                    context,
+                    message: AppLocalizations.of(context)!.paymentSuccess,
+                    type: SnackbarType.success,
+                  );
+                } else if (state.status == HotelPaymentStatus.failure) {
+                  CustomSnackbar.show(
+                    context,
+                    message:
+                        state.errorMessage ??
+                        AppLocalizations.of(context)!.paymentFailed,
+                    type: SnackbarType.error,
+                  );
+                }
+              },
+            ),
+            BlocListener<CancelHotelBillCubit, CancelHotelBillState>(
+              listener: (context, state) {
+                if (state is CancelHotelBillSuccess) {
+                  Navigator.pop(context); // Close dialog
+                  CustomSnackbar.show(
+                    context,
+                    message: AppLocalizations.of(context)!.cancelSuccess,
+                    type: SnackbarType.success,
+                  );
+                  _onRefresh(context);
+                } else if (state is CancelHotelBillFailure) {
+                  Navigator.pop(context); // Close dialog
+                  CustomSnackbar.show(
+                    context,
+                    message: state.message,
+                    type: SnackbarType.error,
+                  );
+                }
+              },
+            ),
+          ],
+          child: BlocBuilder<GetHotelBillDetailCubit, HotelBillDetailState>(
+            builder: (context, state) {
+              if (state.status == HotelBillDetailInitStatus.loading) {
+                return const HotelBillDetailShimmer();
+              } else if (state.status == HotelBillDetailInitStatus.failure &&
+                  state.bill == null) {
+                return Center(
+                  child: Text(
+                    state.errorMessage ?? AppLocalizations.of(context)!.error,
+                  ),
+                );
+              } else if (state.bill != null) {
+                final bill = state.bill!;
+                return SmartRefresher(
+                  controller: _refreshController,
+                  onRefresh: () => _onRefresh(context),
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      children: [
+                        _buildHotelInfoCard(context, bill),
+                        SizedBox(height: 16.h),
+                        _buildBookingDetailsCard(context, bill),
+                        SizedBox(height: 16.h),
+                        ContactInfoForm(bill: bill),
+                        SizedBox(height: 16.h),
+                        if (bill.status != HotelBillStatus.cancelled)
+                          _buildPaymentDetailsCard(context, bill),
+                        SizedBox(height: 32.h),
+                        _buildWorkflowActions(context, bill),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHotelInfoCard(BuildContext context, HotelBill bill) {
+    String imageUrl = AppImage.defaultHotel;
+    String title = AppLocalizations.of(context)!.hotelBooking;
+    if (bill.details.isNotEmpty) {
+      final detail = bill.details.first;
+      if (detail.room?.cooperation?.photo != null &&
+          detail.room!.cooperation!.photo!.isNotEmpty) {
+        imageUrl = detail.room!.cooperation!.photo!;
+      } else if (detail.room?.photo != null && detail.room!.photo!.isNotEmpty) {
+        imageUrl = detail.room!.photo!;
+      }
+      title = detail.room?.cooperation?.name ?? detail.roomName;
+    }
+
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGrey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12.r),
+            child:
+                imageUrl.startsWith('http')
+                    ? Image.network(
+                      imageUrl,
+                      width: 80.w,
+                      height: 80.w,
+                      fit: BoxFit.cover,
+                      errorBuilder:
+                          (_, __, ___) => Image.asset(
+                            AppImage.defaultHotel,
+                            width: 80.w,
+                            height: 80.w,
+                            fit: BoxFit.cover,
+                          ),
+                    )
+                    : Image.asset(
+                      imageUrl,
+                      width: 80.w,
+                      height: 80.w,
+                      fit: BoxFit.cover,
+                    ),
+          ),
+          SizedBox(width: 16.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: Theme.of(context).textTheme.titleMedium),
+                SizedBox(height: 8.h),
+                _buildStatusBadge(context, bill),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusBadge(BuildContext context, HotelBill bill) {
+    final (color, text) = HotelStatusHelper.getStatusColorAndText(
+      context,
+      bill,
+    );
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(6.r),
+        border: Border.all(color: color.withOpacity(0.2)),
+      ),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: color,
+          fontWeight: FontWeight.w700,
+          fontSize: 10.sp,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBookingDetailsCard(BuildContext context, HotelBill bill) {
+    final (statusColor, statusText) = HotelStatusHelper.getStatusColorAndText(
+      context,
+      bill,
+    );
+
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGrey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.bookingInfo,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          const Divider(),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.billCode,
+            bill.code,
+          ),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.status,
+            statusText,
+            valueColor: statusColor,
+            isBold: true,
+          ),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.checkIn,
+            DateFormatter.formatDateTime(bill.checkInDate),
+          ),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.checkOut,
+            DateFormatter.formatDateTime(bill.checkOutDate),
+          ),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.nights,
+            bill.nights.toString(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentDetailsCard(BuildContext context, HotelBill bill) {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGrey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.payment,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          if (bill.status == HotelBillStatus.paid) ...[
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.totalPayment,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  Formatter.currency(bill.total),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.primaryRed,
+                  ),
+                ),
+              ],
+            ),
+          ],
+          if (bill.status == HotelBillStatus.pending) ...[
+            const Divider(),
+            _buildPaymentForm(context, bill),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentForm(BuildContext context, HotelBill bill) {
+    return Column(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.paymentMethod,
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            SizedBox(height: 6.h),
+            DropdownButtonFormField2<PaymentMethod>(
+              isExpanded: true,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.zero,
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                  borderSide: BorderSide(
+                    color: AppColors.secondaryGrey,
+                    width: 1.w,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                  borderSide: BorderSide(
+                    color: AppColors.secondaryGrey,
+                    width: 1.w,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.r),
+                  borderSide: BorderSide(
+                    color: AppColors.primaryGrey,
+                    width: 1.w,
+                  ),
+                ),
+              ),
+              hint: Text(
+                AppLocalizations.of(context)!.choosePayment,
+                style: TextStyle(fontSize: 14.sp),
+              ),
+              value: _selectedPaymentMethod,
+              items:
+                  PaymentMethod.values
+                      .map(
+                        (item) => DropdownMenuItem<PaymentMethod>(
+                          value: item,
+                          child: Text(
+                            item.name.toUpperCase(),
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      )
+                      .toList(),
+
+              onChanged: (value) {
+                setState(() {
+                  _selectedPaymentMethod = value;
+                });
+              },
+              buttonStyleData: ButtonStyleData(
+                padding: EdgeInsets.only(right: 8.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+              ),
+              iconStyleData: IconStyleData(
+                icon: Icon(
+                  Icons.arrow_drop_down,
+                  color: AppColors.primaryBlack,
+                  size: 24.w,
+                ),
+              ),
+              dropdownStyleData: DropdownStyleData(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+              ),
+              menuItemStyleData: MenuItemStyleData(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.totalPayment,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            Text(
+              Formatter.currency(bill.total),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(color: AppColors.primaryRed),
+            ),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        BlocBuilder<HotelPaymentCubit, HotelPaymentState>(
+          builder: (context, state) {
+            return PrimaryButton(
+              title: AppLocalizations.of(context)!.payNow,
+              isLoading: state.status == HotelPaymentStatus.loading,
+              onPressed:
+                  _selectedPaymentMethod == null
+                      ? null
+                      : () => _handlePayment(context, bill),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  void _handlePayment(BuildContext context, HotelBill bill) {
+    if (_selectedPaymentMethod == null) return;
+
+    // Trigger payment flow
+    context.read<HotelPaymentCubit>().pay(bill.id);
+
+    // If QR, show dialog (omitted for now as specific requirement was just "logic like rental")
+    // For now we assume simle payment or direct success update
+    // Start polling if needed
+    _startPaymentPolling();
+  }
+
+  void _showCancelDialog(BuildContext context) {
+    final reasonController = TextEditingController();
+    showDialog(
+      context: context,
+      builder:
+          (context) => CustomDialog(
+            title: AppLocalizations.of(context)!.cancel,
+            contentWidget: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.confirmCancelBill,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                SizedBox(height: 16.h),
+                CustomTextField(
+                  controller: reasonController,
+                  placeholder: AppLocalizations.of(context)!.reason(''),
+                  maxLines: 3,
+                ),
+              ],
+            ),
+            actions: [
+              PrimaryButton(
+                title: AppLocalizations.of(context)!.confirm,
+                onPressed: () {
+                  if (reasonController.text.isNotEmpty) {
+                    context.read<CancelHotelBillCubit>().cancelBill(
+                      widget.id,
+                      reasonController.text,
+                    );
+                  }
+                },
+              ),
+              SecondaryButton(
+                title: AppLocalizations.of(context)!.close,
+                onPressed: () => Navigator.pop(context),
+                borderColor: AppColors.secondaryGrey,
+                textColor: AppColors.primaryBlack,
+              ),
+            ],
+          ),
+    );
+  }
+
+  Widget _buildWorkflowActions(BuildContext context, HotelBill bill) {
+    if (bill.status == HotelBillStatus.pending) {
+      return BlocBuilder<CancelHotelBillCubit, CancelHotelBillState>(
+        builder: (context, state) {
+          final isLoading = state is CancelHotelBillLoading;
+          return PrimaryButton(
+            title: AppLocalizations.of(context)!.cancelBill,
+            backgroundColor: AppColors.primaryRed,
+            textColor: AppColors.primaryWhite,
+            isLoading: isLoading,
+            onPressed: isLoading ? null : () => _showCancelDialog(context),
+          );
+        },
+      );
+    }
+    return const SizedBox.shrink();
+  }
+
+  Widget _buildDetailRow(
+    BuildContext context,
+    String label,
+    String value, {
+    Color? valueColor,
+    bool isBold = false,
+  }) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
+          ),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: valueColor ?? AppColors.primaryBlack,
+              fontWeight: isBold ? FontWeight.w600 : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -1914,6 +1914,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noRentalBills => 'No rental bills found';
 
   @override
+  String get noBookingsFound => 'No bookings found';
+
+  @override
   String get document => 'Document';
 
   @override
@@ -1921,6 +1924,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileUpdatedSuccessfully => 'Profile updated successfully';
+
+  @override
+  String get updateSuccess => 'Update successful';
 
   @override
   String get unsavedChangesMessage => 'You have unsaved changes. Discard them?';
@@ -2963,9 +2969,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get disableRental => 'Disable Rental';
-
-  @override
-  String get updateSuccess => 'Update successful';
 
   @override
   String get payNow => 'Pay Now';

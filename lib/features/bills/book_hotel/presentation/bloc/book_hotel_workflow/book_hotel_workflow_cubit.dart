@@ -72,10 +72,12 @@ class BookHotelWorkflowCubit extends Cubit<BookHotelWorkflowState> {
     );
   }
 
-  Future<void> cancel(int id) async {
+  Future<void> cancel(int id, {String? reason}) async {
     if (isClosed) return;
     emit(BookHotelWorkflowLoading());
-    final result = await cancelHotelBillUseCase(id);
+    final result = await cancelHotelBillUseCase(
+      CancelHotelBillParams(id: id, reason: reason),
+    );
     if (isClosed) return;
     result.fold(
       (failure) =>

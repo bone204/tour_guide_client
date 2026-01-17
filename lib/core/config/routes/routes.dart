@@ -89,6 +89,7 @@ import 'package:tour_guide_app/features/mapping_address/presentation/pages/conve
 import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_old_to_new_details.page.dart';
 import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_new_to_old_details.page.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/presentation/pages/hotel_bill_list.page.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/pages/hotel_bill_detail.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -695,15 +696,10 @@ class AppRouter {
         );
 
       case AppRouteConstant.hotelBillDetail:
-        // final id = settings.arguments as int;
+        final id = settings.arguments as int;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => Scaffold(
-                appBar: AppBar(title: const Text("Hotel Bill Detail")),
-                body: const Center(child: Text("Not Implemented Yet")),
-              ),
-          // builder: (_) => HotelBillDetailPage(id: id),
+          builder: (_) => HotelBillDetailPage(id: id),
         );
 
       default:
