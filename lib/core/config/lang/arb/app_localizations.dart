@@ -161,6 +161,48 @@ abstract class AppLocalizations {
   /// **'Vehicle'**
   String get vehicle;
 
+  /// No description provided for @hotelBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel Bills'**
+  String get hotelBills;
+
+  /// No description provided for @rentalStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get rentalStatusPending;
+
+  /// No description provided for @rentalStatusConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get rentalStatusConfirmed;
+
+  /// No description provided for @rentalStatusPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get rentalStatusPaid;
+
+  /// No description provided for @rentalStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get rentalStatusCancelled;
+
+  /// No description provided for @rentalStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get rentalStatusCompleted;
+
+  /// No description provided for @rentalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill Information'**
+  String get rentalInformation;
+
   /// No description provided for @contractDetails.
   ///
   /// In en, this message translates to:
@@ -2614,6 +2656,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email is required'**
   String get emailRequired;
+
+  /// No description provided for @nights.
+  ///
+  /// In en, this message translates to:
+  /// **'Nights'**
+  String get nights;
+
+  /// No description provided for @hotelBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Hotel Booking'**
+  String get hotelBooking;
 
   /// No description provided for @pleaseEnterValidEmail.
   ///

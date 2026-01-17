@@ -30,6 +30,7 @@ class BookHotelWorkflowCubit extends Cubit<BookHotelWorkflowState> {
     String? voucherCode,
     double? travelPointsUsed,
   }) async {
+    if (isClosed) return;
     emit(BookHotelWorkflowLoading());
     final result = await updateHotelBillUseCase(
       id,
@@ -39,6 +40,7 @@ class BookHotelWorkflowCubit extends Cubit<BookHotelWorkflowState> {
       voucherCode: voucherCode,
       travelPointsUsed: travelPointsUsed,
     );
+    if (isClosed) return;
     result.fold(
       (failure) =>
           emit(BookHotelWorkflowFailure(_mapFailureToMessage(failure))),
@@ -47,8 +49,10 @@ class BookHotelWorkflowCubit extends Cubit<BookHotelWorkflowState> {
   }
 
   Future<void> confirm(int id, String paymentMethod) async {
+    if (isClosed) return;
     emit(BookHotelWorkflowLoading());
     final result = await confirmHotelBillUseCase(id, paymentMethod);
+    if (isClosed) return;
     result.fold(
       (failure) =>
           emit(BookHotelWorkflowFailure(_mapFailureToMessage(failure))),
@@ -57,8 +61,10 @@ class BookHotelWorkflowCubit extends Cubit<BookHotelWorkflowState> {
   }
 
   Future<void> pay(int id) async {
+    if (isClosed) return;
     emit(BookHotelWorkflowLoading());
     final result = await payHotelBillUseCase(id);
+    if (isClosed) return;
     result.fold(
       (failure) =>
           emit(BookHotelWorkflowFailure(_mapFailureToMessage(failure))),
@@ -67,8 +73,10 @@ class BookHotelWorkflowCubit extends Cubit<BookHotelWorkflowState> {
   }
 
   Future<void> cancel(int id) async {
+    if (isClosed) return;
     emit(BookHotelWorkflowLoading());
     final result = await cancelHotelBillUseCase(id);
+    if (isClosed) return;
     result.fold(
       (failure) =>
           emit(BookHotelWorkflowFailure(_mapFailureToMessage(failure))),

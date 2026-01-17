@@ -13,8 +13,10 @@ class GetHotelBillDetailCubit extends Cubit<GetHotelBillDetailState> {
     : super(GetHotelBillDetailInitial());
 
   Future<void> getBillDetail(int id) async {
+    if (isClosed) return;
     emit(GetHotelBillDetailLoading());
     final result = await getHotelBillDetailUseCase(id);
+    if (isClosed) return;
     result.fold(
       (failure) =>
           emit(GetHotelBillDetailFailure(_mapFailureToMessage(failure))),

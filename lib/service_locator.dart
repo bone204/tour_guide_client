@@ -252,6 +252,10 @@ import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/update_
 import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/cancel_hotel_bill_usecase.dart';
 
 import 'package:tour_guide_app/features/hotel_booking/domain/usecases/create_hotel_bill_usecase.dart';
+import 'package:tour_guide_app/features/hotel_booking/domain/repository/hotel_booking_repository.dart';
+import 'package:tour_guide_app/features/hotel_booking/data/repository/hotel_booking_repository_impl.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/hotel_check_in_usecase.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/hotel_check_out_usecase.dart';
 import 'package:tour_guide_app/features/hotel_booking/domain/usecases/get_hotel_rooms_usecase.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/create_hotel_bill/create_hotel_bill_cubit.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/find_hotel/find_hotel_cubit.dart';

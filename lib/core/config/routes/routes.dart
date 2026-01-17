@@ -78,7 +78,6 @@ import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_list.pa
 import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_detail.page.dart';
 import 'package:tour_guide_app/features/eatery/presentation/pages/eatery_wheel.page.dart';
 import 'package:tour_guide_app/features/eatery/data/models/eatery.dart';
-
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/rental_request_detail/owner_rental_request_detail.page.dart';
 import 'package:tour_guide_app/features/notifications/presentation/pages/notification.page.dart';
 import 'package:tour_guide_app/features/settings/presentation/pages/change_password.page.dart';
@@ -89,6 +88,7 @@ import 'package:tour_guide_app/features/mapping_address/presentation/pages/conve
 import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_new_to_old_address.page.dart';
 import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_old_to_new_details.page.dart';
 import 'package:tour_guide_app/features/mapping_address/presentation/pages/convert_new_to_old_details.page.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/pages/hotel_bill_list.page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -686,6 +686,24 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => const ContactSupportPage(),
+        );
+
+      case AppRouteConstant.hotelBillList:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const HotelBillListPage(),
+        );
+
+      case AppRouteConstant.hotelBillDetail:
+        // final id = settings.arguments as int;
+        return MaterialPageRoute(
+          settings: settings,
+          builder:
+              (_) => Scaffold(
+                appBar: AppBar(title: const Text("Hotel Bill Detail")),
+                body: const Center(child: Text("Not Implemented Yet")),
+              ),
+          // builder: (_) => HotelBillDetailPage(id: id),
         );
 
       default:

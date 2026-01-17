@@ -42,6 +42,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehicle => 'Vehicle';
 
   @override
+  String get hotelBills => 'Hotel Bills';
+
+  @override
+  String get rentalStatusPending => 'Pending';
+
+  @override
+  String get rentalStatusConfirmed => 'Confirmed';
+
+  @override
+  String get rentalStatusPaid => 'Paid';
+
+  @override
+  String get rentalStatusCancelled => 'Cancelled';
+
+  @override
+  String get rentalStatusCompleted => 'Completed';
+
+  @override
+  String get rentalInformation => 'Bill Information';
+
+  @override
   String get contractDetails => 'Contract Details';
 
   @override
@@ -1281,6 +1302,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emailRequired => 'Email is required';
+
+  @override
+  String get nights => 'Nights';
+
+  @override
+  String get hotelBooking => 'Hotel Booking';
 
   @override
   String get pleaseEnterValidEmail => 'Please enter a valid email';

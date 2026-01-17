@@ -11,6 +11,13 @@
   "deleteStopConfirmMessage": "Bạn có chắc chắn muốn xóa điểm dừng này không?",
   "@@locale": "vi",
   "vehicle": "Xe",
+  "hotelBills": "Hóa đơn khách sạn",
+  "rentalStatusPending": "Chờ xử lý",
+  "rentalStatusConfirmed": "Đã xác nhận",
+  "rentalStatusPaid": "Đã thanh toán",
+  "rentalStatusCancelled": "Đã hủy",
+  "rentalStatusCompleted": "Hoàn thành",
+  "rentalInformation": "Thông tin hóa đơn",
   "contractDetails": "Chi tiết hợp đồng",
   "signInNow": "Đăng nhập ngay",
 
@@ -838,7 +845,12 @@
   "enterReformCommunePlaceholder": "Nhập Xã (Mới)",
   "reformCommuneLabel": "Xã (Mới)",
   "districtLabel": "Huyện",
-  "wardLabel": "Phường/Xã"
+  "wardLabel": "Phường/Xã",
+  "nights": "Số đêm",
+  "hotelBooking": "Đặt phòng khách sạn",
+  "emailRequired": "Email là bắt buộc",
+  "pleaseEnterValidEmail": "Vui lòng nhập một email hợp lệ",
+  "pleaseEnterValidPrice": "Vui lòng nhập giá hợp lệ"
 ,
 
   "enterRegistrationNumber": "Nhập số đăng ký",

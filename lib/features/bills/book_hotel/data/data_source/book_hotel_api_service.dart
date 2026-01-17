@@ -1,3 +1,4 @@
+import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
@@ -21,6 +22,8 @@ abstract class BookHotelApiService {
   Future<Either<Failure, HotelBill>> confirm(int id, String paymentMethod);
   Future<Either<Failure, HotelBill>> pay(int id);
   Future<Either<Failure, HotelBill>> cancel(int id);
+  Future<Either<Failure, HotelBill>> checkIn(int id);
+  Future<Either<Failure, HotelBill>> checkOut(int id);
 }
 
 class BookHotelApiServiceImpl implements BookHotelApiService {
@@ -52,9 +55,8 @@ class BookHotelApiServiceImpl implements BookHotelApiService {
         queryParameters['status'] = statusStr;
       }
 
-      // GET /hotel-bills
       final response = await sl<DioClient>().get(
-        "hotel-bills",
+        ApiUrls.hotelBills,
         queryParameters: queryParameters,
       );
 
@@ -77,8 +79,7 @@ class BookHotelApiServiceImpl implements BookHotelApiService {
   @override
   Future<Either<Failure, HotelBill>> getBillDetail(int id) async {
     try {
-      // GET /hotel-bills/:id
-      final response = await sl<DioClient>().get("hotel-bills/$id");
+      final response = await sl<DioClient>().get("${ApiUrls.hotelBills}/$id");
       final bill = HotelBill.fromJson(response.data);
       return Right(bill);
     } on DioException catch (e) {
@@ -112,9 +113,8 @@ class BookHotelApiServiceImpl implements BookHotelApiService {
       if (voucherCode != null) data['voucherCode'] = voucherCode;
       if (travelPointsUsed != null) data['travelPointsUsed'] = travelPointsUsed;
 
-      // PATCH /hotel-bills/:id
       final response = await sl<DioClient>().patch(
-        'hotel-bills/$id',
+        '${ApiUrls.hotelBills}/$id',
         data: data,
       );
       final bill = HotelBill.fromJson(response.data);
@@ -137,9 +137,8 @@ class BookHotelApiServiceImpl implements BookHotelApiService {
     String paymentMethod,
   ) async {
     try {
-      // PATCH /hotel-bills/:id/confirm?paymentMethod=...
       final response = await sl<DioClient>().patch(
-        'hotel-bills/$id/confirm',
+        '${ApiUrls.hotelBills}/$id/confirm',
         queryParameters: {'paymentMethod': paymentMethod},
       );
       final bill = HotelBill.fromJson(response.data);
@@ -159,8 +158,9 @@ class BookHotelApiServiceImpl implements BookHotelApiService {
   @override
   Future<Either<Failure, HotelBill>> pay(int id) async {
     try {
-      // PATCH /hotel-bills/:id/pay
-      final response = await sl<DioClient>().patch('hotel-bills/$id/pay');
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.hotelBills}/$id/pay',
+      );
       final bill = HotelBill.fromJson(response.data);
       return Right(bill);
     } on DioException catch (e) {
@@ -178,14 +178,55 @@ class BookHotelApiServiceImpl implements BookHotelApiService {
   @override
   Future<Either<Failure, HotelBill>> cancel(int id) async {
     try {
-      // PATCH /hotel-bills/:id/cancel
-      final response = await sl<DioClient>().patch('hotel-bills/$id/cancel');
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.hotelBills}/$id/cancel',
+      );
       final bill = HotelBill.fromJson(response.data);
       return Right(bill);
     } on DioException catch (e) {
       return Left(
         ServerFailure(
           message: e.response?.data['message'] ?? 'Cancellation failed',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, HotelBill>> checkIn(int id) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.hotelBills}/$id/check-in',
+      );
+      final bill = HotelBill.fromJson(response.data);
+      return Right(bill);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Check-in failed',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, HotelBill>> checkOut(int id) async {
+    try {
+      final response = await sl<DioClient>().patch(
+        '${ApiUrls.hotelBills}/$id/check-out',
+      );
+      final bill = HotelBill.fromJson(response.data);
+      return Right(bill);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Check-out failed',
           statusCode: e.response?.statusCode,
         ),
       );

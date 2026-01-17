@@ -10,7 +10,13 @@
   "deleteStopConfirmTitle": "Delete Stop",
   "deleteStopConfirmMessage": "Are you sure you want to delete this stop?",
   "vehicle": "Vehicle",
-  "@@locale": "en",
+  "hotelBills": "Hotel Bills",
+  "rentalStatusPending": "Pending",
+  "rentalStatusConfirmed": "Confirmed",
+  "rentalStatusPaid": "Paid",
+  "rentalStatusCancelled": "Cancelled",
+  "rentalStatusCompleted": "Completed",
+  "rentalInformation": "Bill Information",
   "contractDetails": "Contract Details",
   "signInNow": "Sign in now",
 
@@ -791,6 +797,8 @@
   "pleaseEnterValidPrice": "Please enter a valid price",
 
   "emailRequired": "Email is required",
+  "nights": "Nights",
+  "hotelBooking": "Hotel Booking",
 
   "pleaseEnterValidEmail": "Please enter a valid email",
 

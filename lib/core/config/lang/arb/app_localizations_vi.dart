@@ -42,6 +42,27 @@ class AppLocalizationsVi extends AppLocalizations {
   String get vehicle => 'Xe';
 
   @override
+  String get hotelBills => 'Hóa đơn khách sạn';
+
+  @override
+  String get rentalStatusPending => 'Chờ xử lý';
+
+  @override
+  String get rentalStatusConfirmed => 'Đã xác nhận';
+
+  @override
+  String get rentalStatusPaid => 'Đã thanh toán';
+
+  @override
+  String get rentalStatusCancelled => 'Đã hủy';
+
+  @override
+  String get rentalStatusCompleted => 'Hoàn thành';
+
+  @override
+  String get rentalInformation => 'Thông tin hóa đơn';
+
+  @override
   String get contractDetails => 'Chi tiết hợp đồng';
 
   @override
@@ -1281,6 +1302,12 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get emailRequired => 'Email là bắt buộc';
+
+  @override
+  String get nights => 'Số đêm';
+
+  @override
+  String get hotelBooking => 'Đặt phòng khách sạn';
 
   @override
   String get pleaseEnterValidEmail => 'Vui lòng nhập email hợp lệ';
