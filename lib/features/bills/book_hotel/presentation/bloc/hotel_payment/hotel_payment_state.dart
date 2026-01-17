@@ -11,6 +11,10 @@ class HotelPaymentState extends Equatable {
   final String? contactPhone;
   final String? notes;
 
+  final PaymentMethod? paymentMethod;
+  final String? payUrl;
+  final int? paymentId;
+
   const HotelPaymentState({
     this.status = HotelPaymentStatus.initial,
     this.bill,
@@ -19,6 +23,9 @@ class HotelPaymentState extends Equatable {
     this.contactName,
     this.contactPhone,
     this.notes,
+    this.paymentMethod,
+    this.payUrl,
+    this.paymentId,
   });
 
   HotelPaymentState copyWith({
@@ -29,6 +36,9 @@ class HotelPaymentState extends Equatable {
     String? contactName,
     String? contactPhone,
     String? notes,
+    PaymentMethod? paymentMethod,
+    String? payUrl,
+    int? paymentId,
   }) {
     return HotelPaymentState(
       status: status ?? this.status,
@@ -38,6 +48,9 @@ class HotelPaymentState extends Equatable {
       contactName: contactName ?? this.contactName,
       contactPhone: contactPhone ?? this.contactPhone,
       notes: notes ?? this.notes,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      payUrl: payUrl ?? this.payUrl,
+      paymentId: paymentId ?? this.paymentId,
     );
   }
 
@@ -50,5 +63,8 @@ class HotelPaymentState extends Equatable {
     contactName,
     contactPhone,
     notes,
+    paymentMethod,
+    payUrl,
+    paymentId,
   ];
 }

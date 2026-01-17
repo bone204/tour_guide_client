@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/data/models/hotel_bill.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/pay_hotel_bill_usecase.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/data/models/update_hotel_bill_request.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/update_hotel_bill_usecase.dart';
 
 part 'hotel_payment_state.dart';
@@ -25,6 +26,7 @@ class HotelPaymentCubit extends Cubit<HotelPaymentState> {
         contactName: bill.contactName,
         contactPhone: bill.contactPhone,
         notes: bill.notes,
+        paymentMethod: bill.paymentMethod,
       ),
     );
   }
@@ -38,11 +40,33 @@ class HotelPaymentCubit extends Cubit<HotelPaymentState> {
     if (state.billId == null) return;
 
     await _updateHotelBillUseCase(
-      state.billId!,
-      contactName: state.contactName,
-      contactPhone: state.contactPhone,
-      notes: state.notes,
+      UpdateHotelBillRequest(
+        id: state.billId,
+        contactName: state.contactName,
+        contactPhone: state.contactPhone,
+        notes: state.notes,
+        paymentMethod: _getPaymentMethodString(state.paymentMethod),
+      ),
     );
+  }
+
+  void selectPaymentMethod(PaymentMethod method) {
+    if (state.paymentMethod != method) {
+      emit(state.copyWith(paymentMethod: method));
+      _updateBill();
+    }
+  }
+
+  String? _getPaymentMethodString(PaymentMethod? method) {
+    if (method == null) return null;
+    switch (method) {
+      case PaymentMethod.momo:
+        return 'momo';
+      case PaymentMethod.qrCode:
+        return 'qr_code';
+      case PaymentMethod.cash:
+        return 'cash';
+    }
   }
 
   Future<void> pay(int billId) async {
@@ -57,8 +81,13 @@ class HotelPaymentCubit extends Cubit<HotelPaymentState> {
           errorMessage: failure.message,
         ),
       ),
-      (bill) =>
-          emit(state.copyWith(status: HotelPaymentStatus.success, bill: bill)),
+      (response) => emit(
+        state.copyWith(
+          status: HotelPaymentStatus.success,
+          payUrl: response.payUrl,
+          paymentId: response.paymentId,
+        ),
+      ),
     );
   }
 }

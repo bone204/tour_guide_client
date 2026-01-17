@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
@@ -53,7 +55,7 @@ class _HotelBillContent extends StatefulWidget {
 
 class _HotelBillContentState extends State<_HotelBillContent> {
   final RefreshController _refreshController = RefreshController();
-  PaymentMethod? _selectedPaymentMethod;
+
   Timer? _paymentPollingTimer;
 
   @override
@@ -64,6 +66,69 @@ class _HotelBillContentState extends State<_HotelBillContent> {
 
   void _onRefresh(BuildContext context) {
     context.read<GetHotelBillDetailCubit>().getBillDetail(widget.id);
+  }
+
+  void _showQRCodeDialog(BuildContext context, String base64Image) {
+    final String base64Str = base64Image.split(',').last;
+    final bytes = base64Decode(base64Str);
+
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Center(
+              child: Text(AppLocalizations.of(context)!.paymentQRCode),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.primaryGrey),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Image.memory(
+                      bytes,
+                      width: 250.w,
+                      height: 250.w,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                Text(AppLocalizations.of(context)!.scanToPay),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(AppLocalizations.of(context)!.close),
+              ),
+            ],
+          ),
+    ).then((_) {
+      if (context.mounted) {
+        _onRefresh(context);
+      }
+    });
+  }
+
+  Future<void> _launchUrl(BuildContext context, String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      if (context.mounted) {
+        CustomSnackbar.show(
+          context,
+          message:
+              AppLocalizations.of(
+                context,
+              )!.paymentGatewayError, // Using localized error if available, matching rental
+          type: SnackbarType.error,
+        );
+      }
+    }
   }
 
   void _startPaymentPolling() {
@@ -107,8 +172,7 @@ class _HotelBillContentState extends State<_HotelBillContent> {
                       message: AppLocalizations.of(context)!.paymentSuccess,
                       type: SnackbarType.success,
                     );
-                    // Refresh parent list if needed using EventBus
-                    // eventBus.fire(HotelBillUpdatedEvent(billId: widget.id));
+                    eventBus.fire(HotelBillUpdatedEvent(billId: widget.id));
                   }
                 }
 
@@ -121,15 +185,21 @@ class _HotelBillContentState extends State<_HotelBillContent> {
             ),
 
             BlocListener<HotelPaymentCubit, HotelPaymentState>(
+              listenWhen:
+                  (previous, current) => previous.status != current.status,
               listener: (context, state) {
                 if (state.status == HotelPaymentStatus.success) {
+                  if (state.payUrl != null) {
+                    if (state.payUrl!.startsWith('data:image')) {
+                      _showQRCodeDialog(context, state.payUrl!);
+                    } else {
+                      _launchUrl(context, state.payUrl!);
+                    }
+                  }
                   _onRefresh(context);
-                  CustomSnackbar.show(
-                    context,
-                    message: AppLocalizations.of(context)!.paymentSuccess,
-                    type: SnackbarType.success,
-                  );
+                  _startPaymentPolling();
                 } else if (state.status == HotelPaymentStatus.failure) {
+                  _paymentPollingTimer?.cancel();
                   CustomSnackbar.show(
                     context,
                     message:
@@ -473,132 +543,139 @@ class _HotelBillContentState extends State<_HotelBillContent> {
   }
 
   Widget _buildPaymentForm(BuildContext context, HotelBill bill) {
-    return Column(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.paymentMethod,
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
-            SizedBox(height: 6.h),
-            DropdownButtonFormField2<PaymentMethod>(
-              isExpanded: true,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.zero,
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(
-                    color: AppColors.secondaryGrey,
-                    width: 1.w,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(
-                    color: AppColors.secondaryGrey,
-                    width: 1.w,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(
-                    color: AppColors.primaryGrey,
-                    width: 1.w,
-                  ),
-                ),
-              ),
-              hint: Text(
-                AppLocalizations.of(context)!.choosePayment,
-                style: TextStyle(fontSize: 14.sp),
-              ),
-              value: _selectedPaymentMethod,
-              items:
-                  PaymentMethod.values
-                      .map(
-                        (item) => DropdownMenuItem<PaymentMethod>(
-                          value: item,
-                          child: Text(
-                            item.name.toUpperCase(),
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ),
-                      )
-                      .toList(),
+    return BlocBuilder<HotelPaymentCubit, HotelPaymentState>(
+      builder: (context, state) {
+        final hasContactInfo =
+            state.contactName != null &&
+            state.contactName!.isNotEmpty &&
+            state.contactPhone != null &&
+            state.contactPhone!.isNotEmpty &&
+            state.paymentMethod != null;
 
-              onChanged: (value) {
-                setState(() {
-                  _selectedPaymentMethod = value;
-                });
-              },
-              buttonStyleData: ButtonStyleData(
-                padding: EdgeInsets.only(right: 8.w),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-              ),
-              iconStyleData: IconStyleData(
-                icon: Icon(
-                  Icons.arrow_drop_down,
-                  color: AppColors.primaryBlack,
-                  size: 24.w,
-                ),
-              ),
-              dropdownStyleData: DropdownStyleData(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-              ),
-              menuItemStyleData: MenuItemStyleData(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 16.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return Column(
           children: [
-            Text(
-              AppLocalizations.of(context)!.totalPayment,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            Text(
-              Formatter.currency(bill.total),
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(color: AppColors.primaryRed),
-            ),
-          ],
-        ),
-        SizedBox(height: 16.h),
-        BlocBuilder<HotelPaymentCubit, HotelPaymentState>(
-          builder: (context, state) {
-            final hasContactInfo =
-                state.contactName != null &&
-                state.contactName!.isNotEmpty &&
-                state.contactPhone != null &&
-                state.contactPhone!.isNotEmpty;
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.paymentMethod,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                SizedBox(height: 6.h),
+                DropdownButtonFormField2<PaymentMethod>(
+                  isExpanded: true,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                        color: AppColors.secondaryGrey,
+                        width: 1.w,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                        color: AppColors.secondaryGrey,
+                        width: 1.w,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      borderSide: BorderSide(
+                        color: AppColors.primaryGrey,
+                        width: 1.w,
+                      ),
+                    ),
+                  ),
+                  hint: Text(
+                    AppLocalizations.of(context)!.choosePayment,
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
+                  value: state.paymentMethod,
+                  items:
+                      PaymentMethod.values
+                          .map(
+                            (item) => DropdownMenuItem<PaymentMethod>(
+                              value: item,
+                              child: Text(
+                                item.name.toUpperCase(),
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ),
+                          )
+                          .toList(),
 
-            return PrimaryButton(
+                  onChanged: (value) {
+                    if (value != null) {
+                      context.read<HotelPaymentCubit>().selectPaymentMethod(
+                        value,
+                      );
+                    }
+                  },
+                  buttonStyleData: ButtonStyleData(
+                    padding: EdgeInsets.only(right: 8.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  iconStyleData: IconStyleData(
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: AppColors.primaryBlack,
+                      size: 24.w,
+                    ),
+                  ),
+                  dropdownStyleData: DropdownStyleData(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  menuItemStyleData: MenuItemStyleData(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.totalPayment,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  Formatter.currency(bill.total),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.primaryRed,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            PrimaryButton(
               title: AppLocalizations.of(context)!.payNow,
               isLoading: state.status == HotelPaymentStatus.loading,
               onPressed:
-                  _selectedPaymentMethod == null || !hasContactInfo
+                  !hasContactInfo
                       ? null
-                      : () => _handlePayment(context, bill),
-            );
-          },
-        ),
-      ],
+                      : () => _handlePayment(context, bill, state),
+            ),
+          ],
+        );
+      },
     );
   }
 
-  void _handlePayment(BuildContext context, HotelBill bill) {
-    if (_selectedPaymentMethod == null) return;
+  void _handlePayment(
+    BuildContext context,
+    HotelBill bill,
+    HotelPaymentState state,
+  ) {
+    if (state.paymentMethod == null) return;
 
     // Trigger payment flow
     context.read<HotelPaymentCubit>().pay(bill.id);
@@ -606,7 +683,6 @@ class _HotelBillContentState extends State<_HotelBillContent> {
     // If QR, show dialog (omitted for now as specific requirement was just "logic like rental")
     // For now we assume simle payment or direct success update
     // Start polling if needed
-    _startPaymentPolling();
   }
 
   void _showCancelDialog(BuildContext context) {

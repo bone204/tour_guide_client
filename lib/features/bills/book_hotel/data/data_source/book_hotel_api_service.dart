@@ -1,9 +1,11 @@
-import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/data/models/hotel_bill.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/data/models/hotel_bill_pay_response.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/data/models/update_hotel_bill_request.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class BookHotelApiService {
@@ -11,16 +13,9 @@ abstract class BookHotelApiService {
     HotelBillStatus? status,
   });
   Future<Either<Failure, HotelBill>> getBillDetail(int id);
-  Future<Either<Failure, HotelBill>> updateBill(
-    int id, {
-    String? contactName,
-    String? contactPhone,
-    String? notes,
-    String? voucherCode,
-    double? travelPointsUsed,
-  });
+  Future<Either<Failure, HotelBill>> updateBill(UpdateHotelBillRequest request);
   Future<Either<Failure, HotelBill>> confirm(int id, String paymentMethod);
-  Future<Either<Failure, HotelBill>> pay(int id);
+  Future<Either<Failure, HotelBillPayResponse>> pay(int id);
   Future<Either<Failure, HotelBill>> cancel(int id, {String? reason});
   Future<Either<Failure, HotelBill>> checkIn(int id);
   Future<Either<Failure, HotelBill>> checkOut(int id);
@@ -97,25 +92,14 @@ class BookHotelApiServiceImpl implements BookHotelApiService {
   }
 
   @override
+  @override
   Future<Either<Failure, HotelBill>> updateBill(
-    int id, {
-    String? contactName,
-    String? contactPhone,
-    String? notes,
-    String? voucherCode,
-    double? travelPointsUsed,
-  }) async {
+    UpdateHotelBillRequest request,
+  ) async {
     try {
-      final data = <String, dynamic>{};
-      if (contactName != null) data['contactName'] = contactName;
-      if (contactPhone != null) data['contactPhone'] = contactPhone;
-      if (notes != null) data['notes'] = notes;
-      if (voucherCode != null) data['voucherCode'] = voucherCode;
-      if (travelPointsUsed != null) data['travelPointsUsed'] = travelPointsUsed;
-
       final response = await sl<DioClient>().patch(
-        '${ApiUrls.hotelBills}/$id',
-        data: data,
+        '${ApiUrls.hotelBills}/${request.id}',
+        data: request.toJson(),
       );
       final bill = HotelBill.fromJson(response.data);
       return Right(bill);
@@ -156,12 +140,12 @@ class BookHotelApiServiceImpl implements BookHotelApiService {
   }
 
   @override
-  Future<Either<Failure, HotelBill>> pay(int id) async {
+  Future<Either<Failure, HotelBillPayResponse>> pay(int id) async {
     try {
       final response = await sl<DioClient>().patch(
         '${ApiUrls.hotelBills}/$id/pay',
       );
-      final bill = HotelBill.fromJson(response.data);
+      final bill = HotelBillPayResponse.fromJson(response.data);
       return Right(bill);
     } on DioException catch (e) {
       return Left(

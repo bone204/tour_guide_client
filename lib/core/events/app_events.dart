@@ -66,6 +66,12 @@ class HotelBillCancelledEvent {
   HotelBillCancelledEvent({this.billId});
 }
 
+// Event when a hotel bill is updated (paid, status changed, etc.)
+class HotelBillUpdatedEvent {
+  final int? billId;
+  HotelBillUpdatedEvent({this.billId});
+}
+
 // Event when a rental notification is received via socket
 class RentalSocketNotificationReceivedEvent {}
 

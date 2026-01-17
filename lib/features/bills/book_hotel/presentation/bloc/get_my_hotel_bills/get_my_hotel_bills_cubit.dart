@@ -18,6 +18,11 @@ class GetMyHotelBillsCubit extends Cubit<GetMyHotelBillsState> {
     _subscription = eventBus.on<HotelBillCancelledEvent>().listen((event) {
       getMyBills(status: _currentStatus);
     });
+
+    // Listen to bill updates (e.g., payment success)
+    eventBus.on<HotelBillUpdatedEvent>().listen((event) {
+      getMyBills(status: _currentStatus);
+    });
   }
 
   Future<void> getMyBills({HotelBillStatus? status}) async {

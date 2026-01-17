@@ -971,10 +971,6 @@ class _RentalBillContentState extends State<_RentalBillContent> {
                     Expanded(
                       child: Text(
                         "${AppLocalizations.of(context)!.useRewardPoint} ($points ${AppLocalizations.of(context)!.available})", // Using 'available' key if exists?
-                        // checked arb: "available": "Available" / "Có sẵn".
-                        // Better: "useRewardPoint" ($points points)
-                        // arb: "points": "points"
-                        // "${AppLocalizations.of(context)!.useRewardPoint} ($points ${AppLocalizations.of(context)!.points})",
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),

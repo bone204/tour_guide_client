@@ -758,7 +758,6 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<BookHotelWorkflowCubit>(
     () => BookHotelWorkflowCubit(
       confirmHotelBillUseCase: sl(),
-      payHotelBillUseCase: sl(),
       cancelHotelBillUseCase: sl(),
       updateHotelBillUseCase: sl(),
     ),

@@ -3,6 +3,9 @@ import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/data/data_source/book_hotel_api_service.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/data/models/hotel_bill.dart';
 import 'package:tour_guide_app/features/bills/book_hotel/domain/repository/book_hotel_repository.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/data/models/hotel_bill_pay_response.dart';
+
+import 'package:tour_guide_app/features/bills/book_hotel/data/models/update_hotel_bill_request.dart';
 
 class BookHotelRepositoryImpl implements BookHotelRepository {
   final BookHotelApiService apiService;
@@ -22,22 +25,8 @@ class BookHotelRepositoryImpl implements BookHotelRepository {
   }
 
   @override
-  Future<Either<Failure, HotelBill>> updateBill(
-    int id, {
-    String? contactName,
-    String? contactPhone,
-    String? notes,
-    String? voucherCode,
-    double? travelPointsUsed,
-  }) {
-    return apiService.updateBill(
-      id,
-      contactName: contactName,
-      contactPhone: contactPhone,
-      notes: notes,
-      voucherCode: voucherCode,
-      travelPointsUsed: travelPointsUsed,
-    );
+  Future<Either<Failure, HotelBill>> updateBill(UpdateHotelBillRequest params) {
+    return apiService.updateBill(params);
   }
 
   @override
@@ -46,7 +35,7 @@ class BookHotelRepositoryImpl implements BookHotelRepository {
   }
 
   @override
-  Future<Either<Failure, HotelBill>> pay(int id) {
+  Future<Either<Failure, HotelBillPayResponse>> pay(int id) {
     return apiService.pay(id);
   }
 

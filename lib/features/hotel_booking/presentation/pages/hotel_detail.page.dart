@@ -7,6 +7,11 @@ import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/hotel_room_search_request.dart';
+import 'package:tour_guide_app/service_locator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tour_guide_app/common/widgets/button/like_button.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_state.dart';
 
 class HotelDetailPage extends StatefulWidget {
   final Hotel? hotel;
@@ -24,7 +29,6 @@ class _HotelDetailPageState extends State<HotelDetailPage>
   late TabController _tabController;
   final DraggableScrollableController _sheetController =
       DraggableScrollableController();
-  bool _isFavorite = false;
 
   @override
   void initState() {
@@ -40,46 +44,57 @@ class _HotelDetailPageState extends State<HotelDetailPage>
   }
 
   void _navigateToRoomList(BuildContext context) {
-    Navigator.of(context, rootNavigator: true).pushNamed(
-      AppRouteConstant.hotelRoomList,
-      arguments: {
-        'request': widget.request,
-        'rooms': widget.rooms,
-        'hotel': widget.hotel,
-      },
-    );
+    if (widget.hotel != null) {
+      Navigator.of(context, rootNavigator: true).pushNamed(
+        AppRouteConstant.hotelRoomList,
+        arguments: {
+          'request': widget.request,
+          'rooms': widget.rooms,
+          'hotel': widget.hotel,
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // If no cooperation passed (e.g. mock or error), use fallbacks temporarily
-    // or handle error. Assuming correct usage from HotelListPage.
-    final localizations = AppLocalizations.of(context)!;
-    final displayName = widget.hotel?.name ?? localizations.continentalHotel;
-    final displayLocation = widget.hotel?.province ?? localizations.district1Hcm;
-    final displayType = localizations.hotelNearbyDes;
-    final displayImageUrl = widget.hotel?.photo ?? AppImage.defaultHotel;
+    return BlocProvider(
+      create: (context) => sl<FavoriteCooperationsCubit>()..loadFavorites(),
+      child: Scaffold(
+        body: Builder(
+          builder: (context) {
+            final hotel = widget.hotel;
+            final localizations = AppLocalizations.of(context)!;
+            final displayName = hotel?.name ?? localizations.continentalHotel;
+            final displayLocation =
+                hotel?.province ?? localizations.district1Hcm;
+            final displayType = localizations.hotelNearbyDes;
+            final displayImageUrl = hotel?.photo ?? AppImage.defaultHotel;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          _buildHeaderImage(displayImageUrl),
-          _buildTopAppBar(),
-          _buildDraggableBottomSheet(
-            displayName,
-            displayLocation,
-            displayType,
-            displayImageUrl,
-          ),
-        ],
+            return Stack(
+              children: [
+                _buildHeaderImage(displayImageUrl, hotel),
+                _buildTopAppBar(hotel),
+                _buildDraggableBottomSheet(
+                  displayName,
+                  displayLocation,
+                  displayType,
+                  displayImageUrl,
+                  hotel,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildHeaderImage(String imageUrl) {
+  Widget _buildHeaderImage(String? imageUrl, Hotel? hotel) {
+    if (imageUrl == null) return const SizedBox();
     return Positioned.fill(
       child: Hero(
-        tag: 'hotel_${widget.hotel?.id ?? "default"}',
+        tag: 'hotel_${hotel?.id ?? "default"}',
         child:
             imageUrl.startsWith('http')
                 ? Image.network(
@@ -97,7 +112,7 @@ class _HotelDetailPageState extends State<HotelDetailPage>
     );
   }
 
-  Widget _buildTopAppBar() {
+  Widget _buildTopAppBar(Hotel? hotel) {
     return Positioned(
       top: 0,
       left: 0,
@@ -130,13 +145,8 @@ class _HotelDetailPageState extends State<HotelDetailPage>
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isFavorite = !_isFavorite;
-                  });
-                },
-                child: Container(
+              if (hotel != null)
+                Container(
                   padding: EdgeInsets.all(10.r),
                   decoration: BoxDecoration(
                     color: AppColors.primaryWhite.withOpacity(0.9),
@@ -149,15 +159,26 @@ class _HotelDetailPageState extends State<HotelDetailPage>
                       ),
                     ],
                   ),
-                  child: Icon(
-                    _isFavorite
-                        ? Icons.favorite_rounded
-                        : Icons.favorite_border_rounded,
-                    size: 20.r,
-                    color: AppColors.primaryRed,
+                  child: BlocBuilder<
+                    FavoriteCooperationsCubit,
+                    FavoriteCooperationsState
+                  >(
+                    builder: (context, state) {
+                      final isLiked = state.favoriteIds.contains(hotel.id);
+                      return CustomLikeButton(
+                        size: 22.r,
+                        isLiked: isLiked,
+                        likedColor: AppColors.primaryRed,
+                        unlikedColor: AppColors.textSubtitle.withOpacity(0.6),
+                        onTap: (bool liked) async {
+                          return await context
+                              .read<FavoriteCooperationsCubit>()
+                              .toggleFavorite(hotel.id);
+                        },
+                      );
+                    },
                   ),
                 ),
-              ),
             ],
           ),
         ),
@@ -170,6 +191,7 @@ class _HotelDetailPageState extends State<HotelDetailPage>
     String location,
     String type,
     String imageUrl,
+    Hotel? hotel,
   ) {
     return DraggableScrollableSheet(
       controller: _sheetController,
@@ -211,11 +233,15 @@ class _HotelDetailPageState extends State<HotelDetailPage>
                           SizedBox(height: 20.h),
                           _buildTabs(),
                           SizedBox(height: 20.h),
-                          _buildTabContent(name, imageUrl),
+                          _buildTabContent(name, imageUrl, hotel),
                           SizedBox(height: 20.h),
                           PrimaryButton(
                             title: AppLocalizations.of(context)!.bookRoom,
-                            onPressed: () => _navigateToRoomList(context),
+                            onPressed: () {
+                              if (hotel != null) {
+                                _navigateToRoomList(context);
+                              }
+                            },
                             backgroundColor: AppColors.primaryBlue,
                             textColor: AppColors.textSecondary,
                           ),
@@ -321,7 +347,7 @@ class _HotelDetailPageState extends State<HotelDetailPage>
     );
   }
 
-  Widget _buildTabContent(String name, String imageUrl) {
+  Widget _buildTabContent(String name, String imageUrl, Hotel? hotel) {
     return AnimatedBuilder(
       animation: _tabController,
       builder: (context, child) {
@@ -329,7 +355,7 @@ class _HotelDetailPageState extends State<HotelDetailPage>
           case 0:
             return AboutTab(
               description:
-                  widget.hotel?.introduction ??
+                  hotel?.introduction ??
                   'Discover the beauty of $name. This stunning destination offers breathtaking views, rich cultural experiences, and unforgettable memories. Perfect for travelers seeking adventure and relaxation.\n\nWhether you\'re exploring historic landmarks, enjoying local cuisine, or simply taking in the scenery, this location has something special for everyone.\n\nThe destination is known for its unique charm and exceptional experiences that leave lasting impressions on every visitor. From morning till evening, there are countless activities and sights to explore.',
             );
           case 1:
@@ -337,14 +363,14 @@ class _HotelDetailPageState extends State<HotelDetailPage>
           case 2:
             return PhotosTab(
               photos:
-                  widget.hotel?.photo != null && widget.hotel!.photo!.isNotEmpty
-                      ? [widget.hotel!.photo!]
+                  hotel?.photo != null && hotel!.photo!.isNotEmpty
+                      ? [hotel.photo!]
                       : [],
             );
           default:
             return AboutTab(
               description:
-                  widget.hotel?.introduction ??
+                  hotel?.introduction ??
                   'Discover the beauty of $name. This stunning destination offers breathtaking views, rich cultural experiences, and unforgettable memories. Perfect for travelers seeking adventure and relaxation.\n\nWhether you\'re exploring historic landmarks, enjoying local cuisine, or simply taking in the scenery, this location has something special for everyone.\n\nThe destination is known for its unique charm and exceptional experiences that leave lasting impressions on every visitor. From morning till evening, there are countless activities and sights to explore.',
             );
         }
