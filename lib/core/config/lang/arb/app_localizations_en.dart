@@ -1917,6 +1917,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noBookingsFound => 'No bookings found';
 
   @override
+  String get roomList => 'Room List';
+
+  @override
   String get document => 'Document';
 
   @override

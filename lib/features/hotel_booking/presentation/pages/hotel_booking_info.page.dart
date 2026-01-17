@@ -485,6 +485,16 @@ class _HotelBookingInfoPageState extends State<HotelBookingInfoPage> {
                                   AppLocalizations.of(context)!.bookingSuccess,
                               type: SnackbarType.success,
                             );
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              AppRouteConstant.hotelBillList,
+                              (route) =>
+                                  route.settings.name ==
+                                  AppRouteConstant.mainScreen,
+                            );
+                            Navigator.of(context).pushNamed(
+                              AppRouteConstant.hotelBillDetail,
+                              arguments: state.billId,
+                            );
                           } else if (state is CreateHotelBillFailure) {
                             CustomSnackbar.show(
                               context,

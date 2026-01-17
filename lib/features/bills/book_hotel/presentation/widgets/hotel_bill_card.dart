@@ -19,22 +19,27 @@ class HotelBillCard extends StatelessWidget {
     String? imageUrl;
     String title = '';
 
-    if (bill.details.isNotEmpty) {
+    // Prioritize cooperation info (hotel info)
+    if (bill.cooperation != null) {
+      title = bill.cooperation!.name;
+      imageUrl = bill.cooperation!.photo;
+    }
+
+    // Fallback to room info if cooperation is missing (legacy support)
+    if (title.isEmpty && bill.details.isNotEmpty) {
       final firstDetail = bill.details.first;
-      // Should we have hotel info in bill detail?
-      // Current model: HotelBillDetail -> room (HotelRoom) -> ?
-      // HotelRoom usually has photos.
-      if (firstDetail.room != null) {
-        if (firstDetail.room!.photo != null &&
-            firstDetail.room!.photo!.isNotEmpty) {
-          imageUrl = firstDetail.room!.photo;
-        } else if (firstDetail.room!.cooperation?.photo != null) {
-          imageUrl = firstDetail.room!.cooperation!.photo;
-        }
-      }
       title = firstDetail.roomName;
       if (bill.numberOfRooms > 1) {
         title += " (+${bill.numberOfRooms - 1} rooms)";
+      }
+
+      if (imageUrl == null || imageUrl.isEmpty) {
+        if (firstDetail.room != null) {
+          if (firstDetail.room!.photo != null &&
+              firstDetail.room!.photo!.isNotEmpty) {
+            imageUrl = firstDetail.room!.photo;
+          }
+        }
       }
     }
 
@@ -138,6 +143,13 @@ class HotelBillCard extends StatelessWidget {
             SizedBox(height: 8.h),
             _buildInfoRow(
               context,
+              icon: AppIcons.hotel,
+              label: AppLocalizations.of(context)!.numberOfRooms,
+              value: "${bill.numberOfRooms}",
+            ),
+            SizedBox(height: 8.h),
+            _buildInfoRow(
+              context,
               icon: AppIcons.clock,
               label: AppLocalizations.of(context)!.nights,
               value: "${bill.nights}",
@@ -146,23 +158,36 @@ class HotelBillCard extends StatelessWidget {
             const Divider(height: 1, color: AppColors.primaryGrey),
             SizedBox(height: 12.h),
             // Total Price
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.totalPayment,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  Formatter.currency(bill.total),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.primaryRed,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
+            Builder(
+              builder: (context) {
+                double displayTotal = bill.total;
+                // Safeguard: if total is 0 but we have details, calculate from details
+                if (displayTotal == 0 && bill.details.isNotEmpty) {
+                  displayTotal = bill.details.fold(
+                    0,
+                    (sum, item) => sum + item.total,
+                  );
+                }
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.totalPayment,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      Formatter.currency(displayTotal),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColors.primaryRed,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),

@@ -3863,6 +3863,12 @@ abstract class AppLocalizations {
   /// **'No bookings found'**
   String get noBookingsFound;
 
+  /// No description provided for @roomList.
+  ///
+  /// In en, this message translates to:
+  /// **'Room List'**
+  String get roomList;
+
   /// No description provided for @document.
   ///
   /// In en, this message translates to:

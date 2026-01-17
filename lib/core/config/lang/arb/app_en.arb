@@ -1093,6 +1093,7 @@
   "vehicleList": "Vehicle List",
   "noRentalBills": "No rental bills found",
   "noBookingsFound": "No bookings found",
+  "roomList": "Room List",
   "paid": "Paid",
   "cancelled": "Cancelled",
   "completed": "Completed",

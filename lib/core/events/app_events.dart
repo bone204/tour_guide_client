@@ -60,6 +60,12 @@ class CheckInSuccessEvent {
   CheckInSuccessEvent({required this.itineraryId, required this.stopId});
 }
 
+// Event when a hotel bill is cancelled
+class HotelBillCancelledEvent {
+  final int? billId;
+  HotelBillCancelledEvent({this.billId});
+}
+
 // Event when a rental notification is received via socket
 class RentalSocketNotificationReceivedEvent {}
 

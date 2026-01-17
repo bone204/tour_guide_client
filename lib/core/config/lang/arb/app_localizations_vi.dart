@@ -1923,6 +1923,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get noBookingsFound => 'Không tìm thấy đặt phòng nào';
 
   @override
+  String get roomList => 'Danh sách phòng';
+
+  @override
   String get document => 'Giấy tờ';
 
   @override

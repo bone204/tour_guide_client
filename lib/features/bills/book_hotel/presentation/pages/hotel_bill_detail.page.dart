@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:tour_guide_app/core/events/app_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common/constants/app_default_image.constant.dart';
@@ -148,6 +149,7 @@ class _HotelBillContentState extends State<_HotelBillContent> {
                     message: AppLocalizations.of(context)!.cancelSuccess,
                     type: SnackbarType.success,
                   );
+                  eventBus.fire(HotelBillCancelledEvent(billId: widget.id));
                   _onRefresh(context);
                 } else if (state is CancelHotelBillFailure) {
                   Navigator.pop(context); // Close dialog
@@ -348,8 +350,75 @@ class _HotelBillContentState extends State<_HotelBillContent> {
           _buildDetailRow(
             context,
             AppLocalizations.of(context)!.nights,
-            bill.nights.toString(),
+            '${bill.nights} ${AppLocalizations.of(context)!.nights.toLowerCase()}',
           ),
+          if (bill.details.isNotEmpty) ...[
+            SizedBox(height: 8.h),
+            const Divider(),
+            SizedBox(height: 8.h),
+            Text(
+              AppLocalizations.of(context)!.roomList,
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            SizedBox(height: 8.h),
+            ...bill.details.map(
+              (detail) => Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: Container(
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryGrey.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        detail.roomName,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.pricePerNight,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          Text(
+                            Formatter.currency(detail.pricePerNight),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 2.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.total,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            Formatter.currency(detail.total),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primaryGreen,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -508,11 +577,17 @@ class _HotelBillContentState extends State<_HotelBillContent> {
         SizedBox(height: 16.h),
         BlocBuilder<HotelPaymentCubit, HotelPaymentState>(
           builder: (context, state) {
+            final hasContactInfo =
+                state.contactName != null &&
+                state.contactName!.isNotEmpty &&
+                state.contactPhone != null &&
+                state.contactPhone!.isNotEmpty;
+
             return PrimaryButton(
               title: AppLocalizations.of(context)!.payNow,
               isLoading: state.status == HotelPaymentStatus.loading,
               onPressed:
-                  _selectedPaymentMethod == null
+                  _selectedPaymentMethod == null || !hasContactInfo
                       ? null
                       : () => _handlePayment(context, bill),
             );
@@ -536,42 +611,42 @@ class _HotelBillContentState extends State<_HotelBillContent> {
 
   void _showCancelDialog(BuildContext context) {
     final reasonController = TextEditingController();
+    final cancelCubit = context.read<CancelHotelBillCubit>();
+
     showDialog(
       context: context,
       builder:
-          (context) => CustomDialog(
-            title: AppLocalizations.of(context)!.cancel,
+          (dialogContext) => CustomDialog(
+            title: AppLocalizations.of(dialogContext)!.cancel,
             contentWidget: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.confirmCancelBill,
+                  AppLocalizations.of(dialogContext)!.confirmCancelBill,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(dialogContext).textTheme.bodyMedium,
                 ),
                 SizedBox(height: 16.h),
                 CustomTextField(
                   controller: reasonController,
-                  placeholder: AppLocalizations.of(context)!.reason(''),
+                  placeholder: AppLocalizations.of(dialogContext)!.reason(''),
                   maxLines: 3,
                 ),
               ],
             ),
             actions: [
               PrimaryButton(
-                title: AppLocalizations.of(context)!.confirm,
+                title: AppLocalizations.of(dialogContext)!.confirm,
                 onPressed: () {
                   if (reasonController.text.isNotEmpty) {
-                    context.read<CancelHotelBillCubit>().cancelBill(
-                      widget.id,
-                      reasonController.text,
-                    );
+                    cancelCubit.cancelBill(widget.id, reasonController.text);
+                    Navigator.pop(dialogContext);
                   }
                 },
               ),
               SecondaryButton(
-                title: AppLocalizations.of(context)!.close,
-                onPressed: () => Navigator.pop(context),
+                title: AppLocalizations.of(dialogContext)!.close,
+                onPressed: () => Navigator.pop(dialogContext),
                 borderColor: AppColors.secondaryGrey,
                 textColor: AppColors.primaryBlack,
               ),
@@ -614,13 +689,12 @@ class _HotelBillContentState extends State<_HotelBillContent> {
             label,
             style: Theme.of(
               context,
-            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSubtitle),
+            ).textTheme.displayLarge?.copyWith(color: AppColors.textSubtitle),
           ),
           Text(
             value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            style: Theme.of(context).textTheme.displayLarge?.copyWith(
               color: valueColor ?? AppColors.primaryBlack,
-              fontWeight: isBold ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
         ],

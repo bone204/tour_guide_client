@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:tour_guide_app/features/hotel_booking/data/models/room.dart';
 import 'package:tour_guide_app/features/profile/data/models/user.dart';
+import 'package:tour_guide_app/features/cooperations/data/models/cooperation.dart';
 
 enum HotelBillStatus { pending, confirmed, paid, cancelled, completed }
 
@@ -58,6 +59,8 @@ class HotelBill {
   final String code;
   final int userId;
   final User? user;
+  final int? cooperationId;
+  final Cooperation? cooperation;
   final DateTime checkInDate;
   final DateTime checkOutDate;
   final int numberOfRooms;
@@ -79,6 +82,8 @@ class HotelBill {
     required this.code,
     required this.userId,
     this.user,
+    this.cooperationId,
+    this.cooperation,
     required this.checkInDate,
     required this.checkOutDate,
     required this.numberOfRooms,
@@ -108,6 +113,14 @@ class HotelBill {
               ? json['userId']
               : int.tryParse(json['userId'].toString()) ?? 0,
       user: json['user'] != null ? User.fromJson(json['user']) : null,
+      cooperationId:
+          json['cooperationId'] is int
+              ? json['cooperationId']
+              : int.tryParse(json['cooperationId']?.toString() ?? ''),
+      cooperation:
+          json['cooperation'] != null
+              ? Cooperation.fromJson(json['cooperation'])
+              : null,
       checkInDate: _parseDate(json['checkInDate']),
       checkOutDate: _parseDate(json['checkOutDate']),
       numberOfRooms:
@@ -131,12 +144,12 @@ class HotelBill {
               ? json['travelPointsUsed']
               : int.tryParse(json['travelPointsUsed']?.toString() ?? '0') ?? 0,
       status: _parseStatus(json['status']),
-      notes: json['notes'],
       details:
           (json['details'] as List<dynamic>?)
               ?.map((e) => HotelBillDetail.fromJson(e))
               .toList() ??
           [],
+      notes: json['notes'],
       createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
       updatedAt: DateTime.tryParse(json['updatedAt'] ?? '') ?? DateTime.now(),
     );
