@@ -810,6 +810,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get findRestaurant => 'Tìm nhà hàng';
 
   @override
+  String get noRestaurantsFound => 'Không tìm thấy nhà hàng';
+
+  @override
+  String get noTablesAvailable => 'Hết bàn';
+
+  @override
+  String get person => 'người';
+
+  @override
+  String get contactForPrice => 'Liên hệ để biết giá';
+
+  @override
+  String get foodTypeVietnamese => 'Món Việt';
+
+  @override
   String get confirmOrder => 'Xác nhận đơn hàng';
 
   @override
@@ -1291,6 +1306,11 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get pricePerDayVnd => 'Giá theo ngày (VND)';
+
+  @override
+  String itemsSelected(int count) {
+    return 'Đã chọn $count mục';
+  }
 
   @override
   String fieldRequired(Object fieldName) {
@@ -2761,9 +2781,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get foodTypeAll => 'Tất cả';
 
   @override
-  String get foodTypeVietnamese => 'Món Việt';
-
-  @override
   String get foodTypeAsian => 'Món Á';
 
   @override
@@ -3348,4 +3365,12 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get nightUnit => 'đêm';
+
+  @override
+  String restaurantDescriptionFallback(String name) {
+    return 'Trải nghiệm ẩm thực tuyệt vời tại $name';
+  }
+
+  @override
+  String get selectQuantity => 'Chọn số lượng';
 }

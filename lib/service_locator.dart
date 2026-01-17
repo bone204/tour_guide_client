@@ -263,6 +263,12 @@ import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/create_h
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/find_hotel/find_hotel_cubit.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/hotel_rooms_search/hotel_rooms_search_cubit.dart';
 
+import 'package:tour_guide_app/features/restaurant/data/data_source/restaurant_api_service.dart';
+import 'package:tour_guide_app/features/restaurant/data/repository/restaurant_repository_impl.dart';
+import 'package:tour_guide_app/features/restaurant/domain/repository/restaurant_repository.dart';
+import 'package:tour_guide_app/features/restaurant/domain/usecase/search_restaurant_tables_usecase.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/bloc/search_restaurant_tables/search_restaurant_tables_cubit.dart';
+
 final sl = GetIt.instance;
 
 void setUpServiceLocator(SharedPreferences prefs) {
@@ -292,6 +298,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<MappingAddressApiService>(
     MappingAddressApiServiceImpl(),
   );
+  sl.registerSingleton<RestaurantApiService>(RestaurantApiServiceImpl());
 
   // Repositories
   sl.registerSingleton<BankRepository>(BankRepositoryImpl(sl()));
@@ -315,6 +322,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerSingleton<MappingAddressRepository>(
     MappingAddressRepositoryImpl(),
+  );
+  sl.registerSingleton<RestaurantRepository>(
+    RestaurantRepositoryImpl(apiService: sl()),
   );
 
   // Usecases
@@ -465,6 +475,11 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerSingleton<DeleteFavoriteCooperationUseCase>(
     DeleteFavoriteCooperationUseCase(),
+  );
+
+  // Restaurant
+  sl.registerSingleton<SearchRestaurantTablesUseCase>(
+    SearchRestaurantTablesUseCase(repository: sl()),
   );
 
   sl.registerSingleton<UserPickupUseCase>(UserPickupUseCase());
@@ -660,6 +675,12 @@ void setUpServiceLocator(SharedPreferences prefs) {
   // Eatery Cubits
   sl.registerFactory<GetEateriesCubit>(() => GetEateriesCubit(sl()));
   sl.registerFactory<GetEateryDetailCubit>(() => GetEateryDetailCubit(sl()));
+
+  // Restaurant Cubits
+  sl.registerFactory<SearchRestaurantTablesCubit>(
+    () => SearchRestaurantTablesCubit(searchRestaurantTablesUseCase: sl()),
+  );
+
   sl.registerFactory<NotificationCubit>(
     () => NotificationCubit(
       getMyNotificationsUseCase: sl(),

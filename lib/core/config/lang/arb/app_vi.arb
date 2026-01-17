@@ -563,7 +563,11 @@
   "restaurantList": "Danh sách nhà hàng",
 
   "findRestaurant": "Tìm nhà hàng",
-
+  "noRestaurantsFound": "Không tìm thấy nhà hàng",
+  "noTablesAvailable": "Hết bàn",
+  "person": "người",
+  "contactForPrice": "Liên hệ để biết giá",
+  "foodTypeVietnamese": "Món Việt",
   "confirmOrder": "Xác nhận đơn hàng",
 
   "payment": "Thanh toán",
@@ -1911,5 +1915,22 @@
   "cancelSuccess": "Hủy thành công",
   "confirmCancelBill": "Bạn có chắc chắn muốn hủy hóa đơn này?",
   "noBookingsFound": "Không tìm thấy đặt phòng nào",
-  "error": "Lỗi"
+  "error": "Lỗi",
+  "restaurantDescriptionFallback": "Trải nghiệm ẩm thực tuyệt vời tại {name}",
+  "@restaurantDescriptionFallback": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "selectQuantity": "Chọn số lượng",
+  "itemsSelected": "Đã chọn {count} mục",
+  "@itemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

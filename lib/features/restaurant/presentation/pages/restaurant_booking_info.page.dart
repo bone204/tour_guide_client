@@ -6,9 +6,18 @@ import 'package:tour_guide_app/features/car_rental/presentation/widgets/bill_inf
 import 'package:tour_guide_app/features/car_rental/presentation/widgets/payment_method_selector.widget.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/widgets/reward_point_selector.widget.dart';
 import 'package:tour_guide_app/common/widgets/snackbar/custom_snackbar.dart';
+import 'package:tour_guide_app/features/cooperations/data/models/cooperation.dart';
+import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table.dart';
 
 class RestaurantBookingInfoPage extends StatefulWidget {
-  const RestaurantBookingInfoPage({super.key});
+  final Cooperation restaurant;
+  final RestaurantTable table;
+
+  const RestaurantBookingInfoPage({
+    super.key,
+    required this.restaurant,
+    required this.table,
+  });
 
   @override
   State<RestaurantBookingInfoPage> createState() =>
@@ -33,7 +42,12 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
 
-    final depositAmount = 100_000.0;
+    // Use table price or default deposit
+    final double depositAmount =
+        widget.table.priceRange != null
+            ? widget.table.priceRange!.toDouble()
+            : 100000.0;
+
     final totalAfterPoint = (depositAmount - travelPointToUse).clamp(
       0,
       depositAmount,
@@ -54,7 +68,13 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
               width: double.infinity,
               height: 236.h,
               color: AppColors.primaryBlue.withOpacity(0.1),
-              child: Image.asset(AppImage.defaultFood, fit: BoxFit.cover),
+              child: Image.network(
+                widget.restaurant.photo ?? "",
+                fit: BoxFit.cover,
+                errorBuilder:
+                    (context, error, stackTrace) =>
+                        Image.asset(AppImage.defaultFood, fit: BoxFit.cover),
+              ),
             ),
 
             Padding(
@@ -62,10 +82,10 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Nhà hàng Sài Gòn', style: theme.titleLarge),
+                  Text(widget.restaurant.name, style: theme.titleLarge),
                   SizedBox(height: 4.h),
                   Text(
-                    '${AppLocalizations.of(context)!.vietnameseFood} • ${AppLocalizations.of(context)!.district1}, ${AppLocalizations.of(context)!.hcmCity}',
+                    '${widget.restaurant.address ?? ""} • ${widget.restaurant.province ?? ""}',
                     style: theme.bodyMedium?.copyWith(
                       color: AppColors.textSubtitle,
                     ),
@@ -76,37 +96,36 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
 
                   BillInfo(
                     label: AppLocalizations.of(context)!.customer,
-                    value: "Nguyễn Văn A",
+                    value: "User Name", // TODO: Get from Auth Profile
                   ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.phoneNumber,
-                    value: "0909123456",
-                  ),
-                  BillInfo(
-                    label: AppLocalizations.of(context)!.email,
-                    value: "nguyenvana@gmail.com",
+                    value: "0909123456", // TODO: Get from Auth Profile
                   ),
 
+                  // Email removed to save space or add if needed
                   SizedBox(height: 8.h),
                   Divider(height: 2.h, color: AppColors.primaryGrey),
                   SizedBox(height: 8.h),
 
                   BillInfo(
                     label: AppLocalizations.of(context)!.table,
-                    value: "${AppLocalizations.of(context)!.table} 01",
+                    value: widget.table.name,
                   ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.numberOfPeople,
-                    value: "2 ${AppLocalizations.of(context)!.people}",
-                  ),
-                  BillInfo(
-                    label: AppLocalizations.of(context)!.location,
                     value:
-                        "${AppLocalizations.of(context)!.floor1} - ${AppLocalizations.of(context)!.nearWindow}",
+                        "${widget.table.guests} ${AppLocalizations.of(context)!.people}",
                   ),
+                  if (widget.table.description != null)
+                    BillInfo(
+                      label: AppLocalizations.of(context)!.description,
+                      value: widget.table.description!,
+                    ),
                   BillInfo(
                     label: AppLocalizations.of(context)!.time,
-                    value: "18:00 - 30/10/2025",
+                    value:
+                        "18:00 - 30/10/2025", // TODO: Pass selected time from previous screen
                   ),
 
                   SizedBox(height: 8.h),
@@ -129,7 +148,10 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                   ),
                   if (travelPointToUse > 0)
                     BillInfo(
-                      label: AppLocalizations.of(context)!.discountPointsLabel,
+                      label:
+                          AppLocalizations.of(
+                            context,
+                          )!.discountPoint, // Fixed key, check arb
                       value: "-${Formatter.currency(travelPointToUse)}",
                     ),
                   SizedBox(height: 8.h),

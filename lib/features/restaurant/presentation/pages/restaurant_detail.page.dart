@@ -1,24 +1,22 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
-import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
-import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
-import 'package:tour_guide_app/common/widgets/tab_item/videos_tab.widget.dart';
+import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
+
+import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/service_locator.dart';
+import 'package:tour_guide_app/common/widgets/button/like_button.dart';
+
+import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_state.dart';
+import 'package:tour_guide_app/features/restaurant/data/models/restaurant_search_response.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
-  final String? imageUrl;
-  final String? name;
-  final String? location;
-  final String? cuisine;
+  final RestaurantSearchResponse restaurant;
 
-  const RestaurantDetailPage({
-    super.key,
-    this.imageUrl,
-    this.name,
-    this.location,
-    this.cuisine,
-  });
+  const RestaurantDetailPage({super.key, required this.restaurant});
 
   @override
   State<RestaurantDetailPage> createState() => _RestaurantDetailPageState();
@@ -29,12 +27,11 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
   late TabController _tabController;
   final DraggableScrollableController _sheetController =
       DraggableScrollableController();
-  bool _isFavorite = false;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -44,45 +41,45 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
     super.dispose();
   }
 
-  void _navigateToTableList(BuildContext context) {
-    Navigator.of(
-      context,
-      rootNavigator: true,
-    ).pushNamed(AppRouteConstant.restaurantTableList);
+  void _navigateToTableSelection(BuildContext context) {
+    // Navigate to page to select tables for this restaurant
+    Navigator.of(context, rootNavigator: true).pushNamed(
+      AppRouteConstant.restaurantTableSelection,
+      arguments: widget.restaurant,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final displayImageUrl = widget.imageUrl ?? AppImage.defaultFood;
-    final displayName =
-        widget.name ?? AppLocalizations.of(context)!.saigonRestaurant;
-    final displayLocation =
-        widget.location ??
-        '${AppLocalizations.of(context)!.district1}, ${AppLocalizations.of(context)!.hcmCity}';
-    final displayCuisine =
-        widget.cuisine ?? AppLocalizations.of(context)!.foodTypeVietnamese;
-
-    return Scaffold(
-      body: Stack(
-        children: [
-          _buildHeaderImage(displayImageUrl),
-          _buildTopAppBar(),
-          _buildDraggableBottomSheet(
-            displayName,
-            displayLocation,
-            displayCuisine,
-            displayImageUrl,
-          ),
-        ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<FavoriteCooperationsCubit>()..loadFavorites(),
+        ),
+      ],
+      child: Scaffold(
+        body: Stack(
+          children: [
+            _buildHeaderImage(),
+            _buildTopAppBar(),
+            _buildDraggableBottomSheet(),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildHeaderImage(String imageUrl) {
+  Widget _buildHeaderImage() {
     return Positioned.fill(
       child: Hero(
-        tag: 'restaurant_${widget.name}',
-        child: Image.asset(imageUrl, fit: BoxFit.cover),
+        tag: 'restaurant_${widget.restaurant.id}',
+        child: Image.network(
+          widget.restaurant.photo ?? "",
+          fit: BoxFit.cover,
+          errorBuilder:
+              (context, error, stackTrace) =>
+                  Image.asset(AppImage.defaultFood, fit: BoxFit.cover),
+        ),
       ),
     );
   }
@@ -103,13 +100,13 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
                 child: Container(
                   padding: EdgeInsets.all(10.r),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryWhite.withOpacity(0.9),
+                    color: AppColors.primaryWhite,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
                         blurRadius: 8,
-                        offset: Offset(0, 2),
+                        offset: const Offset(0, 2),
                       ),
                     ],
                   ),
@@ -120,34 +117,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isFavorite = !_isFavorite;
-                  });
-                },
-                child: Container(
-                  padding: EdgeInsets.all(10.r),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryWhite.withOpacity(0.9),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    _isFavorite
-                        ? Icons.favorite_rounded
-                        : Icons.favorite_border_rounded,
-                    size: 20.r,
-                    color: AppColors.primaryRed,
-                  ),
-                ),
-              ),
+              _buildFavoriteButton(),
             ],
           ),
         ),
@@ -155,20 +125,50 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
     );
   }
 
-  Widget _buildDraggableBottomSheet(
-    String name,
-    String location,
-    String cuisine,
-    String imageUrl,
-  ) {
+  Widget _buildFavoriteButton() {
+    return Container(
+      padding: EdgeInsets.all(10.r),
+      decoration: BoxDecoration(
+        color: AppColors.primaryWhite,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: BlocBuilder<FavoriteCooperationsCubit, FavoriteCooperationsState>(
+        builder: (context, state) {
+          final isFavorite = state.favoriteIds.contains(widget.restaurant.id);
+
+          return CustomLikeButton(
+            size: 22.r,
+            isLiked: isFavorite,
+            likedColor: AppColors.primaryRed,
+            unlikedColor: AppColors.textSubtitle.withOpacity(0.6),
+            onTap: (isLiked) async {
+              await context.read<FavoriteCooperationsCubit>().toggleFavorite(
+                widget.restaurant.id,
+              );
+              return !isLiked;
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildDraggableBottomSheet() {
     return DraggableScrollableSheet(
       controller: _sheetController,
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.95,
       snap: true,
-      snapSizes: [0.5, 0.7, 0.95],
-      snapAnimationDuration: Duration(milliseconds: 300),
+      snapSizes: const [0.5, 0.7, 0.95],
+      snapAnimationDuration: const Duration(milliseconds: 300),
       builder: (context, scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -178,7 +178,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
               BoxShadow(
                 color: Colors.black.withOpacity(0.15),
                 blurRadius: 20,
-                offset: Offset(0, -5),
+                offset: const Offset(0, -5),
                 spreadRadius: 0,
               ),
             ],
@@ -190,22 +190,22 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
                 child: ListView(
                   controller: scrollController,
                   padding: EdgeInsets.zero,
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildHeaderInfo(name, location, cuisine),
+                          _buildHeaderInfo(),
                           SizedBox(height: 20.h),
                           _buildTabs(),
                           SizedBox(height: 20.h),
-                          _buildTabContent(name, imageUrl),
+                          _buildTabContent(),
                           SizedBox(height: 20.h),
                           PrimaryButton(
                             title: AppLocalizations.of(context)!.bookTable,
-                            onPressed: () => _navigateToTableList(context),
+                            onPressed: () => _navigateToTableSelection(context),
                             backgroundColor: AppColors.primaryBlue,
                             textColor: AppColors.textSecondary,
                           ),
@@ -235,15 +235,27 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
     );
   }
 
-  Widget _buildHeaderInfo(String name, String location, String cuisine) {
+  Widget _buildHeaderInfo() {
+    // Fallback logic for cuisine if needed, similar to card
+    String cuisineText = "";
+    if (widget.restaurant.restaurantTables.isNotEmpty &&
+        widget.restaurant.restaurantTables.first.dishType != null) {
+      cuisineText = widget.restaurant.restaurantTables.first.dishType!;
+    } else {
+      cuisineText = AppLocalizations.of(context)!.foodTypeVietnamese;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 20.h),
-        Text(name, style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          widget.restaurant.name,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         SizedBox(height: 8.h),
         Text(
-          cuisine,
+          cuisineText,
           style: Theme.of(
             context,
           ).textTheme.titleSmall?.copyWith(color: AppColors.textSubtitle),
@@ -261,13 +273,16 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
                 AppIcons.location,
                 width: 16.w,
                 height: 16.h,
-                color: AppColors.primaryBlue,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.primaryBlue,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             SizedBox(width: 8.w),
             Expanded(
               child: Text(
-                location,
+                "${widget.restaurant.province}",
                 style: Theme.of(
                   context,
                 ).textTheme.titleSmall?.copyWith(color: AppColors.textSubtitle),
@@ -303,13 +318,12 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
           Tab(text: AppLocalizations.of(context)!.aboutTab),
           Tab(text: AppLocalizations.of(context)!.reviewsTab),
           Tab(text: AppLocalizations.of(context)!.photosTab),
-          Tab(text: AppLocalizations.of(context)!.videosTab),
         ],
       ),
     );
   }
 
-  Widget _buildTabContent(String name, String imageUrl) {
+  Widget _buildTabContent() {
     return AnimatedBuilder(
       animation: _tabController,
       builder: (context, child) {
@@ -317,18 +331,28 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
           case 0:
             return AboutTab(
               description:
-                  'Experience the finest cuisine at $name. Our chefs prepare every dish with passion and the freshest ingredients to bring you authentic flavors and culinary excellence.\n\nWhether you are here for a romantic dinner, a family gathering, or a business lunch, we promise an unforgettable dining experience with exceptional service and a cozy atmosphere.',
+                  widget.restaurant.introduction ??
+                  AppLocalizations.of(
+                    context,
+                  )!.restaurantDescriptionFallback(widget.restaurant.name),
             );
           case 1:
-            return ReviewsTab();
+            return const ReviewsTab();
           case 2:
-            return PhotosTab();
-          case 3:
-            return VideosTab();
+            return PhotosTab(
+              photos:
+                  widget.restaurant.photo != null &&
+                          widget.restaurant.photo!.isNotEmpty
+                      ? [widget.restaurant.photo!]
+                      : [],
+            );
           default:
             return AboutTab(
               description:
-                  'Experience the finest cuisine at $name. Our chefs prepare every dish with passion and the freshest ingredients to bring you authentic flavors and culinary excellence.\n\nWhether you are here for a romantic dinner, a family gathering, or a business lunch, we promise an unforgettable dining experience with exceptional service and a cozy atmosphere.',
+                  widget.restaurant.introduction ??
+                  AppLocalizations.of(
+                    context,
+                  )!.restaurantDescriptionFallback(widget.restaurant.name),
             );
         }
       },

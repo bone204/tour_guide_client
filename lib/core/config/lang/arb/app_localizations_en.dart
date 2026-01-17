@@ -810,6 +810,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get findRestaurant => 'Find Restaurant';
 
   @override
+  String get noRestaurantsFound => 'No restaurants found';
+
+  @override
+  String get noTablesAvailable => 'No tables available';
+
+  @override
+  String get person => 'person';
+
+  @override
+  String get contactForPrice => 'Contact for price';
+
+  @override
+  String get foodTypeVietnamese => 'Vietnamese';
+
+  @override
   String get confirmOrder => 'Confirm Order';
 
   @override
@@ -1291,6 +1306,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pricePerDayVnd => 'Price Per Day (VND)';
+
+  @override
+  String itemsSelected(int count) {
+    return '$count items selected';
+  }
 
   @override
   String fieldRequired(Object fieldName) {
@@ -2755,9 +2775,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get foodTypeAll => 'All';
 
   @override
-  String get foodTypeVietnamese => 'Vietnamese';
-
-  @override
   String get foodTypeAsian => 'Asian';
 
   @override
@@ -3342,4 +3359,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nightUnit => 'night(s)';
+
+  @override
+  String restaurantDescriptionFallback(String name) {
+    return 'Experience the finest cuisine at $name';
+  }
+
+  @override
+  String get selectQuantity => 'Select Quantity';
 }

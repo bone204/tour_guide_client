@@ -1673,6 +1673,36 @@ abstract class AppLocalizations {
   /// **'Find Restaurant'**
   String get findRestaurant;
 
+  /// No description provided for @noRestaurantsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No restaurants found'**
+  String get noRestaurantsFound;
+
+  /// No description provided for @noTablesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No tables available'**
+  String get noTablesAvailable;
+
+  /// No description provided for @person.
+  ///
+  /// In en, this message translates to:
+  /// **'person'**
+  String get person;
+
+  /// No description provided for @contactForPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact for price'**
+  String get contactForPrice;
+
+  /// No description provided for @foodTypeVietnamese.
+  ///
+  /// In en, this message translates to:
+  /// **'Vietnamese'**
+  String get foodTypeVietnamese;
+
   /// No description provided for @confirmOrder.
   ///
   /// In en, this message translates to:
@@ -2638,6 +2668,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Price Per Day (VND)'**
   String get pricePerDayVnd;
+
+  /// No description provided for @itemsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items selected'**
+  String itemsSelected(int count);
 
   /// No description provided for @fieldRequired.
   ///
@@ -5423,12 +5459,6 @@ abstract class AppLocalizations {
   /// **'All'**
   String get foodTypeAll;
 
-  /// No description provided for @foodTypeVietnamese.
-  ///
-  /// In en, this message translates to:
-  /// **'Vietnamese'**
-  String get foodTypeVietnamese;
-
   /// No description provided for @foodTypeAsian.
   ///
   /// In en, this message translates to:
@@ -6580,6 +6610,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'night(s)'**
   String get nightUnit;
+
+  /// No description provided for @restaurantDescriptionFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience the finest cuisine at {name}'**
+  String restaurantDescriptionFallback(String name);
+
+  /// No description provided for @selectQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Quantity'**
+  String get selectQuantity;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,6 +1,6 @@
-import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table.dart';
+import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table_search_response.dart';
 
-class Cooperation {
+class RestaurantSearchResponse {
   final int id;
   final String name;
   final String? code;
@@ -28,14 +28,11 @@ class Cooperation {
   final bool active;
   final String? createdAt;
   final String? updatedAt;
-
-  // Restaurant specific
-  final List<RestaurantTable> restaurantTables;
-
   final double? latitude;
   final double? longitude;
+  final List<RestaurantTableSearchResponse> restaurantTables;
 
-  const Cooperation({
+  const RestaurantSearchResponse({
     required this.id,
     required this.name,
     this.code,
@@ -68,15 +65,14 @@ class Cooperation {
     this.restaurantTables = const [],
   });
 
-  factory Cooperation.fromJson(Map<String, dynamic> json) {
-    return Cooperation(
-      id: int.tryParse(json['id'].toString()) ?? 0,
+  factory RestaurantSearchResponse.fromJson(Map<String, dynamic> json) {
+    return RestaurantSearchResponse(
+      id: json['id'] ?? 0,
       name: json['name'] ?? '',
       code: json['code'],
       type: json['type'],
-      numberOfObjects: int.tryParse(json['numberOfObjects'].toString()) ?? 0,
-      numberOfObjectTypes:
-          int.tryParse(json['numberOfObjectTypes'].toString()) ?? 0,
+      numberOfObjects: json['numberOfObjects'] ?? 0,
+      numberOfObjectTypes: json['numberOfObjectTypes'] ?? 0,
       bossName: json['bossName'],
       bossPhone: json['bossPhone'],
       bossEmail: json['bossEmail'],
@@ -92,7 +88,7 @@ class Cooperation {
       bankAccountNumber: json['bankAccountNumber'],
       bankAccountName: json['bankAccountName'],
       bankName: json['bankName'],
-      bookingTimes: int.tryParse(json['bookingTimes'].toString()) ?? 0,
+      bookingTimes: json['bookingTimes'] ?? 0,
       revenue: json['revenue']?.toString() ?? "0",
       averageRating: json['averageRating']?.toString() ?? "0",
       active: json['active'] ?? true,
@@ -109,44 +105,9 @@ class Cooperation {
       restaurantTables:
           json['restaurantTables'] != null
               ? (json['restaurantTables'] as List)
-                  .map((e) => RestaurantTable.fromJson(e))
+                  .map((e) => RestaurantTableSearchResponse.fromJson(e))
                   .toList()
               : [],
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'code': code,
-      'type': type,
-      'numberOfObjects': numberOfObjects,
-      'numberOfObjectTypes': numberOfObjectTypes,
-      'bossName': bossName,
-      'bossPhone': bossPhone,
-      'bossEmail': bossEmail,
-      'address': address,
-      'district': district,
-      'city': city,
-      'province': province,
-      'photo': photo,
-      'extension': extension,
-      'introduction': introduction,
-      'contractDate': contractDate,
-      'contractTerm': contractTerm,
-      'bankAccountNumber': bankAccountNumber,
-      'bankAccountName': bankAccountName,
-      'bankName': bankName,
-      'bookingTimes': bookingTimes,
-      'revenue': revenue,
-      'averageRating': averageRating,
-      'active': active,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-      'latitude': latitude,
-      'longitude': longitude,
-      'restaurantTables': restaurantTables.map((e) => e.toJson()).toList(),
-    };
   }
 }

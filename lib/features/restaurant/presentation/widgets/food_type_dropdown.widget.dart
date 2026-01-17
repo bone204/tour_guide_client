@@ -38,70 +38,86 @@ class FoodTypeDropdown extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: Theme.of(context).textTheme.displayLarge),
-        SizedBox(height: 8.h),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 4.w),
-          decoration: BoxDecoration(
-            color: AppColors.primaryWhite,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(color: AppColors.primaryGrey, width: 1.w),
-          ),
-          child: Row(
-            children: [
-              if (prefixIcon != null) ...[
-                Padding(
-                  padding: EdgeInsets.only(left: 12.w),
-                  child: prefixIcon!,
-                ),
-              ],
-              Expanded(
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton2<String>(
-                    value: selectedType,
-                    isExpanded: true,
-                    hint: Text(
-                      AppLocalizations.of(context)!.selectFoodType,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSubtitle,
-                      ),
+        SizedBox(height: 6.h),
+        DropdownButtonHideUnderline(
+          child: DropdownButton2<String>(
+            value: selectedType,
+            isExpanded: true,
+            hint: Row(
+              children: [
+                if (prefixIcon != null) ...[
+                  Padding(
+                    padding: EdgeInsets.only(right: 8.w),
+                    child: prefixIcon!,
+                  ),
+                ],
+                Expanded(
+                  child: Text(
+                    AppLocalizations.of(context)!.selectFoodType,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSubtitle,
                     ),
-                    buttonStyleData: ButtonStyleData(
-                      height: 24.h,
-                      padding: EdgeInsets.zero,
-                    ),
-                    iconStyleData: IconStyleData(
-                      icon: Icon(
-                        Icons.arrow_drop_down,
-                        color: AppColors.primaryBlack,
-                      ),
-                      iconSize: 24.r,
-                    ),
-                    dropdownStyleData: DropdownStyleData(
-                      maxHeight: 300.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.r),
-                        color: AppColors.primaryWhite,
-                      ),
-                    ),
-                    menuItemStyleData: MenuItemStyleData(
-                      height: 44.h,
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    ),
-                    items:
-                        foodTypes.map((String type) {
-                          return DropdownMenuItem<String>(
-                            value: type,
-                            child: Text(
-                              type,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          );
-                        }).toList(),
-                    onChanged: onChanged,
                   ),
                 ),
+              ],
+            ),
+            items:
+                foodTypes.map((String type) {
+                  return DropdownMenuItem<String>(
+                    value: type,
+                    child: Text(
+                      type,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  );
+                }).toList(),
+            selectedItemBuilder: (BuildContext context) {
+              return foodTypes.map<Widget>((String type) {
+                return Row(
+                  children: [
+                    if (prefixIcon != null) ...[
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.w),
+                        child: prefixIcon!,
+                      ),
+                    ],
+                    Expanded(
+                      child: Text(
+                        type,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                  ],
+                );
+              }).toList();
+            },
+            onChanged: onChanged,
+            buttonStyleData: ButtonStyleData(
+              height: 48.h,
+              padding: EdgeInsets.only(right: 12.w),
+              decoration: BoxDecoration(
+                color: AppColors.primaryWhite,
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: AppColors.secondaryGrey, width: 1.w),
               ),
-            ],
+            ),
+            iconStyleData: IconStyleData(
+              icon: Icon(Icons.arrow_drop_down_sharp),
+              iconSize: 24.w,
+            ),
+            dropdownStyleData: DropdownStyleData(
+              maxHeight: 200.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.r),
+                color: AppColors.primaryWhite,
+              ),
+            ),
+            menuItemStyleData: MenuItemStyleData(
+              height: 44.h,
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+            ),
           ),
         ),
       ],

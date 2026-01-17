@@ -492,6 +492,11 @@
   "restaurantList": "Restaurant List",
 
   "findRestaurant": "Find Restaurant",
+  "noRestaurantsFound": "No restaurants found",
+  "noTablesAvailable": "No tables available",
+  "person": "person", 
+  "contactForPrice": "Contact for price",
+  "foodTypeVietnamese": "Vietnamese Food",
 
   "confirmOrder": "Confirm Order",
 
@@ -787,6 +792,14 @@
 
   "pricePerDayVnd": "Price Per Day (VND)",
 
+  "itemsSelected": "{count} items selected",
+  "@itemsSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "fieldRequired": "{fieldName} is required",
   "@fieldRequired": {
     "placeholders": {
@@ -1897,5 +1910,14 @@
   "editItinerary": "Edit Itinerary",
   "checkOutMustBeAfterCheckIn": "Check-out date must be after check-in date",
   "pricePerNight": "Price per night",
-  "nightUnit": "night(s)"
+  "nightUnit": "night(s)",
+  "restaurantDescriptionFallback": "Experience the finest cuisine at {name}",
+  "@restaurantDescriptionFallback": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "selectQuantity": "Select Quantity"
 }

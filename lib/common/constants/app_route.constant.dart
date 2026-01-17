@@ -18,8 +18,9 @@ class AppRouteConstant {
   static const String findRestaurant = '/find_restaurant';
   static const String restaurantList = '/restaurant_list';
   static const String restaurantDetail = '/restaurant_detail';
-  static const String restaurantTableList = '/restaurant_table_list';
-  static const String restaurantBookingInfo = '/restaurant_booking_info';
+  static const String restaurantTableList = '/restaurant/table_list';
+  static const String restaurantTableSelection = '/restaurant/table_selection';
+  static const String restaurantBookingInfo = '/restaurant/booking_info';
   static const String fastDelivery = '/fast_delivery';
   static const String fastDeliveryDetail = '/fast_delivery_detail';
   static const String fastDeliveryBill = '/fast_delivery_bill';

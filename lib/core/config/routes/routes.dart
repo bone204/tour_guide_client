@@ -1,5 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/cooperations/data/models/cooperation.dart';
+import 'package:tour_guide_app/features/restaurant/data/models/restaurant_search_response.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/sign_in.page.dart';
 import 'package:tour_guide_app/features/auth/presentation/pages/sign_up.page.dart';
 import 'package:tour_guide_app/features/car_rental/presentation/pages/car_detail.page.dart';
@@ -26,7 +28,10 @@ import 'package:tour_guide_app/features/restaurant/presentation/pages/find_resta
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_list.page.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_detail.page.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_table_list.page.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_table_selection.page.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_booking_info.page.dart';
+import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table_search_request.dart';
+import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table.dart';
 import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery.page.dart';
 import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery_detail.page.dart';
 import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery_bill.page.dart';
@@ -311,21 +316,35 @@ class AppRouter {
         );
 
       case AppRouteConstant.restaurantDetail:
+        final restaurant = settings.arguments as RestaurantSearchResponse;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => RestaurantDetailPage(),
+          builder: (_) => RestaurantDetailPage(restaurant: restaurant),
         );
 
       case AppRouteConstant.restaurantTableList:
+        final request = settings.arguments as RestaurantTableSearchRequest?;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => RestaurantTableListPage(),
+          builder: (_) => RestaurantTableListPage(request: request),
+        );
+
+      case AppRouteConstant.restaurantTableSelection:
+        final restaurant = settings.arguments as RestaurantSearchResponse;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => RestaurantTableSelectionPage(restaurant: restaurant),
         );
 
       case AppRouteConstant.restaurantBookingInfo:
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => RestaurantBookingInfoPage(),
+          builder:
+              (_) => RestaurantBookingInfoPage(
+                restaurant: args['restaurant'] as Cooperation,
+                table: args['table'] as RestaurantTable,
+              ),
         );
 
       case AppRouteConstant.fastDelivery:
@@ -366,7 +385,7 @@ class AppRouter {
         return MaterialPageRoute(
           settings: settings,
           builder:
-              (_) => HotelDetailPage(
+              (_) => HotelDetailPage.withProvider(
                 hotel: args?['hotel'],
                 rooms: args?['rooms'],
                 request: args?['request'],

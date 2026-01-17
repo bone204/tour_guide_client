@@ -77,6 +77,19 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Price range
+            PriceRangeSlider(
+              min: 500000,
+              max: 10000000,
+              start: selectedRange.start,
+              end: selectedRange.end,
+              onChanged: (range) {
+                setState(() => selectedRange = range);
+              },
+            ),
+
+            SizedBox(height: 24.h),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -199,19 +212,6 @@ class _HotelSearchPageState extends State<HotelSearchPage> {
                   ),
                 ),
               ],
-            ),
-
-            SizedBox(height: 24.h),
-
-            // Price range
-            PriceRangeSlider(
-              min: 500000,
-              max: 10000000,
-              start: selectedRange.start,
-              end: selectedRange.end,
-              onChanged: (range) {
-                setState(() => selectedRange = range);
-              },
             ),
 
             SizedBox(height: 24.h),

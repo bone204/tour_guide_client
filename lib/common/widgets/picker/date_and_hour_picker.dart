@@ -78,7 +78,7 @@ class _DateHourPickerFieldState extends State<DateHourPickerField> {
             decoration: BoxDecoration(
               color: AppColors.primaryWhite,
               borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: AppColors.primaryGrey, width: 1.w),
+              border: Border.all(color: AppColors.secondaryGrey, width: 1.w),
             ),
             child: Row(
               children: [

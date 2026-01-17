@@ -60,6 +60,9 @@ class ApiUrls {
   static String favoriteCooperation(int id) =>
       "$baseURL/cooperations/$id/favorite";
 
+  //Restaurant Tables URLs
+  static const restaurantTables = "$baseURL/restaurant/tables";
+
   //Payment URLs
   static const payments = "$baseURL/payments";
 
