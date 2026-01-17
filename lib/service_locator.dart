@@ -237,8 +237,19 @@ import 'package:tour_guide_app/features/mapping_address/presentation/bloc/reform
 import 'package:tour_guide_app/features/mapping_address/domain/usecases/get_legacy_districts_of_province_usecase.dart';
 
 import 'package:tour_guide_app/features/hotel_booking/data/data_source/hotel_booking_api_service.dart';
-import 'package:tour_guide_app/features/hotel_booking/data/repository/hotel_booking_repository_impl.dart';
-import 'package:tour_guide_app/features/hotel_booking/domain/repository/hotel_booking_repository.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/get_my_hotel_bills/get_my_hotel_bills_cubit.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/get_hotel_bill_detail/get_hotel_bill_detail_cubit.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/presentation/bloc/book_hotel_workflow/book_hotel_workflow_cubit.dart';
+
+import 'package:tour_guide_app/features/bills/book_hotel/data/data_source/book_hotel_api_service.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/data/repository/book_hotel_repository_impl.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/domain/repository/book_hotel_repository.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/get_my_hotel_bills_usecase.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/get_hotel_bill_detail_usecase.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/confirm_hotel_bill_usecase.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/pay_hotel_bill_usecase.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/update_hotel_bill_usecase.dart';
+import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/cancel_hotel_bill_usecase.dart';
 
 import 'package:tour_guide_app/features/hotel_booking/domain/usecases/create_hotel_bill_usecase.dart';
 import 'package:tour_guide_app/features/hotel_booking/domain/usecases/get_hotel_rooms_usecase.dart';
@@ -693,4 +704,50 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerFactory<FindHotelCubit>(() => FindHotelCubit(sl()));
   sl.registerFactory<CreateHotelBillCubit>(() => CreateHotelBillCubit(sl()));
+
+  // Book Hotel (Hotel Bill Management)
+  sl.registerLazySingleton<BookHotelApiService>(
+    () => BookHotelApiServiceImpl(),
+  );
+  sl.registerLazySingleton<BookHotelRepository>(
+    () => BookHotelRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<GetMyHotelBillsUseCase>(
+    () => GetMyHotelBillsUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetHotelBillDetailUseCase>(
+    () => GetHotelBillDetailUseCase(sl()),
+  );
+  sl.registerLazySingleton<HotelCheckInUseCase>(
+    () => HotelCheckInUseCase(sl()),
+  );
+  sl.registerLazySingleton<HotelCheckOutUseCase>(
+    () => HotelCheckOutUseCase(sl()),
+  );
+  sl.registerLazySingleton<CancelHotelBillUseCase>(
+    () => CancelHotelBillUseCase(sl()),
+  );
+
+  sl.registerLazySingleton<UpdateHotelBillUseCase>(
+    () => UpdateHotelBillUseCase(sl()),
+  );
+  sl.registerLazySingleton<ConfirmHotelBillUseCase>(
+    () => ConfirmHotelBillUseCase(sl()),
+  );
+  sl.registerLazySingleton<PayHotelBillUseCase>(
+    () => PayHotelBillUseCase(sl()),
+  );
+
+  sl.registerFactory<GetMyHotelBillsCubit>(() => GetMyHotelBillsCubit(sl()));
+  sl.registerFactory<GetHotelBillDetailCubit>(
+    () => GetHotelBillDetailCubit(sl()),
+  );
+  sl.registerFactory<BookHotelWorkflowCubit>(
+    () => BookHotelWorkflowCubit(
+      confirmHotelBillUseCase: sl(),
+      payHotelBillUseCase: sl(),
+      cancelHotelBillUseCase: sl(),
+      updateHotelBillUseCase: sl(),
+    ),
+  );
 }
