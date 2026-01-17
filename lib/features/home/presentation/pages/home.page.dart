@@ -10,6 +10,8 @@ import 'package:tour_guide_app/features/home/presentation/bloc/get_recommend_des
 import 'package:tour_guide_app/features/home/presentation/bloc/get_recommend_destinations/get_recommend_destinations_state.dart';
 import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_vouchers_cubit.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_list/cooperation_list_cubit.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/hotel_rooms_search/hotel_rooms_search_cubit.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.widget.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
@@ -54,6 +56,7 @@ class HomePage extends StatefulWidget {
         BlocProvider(
           create: (context) => sl<FavoriteCooperationsCubit>()..loadFavorites(),
         ),
+        BlocProvider(create: (context) => sl<HotelRoomsSearchCubit>()),
         BlocProvider(create: (context) => sl<AnniversaryCubit>()),
       ],
       child: const HomePage(),
@@ -72,9 +75,24 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _setupScrollListener();
+    _searchNearbyHotels();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<AnniversaryCubit>().checkAnniversaries();
     });
+  }
+
+  Future<void> _searchNearbyHotels() async {
+    try {
+      final position = await Geolocator.getCurrentPosition();
+      if (mounted) {
+        context.read<HotelRoomsSearchCubit>().searchHotels(
+          latitude: position.latitude,
+          longitude: position.longitude,
+        );
+      }
+    } catch (e) {
+      // Silently fail if location not available
+    }
   }
 
   void _setupScrollListener() {
@@ -127,6 +145,7 @@ class _HomePageState extends State<HomePage> {
       context.read<GetVouchersCubit>().getVouchers(),
       context.read<CooperationListCubit>().getCooperations(),
       context.read<FavoriteCooperationsCubit>().loadFavorites(),
+      _searchNearbyHotels(),
     ]);
   }
 

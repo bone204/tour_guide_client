@@ -159,8 +159,17 @@ class _HotelRoomListPageState extends State<HotelRoomListPage> {
               );
             } else if (state is FindHotelSuccess) {
               setState(() {
-                // Extract all rooms from all hotels
-                _rooms = state.hotels.expand((hotel) => hotel.rooms).toList();
+                // If we have a specific hotel, only show rooms from that hotel
+                if (widget.hotel != null) {
+                  final targetHotel = state.hotels.firstWhere(
+                    (h) => h.id == widget.hotel!.id,
+                    orElse: () => widget.hotel!,
+                  );
+                  _rooms = targetHotel.rooms;
+                } else {
+                  // Extract all rooms from all hotels
+                  _rooms = state.hotels.expand((hotel) => hotel.rooms).toList();
+                }
               });
             }
           },

@@ -116,15 +116,36 @@ class _HotelBillContentState extends State<_HotelBillContent> {
   }
 
   Future<void> _launchUrl(BuildContext context, String urlString) async {
-    final Uri url = Uri.parse(urlString);
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      if (context.mounted) {
+    try {
+      final Uri url = Uri.parse(urlString);
+
+      // Try to launch the URL
+      final canLaunch = await canLaunchUrl(url);
+      if (canLaunch) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } else {
+        // If can't launch, it might be a QR code in different format
+        // Try to show it as QR dialog instead
+        if (urlString.contains('base64') || urlString.length > 500) {
+          _showQRCodeDialog(context, urlString);
+        } else {
+          if (context.mounted) {
+            CustomSnackbar.show(
+              context,
+              message: AppLocalizations.of(context)!.paymentGatewayError,
+              type: SnackbarType.error,
+            );
+          }
+        }
+      }
+    } catch (e) {
+      // If parsing or launching fails, try to show as QR code
+      if (urlString.contains('base64') || urlString.length > 500) {
+        _showQRCodeDialog(context, urlString);
+      } else if (context.mounted) {
         CustomSnackbar.show(
           context,
-          message:
-              AppLocalizations.of(
-                context,
-              )!.paymentGatewayError, // Using localized error if available, matching rental
+          message: AppLocalizations.of(context)!.paymentGatewayError,
           type: SnackbarType.error,
         );
       }

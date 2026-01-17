@@ -261,6 +261,7 @@ import 'package:tour_guide_app/features/bills/book_hotel/domain/usecases/hotel_c
 import 'package:tour_guide_app/features/hotel_booking/domain/usecases/get_hotel_rooms_usecase.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/create_hotel_bill/create_hotel_bill_cubit.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/find_hotel/find_hotel_cubit.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/hotel_rooms_search/hotel_rooms_search_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -710,6 +711,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerFactory<FindHotelCubit>(() => FindHotelCubit(sl()));
   sl.registerFactory<CreateHotelBillCubit>(() => CreateHotelBillCubit(sl()));
+  sl.registerFactory(() => HotelRoomsSearchCubit(sl()));
 
   // Book Hotel (Hotel Bill Management)
   sl.registerLazySingleton<BookHotelApiService>(

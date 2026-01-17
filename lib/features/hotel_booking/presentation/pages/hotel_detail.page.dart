@@ -20,6 +20,17 @@ class HotelDetailPage extends StatefulWidget {
 
   const HotelDetailPage({super.key, this.hotel, this.rooms, this.request});
 
+  static Widget withProvider({
+    Hotel? hotel,
+    List<HotelRoom>? rooms,
+    HotelRoomSearchRequest? request,
+  }) {
+    return BlocProvider(
+      create: (context) => sl<FavoriteCooperationsCubit>()..loadFavorites(),
+      child: HotelDetailPage(hotel: hotel, rooms: rooms, request: request),
+    );
+  }
+
   @override
   State<HotelDetailPage> createState() => _HotelDetailPageState();
 }
@@ -58,34 +69,26 @@ class _HotelDetailPageState extends State<HotelDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<FavoriteCooperationsCubit>()..loadFavorites(),
-      child: Scaffold(
-        body: Builder(
-          builder: (context) {
-            final hotel = widget.hotel;
-            final localizations = AppLocalizations.of(context)!;
-            final displayName = hotel?.name ?? localizations.continentalHotel;
-            final displayLocation =
-                hotel?.province ?? localizations.district1Hcm;
-            final displayType = localizations.hotelNearbyDes;
-            final displayImageUrl = hotel?.photo ?? AppImage.defaultHotel;
+    final hotel = widget.hotel;
+    final localizations = AppLocalizations.of(context)!;
+    final displayName = hotel?.name ?? localizations.continentalHotel;
+    final displayLocation = hotel?.province ?? localizations.district1Hcm;
+    final displayType = localizations.hotelNearbyDes;
+    final displayImageUrl = hotel?.photo ?? AppImage.defaultHotel;
 
-            return Stack(
-              children: [
-                _buildHeaderImage(displayImageUrl, hotel),
-                _buildTopAppBar(hotel),
-                _buildDraggableBottomSheet(
-                  displayName,
-                  displayLocation,
-                  displayType,
-                  displayImageUrl,
-                  hotel,
-                ),
-              ],
-            );
-          },
-        ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          _buildHeaderImage(displayImageUrl, hotel),
+          _buildTopAppBar(hotel),
+          _buildDraggableBottomSheet(
+            displayName,
+            displayLocation,
+            displayType,
+            displayImageUrl,
+            hotel,
+          ),
+        ],
       ),
     );
   }

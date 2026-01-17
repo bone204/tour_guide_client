@@ -1,18 +1,18 @@
 // ignore_for_file: deprecated_member_use
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tour_guide_app/common_libs.dart';
-import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_list/cooperation_list_cubit.dart';
-import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_list/cooperation_list_state.dart';
-import 'package:tour_guide_app/features/cooperations/presentation/pages/cooperation_detail.page.dart';
-import 'package:tour_guide_app/features/cooperations/presentation/widgets/cooperation_card.widget.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/hotel_rooms_search/hotel_rooms_search_cubit.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/hotel_rooms_search/hotel_rooms_search_state.dart';
+import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_detail.page.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/home_hotel_card.widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SliverHotelNearbyDestinationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CooperationListCubit, CooperationListState>(
+    return BlocBuilder<HotelRoomsSearchCubit, HotelRoomsSearchState>(
       builder: (context, state) {
-        if (state is! CooperationListLoaded || state.hotels.isEmpty) {
+        if (state is! HotelRoomsSearchSuccess || state.hotels.isEmpty) {
           return const SliverToBoxAdapter(child: SizedBox.shrink());
         }
 
@@ -76,15 +76,16 @@ class SliverHotelNearbyDestinationList extends StatelessWidget {
                             ],
                           ),
                         ),
-                        // Carousel Cooperation Cards
+                        // Carousel Hotel Cards
                         Padding(
                           padding: EdgeInsets.only(left: 16.w),
                           child: CarouselSlider.builder(
                             itemCount: hotels.length,
                             itemBuilder: (context, index, realIndex) {
-                              final cooperation = hotels[index];
-                              return CooperationCard(
-                                cooperation: cooperation,
+                              final hotel = hotels[index];
+
+                              return HomeHotelCard(
+                                hotel: hotel,
                                 onTap: () {
                                   Navigator.of(
                                     context,
@@ -93,8 +94,8 @@ class SliverHotelNearbyDestinationList extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder:
                                           (context) =>
-                                              CooperationDetailPage.withProvider(
-                                                id: cooperation.id,
+                                              HotelDetailPage.withProvider(
+                                                hotel: hotel,
                                               ),
                                     ),
                                   );
