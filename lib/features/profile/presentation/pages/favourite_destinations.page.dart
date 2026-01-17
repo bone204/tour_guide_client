@@ -161,8 +161,8 @@ class _FavouriteDestinationsPageState extends State<FavouriteDestinationsPage>
                     itemBuilder: (context, index) {
                       final destination = destinations[index];
                       return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context, rootNavigator: true).push(
+                        onTap: () async {
+                          await Navigator.of(context, rootNavigator: true).push(
                             MaterialPageRoute(
                               builder:
                                   (context) =>
@@ -171,6 +171,9 @@ class _FavouriteDestinationsPageState extends State<FavouriteDestinationsPage>
                                       ),
                             ),
                           );
+                          if (context.mounted) {
+                            context.read<GetFavoritesCubit>().getFavorites();
+                          }
                         },
                         child: AttractionCard(
                           imageUrl:
@@ -255,11 +258,19 @@ class _FavouriteDestinationsPageState extends State<FavouriteDestinationsPage>
                       final cooperation = cooperations[index];
                       // Wrap CooperationCard to constrain width in Grid or ensure it fits
                       return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context, rootNavigator: true).pushNamed(
+                        onTap: () async {
+                          await Navigator.of(
+                            context,
+                            rootNavigator: true,
+                          ).pushNamed(
                             AppRouteConstant.cooperationDetail,
                             arguments: cooperation.id,
                           );
+                          if (context.mounted) {
+                            context
+                                .read<GetFavoriteCooperationsCubit>()
+                                .getFavorites();
+                          }
                         },
                         child: AttractionCard(
                           imageUrl:

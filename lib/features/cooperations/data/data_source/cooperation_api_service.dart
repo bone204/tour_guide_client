@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:tour_guide_app/common/constants/app_urls.constant.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
+import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/cooperations/data/models/cooperation.dart';
 import 'package:tour_guide_app/features/cooperations/data/models/cooperation_response.dart';
 import 'package:tour_guide_app/service_locator.dart';
@@ -17,7 +18,7 @@ abstract class CooperationApiService {
   Future<Either<Failure, Cooperation>> getCooperationById(int id);
   Future<Either<Failure, CooperationResponse>> getFavorites();
   Future<Either<Failure, Cooperation>> favoriteCooperation(int id);
-  Future<Either<Failure, Cooperation>> unfavoriteCooperation(int id);
+  Future<Either<Failure, SuccessResponse>> deleteFavoriteCooperation(int id);
 }
 
 class CooperationApiServiceImpl extends CooperationApiService {
@@ -139,22 +140,16 @@ class CooperationApiServiceImpl extends CooperationApiService {
   }
 
   @override
-  Future<Either<Failure, Cooperation>> unfavoriteCooperation(int id) async {
+  Future<Either<Failure, SuccessResponse>> deleteFavoriteCooperation(
+    int id,
+  ) async {
     try {
-      // Similar strictly to favorite but DELETE
-      // Note: Destination didn't have unfavorite in the provided file for some reason?
-      // Ah, I see `favoriteDestination` in destination_api_service.dart but no `unfavoriteDestination`.
-      // Maybe it toggles?
-      // Server controller for Cooperation has explicit `unfavorite` (DELETE).
-      // Destination controller likely has it too but maybe client didn't implement it or I missed it.
-      // I will implement it here as requested ("delete favorite").
-
       final response = await sl<DioClient>().delete(
         ApiUrls.favoriteCooperation(id),
       );
 
-      final cooperation = Cooperation.fromJson(response.data);
-      return Right(cooperation);
+      final successResponse = SuccessResponse.fromJson(response.data);
+      return Right(successResponse);
     } on DioException catch (e) {
       return Left(
         ServerFailure(

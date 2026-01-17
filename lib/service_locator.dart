@@ -23,11 +23,11 @@ import 'package:tour_guide_app/features/chat_bot/domain/usecases/send_chat_messa
 import 'package:tour_guide_app/features/cooperations/data/data_source/cooperation_api_service.dart';
 import 'package:tour_guide_app/features/cooperations/data/repository/cooperation_repository_impl.dart';
 import 'package:tour_guide_app/features/cooperations/domain/repository/cooperation_repository.dart';
+import 'package:tour_guide_app/features/cooperations/domain/usecases/delete_favorite_cooperation.dart';
 import 'package:tour_guide_app/features/cooperations/domain/usecases/favorite_cooperation.dart';
 import 'package:tour_guide_app/features/cooperations/domain/usecases/get_cooperation_detail.dart';
 import 'package:tour_guide_app/features/cooperations/domain/usecases/get_cooperations.dart';
 import 'package:tour_guide_app/features/cooperations/domain/usecases/get_favorite_cooperations.dart';
-import 'package:tour_guide_app/features/cooperations/domain/usecases/unfavorite_cooperation.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_detail/cooperation_detail_cubit.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/comment/cooperation_comment_cubit.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_list/cooperation_list_cubit.dart';
@@ -462,8 +462,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<FavoriteCooperationUseCase>(
     FavoriteCooperationUseCase(),
   );
-  sl.registerSingleton<UnfavoriteCooperationUseCase>(
-    UnfavoriteCooperationUseCase(),
+  sl.registerSingleton<DeleteFavoriteCooperationUseCase>(
+    DeleteFavoriteCooperationUseCase(),
   );
 
   sl.registerSingleton<UserPickupUseCase>(UserPickupUseCase());

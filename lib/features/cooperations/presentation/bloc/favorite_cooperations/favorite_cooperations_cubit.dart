@@ -1,9 +1,11 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/usecases/no_params.dart';
 import 'package:tour_guide_app/features/cooperations/data/models/cooperation_response.dart';
 import 'package:tour_guide_app/features/cooperations/domain/usecases/favorite_cooperation.dart';
 import 'package:tour_guide_app/features/cooperations/domain/usecases/get_favorite_cooperations.dart';
-import 'package:tour_guide_app/features/cooperations/domain/usecases/unfavorite_cooperation.dart';
+import 'package:tour_guide_app/features/cooperations/domain/usecases/delete_favorite_cooperation.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
@@ -56,14 +58,14 @@ class FavoriteCooperationsCubit extends Cubit<FavoriteCooperationsState> {
 
     emit(state.copyWith(favoriteIds: updatedIds, resetError: true));
 
-    final result =
-        isCurrentlyFavorite
-            ? await sl<UnfavoriteCooperationUseCase>().call(
-              UnfavoriteCooperationParams(id: cooperationId),
-            )
-            : await sl<FavoriteCooperationUseCase>().call(
-              FavoriteCooperationParams(id: cooperationId),
-            );
+    final Either<Failure, dynamic> result;
+    if (isCurrentlyFavorite) {
+      result = await sl<DeleteFavoriteCooperationUseCase>().call(cooperationId);
+    } else {
+      result = await sl<FavoriteCooperationUseCase>().call(
+        FavoriteCooperationParams(id: cooperationId),
+      );
+    }
 
     return result.fold((failure) {
       emit(
@@ -72,7 +74,7 @@ class FavoriteCooperationsCubit extends Cubit<FavoriteCooperationsState> {
           lastErrorMessage: failure.message,
         ),
       );
-      return isCurrentlyFavorite; 
+      return isCurrentlyFavorite;
     }, (_) => updatedIds.contains(cooperationId));
   }
 

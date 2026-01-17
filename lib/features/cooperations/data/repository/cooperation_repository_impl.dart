@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:tour_guide_app/core/error/failures.dart';
+import 'package:tour_guide_app/core/success/success_response.dart';
 import 'package:tour_guide_app/features/cooperations/data/data_source/cooperation_api_service.dart';
 import 'package:tour_guide_app/features/cooperations/data/models/cooperation.dart';
 import 'package:tour_guide_app/features/cooperations/data/models/cooperation_response.dart';
@@ -40,7 +41,9 @@ class CooperationRepositoryImpl extends CooperationRepository {
   }
 
   @override
-  Future<Either<Failure, Cooperation>> unfavoriteCooperation(int id) async {
-    return await _apiService.unfavoriteCooperation(id);
+  Future<Either<Failure, SuccessResponse>> deleteFavoriteCooperation(
+    int id,
+  ) async {
+    return await _apiService.deleteFavoriteCooperation(id);
   }
 }
