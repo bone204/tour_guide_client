@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_check_response.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_detail.dart';
 
 abstract class AnniversaryState extends Equatable {
   const AnniversaryState();
@@ -28,4 +29,13 @@ class AnniversaryFailure extends AnniversaryState {
 
   @override
   List<Object> get props => [message];
+}
+
+class AnniversaryDetailLoaded extends AnniversaryState {
+  final AnniversaryDetail detail;
+
+  const AnniversaryDetailLoaded(this.detail);
+
+  @override
+  List<Object> get props => [detail];
 }

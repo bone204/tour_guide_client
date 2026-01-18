@@ -12,6 +12,7 @@ import 'package:tour_guide_app/features/splash/presentation/pages/splash_screen.
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/features/notifications/presentation/bloc/notification_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_cubit.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AuthStateCubit()..appStarted()),
         BlocProvider(create: (context) => LocaleCubit()),
         BlocProvider(create: (context) => sl<NotificationCubit>(), lazy: false),
+        BlocProvider(create: (context) => sl<AnniversaryCubit>()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),

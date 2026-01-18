@@ -59,7 +59,9 @@ class _AnniversaryPageContentState extends State<_AnniversaryPageContent>
       }
     });
 
-    _preloadImages(_routes);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _preloadImages(_routes);
+    });
   }
 
   @override

@@ -12,6 +12,8 @@ import 'package:tour_guide_app/features/home/presentation/bloc/get_vouchers/get_
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_list/cooperation_list_cubit.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/hotel_rooms_search/hotel_rooms_search_cubit.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:tour_guide_app/features/notifications/data/models/notification.dart';
+import 'package:tour_guide_app/features/notifications/presentation/bloc/notification_cubit.dart';
 import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table_search_request.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/attraction_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/custom_appbar.widget.dart';
@@ -21,6 +23,7 @@ import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_state.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/pages/anniversary.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_check_response.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/hotel_list.widget.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/rating_destination_list.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/popular_destination_list.widget.dart';
@@ -64,7 +67,9 @@ class HomePage extends StatefulWidget {
         ),
         BlocProvider(create: (context) => sl<HotelRoomsSearchCubit>()),
         BlocProvider(create: (context) => sl<SearchRestaurantTablesCubit>()),
-        BlocProvider(create: (context) => sl<AnniversaryCubit>()),
+        BlocProvider(
+          create: (context) => sl<NotificationCubit>()..getNotifications(),
+        ),
       ],
       child: const HomePage(),
     );
@@ -223,92 +228,130 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Stack(
-        children: [
-          Scaffold(
-            backgroundColor: AppColors.backgroundColor,
-            body: RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: BlocBuilder<GetDestinationCubit, GetDestinationState>(
-                builder: (context, state) {
-                  return CustomScrollView(
-                    controller: _scrollController,
-                    physics: const AlwaysScrollableScrollPhysics(
-                      parent: ClampingScrollPhysics(),
-                    ),
-                    slivers: _buildSlivers(state),
-                  );
-                },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AnniversaryCubit, AnniversaryState>(
+          listener: (context, state) {
+            if (state is AnniversaryDetailLoaded) {
+              final route = AnniversaryCheckRoute(
+                id: state.detail.routeId,
+                name: state.detail.name,
+                period: state.detail.period,
+                userName: '', // Can be filled if available
+                aggregatedMedia: state.detail.media,
+              );
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (_) => AnniversaryPage(routes: [route]),
+                ),
+              );
+            } else if (state is AnniversaryFailure) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
+            }
+          },
+        ),
+      ],
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Stack(
+          children: [
+            Scaffold(
+              backgroundColor: AppColors.backgroundColor,
+              body: RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: BlocBuilder<GetDestinationCubit, GetDestinationState>(
+                  builder: (context, state) {
+                    return CustomScrollView(
+                      controller: _scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(
+                        parent: ClampingScrollPhysics(),
+                      ),
+                      slivers: _buildSlivers(state),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          // Anniversary FAB
-          BlocBuilder<AnniversaryCubit, AnniversaryState>(
-            builder: (context, state) {
-              if (state is AnniversarySuccess &&
-                  state.response.matchedRoutes.isNotEmpty) {
-                return Positioned(
-                  bottom: 90.h + 56.h + 16.h,
-                  right: 16.w,
-                  child: FloatingActionButton(
-                    heroTag: 'anniversary_fab',
-                    onPressed: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                        MaterialPageRoute(
-                          builder:
-                              (_) => AnniversaryPage(
-                                routes: state.response.matchedRoutes,
-                              ),
+            // Anniversary FAB
+            BlocBuilder<NotificationCubit, NotificationState>(
+              builder: (context, state) {
+                if (state is NotificationLoaded) {
+                  try {
+                    final anniversaryNotif =
+                        state.notifications.where((n) {
+                          return n.type == NotificationType.anniversary &&
+                              n.data != null;
+                        }).firstOrNull;
+
+                    if (anniversaryNotif != null) {
+                      final route = AnniversaryCheckRoute.fromJson(
+                        Map<String, dynamic>.from(anniversaryNotif.data),
+                      );
+
+                      return Positioned(
+                        bottom: 90.h + 56.h + 16.h,
+                        right: 16.w,
+                        child: FloatingActionButton(
+                          heroTag: 'anniversary_fab',
+                          onPressed: () {
+                            context
+                                .read<AnniversaryCubit>()
+                                .getAnniversaryDetail(route.id);
+                          },
+                          backgroundColor: Colors.white,
+                          child: Lottie.asset(
+                            AppLotties.anniversary,
+                            width: 40.w,
+                            height: 40.w,
+                          ),
                         ),
                       );
-                    },
-                    backgroundColor: Colors.white,
-                    child: Lottie.asset(
-                      AppLotties.anniversary,
-                      width: 40.w,
-                      height: 40.w,
-                    ),
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-          Positioned(
-            bottom: 0.h,
-            right: 4.w,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(builder: (_) => ChatBotPage.withProvider()),
-                );
+                    }
+                  } catch (e) {
+                    // Ignore parsing errors
+                  }
+                }
+                return const SizedBox.shrink();
               },
-              child: Lottie.asset(
-                AppLotties.botFloating,
-                width: 140.w,
-                height: 140.h,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 100.w,
-                    height: 100.h,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryBlue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Icon(
-                      Icons.animation,
-                      size: 50,
-                      color: AppColors.primaryBlue,
+            ),
+            Positioned(
+              bottom: 0.h,
+              right: 4.w,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      builder: (_) => ChatBotPage.withProvider(),
                     ),
                   );
                 },
+                child: Lottie.asset(
+                  AppLotties.botFloating,
+                  width: 140.w,
+                  height: 140.h,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 100.w,
+                      height: 100.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryBlue.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Icon(
+                        Icons.animation,
+                        size: 50,
+                        color: AppColors.primaryBlue,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

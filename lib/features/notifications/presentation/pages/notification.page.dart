@@ -4,7 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tour_guide_app/common/widgets/app_bar/custom_appbar.dart';
 import 'package:tour_guide_app/features/notifications/presentation/bloc/notification_cubit.dart';
 import 'package:tour_guide_app/features/notifications/data/models/notification.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:intl/intl.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/pages/anniversary.page.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_check_response.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_cubit.dart';
+import 'package:tour_guide_app/features/travel_itinerary/presentation/anniversary/bloc/anniversary_state.dart';
+import 'package:tour_guide_app/features/travel_itinerary/data/models/anniversary_detail.dart';
 import 'package:tour_guide_app/common_libs.dart' hide Notification;
 
 class NotificationPage extends StatefulWidget {
@@ -31,45 +36,94 @@ class _NotificationPageState extends State<NotificationPage> {
           Navigator.pop(context);
         },
       ),
-      body: BlocBuilder<NotificationCubit, NotificationState>(
-        builder: (context, state) {
-          if (state is NotificationLoading) {
-            return const Center(child: CircularProgressIndicator());
+      body: BlocListener<AnniversaryCubit, AnniversaryState>(
+        listener: (context, state) {
+          if (state is AnniversaryDetailLoaded) {
+            final route = AnniversaryCheckRoute(
+              id: state.detail.routeId,
+              name: state.detail.name,
+              period: state.detail.period,
+              userName: '',
+              aggregatedMedia:
+                  state.detail.media
+                      .map(
+                        (m) => AnniversaryMedia(
+                          url: m.url,
+                          type: m.type,
+                          stopId: m.stopId,
+                        ),
+                      )
+                      .toList(),
+            );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => AnniversaryPage(routes: [route]),
+              ),
+            );
+          } else if (state is AnniversaryFailure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
+        },
+        child: BlocBuilder<NotificationCubit, NotificationState>(
+          builder: (context, state) {
+            if (state is NotificationLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (state is NotificationError) {
-            return Center(child: Text(state.message));
-          }
+            if (state is NotificationError) {
+              return Center(child: Text(state.message));
+            }
 
-          if (state is NotificationLoaded) {
-            if (state.notifications.isEmpty) {
-              return Center(
-                child: Text(AppLocalizations.of(context)!.noNotificationsYet),
+            if (state is NotificationLoaded) {
+              if (state.notifications.isEmpty) {
+                return Center(
+                  child: Text(AppLocalizations.of(context)!.noNotificationsYet),
+                );
+              }
+
+              return ListView.separated(
+                padding: EdgeInsets.all(16.w),
+                itemCount: state.notifications.length,
+                separatorBuilder: (context, index) => SizedBox(height: 12.h),
+                itemBuilder: (context, index) {
+                  final notification = state.notifications[index];
+                  return _NotificationItem(
+                    notification: notification,
+                    onTap: () {
+                      if (!notification.isRead) {
+                        context.read<NotificationCubit>().markAsRead(
+                          notification.id,
+                        );
+                      }
+
+                      if (notification.type == NotificationType.anniversary &&
+                          notification.data != null) {
+                        try {
+                          final routeIdStr = notification.data['routeId'];
+                          if (routeIdStr != null) {
+                            final routeId = int.tryParse(routeIdStr.toString());
+                            if (routeId != null) {
+                              context
+                                  .read<AnniversaryCubit>()
+                                  .getAnniversaryDetail(routeId);
+                            }
+                          }
+                        } catch (e) {
+                          // debugPrint('Error parsing anniversary data: $e');
+                        }
+                      }
+                    },
+                  );
+                },
               );
             }
 
-            return ListView.separated(
-              padding: EdgeInsets.all(16.w),
-              itemCount: state.notifications.length,
-              separatorBuilder: (context, index) => SizedBox(height: 12.h),
-              itemBuilder: (context, index) {
-                final notification = state.notifications[index];
-                return _NotificationItem(
-                  notification: notification,
-                  onTap: () {
-                    if (!notification.isRead) {
-                      context.read<NotificationCubit>().markAsRead(
-                        notification.id,
-                      );
-                    }
-                  },
-                );
-              },
-            );
-          }
-
-          return const SizedBox.shrink();
-        },
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }
@@ -150,7 +204,9 @@ class _NotificationItem extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    timeago.format(notification.createdAt),
+                    DateFormat(
+                      'dd/MM/yyyy HH:mm',
+                    ).format(notification.createdAt),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
