@@ -118,7 +118,7 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
 
     result.fold(
       (failure) {
-        setState(() => _isSpinning = false);
+        if (mounted) setState(() => _isSpinning = false);
         _showError(failure.message);
       },
       (eatery) {
@@ -128,10 +128,14 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
 
         if (index != -1) {
           _selectedResultIndex = index;
+          // IMPORTANT: Emit the index to spin the wheel
           selected.add(index);
+
+          // Fallback safety: If animation doesn't start or finish within reasonable time (e.g. 10s), reset state
+          // Note: FortuneWheel usually takes care of onAnimationEnd.
         } else {
           // Fallback if not found in current wheel items for some reason
-          setState(() => _isSpinning = false);
+          if (mounted) setState(() => _isSpinning = false);
           _showResultDialog(eatery);
         }
       },
@@ -307,6 +311,10 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
         alignment: Alignment.center,
         children: [
           FortuneWheel(
+            key: ValueKey(
+              wheelItems.length.toString() +
+                  wheelItems.map((e) => e.id).join(','),
+            ),
             selected: selected.stream,
             animateFirst: false,
             onAnimationEnd: () {
