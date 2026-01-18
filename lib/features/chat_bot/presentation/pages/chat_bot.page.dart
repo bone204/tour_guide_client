@@ -43,20 +43,10 @@ class _ChatBotPageState extends State<ChatBotPage>
 
     cubit.sendMessage(text, lang: lang);
     _controller.clear();
-    _focusNode.unfocus();
+    // _focusNode.unfocus(); // Removed for normal chat behavior
   }
 
-  void _scrollToBottom() {
-    if (!_scrollController.hasClients) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_scrollController.hasClients) return;
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent + 100,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeOutCubic,
-      );
-    });
-  }
+  // _scrollToBottom removed as reverse list handles it naturally
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +65,16 @@ class _ChatBotPageState extends State<ChatBotPage>
               Expanded(
                 child: BlocConsumer<ChatCubit, ChatState>(
                   listener: (context, state) {
-                    _scrollToBottom();
+                    // With reverse list, new items at index 0 are automatically visible if we are at the bottom (offset 0)
+                    // But we can force it to be sure
+                    if (_scrollController.hasClients &&
+                        _scrollController.offset > 0) {
+                      _scrollController.animateTo(
+                        0,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOut,
+                      );
+                    }
                   },
                   builder: (context, state) {
                     final messages = state.messages;
@@ -97,8 +96,8 @@ class _ChatBotPageState extends State<ChatBotPage>
                       );
                     }
 
-                    final itemCount =
-                        messages.length + (state.isTyping ? 1 : 0);
+                    final isTyping = state.isTyping;
+                    final itemCount = messages.length + (isTyping ? 1 : 0);
 
                     return ListView.builder(
                       controller: _scrollController,
@@ -107,13 +106,26 @@ class _ChatBotPageState extends State<ChatBotPage>
                         vertical: 24.h,
                       ),
                       itemCount: itemCount,
+                      reverse: true, // Anchor to bottom
                       physics: const BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
-                        if (index >= messages.length) {
+                        if (isTyping && index == 0) {
                           return const _ChatTypingIndicator();
                         }
 
-                        final message = messages[index];
+                        // Calculate actual message index
+                        // If typing, index 0 is indicator, so message index starts from 1.
+                        // We want Newest (End of list) to be at Bottom (Index 0 or 1).
+                        // So if reverse=true: List Index 0 -> Bottom UI
+                        // Message List: [Old, ..., New]
+                        // We want New to be at List Index 0 (or 1 if typing).
+                        // So map List Index k -> Message List Index (N - 1 - k) approximately.
+
+                        final int listIndex = isTyping ? index - 1 : index;
+                        final int messageIndex =
+                            messages.length - 1 - listIndex;
+
+                        final message = messages[messageIndex];
                         return _buildMessageWithAnimation(message, index);
                       },
                     );

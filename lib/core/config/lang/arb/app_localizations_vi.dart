@@ -335,6 +335,9 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get reasonLabel => 'Lý do';
+
+  @override
   String get errorOccurred => 'Đã có lỗi xảy ra';
 
   @override
@@ -468,6 +471,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get owner => 'Chủ xe';
+
+  @override
+  String get me => 'Tôi';
 
   @override
   String get rentalDays => 'Số ngày thuê';
@@ -1929,6 +1935,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get cancelReason => 'Lý do hủy';
+
+  @override
+  String get cancelledBy => 'Hủy bởi';
 
   @override
   String get contactInfo => 'Thông tin liên hệ';

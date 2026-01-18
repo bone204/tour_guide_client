@@ -743,6 +743,12 @@ abstract class AppLocalizations {
   /// **'Reason: {reason}'**
   String reason(String reason);
 
+  /// No description provided for @reasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get reasonLabel;
+
   /// No description provided for @errorOccurred.
   ///
   /// In en, this message translates to:
@@ -1012,6 +1018,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Car owner'**
   String get owner;
+
+  /// No description provided for @me.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get me;
 
   /// No description provided for @rentalDays.
   ///
@@ -3874,6 +3886,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel Reason'**
   String get cancelReason;
+
+  /// No description provided for @cancelledBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled By'**
+  String get cancelledBy;
 
   /// No description provided for @contactInfo.
   ///

@@ -272,7 +272,13 @@ class _OwnerRentalRequestDetailPageState
                         _buildRenterInfoCard(context, bill),
                         SizedBox(height: 16.h),
 
-                        // 3. Rental Details
+                        // 3. Cancel Reason (if cancelled)
+                        if (bill.status == RentalBillStatus.cancelled) ...[
+                          _buildCancelReasonCard(context, bill),
+                          SizedBox(height: 16.h),
+                        ],
+
+                        // 4. Rental Details
                         _buildRentalDetailsCard(context, bill),
                         SizedBox(height: 16.h),
 
@@ -518,6 +524,49 @@ class _OwnerRentalRequestDetailPageState
     );
   }
 
+  Widget _buildCancelReasonCard(BuildContext context, RentalBill bill) {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGrey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.cancelReason,
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(color: AppColors.primaryRed),
+          ),
+          const Divider(),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.cancelledBy,
+            bill.cancelledBy == RentalBillCancelledBy.owner
+                ? AppLocalizations.of(context)!.me
+                : (bill.cancelledBy == RentalBillCancelledBy.user
+                    ? AppLocalizations.of(context)!.customer
+                    : '-'),
+          ),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.reasonLabel,
+            bill.cancelReason ?? '-',
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildPaymentDetailsCard(BuildContext context, RentalBill bill) {
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -548,7 +597,7 @@ class _OwnerRentalRequestDetailPageState
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               Text(
-                Formatter.currency(bill.total),
+                Formatter.currency(bill.ownerTotal),
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(color: AppColors.primaryRed),

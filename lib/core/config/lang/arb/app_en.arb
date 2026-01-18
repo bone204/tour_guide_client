@@ -154,6 +154,7 @@
       }
     }
   },
+  "reasonLabel": "Reason",
   "errorOccurred": "An error occurred",
   "noContracts": "No contracts found",
   "registerNow": "Register Now",
@@ -235,6 +236,7 @@
   "phone": "Phone number",
 
   "owner": "Car owner",
+  "me": "Me",
 
   "rentalDays": "Rental days",
 
@@ -1102,6 +1104,7 @@
   "paymentMethod": "Payment Method",
   "notes": "Notes",
   "cancelReason": "Cancel Reason",
+  "cancelledBy": "Cancelled By",
   "contactInfo": "Contact Information",
   "vehicleList": "Vehicle List",
   "noRentalBills": "No rental bills found",

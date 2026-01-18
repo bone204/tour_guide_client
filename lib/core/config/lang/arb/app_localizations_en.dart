@@ -335,6 +335,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get reasonLabel => 'Reason';
+
+  @override
   String get errorOccurred => 'An error occurred';
 
   @override
@@ -468,6 +471,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get owner => 'Car owner';
+
+  @override
+  String get me => 'Me';
 
   @override
   String get rentalDays => 'Rental days';
@@ -1923,6 +1929,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancelReason => 'Cancel Reason';
+
+  @override
+  String get cancelledBy => 'Cancelled By';
 
   @override
   String get contactInfo => 'Contact Information';

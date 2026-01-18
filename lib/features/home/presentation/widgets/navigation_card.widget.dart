@@ -45,10 +45,24 @@ class _NavigationCardState extends State<NavigationCard> {
         'color': AppColors.primaryBlue,
       },
       {
-        'icon': AppIcons.bus,
-        'title': AppLocalizations.of(context)!.busBooking,
-        'route': AppRouteConstant.busBooking,
+        'icon': Icons.map_rounded,
+        'title': AppLocalizations.of(context)!.itinerary,
+        'route': AppRouteConstant.myItinerary,
+        'color': AppColors.primaryBlue,
+        'isIconData': true,
+      },
+      {
+        'icon': Icons.change_circle_sharp,
+        'title': AppLocalizations.of(context)!.mappingAddress,
+        'route': AppRouteConstant.mappingAddress,
         'color': AppColors.primaryGreen,
+        'isIconData': true,
+      },
+      {
+        'icon': AppIcons.hotel,
+        'title': AppLocalizations.of(context)!.findHotel,
+        'route': AppRouteConstant.hotelSearch,
+        'color': AppColors.primaryPurple,
       },
       {
         'icon': AppIcons.restaurant,
@@ -57,16 +71,16 @@ class _NavigationCardState extends State<NavigationCard> {
         'color': AppColors.primaryYellow,
       },
       {
+        'icon': AppIcons.bus,
+        'title': AppLocalizations.of(context)!.busBooking,
+        'route': AppRouteConstant.busBooking,
+        'color': AppColors.primaryGreen,
+      },
+      {
         'icon': AppIcons.delivery,
         'title': AppLocalizations.of(context)!.delivery,
         'route': AppRouteConstant.fastDelivery,
         'color': AppColors.primaryRed,
-      },
-      {
-        'icon': AppIcons.hotel,
-        'title': AppLocalizations.of(context)!.findHotel,
-        'route': AppRouteConstant.hotelSearch,
-        'color': AppColors.primaryPurple,
       },
       {
         'icon': AppIcons.flight,
@@ -81,24 +95,10 @@ class _NavigationCardState extends State<NavigationCard> {
         'color': AppColors.primaryRed,
       },
       {
-        'icon': Icons.map_rounded,
-        'title': AppLocalizations.of(context)!.itinerary,
-        'route': AppRouteConstant.myItinerary,
-        'color': AppColors.primaryBlue,
-        'isIconData': true,
-      },
-      {
         'icon': Icons.fastfood_rounded,
         'title': AppLocalizations.of(context)!.famousEateries,
         'route': AppRouteConstant.eateryList,
         'color': AppColors.primaryOrange,
-        'isIconData': true,
-      },
-      {
-        'icon': Icons.map,
-        'title': AppLocalizations.of(context)!.mappingAddress,
-        'route': AppRouteConstant.mappingAddress,
-        'color': AppColors.primaryGreen,
         'isIconData': true,
       },
     ];

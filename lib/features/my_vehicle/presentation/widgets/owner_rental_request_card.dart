@@ -59,12 +59,11 @@ class OwnerRentalRequestCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        bill.contactName ?? 'Unknown Renter',
+                        bill.contactName ?? bill.user?.fullName ?? 'Unknown Renter',
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
-                      if (bill.contactPhone != null)
                         Text(
-                          bill.contactPhone!,
+                          bill.contactPhone ?? bill.user?.phone ?? 'Unknown Phone',
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: AppColors.textSubtitle),
                         ),
@@ -156,7 +155,7 @@ class OwnerRentalRequestCard extends StatelessWidget {
                   ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  Formatter.currency(bill.total),
+                  Formatter.currency(bill.ownerTotal),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: AppColors.primaryGreen,
                     fontWeight: FontWeight.w700,

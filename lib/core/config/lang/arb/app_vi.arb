@@ -190,6 +190,7 @@
       }
     }
   },
+  "reasonLabel": "Lý do",
   "comments": "Bình luận",
   "like": "Thích",
   "liked": "Đã thích",
@@ -296,6 +297,7 @@
   "phone": "Số điện thoại",
 
   "owner": "Chủ xe",
+  "me": "Tôi",
 
   "rentalDays": "Số ngày thuê",
 
@@ -741,6 +743,7 @@
   "paymentMethod": "Phương thức thanh toán",
   "notes": "Ghi chú",
   "cancelReason": "Lý do hủy",
+  "cancelledBy": "Hủy bởi",
   "contactInfo": "Thông tin liên hệ",
   "vehicleList": "Danh sách xe",
   "noRentalBills": "Không có hóa đơn nào",

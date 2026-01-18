@@ -53,7 +53,8 @@ class _VehicleViewState extends State<_VehicleView> {
       if (mounted) {
         if (event is VehicleAddedEvent || event is VehicleStatusChangedEvent) {
           context.read<GetMyVehiclesCubit>().getMyVehicles();
-        } else if (event is RentalRequestUpdatedEvent) {
+        } else if (event is RentalRequestUpdatedEvent ||
+            event is RentalBillUpdatedEvent) {
           context.read<GetOwnerRentalBillsCubit>().getBills();
         }
       }
@@ -87,8 +88,7 @@ class _VehicleViewState extends State<_VehicleView> {
                     return IconButton(
                       icon: const Icon(Icons.description_outlined),
                       color: AppColors.primaryBlue,
-                      tooltip:
-                          AppLocalizations.of(context)!.contractDetails,
+                      tooltip: AppLocalizations.of(context)!.contractDetails,
                       onPressed: () {
                         Navigator.of(context, rootNavigator: true).pushNamed(
                           AppRouteConstant.contractDetail,

@@ -275,7 +275,13 @@ class _RentalBillContentState extends State<_RentalBillContent> {
                             ],
                           ),
 
-                        // 3. Rental Details (Status, Dates, etc.)
+                        // 3. Cancel Reason (if cancelled)
+                        if (bill.status == RentalBillStatus.cancelled && bill.cancelReason != null) ...[
+                          _buildCancelReasonCard(context, bill),
+                          SizedBox(height: 16.h),
+                        ],
+
+                        // 4. Rental Details (Status, Dates, etc.)
                         _buildRentalDetailsCard(context, bill),
                         SizedBox(height: 16.h),
 
@@ -702,6 +708,49 @@ class _RentalBillContentState extends State<_RentalBillContent> {
     );
   }
 
+  Widget _buildCancelReasonCard(BuildContext context, RentalBill bill) {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGrey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.cancelReason,
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(color: AppColors.primaryRed),
+          ),
+          const Divider(),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.cancelledBy,
+            bill.cancelledBy == RentalBillCancelledBy.user
+                ? AppLocalizations.of(context)!.me
+                : (bill.cancelledBy == RentalBillCancelledBy.owner
+                    ? AppLocalizations.of(context)!.owner
+                    : '-'),
+          ),
+          _buildDetailRow(
+            context,
+            AppLocalizations.of(context)!.reasonLabel,
+            bill.cancelReason ?? '-',
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildPaymentDetailsCard(BuildContext context, RentalBill bill) {
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -743,14 +792,14 @@ class _RentalBillContentState extends State<_RentalBillContent> {
           ],
           if (bill.status == RentalBillStatus.pending) ...[
             const Divider(),
-            _buildPaymentForm(context),
+            _buildPaymentForm(context, bill),
           ],
         ],
       ),
     );
   }
 
-  Widget _buildPaymentForm(BuildContext context) {
+  Widget _buildPaymentForm(BuildContext context, RentalBill bill) {
     return BlocBuilder<RentalPaymentCubit, RentalPaymentState>(
       builder: (context, paymentState) {
         return Column(
@@ -856,7 +905,14 @@ class _RentalBillContentState extends State<_RentalBillContent> {
               builder: (context, voucherState) {
                 var vouchers = <Voucher>[];
                 if (voucherState is GetVouchersLoaded) {
-                  vouchers = voucherState.vouchers;
+                  vouchers =
+                      voucherState.vouchers
+                          .where(
+                            (v) =>
+                                v.minOrderValue == null ||
+                                v.minOrderValue! <= bill.total,
+                          )
+                          .toList();
                 }
 
                 // Safely determine current value

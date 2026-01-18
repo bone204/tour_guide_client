@@ -26,6 +26,10 @@ enum RentalProgressStatus {
   cancelled,
 }
 
+enum RentalVehicleType { bike, motorcycle, car, truck }
+
+enum RentalBillCancelledBy { user, owner }
+
 class RentalBillDetail {
   final int id;
   final int billId;
@@ -89,6 +93,7 @@ class RentalBill {
   final String? contactName;
   final String? contactPhone;
   final double total;
+  final double ownerTotal; // Added per request
   final int? voucherId;
   final int travelPointsUsed;
   final RentalBillStatus status;
@@ -107,6 +112,27 @@ class RentalBill {
   final double? pickupLatitude;
   final double? pickupLongitude;
 
+  // New fields from server sync
+  final RentalVehicleType vehicleType;
+  final bool requiresEthDeposit;
+  final String? ownerEthAddress;
+  final String? verifiedSelfiePhoto;
+  final RentalBillCancelledBy? cancelledBy;
+  final DateTime? returnTimestampUser;
+  final double? returnLatitudeUser;
+  final double? returnLongitudeUser;
+  final double? returnLatitudeOwner;
+  final double? returnLongitudeOwner;
+  final double? deliveryLatitudeOwner;
+  final double? deliveryLongitudeOwner;
+  final DateTime? deliveryDate;
+  final DateTime? returnDate;
+  final double overtimeFee;
+  final double shippingFee;
+  final bool isShippingFeeNegotiable;
+  final String? guestToken;
+  final DateTime? guestTokenExpiresAt;
+
   RentalBill({
     required this.id,
     required this.code,
@@ -121,6 +147,7 @@ class RentalBill {
     this.contactName,
     this.contactPhone,
     required this.total,
+    required this.ownerTotal,
     this.voucherId,
     required this.travelPointsUsed,
     required this.status,
@@ -136,6 +163,25 @@ class RentalBill {
     this.returnPhotosOwner = const [],
     this.pickupLatitude,
     this.pickupLongitude,
+    required this.vehicleType,
+    required this.requiresEthDeposit,
+    this.ownerEthAddress,
+    this.verifiedSelfiePhoto,
+    this.cancelledBy,
+    this.returnTimestampUser,
+    this.returnLatitudeUser,
+    this.returnLongitudeUser,
+    this.returnLatitudeOwner,
+    this.returnLongitudeOwner,
+    this.deliveryLatitudeOwner,
+    this.deliveryLongitudeOwner,
+    this.deliveryDate,
+    this.returnDate,
+    required this.overtimeFee,
+    required this.shippingFee,
+    required this.isShippingFeeNegotiable,
+    this.guestToken,
+    this.guestTokenExpiresAt,
   });
 
   factory RentalBill.fromJson(Map<String, dynamic> json) {
@@ -159,6 +205,7 @@ class RentalBill {
       contactName: json['contactName'],
       contactPhone: json['contactPhone'],
       total: double.tryParse(json['total']?.toString() ?? '0') ?? 0,
+      ownerTotal: double.tryParse(json['ownerTotal']?.toString() ?? '0') ?? 0,
       voucherId:
           json['voucherId'] is int
               ? json['voucherId']
@@ -198,6 +245,39 @@ class RentalBill {
       pickupLongitude: double.tryParse(
         json['pickupLongitude']?.toString() ?? '',
       ),
+
+      // New fields parsing
+      vehicleType: _parseVehicleType(json['vehicleType']),
+      requiresEthDeposit: json['requiresEthDeposit'] ?? false,
+      ownerEthAddress: json['ownerEthAddress'],
+      verifiedSelfiePhoto: json['verifiedSelfiePhoto'],
+      cancelledBy: _parseCancelledBy(json['cancelledBy']),
+      returnTimestampUser: DateTime.tryParse(json['returnTimestampUser'] ?? ''),
+      returnLatitudeUser: double.tryParse(
+        json['returnLatitudeUser']?.toString() ?? '',
+      ),
+      returnLongitudeUser: double.tryParse(
+        json['returnLongitudeUser']?.toString() ?? '',
+      ),
+      returnLatitudeOwner: double.tryParse(
+        json['returnLatitudeOwner']?.toString() ?? '',
+      ),
+      returnLongitudeOwner: double.tryParse(
+        json['returnLongitudeOwner']?.toString() ?? '',
+      ),
+      deliveryLatitudeOwner: double.tryParse(
+        json['deliveryLatitudeOwner']?.toString() ?? '',
+      ),
+      deliveryLongitudeOwner: double.tryParse(
+        json['deliveryLongitudeOwner']?.toString() ?? '',
+      ),
+      deliveryDate: DateTime.tryParse(json['deliveryDate'] ?? ''),
+      returnDate: DateTime.tryParse(json['returnDate'] ?? ''),
+      overtimeFee: double.tryParse(json['overtimeFee']?.toString() ?? '0') ?? 0,
+      shippingFee: double.tryParse(json['shippingFee']?.toString() ?? '0') ?? 0,
+      isShippingFeeNegotiable: json['isShippingFeeNegotiable'] ?? false,
+      guestToken: json['guestToken'],
+      guestTokenExpiresAt: DateTime.tryParse(json['guestTokenExpiresAt'] ?? ''),
     );
   }
 
@@ -216,6 +296,7 @@ class RentalBill {
       'contactName': contactName,
       'contactPhone': contactPhone,
       'total': total,
+      'ownerTotal': ownerTotal,
       'voucherId': voucherId,
       'travelPointsUsed': travelPointsUsed,
       'status': _statusToString(status),
@@ -231,6 +312,25 @@ class RentalBill {
       'returnPhotosOwner': returnPhotosOwner,
       'pickupLatitude': pickupLatitude,
       'pickupLongitude': pickupLongitude,
+      'vehicleType': vehicleType.name,
+      'requiresEthDeposit': requiresEthDeposit,
+      'ownerEthAddress': ownerEthAddress,
+      'verifiedSelfiePhoto': verifiedSelfiePhoto,
+      'cancelledBy': cancelledBy?.name,
+      'returnTimestampUser': returnTimestampUser?.toIso8601String(),
+      'returnLatitudeUser': returnLatitudeUser,
+      'returnLongitudeUser': returnLongitudeUser,
+      'returnLatitudeOwner': returnLatitudeOwner,
+      'returnLongitudeOwner': returnLongitudeOwner,
+      'deliveryLatitudeOwner': deliveryLatitudeOwner,
+      'deliveryLongitudeOwner': deliveryLongitudeOwner,
+      'deliveryDate': deliveryDate?.toIso8601String(),
+      'returnDate': returnDate?.toIso8601String(),
+      'overtimeFee': overtimeFee,
+      'shippingFee': shippingFee,
+      'isShippingFeeNegotiable': isShippingFeeNegotiable,
+      'guestToken': guestToken,
+      'guestTokenExpiresAt': guestTokenExpiresAt?.toIso8601String(),
     };
   }
 
@@ -364,6 +464,28 @@ class RentalBill {
         print("Error parsing date: $dateStr, error: $e");
         return DateTime.now();
       }
+    }
+  }
+
+  static RentalVehicleType _parseVehicleType(String? value) {
+    if (value == null) return RentalVehicleType.bike;
+    try {
+      return RentalVehicleType.values.firstWhere(
+        (e) => e.name == value.toLowerCase(),
+      );
+    } catch (_) {
+      return RentalVehicleType.bike;
+    }
+  }
+
+  static RentalBillCancelledBy? _parseCancelledBy(String? value) {
+    if (value == null) return null;
+    try {
+      return RentalBillCancelledBy.values.firstWhere(
+        (e) => e.name == value.toLowerCase(),
+      );
+    } catch (_) {
+      return null;
     }
   }
 }
