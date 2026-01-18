@@ -5,10 +5,13 @@ import 'package:tour_guide_app/core/error/failures.dart';
 import 'package:tour_guide_app/core/network/dio_client.dart';
 import 'package:tour_guide_app/features/chat_bot/data/models/chat_request.dart';
 import 'package:tour_guide_app/features/chat_bot/data/models/chat_response.dart';
+import 'package:tour_guide_app/features/chat_bot/presentation/bloc/chat_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class ChatApiService {
   Future<Either<Failure, ChatResponse>> sendMessage(ChatRequest request);
+  Future<Either<Failure, List<ChatUiMessage>>> getHistory({String? sessionId});
+  Future<Either<Failure, bool>> deleteHistory({String? sessionId});
 }
 
 class ChatApiServiceImpl extends ChatApiService {
@@ -56,6 +59,52 @@ class ChatApiServiceImpl extends ChatApiService {
 
       return Left(
         ServerFailure(message: message, statusCode: e.response?.statusCode),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ChatUiMessage>>> getHistory({
+    String? sessionId,
+  }) async {
+    try {
+      final response = await sl<DioClient>().get(
+        '${ApiUrls.chatbot}/history',
+        queryParameters: sessionId != null ? {'sessionId': sessionId} : null,
+      );
+
+      final List<dynamic> data = response.data;
+      final messages = data.map((m) {
+        final role = m['role'] as String;
+        final content = m['content'] as String;
+        return role == 'user'
+            ? ChatUiMessage.user(content)
+            : ChatUiMessage.bot(content);
+      }).toList();
+
+      return Right(messages);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(message: e.response?.data['message'] ?? e.message),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> deleteHistory({String? sessionId}) async {
+    try {
+      await sl<DioClient>().delete(
+        '${ApiUrls.chatbot}/history',
+        queryParameters: sessionId != null ? {'sessionId': sessionId} : null,
+      );
+      return const Right(true);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(message: e.response?.data['message'] ?? e.message),
       );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

@@ -281,6 +281,11 @@ import 'package:tour_guide_app/features/bills/book_restaurant/domain/usecases/ge
 import 'package:tour_guide_app/features/bills/book_restaurant/domain/usecases/get_restaurant_booking_detail.dart';
 import 'package:tour_guide_app/features/bills/book_restaurant/presentation/bloc/get_restaurant_bills/get_restaurant_bills_cubit.dart';
 import 'package:tour_guide_app/features/bills/book_restaurant/presentation/bloc/get_restaurant_bill_detail/get_restaurant_bill_detail_cubit.dart';
+import 'package:tour_guide_app/features/destination_ticket/data/data_source/destination_ticket_api_service.dart';
+import 'package:tour_guide_app/features/destination_ticket/data/repository/destination_ticket_repository_impl.dart';
+import 'package:tour_guide_app/features/destination_ticket/domain/repository/destination_ticket_repository.dart';
+import 'package:tour_guide_app/features/destination_ticket/presentation/bloc/ticket_listing/ticket_listing_cubit.dart';
+import 'package:tour_guide_app/features/destination_ticket/presentation/bloc/ticket_booking/ticket_booking_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -314,6 +319,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<RestaurantApiService>(RestaurantApiServiceImpl());
   sl.registerSingleton<BookRestaurantApiService>(
     BookRestaurantApiServiceImpl(),
+  );
+  sl.registerSingleton<DestinationTicketApiService>(
+    DestinationTicketApiServiceImpl(),
   );
 
   // Repositories
@@ -354,6 +362,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerSingleton<BookRestaurantRepository>(
     BookRestaurantRepositoryImpl(apiService: sl()),
+  );
+  sl.registerSingleton<DestinationTicketRepository>(
+    DestinationTicketRepositoryImpl(apiService: sl()),
   );
 
   // Usecases
@@ -737,6 +748,8 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerFactory<GetRestaurantBillDetailCubit>(
     () => GetRestaurantBillDetailCubit(getRestaurantBookingDetail: sl()),
   );
+  sl.registerFactory<TicketListingCubit>(() => TicketListingCubit(sl()));
+  sl.registerFactory<TicketBookingCubit>(() => TicketBookingCubit(sl()));
 
   sl.registerFactory<NotificationCubit>(
     () => NotificationCubit(

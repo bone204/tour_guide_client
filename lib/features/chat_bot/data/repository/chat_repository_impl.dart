@@ -4,6 +4,7 @@ import 'package:tour_guide_app/features/chat_bot/data/data_source/chat_api_servi
 import 'package:tour_guide_app/features/chat_bot/data/models/chat_request.dart';
 import 'package:tour_guide_app/features/chat_bot/data/models/chat_response.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/repository/chat_repository.dart';
+import 'package:tour_guide_app/features/chat_bot/presentation/bloc/chat_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class ChatRepositoryImpl extends ChatRepository {
@@ -12,5 +13,15 @@ class ChatRepositoryImpl extends ChatRepository {
   @override
   Future<Either<Failure, ChatResponse>> sendMessage(ChatRequest request) async {
     return _apiService.sendMessage(request);
+  }
+
+  @override
+  Future<Either<Failure, List<ChatUiMessage>>> getHistory({String? sessionId}) {
+    return _apiService.getHistory(sessionId: sessionId);
+  }
+
+  @override
+  Future<Either<Failure, bool>> deleteHistory({String? sessionId}) {
+    return _apiService.deleteHistory(sessionId: sessionId);
   }
 }

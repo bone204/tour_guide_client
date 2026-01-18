@@ -7,6 +7,7 @@ class DestinationQuery {
   final int offset;
   final int limit;
   final DestinationSortBy? sortBy;
+  final bool? hasTourTickets;
 
   DestinationQuery({
     this.q,
@@ -15,6 +16,7 @@ class DestinationQuery {
     this.offset = 0,
     this.limit = 10,
     this.sortBy,
+    this.hasTourTickets,
   });
 
   Map<String, dynamic> toJson() {
@@ -32,6 +34,9 @@ class DestinationQuery {
     if (sortBy != null) {
       params['sortBy'] = sortBy!.name;
     }
+    if (hasTourTickets != null) {
+      params['hasTourTickets'] = hasTourTickets;
+    }
 
     return params;
   }
@@ -43,6 +48,7 @@ class DestinationQuery {
     int? offset,
     int? limit,
     DestinationSortBy? sortBy,
+    bool? hasTourTickets,
   }) {
     return DestinationQuery(
       q: q ?? this.q,
@@ -51,6 +57,7 @@ class DestinationQuery {
       offset: offset ?? this.offset,
       limit: limit ?? this.limit,
       sortBy: sortBy ?? this.sortBy,
+      hasTourTickets: hasTourTickets ?? this.hasTourTickets,
     );
   }
 }

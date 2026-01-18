@@ -101,6 +101,13 @@ class _NavigationCardState extends State<NavigationCard> {
         'color': AppColors.primaryOrange,
         'isIconData': true,
       },
+      {
+        'icon': Icons.confirmation_number_rounded,
+        'title': AppLocalizations.of(context)!.tourTicket,
+        'route': AppRouteConstant.ticketListing,
+        'color': AppColors.primaryBlue,
+        'isIconData': true,
+      },
     ];
 
     final int totalPages = (navItems.length / itemsPerPage).ceil();
@@ -130,10 +137,9 @@ class _NavigationCardState extends State<NavigationCard> {
               onPageChanged: (index) => setState(() => currentPage = index),
               itemBuilder: (context, pageIndex) {
                 final start = pageIndex * itemsPerPage;
-                final end =
-                    (start + itemsPerPage) > navItems.length
-                        ? navItems.length
-                        : start + itemsPerPage;
+                final end = (start + itemsPerPage) > navItems.length
+                    ? navItems.length
+                    : start + itemsPerPage;
                 final pageItems = navItems.sublist(start, end);
 
                 int emptySlots = cols - pageItems.length;
@@ -160,20 +166,19 @@ class _NavigationCardState extends State<NavigationCard> {
                                   shape: BoxShape.circle,
                                 ),
                                 padding: EdgeInsets.all(12.w),
-                                child:
-                                    item['isIconData'] == true
-                                        ? Icon(
-                                          item['icon'] as IconData,
-                                          color: Colors.white,
-                                          size: 24.sp,
-                                        )
-                                        : SvgPicture.asset(
-                                          item['icon'] as String,
-                                          colorFilter: const ColorFilter.mode(
-                                            Colors.white,
-                                            BlendMode.srcIn,
-                                          ),
+                                child: item['isIconData'] == true
+                                    ? Icon(
+                                        item['icon'] as IconData,
+                                        color: Colors.white,
+                                        size: 24.sp,
+                                      )
+                                    : SvgPicture.asset(
+                                        item['icon'] as String,
+                                        colorFilter: const ColorFilter.mode(
+                                          Colors.white,
+                                          BlendMode.srcIn,
                                         ),
+                                      ),
                               ),
                             ),
                             SizedBox(height: 8.h),
@@ -210,10 +215,9 @@ class _NavigationCardState extends State<NavigationCard> {
                   width: currentPage == index ? 16.w : 8.w,
                   height: 8.h,
                   decoration: BoxDecoration(
-                    color:
-                        currentPage == index
-                            ? AppColors.primaryBlue
-                            : Colors.grey.shade300,
+                    color: currentPage == index
+                        ? AppColors.primaryBlue
+                        : Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(4.r),
                   ),
                 ),

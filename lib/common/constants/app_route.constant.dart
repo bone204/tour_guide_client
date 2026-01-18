@@ -97,4 +97,6 @@ class AppRouteConstant {
   static const String ownerRentalRequestDetail = '/owner_rental_request_detail';
   static const String hotelBillList = '/hotel_bill_list';
   static const String hotelBillDetail = '/hotel_bill_detail';
+  static const String ticketListing = '/ticket_listing';
+  static const String ticketBooking = '/ticket_booking';
 }

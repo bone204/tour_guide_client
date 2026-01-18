@@ -20,9 +20,14 @@ class Destination {
   final bool? available;
   final String? createdAt;
   final String? updatedAt;
-  final bool isFromDatabase; 
+  final double? ticketPrice;
+  final bool? hasTourTickets;
+  final String? tourPriceRange;
+  final String? openTime;
+  final String? closeTime;
+  final bool isFromDatabase;
 
-  const Destination({ 
+  const Destination({
     required this.id,
     required this.name,
     this.externalId,
@@ -44,6 +49,11 @@ class Destination {
     this.available,
     this.createdAt,
     this.updatedAt,
+    this.ticketPrice,
+    this.hasTourTickets,
+    this.tourPriceRange,
+    this.openTime,
+    this.closeTime,
     this.isFromDatabase = true, // Mặc định là từ database
   });
 
@@ -57,12 +67,24 @@ class Destination {
       descriptionEng: json['descriptionEng'],
       province: json['province'],
       specificAddress: json['specificAddress'],
-      latitude: (json['latitude'] as num?)?.toDouble(),
-      longitude: (json['longitude'] as num?)?.toDouble(),
-      rating: (json['rating'] as num?)?.toDouble(),
-      favouriteTimes: json['favouriteTimes'],
-      userRatingsTotal: json['userRatingsTotal'],
-      categories: (json['categories'] as List?)?.map((e) => e.toString()).toList(),
+      latitude: json['latitude'] != null
+          ? double.tryParse(json['latitude'].toString())
+          : null,
+      longitude: json['longitude'] != null
+          ? double.tryParse(json['longitude'].toString())
+          : null,
+      rating: json['rating'] != null
+          ? double.tryParse(json['rating'].toString())
+          : null,
+      favouriteTimes: json['favouriteTimes'] != null
+          ? int.tryParse(json['favouriteTimes'].toString())
+          : null,
+      userRatingsTotal: json['userRatingsTotal'] != null
+          ? int.tryParse(json['userRatingsTotal'].toString())
+          : null,
+      categories: (json['categories'] as List?)
+          ?.map((e) => e.toString())
+          .toList(),
       photos: (json['photos'] as List?)?.map((e) => e.toString()).toList(),
       videos: (json['videos'] as List?)?.map((e) => e.toString()).toList(),
       googlePlaceId: json['googlePlaceId'],
@@ -70,12 +92,25 @@ class Destination {
       available: json['available'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
+      ticketPrice: json['ticketPrice'] != null
+          ? double.tryParse(json['ticketPrice'].toString())
+          : null,
+      hasTourTickets: json['hasTourTickets'],
+      tourPriceRange: json['tourPriceRange'],
+      openTime: json['openTime'],
+      closeTime: json['closeTime'],
       isFromDatabase: json['isFromDatabase'] ?? true,
     );
   }
 
   /// Tạo Destination từ OSM POI
-  factory Destination.fromOSMPOI(String id, String name, double lat, double lon, String? type) {
+  factory Destination.fromOSMPOI(
+    String id,
+    String name,
+    double lat,
+    double lon,
+    String? type,
+  ) {
     return Destination(
       id: id.hashCode, // Dùng hash code của OSM ID
       name: name,
@@ -109,6 +144,11 @@ class Destination {
       'available': available,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'ticketPrice': ticketPrice,
+      'hasTourTickets': hasTourTickets,
+      'tourPriceRange': tourPriceRange,
+      'openTime': openTime,
+      'closeTime': closeTime,
       'isFromDatabase': isFromDatabase,
     };
   }
@@ -135,6 +175,11 @@ class Destination {
     bool? available,
     String? createdAt,
     String? updatedAt,
+    double? ticketPrice,
+    bool? hasTourTickets,
+    String? tourPriceRange,
+    String? openTime,
+    String? closeTime,
     bool? isFromDatabase,
   }) {
     return Destination(
@@ -159,6 +204,11 @@ class Destination {
       available: available ?? this.available,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      ticketPrice: ticketPrice ?? this.ticketPrice,
+      hasTourTickets: hasTourTickets ?? this.hasTourTickets,
+      tourPriceRange: tourPriceRange ?? this.tourPriceRange,
+      openTime: openTime ?? this.openTime,
+      closeTime: closeTime ?? this.closeTime,
       isFromDatabase: isFromDatabase ?? this.isFromDatabase,
     );
   }

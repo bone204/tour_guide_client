@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tour_guide_app/features/chat_bot/data/models/chat_request.dart';
 import 'package:tour_guide_app/features/chat_bot/data/models/chat_response.dart';
 import 'package:tour_guide_app/features/chat_bot/data/models/chat_result_item.dart';
+import 'package:tour_guide_app/features/chat_bot/domain/repository/chat_repository.dart';
 import 'package:tour_guide_app/features/chat_bot/domain/usecases/send_chat_message.dart';
 import 'package:tour_guide_app/features/chat_bot/presentation/bloc/chat_state.dart';
 import 'package:tour_guide_app/service_locator.dart';
@@ -11,10 +12,39 @@ import 'package:uuid/uuid.dart';
 class ChatCubit extends Cubit<ChatState> {
   ChatCubit() : super(ChatState.initial()) {
     _initSession();
+    loadHistory();
   }
 
   void _initSession() {
     emit(state.copyWith(sessionId: const Uuid().v4()));
+  }
+
+  Future<void> loadHistory() async {
+    emit(state.copyWith(isTyping: true));
+    final result = await sl<ChatRepository>().getHistory(
+      sessionId: state.sessionId,
+    );
+    if (isClosed) return;
+
+    result.fold(
+      (failure) =>
+          emit(state.copyWith(isTyping: false, errorMessage: failure.message)),
+      (messages) => emit(state.copyWith(messages: messages, isTyping: false)),
+    );
+  }
+
+  Future<void> clearHistory() async {
+    emit(state.copyWith(isTyping: true));
+    final result = await sl<ChatRepository>().deleteHistory(
+      sessionId: state.sessionId,
+    );
+    if (isClosed) return;
+
+    result.fold(
+      (failure) =>
+          emit(state.copyWith(isTyping: false, errorMessage: failure.message)),
+      (_) => emit(state.copyWith(messages: [], isTyping: false)),
+    );
   }
 
   Future<void> pickImages() async {
@@ -54,8 +84,9 @@ class ChatCubit extends Cubit<ChatState> {
     // Use a placeholder message if user only sends image?
     // "Gửi ảnh" or similar if empty? User provided logic usually prevents empty send.
     // Let's assume user must type something or we send a generic text if empty but has image.
-    final messageToSend =
-        message.isEmpty ? 'Phân tích ảnh này giúp tôi' : message;
+    final messageToSend = message.isEmpty
+        ? 'Phân tích ảnh này giúp tôi'
+        : message;
 
     final normalizedLang = (lang == 'en') ? 'en' : (lang == 'vi' ? 'vi' : null);
 
@@ -84,10 +115,9 @@ class ChatCubit extends Cubit<ChatState> {
 
     result.fold(
       (failure) {
-        final errorText =
-            failure.message.isNotEmpty
-                ? failure.message
-                : 'Đã xảy ra lỗi trong quá trình xử lý. Vui lòng thử lại.';
+        final errorText = failure.message.isNotEmpty
+            ? failure.message
+            : 'Đã xảy ra lỗi trong quá trình xử lý. Vui lòng thử lại.';
         final botError = ChatUiMessage.error(errorText);
         emit(
           state.copyWith(
@@ -104,12 +134,11 @@ class ChatCubit extends Cubit<ChatState> {
           response.source,
         );
         final rawText = response.text?.trim() ?? '';
-        final content =
-            rawText.isNotEmpty
-                ? rawText
-                : (suggestions.isNotEmpty
-                    ? fallbackText
-                    : _defaultFallback(normalizedLang));
+        final content = rawText.isNotEmpty
+            ? rawText
+            : (suggestions.isNotEmpty
+                  ? fallbackText
+                  : _defaultFallback(normalizedLang));
 
         // Handle images from response? Server response might have images (e.g. from user input echo or found images)
         // Response has `images` field (List<ChatImagePayload> in server, mapped to what?
