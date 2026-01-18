@@ -21,7 +21,7 @@ class EateryWheelPage extends StatefulWidget {
 }
 
 class _EateryWheelPageState extends State<EateryWheelPage> {
-  StreamController<int> selected = StreamController<int>();
+  StreamController<int> selected = StreamController<int>.broadcast();
   int? _selectedResultIndex;
   bool _isSpinning = false;
   bool _isLoading = false;
@@ -124,17 +124,22 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
       (eatery) {
         // Find index in the wheel items
         final wheelItems = _getWheelItems();
-        final index = wheelItems.indexWhere((e) => e.id == eatery.id);
+        int index = wheelItems.indexWhere((e) => e.id == eatery.id);
 
         if (index != -1) {
           _selectedResultIndex = index;
           // IMPORTANT: Emit the index to spin the wheel
           selected.add(index);
-
-          // Fallback safety: If animation doesn't start or finish within reasonable time (e.g. 10s), reset state
-          // Note: FortuneWheel usually takes care of onAnimationEnd.
+        } else if (wheelItems.isNotEmpty) {
+          // If for some reason not in wheel but wheel has items,
+          // spin to first item as fallback but show correct dialog
+          _selectedResultIndex = 0;
+          selected.add(0);
+          // Overwrite the result to show in dialog
+          _selectedResultIndex = -1; // Special flag
+          _showResultDialog(eatery);
         } else {
-          // Fallback if not found in current wheel items for some reason
+          // Fallback if no wheel items
           if (mounted) setState(() => _isSpinning = false);
           _showResultDialog(eatery);
         }
@@ -153,8 +158,8 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
       return [...selectedEateries, ...selectedEateries];
     }
 
-    // Limit to 12 items for clarity
-    return selectedEateries.take(12).toList();
+    // Increase limit to 50 items for better coverage
+    return selectedEateries.take(50).toList();
   }
 
   void _showResultDialog([Eatery? directResult]) {
@@ -286,12 +291,15 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
                         else
                           _buildEmptyWheelPlaceholder(),
                         SizedBox(height: 40.h),
-                        PrimaryButton(
-                          title: AppLocalizations.of(context)!.spinWheel,
-                          onPressed: _spin,
-                          isLoading: _isSpinning,
+                        SizedBox(
                           width: 220.w,
-                          backgroundColor: AppColors.primaryBlue,
+                          child: PrimaryButton(
+                            title: AppLocalizations.of(context)!.spinWheel,
+                            onPressed: _spin,
+                            isLoading: _isSpinning,
+                            width: 220.w,
+                            backgroundColor: AppColors.primaryBlue,
+                          ),
                         ),
                       ],
                     ),
