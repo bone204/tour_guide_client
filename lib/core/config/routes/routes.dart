@@ -28,6 +28,8 @@ import 'package:tour_guide_app/features/restaurant/presentation/pages/find_resta
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_list.page.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_detail.page.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_table_list.page.dart';
+import 'package:tour_guide_app/features/bills/book_restaurant/presentation/pages/restaurant_bill_list.page.dart';
+import 'package:tour_guide_app/features/bills/book_restaurant/presentation/pages/restaurant_bill_detail.page.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_table_selection.page.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_booking_info.page.dart';
 import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table_search_request.dart';
@@ -318,6 +320,7 @@ class AppRouter {
         final args = settings.arguments;
         RestaurantSearchResponse restaurant;
         DateTime? reservationTime;
+        int? numberOfGuests;
 
         if (args is RestaurantSearchResponse) {
           restaurant = args;
@@ -325,6 +328,7 @@ class AppRouter {
           final map = args as Map<String, dynamic>;
           restaurant = map['restaurant'] as RestaurantSearchResponse;
           reservationTime = map['reservationTime'] as DateTime?;
+          numberOfGuests = map['numberOfGuests'] as int?;
         }
 
         return MaterialPageRoute(
@@ -333,6 +337,7 @@ class AppRouter {
               (_) => RestaurantDetailPage(
                 restaurant: restaurant,
                 reservationTime: reservationTime,
+                numberOfGuests: numberOfGuests,
               ),
         );
 
@@ -351,6 +356,7 @@ class AppRouter {
               (_) => RestaurantTableSelectionPage(
                 restaurant: args['restaurant'] as RestaurantSearchResponse,
                 reservationTime: args['reservationTime'] as DateTime?,
+                numberOfGuests: args['numberOfGuests'] as int?,
               ),
         );
 
@@ -365,7 +371,21 @@ class AppRouter {
                 selectedTables:
                     (args['selectedTables'] as List<dynamic>)
                         .cast<Map<String, dynamic>>(),
+                numberOfGuests: args['numberOfGuests'] as int?,
               ),
+        );
+
+      case AppRouteConstant.restaurantBillList:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const RestaurantBillListPage(),
+        );
+
+      case AppRouteConstant.restaurantBillDetail:
+        final id = settings.arguments as int;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => RestaurantBillDetailPage(bookingId: id),
         );
 
       case AppRouteConstant.fastDelivery:

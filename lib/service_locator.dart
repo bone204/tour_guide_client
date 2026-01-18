@@ -270,6 +270,13 @@ import 'package:tour_guide_app/features/restaurant/domain/usecase/search_restaur
 import 'package:tour_guide_app/features/restaurant/domain/usecase/create_restaurant_booking_usecase.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/bloc/search_restaurant_tables/search_restaurant_tables_cubit.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/bloc/create_restaurant_booking/create_restaurant_booking_cubit.dart';
+import 'package:tour_guide_app/features/bills/book_restaurant/data/data_source/book_restaurant_api_service.dart';
+import 'package:tour_guide_app/features/bills/book_restaurant/data/repository/book_restaurant_repository_impl.dart';
+import 'package:tour_guide_app/features/bills/book_restaurant/domain/repository/book_restaurant_repository.dart';
+import 'package:tour_guide_app/features/bills/book_restaurant/domain/usecases/get_restaurant_bookings.dart';
+import 'package:tour_guide_app/features/bills/book_restaurant/domain/usecases/get_restaurant_booking_detail.dart';
+import 'package:tour_guide_app/features/bills/book_restaurant/presentation/bloc/get_restaurant_bills/get_restaurant_bills_cubit.dart';
+import 'package:tour_guide_app/features/bills/book_restaurant/presentation/bloc/get_restaurant_bill_detail/get_restaurant_bill_detail_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -301,6 +308,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
     MappingAddressApiServiceImpl(),
   );
   sl.registerSingleton<RestaurantApiService>(RestaurantApiServiceImpl());
+  sl.registerSingleton<BookRestaurantApiService>(
+    BookRestaurantApiServiceImpl(),
+  );
 
   // Repositories
   sl.registerSingleton<BankRepository>(BankRepositoryImpl(sl()));
@@ -327,6 +337,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerSingleton<RestaurantRepository>(
     RestaurantRepositoryImpl(apiService: sl()),
+  );
+  sl.registerSingleton<BookRestaurantRepository>(
+    BookRestaurantRepositoryImpl(apiService: sl()),
   );
 
   // Usecases
@@ -485,6 +498,10 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerSingleton<CreateRestaurantBookingUseCase>(
     CreateRestaurantBookingUseCase(sl()),
+  );
+  sl.registerSingleton<GetRestaurantBookings>(GetRestaurantBookings(sl()));
+  sl.registerSingleton<GetRestaurantBookingDetail>(
+    GetRestaurantBookingDetail(sl()),
   );
 
   sl.registerSingleton<UserPickupUseCase>(UserPickupUseCase());
@@ -687,6 +704,12 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerFactory<CreateRestaurantBookingCubit>(
     () => CreateRestaurantBookingCubit(createRestaurantBookingUseCase: sl()),
+  );
+  sl.registerFactory<GetRestaurantBillsCubit>(
+    () => GetRestaurantBillsCubit(getRestaurantBookings: sl()),
+  );
+  sl.registerFactory<GetRestaurantBillDetailCubit>(
+    () => GetRestaurantBillDetailCubit(getRestaurantBookingDetail: sl()),
   );
 
   sl.registerFactory<NotificationCubit>(

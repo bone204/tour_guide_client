@@ -52,12 +52,8 @@ class RestaurantApiServiceImpl extends RestaurantApiService {
         ApiUrls.restaurantBookings,
         data: request.toJson(),
       );
-      // Backend now returns List<RestaurantBooking>
-      final List<dynamic> data = response.data;
-      if (data.isNotEmpty) {
-        return Right(data.first['id']);
-      }
-      return const Right(0); // Succeeded but empty list? Should verify.
+      final data = response.data;
+      return Right(data['id']);
     } on DioException catch (e) {
       final msg = e.response?.data['message'];
       final errorMessage =

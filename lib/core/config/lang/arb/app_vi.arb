@@ -1916,7 +1916,7 @@
   "payNow": "Thanh toán ngay",
   "cancelSuccess": "Hủy thành công",
   "confirmCancelBill": "Bạn có chắc chắn muốn hủy hóa đơn này?",
-  "noBookingsFound": "Không tìm thấy đặt phòng nào",
+  "noBookingsFound": "Không tìm thấy đơn đặt nào",
   "error": "Lỗi",
   "restaurantDescriptionFallback": "Trải nghiệm ẩm thực tuyệt vời tại {name}",
   "@restaurantDescriptionFallback": {
@@ -1934,5 +1934,17 @@
         "type": "int"
       }
     }
-  }
+  },
+  "restaurantBills": "Đơn đặt bàn nhà hàng",
+  "bookingCode": "Mã đặt bàn",
+  "tableInfo": "Thông tin bàn",
+  "contactDetails": "Chi tiết liên hệ",
+  "duration": "Thời lượng",
+  "minutes": "phút",
+  "bookingDetails": "Chi tiết đặt bàn",
+  "status": "Trạng thái",
+  "statusPending": "Chờ xử lý",
+  "statusConfirmed": "Đã xác nhận",
+  "statusCancelled": "Đã hủy",
+  "statusCompleted": "Hoàn thành"
 }

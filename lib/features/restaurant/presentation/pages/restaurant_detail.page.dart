@@ -16,11 +16,13 @@ import 'package:tour_guide_app/features/restaurant/data/models/restaurant_search
 class RestaurantDetailPage extends StatefulWidget {
   final RestaurantSearchResponse restaurant;
   final DateTime? reservationTime;
+  final int? numberOfGuests;
 
   const RestaurantDetailPage({
     super.key,
     required this.restaurant,
     this.reservationTime,
+    this.numberOfGuests,
   });
 
   @override
@@ -53,6 +55,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
       arguments: {
         'restaurant': widget.restaurant,
         'reservationTime': widget.reservationTime,
+        'numberOfGuests': widget.numberOfGuests,
       },
     );
   }
@@ -81,13 +84,17 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
     return Positioned.fill(
       child: Hero(
         tag: 'restaurant_${widget.restaurant.id}',
-        child: Image.network(
-          widget.restaurant.photo ?? "",
-          fit: BoxFit.cover,
-          errorBuilder:
-              (context, error, stackTrace) =>
-                  Image.asset(AppImage.defaultFood, fit: BoxFit.cover),
-        ),
+        child:
+            (widget.restaurant.photo != null &&
+                    widget.restaurant.photo!.isNotEmpty)
+                ? Image.network(
+                  widget.restaurant.photo!,
+                  fit: BoxFit.cover,
+                  errorBuilder:
+                      (context, error, stackTrace) =>
+                          Image.asset(AppImage.defaultFood, fit: BoxFit.cover),
+                )
+                : Image.asset(AppImage.defaultFood, fit: BoxFit.cover),
       ),
     );
   }

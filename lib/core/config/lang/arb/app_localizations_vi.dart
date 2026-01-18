@@ -1940,7 +1940,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get noRentalBills => 'Không có hóa đơn nào';
 
   @override
-  String get noBookingsFound => 'Không tìm thấy đặt phòng nào';
+  String get noBookingsFound => 'Không tìm thấy đơn đặt nào';
 
   @override
   String get roomList => 'Danh sách phòng';
@@ -2009,7 +2009,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String minutes(int minutes) {
-    return '$minutes phút';
+    return 'phút';
   }
 
   @override
@@ -2235,7 +2235,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get statusRejected => 'Từ chối';
 
   @override
-  String get statusPending => 'Đang duyệt';
+  String get statusPending => 'Chờ xử lý';
 
   @override
   String get statusSuspended => 'Vô hiệu hóa';
@@ -3379,4 +3379,22 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get selectQuantity => 'Chọn số lượng';
+
+  @override
+  String get restaurantBills => 'Đơn đặt bàn nhà hàng';
+
+  @override
+  String get bookingCode => 'Mã đặt bàn';
+
+  @override
+  String get tableInfo => 'Thông tin bàn';
+
+  @override
+  String get contactDetails => 'Chi tiết liên hệ';
+
+  @override
+  String get bookingDetails => 'Chi tiết đặt bàn';
+
+  @override
+  String get statusConfirmed => 'Đã xác nhận';
 }

@@ -10,11 +10,13 @@ import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table.
 class RestaurantTableSelectionPage extends StatefulWidget {
   final RestaurantSearchResponse restaurant;
   final DateTime? reservationTime;
+  final int? numberOfGuests;
 
   const RestaurantTableSelectionPage({
     super.key,
     required this.restaurant,
     this.reservationTime,
+    this.numberOfGuests,
   });
 
   @override
@@ -162,6 +164,7 @@ class _RestaurantTableSelectionPageState
                       'restaurant': cooperation,
                       'checkInTime': widget.reservationTime ?? DateTime.now(),
                       'selectedTables': selectedTables,
+                      'numberOfGuests': widget.numberOfGuests,
                     },
                   );
                 }

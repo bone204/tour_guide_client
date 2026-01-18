@@ -2003,7 +2003,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String minutes(int minutes) {
-    return '$minutes minutes';
+    return 'mins';
   }
 
   @override
@@ -3373,4 +3373,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectQuantity => 'Select Quantity';
+
+  @override
+  String get restaurantBills => 'Restaurant Bookings';
+
+  @override
+  String get bookingCode => 'Booking Code';
+
+  @override
+  String get tableInfo => 'Table Info';
+
+  @override
+  String get contactDetails => 'Contact Details';
+
+  @override
+  String get bookingDetails => 'Booking Details';
+
+  @override
+  String get statusConfirmed => 'Confirmed';
 }

@@ -84,6 +84,7 @@ class _RestaurantTableListPageState extends State<RestaurantTableListPage> {
             widget.request?.reservationTime != null
                 ? DateTime.parse(widget.request!.reservationTime!)
                 : null,
+        'numberOfGuests': widget.request?.guests,
       },
     );
   }

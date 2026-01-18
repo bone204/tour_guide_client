@@ -1922,5 +1922,18 @@
       }
     }
   },
-  "selectQuantity": "Select Quantity"
+  "selectQuantity": "Select Quantity",
+  "restaurantBills": "Restaurant Bookings",
+  "bookingCode": "Booking Code",
+  "tableInfo": "Table Info",
+  "contactDetails": "Contact Details",
+  "duration": "Duration",
+  "minutes": "mins",
+  "noBookingsFound": "No bookings found",
+  "bookingDetails": "Booking Details",
+  "status": "Status",
+  "statusPending": "Pending",
+  "statusConfirmed": "Confirmed",
+  "statusCancelled": "Cancelled",
+  "statusCompleted": "Completed"
 }

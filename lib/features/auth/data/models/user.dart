@@ -17,12 +17,12 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'],
-      username: json['username'],
-      email: json['email'],
-      accountType: json['accountType'],
-      status: json['status'],
-      isVerified: json['isVerified'],
+      id: json['id'] ?? 0,
+      username: json['username'] ?? '',
+      email: json['email'] ?? '',
+      accountType: json['accountType'] ?? '',
+      status: json['status'] ?? '',
+      isVerified: json['isVerified'] ?? false,
     );
   }
 }

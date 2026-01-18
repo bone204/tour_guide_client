@@ -4028,7 +4028,7 @@ abstract class AppLocalizations {
   /// No description provided for @minutes.
   ///
   /// In en, this message translates to:
-  /// **'{minutes} minutes'**
+  /// **'mins'**
   String minutes(int minutes);
 
   /// No description provided for @kilometers.
@@ -6634,6 +6634,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Quantity'**
   String get selectQuantity;
+
+  /// No description provided for @restaurantBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant Bookings'**
+  String get restaurantBills;
+
+  /// No description provided for @bookingCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Code'**
+  String get bookingCode;
+
+  /// No description provided for @tableInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Table Info'**
+  String get tableInfo;
+
+  /// No description provided for @contactDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Details'**
+  String get contactDetails;
+
+  /// No description provided for @bookingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Details'**
+  String get bookingDetails;
+
+  /// No description provided for @statusConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get statusConfirmed;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

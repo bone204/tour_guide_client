@@ -16,12 +16,14 @@ class RestaurantBookingInfoPage extends StatefulWidget {
   final Cooperation restaurant;
   final DateTime checkInTime;
   final List<Map<String, dynamic>> selectedTables;
+  final int? numberOfGuests;
 
   const RestaurantBookingInfoPage({
     super.key,
     required this.restaurant,
     required this.checkInTime,
     required this.selectedTables,
+    this.numberOfGuests,
   });
 
   @override
@@ -40,6 +42,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
   late DateTime _selectedDate;
   late TimeOfDay _selectedTime;
   List<Map<String, dynamic>> _currentSelectedTables = [];
+  late int _numberOfGuests;
 
   @override
   void initState() {
@@ -48,6 +51,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
     _selectedDate = widget.checkInTime;
     _selectedTime = TimeOfDay.fromDateTime(widget.checkInTime);
     _currentSelectedTables = List.from(widget.selectedTables);
+    _numberOfGuests = widget.numberOfGuests ?? 1;
     // TODO: Pre-fill name/phone from User Profile if available
   }
 
@@ -108,14 +112,76 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
     });
   }
 
-  int _calculateTotalGuests() {
-    int total = 0;
-    for (final item in _currentSelectedTables) {
-      final table = item['table'] as RestaurantTable;
-      final quantity = item['quantity'] as int;
-      total += (table.guests) * quantity;
-    }
-    return total;
+  Widget _buildCounterField(
+    String label,
+    int count,
+    VoidCallback onIncrement,
+    VoidCallback onDecrement,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+        ),
+        SizedBox(height: 8.h),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 12.w),
+          decoration: BoxDecoration(
+            color: AppColors.primaryWhite,
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(color: AppColors.secondaryGrey, width: 1.w),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "$count ${AppLocalizations.of(context)!.people}",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: onDecrement,
+                    child: Container(
+                      padding: EdgeInsets.all(6.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.secondaryGrey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      child: Icon(
+                        Icons.remove,
+                        size: 18.sp,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  InkWell(
+                    onTap: onIncrement,
+                    child: Container(
+                      padding: EdgeInsets.all(6.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryBlue,
+                        borderRadius: BorderRadius.circular(6.r),
+                      ),
+                      child: Icon(
+                        Icons.add,
+                        size: 18.sp,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   void _confirmBooking() {
@@ -132,25 +198,22 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
         'dd:MM:yyyy HH:mm',
       ).format(bookingDateTime);
 
-      // Use first table data for backward compatibility if needed, but primarily use items.
-      // If tableId is required at root (deprecated but present), capture first.
-      final firstTable =
-          (_currentSelectedTables.first['table'] as RestaurantTable);
+      final List<int> tableIds = [];
+      for (final item in _currentSelectedTables) {
+        final table = item['table'] as RestaurantTable;
+        final quantity = item['quantity'] as int;
+        for (int i = 0; i < quantity; i++) {
+          tableIds.add(table.id);
+        }
+      }
 
       final request = CreateRestaurantBookingRequest(
-        tableId: firstTable.id,
+        tableIds: tableIds,
         checkInDate: formattedTime,
         contactName: _nameController.text,
         contactPhone: _phoneController.text,
         notes: _noteController.text.isNotEmpty ? _noteController.text : null,
-        numberOfGuests: _calculateTotalGuests(),
-        quantity: 1, // Dummy value for deprecated root field
-        items:
-            _currentSelectedTables.map((item) {
-              final table = item['table'] as RestaurantTable;
-              final quantity = item['quantity'] as int;
-              return {'tableId': table.id, 'quantity': quantity};
-            }).toList(),
+        numberOfGuests: _numberOfGuests,
       );
 
       _cubit.createBooking(request);
@@ -183,7 +246,14 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                   message: AppLocalizations.of(context)!.tableBookingSuccess,
                   type: SnackbarType.success,
                 );
-                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  AppRouteConstant.restaurantBillList,
+                  (route) => route.settings.name == AppRouteConstant.mainScreen,
+                );
+                Navigator.of(context).pushNamed(
+                  AppRouteConstant.restaurantBillDetail,
+                  arguments: state.bookingId,
+                );
               } else if (state is CreateRestaurantBookingFailure) {
                 CustomSnackbar.show(
                   context,
@@ -204,7 +274,9 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                       child:
                           (widget.restaurant.photo != null &&
                                   widget.restaurant.photo!.isNotEmpty &&
-                                  (widget.restaurant.photo!.startsWith('http') ||
+                                  (widget.restaurant.photo!.startsWith(
+                                        'http',
+                                      ) ||
                                       widget.restaurant.photo!.startsWith(
                                         'https',
                                       )))
@@ -229,7 +301,10 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(widget.restaurant.name, style: theme.titleLarge),
+                            Text(
+                              widget.restaurant.name,
+                              style: theme.titleLarge,
+                            ),
                             SizedBox(height: 4.h),
                             Text(
                               widget.restaurant.province ?? "",
@@ -240,7 +315,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                             SizedBox(height: 16.h),
                             Divider(height: 2.h, color: AppColors.primaryGrey),
                             SizedBox(height: 16.h),
-        
+
                             // Contact Info
                             Text(
                               AppLocalizations.of(
@@ -268,7 +343,9 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                               controller: _phoneController,
                               label: AppLocalizations.of(context)!.phoneNumber,
                               placeholder:
-                                  AppLocalizations.of(context)!.enterPhoneNumber,
+                                  AppLocalizations.of(
+                                    context,
+                                  )!.enterPhoneNumber,
                               keyboardType: TextInputType.phone,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -279,7 +356,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                                 return null;
                               },
                             ),
-        
+
                             SizedBox(height: 16.h),
                             CustomTextField(
                               controller: _timeController,
@@ -288,7 +365,18 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                               readOnly: true,
                               onTap: () => _selectDateTime(context),
                             ),
-        
+                            SizedBox(height: 16.h),
+
+                            // Number of Guests
+                            _buildCounterField(
+                              AppLocalizations.of(context)!.numberOfGuests,
+                              _numberOfGuests,
+                              () => setState(() => _numberOfGuests++),
+                              () => setState(() {
+                                if (_numberOfGuests > 1) _numberOfGuests--;
+                              }),
+                            ),
+
                             SizedBox(height: 16.h),
                             CustomTextField(
                               controller: _noteController,
@@ -297,11 +385,11 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                                   AppLocalizations.of(context)!.enterNote,
                               maxLines: 3,
                             ),
-        
+
                             SizedBox(height: 24.h),
                             Divider(height: 2.h, color: AppColors.primaryGrey),
                             SizedBox(height: 16.h),
-        
+
                             // Booking Summary
                             // Selected Tables List
                             Text(
@@ -316,7 +404,7 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                               final item = entry.value;
                               final table = item['table'] as RestaurantTable;
                               final quantity = item['quantity'] as int;
-        
+
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 12.h),
                                 child: Container(
@@ -338,7 +426,9 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                                   child: Row(
                                     children: [
                                       ClipRRect(
-                                        borderRadius: BorderRadius.circular(8.r),
+                                        borderRadius: BorderRadius.circular(
+                                          8.r,
+                                        ),
                                         child: Image.asset(
                                           AppImage.defaultFood,
                                           width: 80.w,
@@ -370,16 +460,20 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                                             SizedBox(height: 8.h),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 InkWell(
                                                   onTap:
-                                                      () => _updateTableQuantity(
-                                                        index,
-                                                        -1,
-                                                      ),
+                                                      () =>
+                                                          _updateTableQuantity(
+                                                            index,
+                                                            -1,
+                                                          ),
                                                   child: Container(
-                                                    padding: EdgeInsets.all(4.w),
+                                                    padding: EdgeInsets.all(
+                                                      4.w,
+                                                    ),
                                                     decoration: BoxDecoration(
                                                       color: AppColors
                                                           .secondaryGrey
@@ -407,12 +501,15 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                                                 ),
                                                 InkWell(
                                                   onTap:
-                                                      () => _updateTableQuantity(
-                                                        index,
-                                                        1,
-                                                      ),
+                                                      () =>
+                                                          _updateTableQuantity(
+                                                            index,
+                                                            1,
+                                                          ),
                                                   child: Container(
-                                                    padding: EdgeInsets.all(4.w),
+                                                    padding: EdgeInsets.all(
+                                                      4.w,
+                                                    ),
                                                     decoration: BoxDecoration(
                                                       color:
                                                           AppColors.primaryBlue,
@@ -425,7 +522,8 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                                                       Icons.add,
                                                       size: 16.sp,
                                                       color:
-                                                          AppColors.primaryWhite,
+                                                          AppColors
+                                                              .primaryWhite,
                                                     ),
                                                   ),
                                                 ),
@@ -439,14 +537,15 @@ class _RestaurantBookingInfoPageState extends State<RestaurantBookingInfoPage> {
                                 ),
                               );
                             }).toList(),
-        
+
                             SizedBox(height: 24.h),
                             PrimaryButton(
                               title:
                                   AppLocalizations.of(
                                     context,
                                   )!.confirmTableBooking,
-                              isLoading: state is CreateRestaurantBookingLoading,
+                              isLoading:
+                                  state is CreateRestaurantBookingLoading,
                               onPressed: _confirmBooking,
                               backgroundColor: AppColors.primaryBlue,
                               textColor: AppColors.textSecondary,

@@ -157,6 +157,13 @@ class _ProfileViewState extends State<_ProfileView> {
                                     context,
                                     rootNavigator: true,
                                   ).pushNamed(AppRouteConstant.hotelBillList);
+                                } else if (index == 5) {
+                                  Navigator.of(
+                                    context,
+                                    rootNavigator: true,
+                                  ).pushNamed(
+                                    AppRouteConstant.restaurantBillList,
+                                  );
                                 }
                               },
                             ),
@@ -268,6 +275,11 @@ class _ProfileViewState extends State<_ProfileView> {
         iconAsset: AppIcons.policy, // Reuse icon or add new one
         iconColor: AppColors.primaryRed,
         title: AppLocalizations.of(context)!.hotelBills,
+      ),
+      _ProfileFeatureItem(
+        iconAsset: AppIcons.policy,
+        iconColor: Colors.teal,
+        title: AppLocalizations.of(context)!.restaurantBills,
       ),
     ];
   }

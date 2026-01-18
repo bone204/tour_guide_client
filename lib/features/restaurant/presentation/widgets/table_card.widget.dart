@@ -44,13 +44,26 @@ class TableCard extends StatelessWidget {
             borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
             child: Stack(
               children: [
-                Image.network(
-                  table.photo ?? "",
-                  width: double.infinity,
-                  height: 160.h,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
+                (table.photo != null && table.photo!.isNotEmpty)
+                    ? Image.network(
+                      table.photo!,
+                      width: double.infinity,
+                      height: 160.h,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: double.infinity,
+                          height: 160.h,
+                          color: AppColors.secondaryGrey,
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.image_not_supported,
+                            color: AppColors.textSubtitle,
+                          ),
+                        );
+                      },
+                    )
+                    : Container(
                       width: double.infinity,
                       height: 160.h,
                       color: AppColors.secondaryGrey,
@@ -59,9 +72,7 @@ class TableCard extends StatelessWidget {
                         Icons.image_not_supported,
                         color: AppColors.textSubtitle,
                       ),
-                    );
-                  },
-                ),
+                    ),
 
                 // Available/Unavailable badge
                 Positioned(
