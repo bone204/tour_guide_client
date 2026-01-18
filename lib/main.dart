@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tour_guide_app/common/bloc/auth/auth_state_cubit.dart';
 import 'package:tour_guide_app/common/bloc/lang/locale_cubit.dart';
 import 'package:tour_guide_app/common/bloc/lang/locale_state.dart';
@@ -18,6 +19,13 @@ void main() {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      // Load environment variables (optional)
+      try {
+        await dotenv.load(fileName: ".env");
+      } catch (e) {
+        debugPrint('Warning: .env file not found, using default values');
+      }
 
       String initialRoute = AppRouteConstant.signIn;
 

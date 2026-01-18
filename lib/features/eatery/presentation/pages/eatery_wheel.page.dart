@@ -167,7 +167,7 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
           AppLocalizations.of(context)!.eateryWheelResultTitle,
           style: Theme.of(
             context,
-          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900),
           textAlign: TextAlign.center,
         ),
         content: SizedBox(
@@ -232,7 +232,7 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
             },
             child: Text(
               AppLocalizations.of(context)!.viewDetail,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.w900),
             ),
           ),
           TextButton(
@@ -329,7 +329,7 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
                                 const TextStyle())
                             .copyWith(
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w900,
                               fontSize: 11.sp,
                               shadows: [
                                 Shadow(
@@ -433,7 +433,7 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
                     "Quán ăn gần đây (${_nearbyEateries.length})",
                     style: TextStyle(
                       fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w900,
                       color: AppColors.textPrimary,
                     ),
                   ),
@@ -526,7 +526,7 @@ class _EateryWheelPageState extends State<EateryWheelPage> {
                                       Text(
                                         eatery.name ?? '',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w900,
                                           fontSize: 14.sp,
                                         ),
                                         maxLines: 1,

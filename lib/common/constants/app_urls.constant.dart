@@ -1,78 +1,83 @@
-class ApiUrls {
-  // static const baseURL = "https://traveline-server.vercel.app";
-  static const baseURL = "http://192.168.1.83:3000";
-  //Authentication URLs
-  static const signup = "$baseURL/auth/signup";
-  static const login = "$baseURL/auth/login";
-  static const refreshToken = "$baseURL/auth/refresh";
-  static const emailStart = "$baseURL/auth/email/start";
-  static const emailVerify = "$baseURL/auth/email/verify";
-  static const phoneStart = "$baseURL/auth/phone/start";
-  static const phoneVerify = "$baseURL/auth/phone/verify";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-  static const auth = "$baseURL/auth";
-  static const changePassword = "$baseURL/auth/password";
+class ApiUrls {
+  static String get baseURL =>
+      dotenv.env['BASE_URL'] ?? 'https://traveline-server.vercel.app';
+
+  //Authentication URLs
+  static String get signup => "$baseURL/auth/signup";
+  static String get login => "$baseURL/auth/login";
+  static String get refreshToken => "$baseURL/auth/refresh";
+  static String get emailStart => "$baseURL/auth/email/start";
+  static String get emailVerify => "$baseURL/auth/email/verify";
+  static String get phoneStart => "$baseURL/auth/phone/start";
+  static String get phoneVerify => "$baseURL/auth/phone/verify";
+
+  static String get auth => "$baseURL/auth";
+  static String get changePassword => "$baseURL/auth/password";
 
   //Users URLs
-  static const users = "$baseURL/users";
+  static String get users => "$baseURL/users";
 
   //Destination URLs
-  static const getDestinations = "$baseURL/destinations";
-  static const getFavoriteDestinations = "$baseURL/destinations/favorites";
+  static String get getDestinations => "$baseURL/destinations";
+  static String get getFavoriteDestinations =>
+      "$baseURL/destinations/favorites";
   static String favoriteDestination(int id) =>
       "$baseURL/destinations/$id/favorite";
 
   //Rental Contracts URLs
-  static const rentalContracts = "$baseURL/rental-contracts";
+  static String get rentalContracts => "$baseURL/rental-contracts";
 
   //Hotel Rooms URLs
-  static const hotelRooms = "$baseURL/hotel-rooms";
-  static const hotelBills = "$baseURL/hotel-bills";
+  static String get hotelRooms => "$baseURL/hotel-rooms";
+  static String get hotelBills => "$baseURL/hotel-bills";
 
   //Rental Vehicles URLs
-  static const rentalVehicles = "$baseURL/rental-vehicles";
-  static const vehicleCatalogs = "$baseURL/vehicle-catalog";
+  static String get rentalVehicles => "$baseURL/rental-vehicles";
+  static String get vehicleCatalogs => "$baseURL/vehicle-catalog";
 
   //Rental Bills URLs
-  static const rentalBills = "$baseURL/rental-bills";
+  static String get rentalBills => "$baseURL/rental-bills";
 
   //Chatbot URLs
-  static const chatbot = "$baseURL/chat";
+  static String get chatbot => "$baseURL/chat";
 
   //Provinces URLs
-  static const provinces = "$baseURL/provinces";
+  static String get provinces => "$baseURL/provinces";
 
   //Travel Routes URLs
-  static const itinerary = "$baseURL/travel-routes";
+  static String get itinerary => "$baseURL/travel-routes";
 
   //Feedback URLs
-  static const feedback = "$baseURL/feedback";
+  static String get feedback => "$baseURL/feedback";
 
   //Hobbies URLs
-  static const hobbies = "$baseURL/users/profile/hobbies";
+  static String get hobbies => "$baseURL/users/profile/hobbies";
 
   //Voucher URLs
-  static const vouchers = "$baseURL/vouchers";
+  static String get vouchers => "$baseURL/vouchers";
 
   //Cooperation URLs
-  static const cooperations = "$baseURL/cooperations";
-  static const getFavoriteCooperations = "$baseURL/cooperations/favorites";
+  static String get cooperations => "$baseURL/cooperations";
+  static String get getFavoriteCooperations =>
+      "$baseURL/cooperations/favorites";
   static String favoriteCooperation(int id) =>
       "$baseURL/cooperations/$id/favorite";
 
   //Restaurant Tables URLs
-  static const restaurantTables = "$baseURL/restaurant/tables";
-  static const restaurantBookings = "$baseURL/restaurant/bookings";
+  static String get restaurantTables => "$baseURL/restaurant/tables";
+  static String get restaurantBookings => "$baseURL/restaurant/bookings";
 
   //Payment URLs
-  static const payments = "$baseURL/payments";
+  static String get payments => "$baseURL/payments";
 
   //Notification URLs
-  static const notifications = "$baseURL/notifications";
+  static String get notifications => "$baseURL/notifications";
 
   //Administrative Mapping URLs
-  static const vnAdmin = "$baseURL/vn-admin";
-  static const mapping = "$vnAdmin/mapping";
-  static const legacy = "$vnAdmin/legacy";
-  static const reform = "$vnAdmin/reform";
+  static String get vnAdmin => "$baseURL/vn-admin";
+  static String get mapping => "$vnAdmin/mapping";
+  static String get legacy => "$vnAdmin/legacy";
+  static String get reform => "$vnAdmin/reform";
 }

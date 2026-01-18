@@ -713,7 +713,7 @@ class _ChatSuggestionCard extends StatelessWidget {
         label,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: isPrimary ? AppColors.primaryBlue : AppColors.textSubtitle,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w900,
           fontSize: 10.sp,
         ),
       ),
@@ -729,7 +729,7 @@ class _ChatSuggestionCard extends StatelessWidget {
           item.rating!.toStringAsFixed(1),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: AppColors.textPrimary,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
             fontSize: 13.sp,
           ),
         ),
