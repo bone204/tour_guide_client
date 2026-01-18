@@ -797,7 +797,9 @@
   "selectLocation": "Chọn vị trí",
 
   "selectCheckInDate": "Chọn ngày nhận phòng",
-
+  "enterNote": "Nhập ghi chú",
+  "pleaseEnterFullName": "Vui lòng nhập họ tên",
+  "pleaseEnterPhoneNumber": "Vui lòng nhập số điện thoại",
   "selectCheckOutDate": "Chọn ngày trả phòng",
 
   "selectPlace": "Chọn địa điểm",

@@ -2802,6 +2802,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get foodTypeFastFood => 'Fast Food';
 
   @override
+  String get enterNote => 'Enter Note';
+
+  @override
+  String get pleaseEnterFullName => 'Please enter full name';
+
+  @override
   String get contractDurationPolicy => 'The contract shall remain in effect until either party terminates the cooperation.';
 
   @override

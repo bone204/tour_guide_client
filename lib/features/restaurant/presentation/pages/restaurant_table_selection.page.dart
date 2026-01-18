@@ -9,8 +9,13 @@ import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table.
 
 class RestaurantTableSelectionPage extends StatefulWidget {
   final RestaurantSearchResponse restaurant;
+  final DateTime? reservationTime;
 
-  const RestaurantTableSelectionPage({super.key, required this.restaurant});
+  const RestaurantTableSelectionPage({
+    super.key,
+    required this.restaurant,
+    this.reservationTime,
+  });
 
   @override
   State<RestaurantTableSelectionPage> createState() =>
@@ -120,17 +125,25 @@ class _RestaurantTableSelectionPageState
               width: 120.w,
               onPressed: () {
                 if (_selectedQuantities.isNotEmpty) {
-                  final firstTableId = _selectedQuantities.keys.first;
-                  final selectedTable = _tables.firstWhere(
-                    (t) => t.id == firstTableId,
-                  );
+                  // Build selected tables list
+                  final List<Map<String, dynamic>> selectedTables = [];
 
-                  // Convert RestaurantSearchResponse to Cooperation
-                  // We need to map relevant fields. Since Cooperation is expected, ensure we populate enough data.
-                  // Note: Cooperation and RestaurantSearchResponse have diff structures for 'restaurantTables'.
-                  // We can create a dummy Cooperation or map fields if possible.
-                  // However, Cooperation requires imports.
-                  // Let's rely on the fact that we can construct a Cooperation object from the search response.
+                  _selectedQuantities.forEach((tableId, qty) {
+                    final tableResponse = _tables.firstWhere(
+                      (t) => t.id == tableId,
+                    );
+
+                    final table = RestaurantTable(
+                      id: tableResponse.id,
+                      name: tableResponse.name,
+                      guests: tableResponse.maxPeople ?? 0,
+                      priceRange: _parsePrice(tableResponse.priceRange),
+                      description: tableResponse.note,
+                      dishType: tableResponse.dishType,
+                    );
+
+                    selectedTables.add({'table': table, 'quantity': qty});
+                  });
 
                   final cooperation = Cooperation(
                     id: widget.restaurant.id,
@@ -138,27 +151,17 @@ class _RestaurantTableSelectionPageState
                     photo: widget.restaurant.photo,
                     address: widget.restaurant.address,
                     province: widget.restaurant.province,
-                    // Map other fields if needed for the BookingInfoPage
                     bossName: widget.restaurant.bossName,
                     bossPhone: widget.restaurant.bossPhone,
                     bossEmail: widget.restaurant.bossEmail,
-                  );
-
-                  // Convert RestaurantTableSearchResponse to RestaurantTable
-                  final restaurantTable = RestaurantTable(
-                    id: selectedTable.id,
-                    name: selectedTable.name,
-                    guests: selectedTable.maxPeople ?? 0,
-                    priceRange: _parsePrice(selectedTable.priceRange),
-                    description: selectedTable.note,
-                    dishType: selectedTable.dishType,
                   );
 
                   Navigator.of(context, rootNavigator: true).pushNamed(
                     AppRouteConstant.restaurantBookingInfo,
                     arguments: {
                       'restaurant': cooperation,
-                      'table': restaurantTable,
+                      'checkInTime': widget.reservationTime ?? DateTime.now(),
+                      'selectedTables': selectedTables,
                     },
                   );
                 }

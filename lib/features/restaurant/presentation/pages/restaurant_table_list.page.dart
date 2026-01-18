@@ -76,10 +76,16 @@ class _RestaurantTableListPageState extends State<RestaurantTableListPage> {
   }
 
   void _navigateToRestaurantDetail(RestaurantSearchResponse restaurant) {
-    Navigator.of(
-      context,
-      rootNavigator: true,
-    ).pushNamed(AppRouteConstant.restaurantDetail, arguments: restaurant);
+    Navigator.of(context, rootNavigator: true).pushNamed(
+      AppRouteConstant.restaurantDetail,
+      arguments: {
+        'restaurant': restaurant,
+        'reservationTime':
+            widget.request?.reservationTime != null
+                ? DateTime.parse(widget.request!.reservationTime!)
+                : null,
+      },
+    );
   }
 
   @override

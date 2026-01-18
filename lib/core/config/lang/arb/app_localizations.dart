@@ -5513,6 +5513,18 @@ abstract class AppLocalizations {
   /// **'Fast Food'**
   String get foodTypeFastFood;
 
+  /// No description provided for @enterNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Note'**
+  String get enterNote;
+
+  /// No description provided for @pleaseEnterFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter full name'**
+  String get pleaseEnterFullName;
+
   /// No description provided for @contractDurationPolicy.
   ///
   /// In en, this message translates to:

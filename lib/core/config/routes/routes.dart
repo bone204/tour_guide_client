@@ -31,7 +31,6 @@ import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_table_selection.page.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_booking_info.page.dart';
 import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table_search_request.dart';
-import 'package:tour_guide_app/features/restaurant/data/models/restaurant_table.dart';
 import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery.page.dart';
 import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery_detail.page.dart';
 import 'package:tour_guide_app/features/fast_delivery/presentation/pages/fast_delivery_bill.page.dart';
@@ -316,10 +315,25 @@ class AppRouter {
         );
 
       case AppRouteConstant.restaurantDetail:
-        final restaurant = settings.arguments as RestaurantSearchResponse;
+        final args = settings.arguments;
+        RestaurantSearchResponse restaurant;
+        DateTime? reservationTime;
+
+        if (args is RestaurantSearchResponse) {
+          restaurant = args;
+        } else {
+          final map = args as Map<String, dynamic>;
+          restaurant = map['restaurant'] as RestaurantSearchResponse;
+          reservationTime = map['reservationTime'] as DateTime?;
+        }
+
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => RestaurantDetailPage(restaurant: restaurant),
+          builder:
+              (_) => RestaurantDetailPage(
+                restaurant: restaurant,
+                reservationTime: reservationTime,
+              ),
         );
 
       case AppRouteConstant.restaurantTableList:
@@ -330,10 +344,14 @@ class AppRouter {
         );
 
       case AppRouteConstant.restaurantTableSelection:
-        final restaurant = settings.arguments as RestaurantSearchResponse;
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => RestaurantTableSelectionPage(restaurant: restaurant),
+          builder:
+              (_) => RestaurantTableSelectionPage(
+                restaurant: args['restaurant'] as RestaurantSearchResponse,
+                reservationTime: args['reservationTime'] as DateTime?,
+              ),
         );
 
       case AppRouteConstant.restaurantBookingInfo:
@@ -343,7 +361,10 @@ class AppRouter {
           builder:
               (_) => RestaurantBookingInfoPage(
                 restaurant: args['restaurant'] as Cooperation,
-                table: args['table'] as RestaurantTable,
+                checkInTime: args['checkInTime'] as DateTime,
+                selectedTables:
+                    (args['selectedTables'] as List<dynamic>)
+                        .cast<Map<String, dynamic>>(),
               ),
         );
 

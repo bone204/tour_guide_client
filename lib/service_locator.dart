@@ -267,7 +267,9 @@ import 'package:tour_guide_app/features/restaurant/data/data_source/restaurant_a
 import 'package:tour_guide_app/features/restaurant/data/repository/restaurant_repository_impl.dart';
 import 'package:tour_guide_app/features/restaurant/domain/repository/restaurant_repository.dart';
 import 'package:tour_guide_app/features/restaurant/domain/usecase/search_restaurant_tables_usecase.dart';
+import 'package:tour_guide_app/features/restaurant/domain/usecase/create_restaurant_booking_usecase.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/bloc/search_restaurant_tables/search_restaurant_tables_cubit.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/bloc/create_restaurant_booking/create_restaurant_booking_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -481,6 +483,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<SearchRestaurantTablesUseCase>(
     SearchRestaurantTablesUseCase(repository: sl()),
   );
+  sl.registerSingleton<CreateRestaurantBookingUseCase>(
+    CreateRestaurantBookingUseCase(sl()),
+  );
 
   sl.registerSingleton<UserPickupUseCase>(UserPickupUseCase());
   sl.registerSingleton<UserReturnRequestUseCase>(UserReturnRequestUseCase());
@@ -679,6 +684,9 @@ void setUpServiceLocator(SharedPreferences prefs) {
   // Restaurant Cubits
   sl.registerFactory<SearchRestaurantTablesCubit>(
     () => SearchRestaurantTablesCubit(searchRestaurantTablesUseCase: sl()),
+  );
+  sl.registerFactory<CreateRestaurantBookingCubit>(
+    () => CreateRestaurantBookingCubit(createRestaurantBookingUseCase: sl()),
   );
 
   sl.registerFactory<NotificationCubit>(

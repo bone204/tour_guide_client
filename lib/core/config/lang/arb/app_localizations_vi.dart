@@ -2808,6 +2808,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get foodTypeFastFood => 'Đồ ăn nhanh';
 
   @override
+  String get enterNote => 'Nhập ghi chú';
+
+  @override
+  String get pleaseEnterFullName => 'Vui lòng nhập họ tên';
+
+  @override
   String get contractDurationPolicy => 'Hợp đồng có hiệu lực cho đến khi một trong hai bên chấm dứt hợp tác.';
 
   @override

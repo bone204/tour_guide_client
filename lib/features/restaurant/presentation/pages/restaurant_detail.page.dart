@@ -15,8 +15,13 @@ import 'package:tour_guide_app/features/restaurant/data/models/restaurant_search
 
 class RestaurantDetailPage extends StatefulWidget {
   final RestaurantSearchResponse restaurant;
+  final DateTime? reservationTime;
 
-  const RestaurantDetailPage({super.key, required this.restaurant});
+  const RestaurantDetailPage({
+    super.key,
+    required this.restaurant,
+    this.reservationTime,
+  });
 
   @override
   State<RestaurantDetailPage> createState() => _RestaurantDetailPageState();
@@ -45,7 +50,10 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
     // Navigate to page to select tables for this restaurant
     Navigator.of(context, rootNavigator: true).pushNamed(
       AppRouteConstant.restaurantTableSelection,
-      arguments: widget.restaurant,
+      arguments: {
+        'restaurant': widget.restaurant,
+        'reservationTime': widget.reservationTime,
+      },
     );
   }
 

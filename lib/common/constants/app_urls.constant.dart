@@ -62,6 +62,7 @@ class ApiUrls {
 
   //Restaurant Tables URLs
   static const restaurantTables = "$baseURL/restaurant/tables";
+  static const restaurantBookings = "$baseURL/restaurant/bookings";
 
   //Payment URLs
   static const payments = "$baseURL/payments";
