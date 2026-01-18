@@ -352,7 +352,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage>
                   )!.restaurantDescriptionFallback(widget.restaurant.name),
             );
           case 1:
-            return const ReviewsTab();
+            return ReviewsTab(restaurantId: widget.restaurant.id);
           case 2:
             return PhotosTab(
               photos:

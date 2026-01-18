@@ -74,6 +74,8 @@ import 'package:tour_guide_app/core/services/feedback/domain/repositories/feedba
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/suggest_itinerary.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/comment/comment_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/comment/destination_comment_cubit.dart';
+import 'package:tour_guide_app/features/hotel/presentation/bloc/comment/hotel_comment_cubit.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/bloc/comment/restaurant_comment_cubit.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/create_feedback_reply.dart';
 import 'package:tour_guide_app/core/services/feedback/domain/usecases/get_feedback_replies.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/reply/reply_cubit.dart';
@@ -629,6 +631,20 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
   sl.registerFactory<DestinationCommentCubit>(
     () => DestinationCommentCubit(
+      getFeedbackUseCase: sl(),
+      createFeedbackUseCase: sl(),
+      checkContentUseCase: sl(),
+    ),
+  );
+  sl.registerFactory<HotelCommentCubit>(
+    () => HotelCommentCubit(
+      getFeedbackUseCase: sl(),
+      createFeedbackUseCase: sl(),
+      checkContentUseCase: sl(),
+    ),
+  );
+  sl.registerFactory<RestaurantCommentCubit>(
+    () => RestaurantCommentCubit(
       getFeedbackUseCase: sl(),
       createFeedbackUseCase: sl(),
       checkContentUseCase: sl(),

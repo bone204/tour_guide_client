@@ -1,11 +1,20 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/destination/presentation/widgets/comment/destination_comment.widget.dart';
+import 'package:tour_guide_app/features/hotel/presentation/widgets/comment/hotel_comment.widget.dart';
+import 'package:tour_guide_app/features/restaurant/presentation/widgets/comment/restaurant_comment.widget.dart';
 
 class ReviewsTab extends StatelessWidget {
   final int? destinationId;
+  final int? hotelId;
+  final int? restaurantId;
 
-  const ReviewsTab({super.key, this.destinationId});
+  const ReviewsTab({
+    super.key,
+    this.destinationId,
+    this.hotelId,
+    this.restaurantId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +22,18 @@ class ReviewsTab extends StatelessWidget {
       return Padding(
         padding: EdgeInsets.symmetric(vertical: 20.h),
         child: DestinationCommentWidget(destinationId: destinationId!),
+      );
+    }
+    if (hotelId != null) {
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        child: HotelCommentWidget(hotelId: hotelId!),
+      );
+    }
+    if (restaurantId != null) {
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        child: RestaurantCommentWidget(restaurantId: restaurantId!),
       );
     }
     // Fallback Mock Data

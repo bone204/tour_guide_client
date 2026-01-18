@@ -362,7 +362,7 @@ class _HotelDetailPageState extends State<HotelDetailPage>
                   'Discover the beauty of $name. This stunning destination offers breathtaking views, rich cultural experiences, and unforgettable memories. Perfect for travelers seeking adventure and relaxation.\n\nWhether you\'re exploring historic landmarks, enjoying local cuisine, or simply taking in the scenery, this location has something special for everyone.\n\nThe destination is known for its unique charm and exceptional experiences that leave lasting impressions on every visitor. From morning till evening, there are countless activities and sights to explore.',
             );
           case 1:
-            return const ReviewsTab();
+            return ReviewsTab(hotelId: hotel?.id);
           case 2:
             return PhotosTab(
               photos:
