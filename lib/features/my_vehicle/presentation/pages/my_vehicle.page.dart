@@ -5,6 +5,7 @@ import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contrac
 import 'package:tour_guide_app/features/my_vehicle/presentation/bloc/get_contracts/get_contracts_state.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/add_vehicle/vehicle.page.dart';
 import 'package:tour_guide_app/features/my_vehicle/presentation/pages/contract/contract.page.dart';
+import 'package:tour_guide_app/features/my_vehicle/presentation/widgets/vehicle_list_shimmer.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class MyVehiclePage extends StatelessWidget {
@@ -17,9 +18,7 @@ class MyVehiclePage extends StatelessWidget {
       child: BlocBuilder<GetContractsCubit, GetContractsState>(
         builder: (context, state) {
           if (state.status == GetContractsStatus.loading) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
+            return const Scaffold(body: VehicleListShimmer());
           }
 
           if (state.status == GetContractsStatus.loaded) {

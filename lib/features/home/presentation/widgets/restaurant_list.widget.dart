@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/home_restaurant_card.widget.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/shimmer_widgets.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/bloc/search_restaurant_tables/search_restaurant_tables_cubit.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/bloc/search_restaurant_tables/search_restaurant_tables_state.dart';
 import 'package:tour_guide_app/features/restaurant/presentation/pages/restaurant_detail.page.dart';
@@ -15,6 +16,13 @@ class SliverRestaurantNearbyDestinationList extends StatelessWidget {
       SearchRestaurantTablesState
     >(
       builder: (context, state) {
+        // Show shimmer when loading
+        if (state is SearchRestaurantTablesLoading ||
+            state is SearchRestaurantTablesInitial) {
+          return SliverRestaurantNearbyDestinationListShimmer();
+        }
+
+        // Hide on error or when no restaurants found
         if (state is! SearchRestaurantTablesSuccess ||
             state.restaurants.isEmpty) {
           return const SliverToBoxAdapter(child: SizedBox.shrink());

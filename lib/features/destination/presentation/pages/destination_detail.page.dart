@@ -7,6 +7,7 @@ import 'package:tour_guide_app/common/widgets/tab_item/reviews_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destination/favorite_destinations_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/favorite_destination/favorite_destinations_state.dart';
+import 'package:tour_guide_app/features/destination/presentation/widgets/destination_detail_shimmer.widget.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/get_destination_by_id/get_destination_by_id_cubit.dart';
 import 'package:tour_guide_app/features/destination/presentation/bloc/get_destination_by_id/get_destination_by_id_state.dart';
 
@@ -83,12 +84,7 @@ class _DestinationDetailPageState extends State<DestinationDetailPage>
       },
       builder: (context, state) {
         if (state is GetDestinationByIdLoading) {
-          return Scaffold(
-            backgroundColor: AppColors.backgroundColor,
-            body: Center(
-              child: CircularProgressIndicator(color: AppColors.primaryBlue),
-            ),
-          );
+          return const DestinationDetailShimmer();
         }
 
         if (state is GetDestinationByIdError) {

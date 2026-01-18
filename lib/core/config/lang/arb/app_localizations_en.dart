@@ -2457,7 +2457,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get specialOfferForYou => 'Special offer for you';
 
   @override
-  String get useNowToGetOffer => 'Use now to get offer';
+  String get useNowToGetOffer => 'Use when booking services to get discounts';
 
   @override
   String get hotel5Star => '5 Star';

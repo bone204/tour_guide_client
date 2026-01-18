@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/features/home/presentation/widgets/shimmer_widgets.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/hotel_rooms_search/hotel_rooms_search_cubit.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/bloc/hotel_rooms_search/hotel_rooms_search_state.dart';
 import 'package:tour_guide_app/features/hotel_booking/presentation/pages/hotel_detail.page.dart';
@@ -12,6 +13,13 @@ class SliverHotelNearbyDestinationList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HotelRoomsSearchCubit, HotelRoomsSearchState>(
       builder: (context, state) {
+        // Show shimmer when loading
+        if (state is HotelRoomsSearchLoading ||
+            state is HotelRoomsSearchInitial) {
+          return SliverHotelNearbyDestinationListShimmer();
+        }
+
+        // Hide on error or when no hotels found
         if (state is! HotelRoomsSearchSuccess || state.hotels.isEmpty) {
           return const SliverToBoxAdapter(child: SizedBox.shrink());
         }

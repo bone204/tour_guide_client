@@ -1,5 +1,5 @@
 import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/features/home/presentation/widgets/ticket_clipper.widget.dart';
 import 'package:tour_guide_app/features/voucher/data/models/voucher.dart';
@@ -115,14 +115,6 @@ class VoucherCard extends StatelessWidget {
                           AppLocalizations.of(context)!.useNowToGetOffer,
                           style: Theme.of(context).textTheme.displayMedium,
                           overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset(
-                          AppIcons.arrowRight,
-                          width: 14.w,
-                          height: 14.h,
                         ),
                       ),
                     ],

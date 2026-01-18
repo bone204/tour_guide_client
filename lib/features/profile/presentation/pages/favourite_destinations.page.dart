@@ -11,6 +11,7 @@ import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorite_c
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorites/get_favorites_cubit.dart';
 import 'package:tour_guide_app/features/profile/presentation/bloc/get_favorites/get_favorites_state.dart';
 import 'package:tour_guide_app/features/profile/presentation/pages/favourite_destinations_search.page.dart';
+import 'package:tour_guide_app/features/profile/presentation/widgets/favorite_destinations_shimmer.widget.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 class FavouriteDestinationsPage extends StatefulWidget {
@@ -113,9 +114,7 @@ class _FavouriteDestinationsPageState extends State<FavouriteDestinationsPage>
     return BlocBuilder<GetFavoritesCubit, GetFavoritesState>(
       builder: (context, state) {
         if (state is GetFavoritesLoading) {
-          return Center(
-            child: CircularProgressIndicator(color: AppColors.primaryBlue),
-          );
+          return const FavoriteDestinationsShimmer();
         }
 
         if (state is GetFavoritesError) {
@@ -209,9 +208,7 @@ class _FavouriteDestinationsPageState extends State<FavouriteDestinationsPage>
     >(
       builder: (context, state) {
         if (state is GetFavoriteCooperationsLoading) {
-          return Center(
-            child: CircularProgressIndicator(color: AppColors.primaryBlue),
-          );
+          return const FavoriteDestinationsShimmer();
         }
 
         if (state is GetFavoriteCooperationsError) {

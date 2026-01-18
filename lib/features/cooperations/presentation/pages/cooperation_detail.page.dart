@@ -6,6 +6,7 @@ import 'package:tour_guide_app/common/widgets/tab_item/about_tab.widget.dart';
 import 'package:tour_guide_app/common/widgets/tab_item/photos_tab.widget.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_detail/cooperation_detail_cubit.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/cooperation_detail/cooperation_detail_state.dart';
+import 'package:tour_guide_app/features/cooperations/presentation/widgets/cooperation_detail_shimmer.widget.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_cubit.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/bloc/favorite_cooperations/favorite_cooperations_state.dart';
 import 'package:tour_guide_app/features/cooperations/presentation/widgets/cooperation_reviews_tab.widget.dart';
@@ -71,12 +72,7 @@ class _CooperationDetailPageState extends State<CooperationDetailPage>
       },
       builder: (context, state) {
         if (state is CooperationDetailLoading) {
-          return Scaffold(
-            backgroundColor: AppColors.backgroundColor,
-            body: Center(
-              child: CircularProgressIndicator(color: AppColors.primaryBlue),
-            ),
-          );
+          return const CooperationDetailShimmer();
         }
 
         if (state is CooperationDetailError) {
@@ -93,9 +89,7 @@ class _CooperationDetailPageState extends State<CooperationDetailPage>
                   ),
                   SizedBox(height: 16.h),
                   Text(
-                    AppLocalizations.of(
-                      context,
-                    )!.failedToLoadDestination, 
+                    AppLocalizations.of(context)!.failedToLoadDestination,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   SizedBox(height: 8.h),
@@ -162,7 +156,7 @@ class _CooperationDetailPageState extends State<CooperationDetailPage>
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(
-                      AppImage.defaultDestination, 
+                      AppImage.defaultDestination,
                       fit: BoxFit.cover,
                     );
                   },

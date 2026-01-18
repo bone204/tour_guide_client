@@ -4850,7 +4850,7 @@ abstract class AppLocalizations {
   /// No description provided for @useNowToGetOffer.
   ///
   /// In en, this message translates to:
-  /// **'Use now to get offer'**
+  /// **'Use when booking services to get discounts'**
   String get useNowToGetOffer;
 
   /// No description provided for @hotel5Star.

@@ -2463,7 +2463,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get specialOfferForYou => 'Ưu đãi đặc biệt cho bạn';
 
   @override
-  String get useNowToGetOffer => 'Sử dụng ngay để nhận ưu đãi';
+  String get useNowToGetOffer => 'Sử dụng khi đặt dịch vụ để nhận ưu đãi';
 
   @override
   String get hotel5Star => '5 sao';
