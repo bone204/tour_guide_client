@@ -30,6 +30,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   final TextEditingController _commentController = TextEditingController();
   feedback_model.Feedback? _replyingToFeedback;
   final FocusNode _focusNode = FocusNode();
+  bool _wasSubmitting = false;
+  bool _wasReplySubmitting = false; // Track reply submission
 
   @override
   void initState() {
@@ -90,6 +92,14 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             listener: (context, state) {
               // Existing logic
               if (state is CommentLoaded) {
+                // Clear text field after successful submission
+                if (_wasSubmitting &&
+                    !state.isSubmitting &&
+                    state.errorMessage == null) {
+                  _commentController.clear();
+                }
+                _wasSubmitting = state.isSubmitting;
+
                 // ... warnings/errors handling
                 if (state.warningMessage != null) {
                   final warning = _getLocalizedMessage(
@@ -125,6 +135,14 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
           ),
           BlocListener<ReplyCubit, ReplyState>(
             listener: (context, state) {
+              // Clear text after successful reply
+              if (_wasReplySubmitting &&
+                  !state.isSubmitting &&
+                  state.status == ReplyStatus.success) {
+                _commentController.clear();
+              }
+              _wasReplySubmitting = state.isSubmitting;
+
               if (state.status == ReplyStatus.failure &&
                   state.errorMessage != null) {
                 final error = _getLocalizedMessage(
@@ -258,187 +276,259 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       ),
                     ],
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (_replyingToFeedback != null)
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 8.h),
-                          child: Row(
-                            children: [
-                              Text(
-                                '${AppLocalizations.of(context)!.replyingTo} ${_replyingToFeedback!.user?.username ?? ""}',
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(color: AppColors.textSubtitle),
-                              ),
-                              const Spacer(),
-                              InkWell(
-                                onTap: _cancelReply,
-                                child: Icon(
-                                  Icons.close,
-                                  size: 16.r,
-                                  color: AppColors.textSubtitle,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 8.h),
-                            child: BlocBuilder<
-                              GetMyProfileCubit,
-                              GetMyProfileState
-                            >(
-                              builder: (context, state) {
-                                String? avatarUrl;
-                                if (state is GetMyProfileSuccess) {
-                                  avatarUrl = state.user.avatarUrl;
-                                }
+                  child: BlocBuilder<CommentCubit, CommentState>(
+                    builder: (context, commentState) {
+                      return BlocBuilder<ReplyCubit, ReplyState>(
+                        builder: (context, replyState) {
+                          final isSubmitting =
+                              (commentState is CommentLoaded &&
+                                  commentState.isSubmitting) ||
+                              replyState.isSubmitting;
 
-                                return CircleAvatar(
-                                  radius: 16.r,
-                                  backgroundColor: AppColors.primaryGrey
-                                      .withOpacity(0.2),
-                                  backgroundImage:
-                                      avatarUrl != null && avatarUrl.isNotEmpty
-                                          ? NetworkImage(avatarUrl)
-                                          : null,
-                                  child:
-                                      avatarUrl == null || avatarUrl.isEmpty
-                                          ? Icon(
-                                            Icons.person,
-                                            color: AppColors.primaryGrey,
-                                          )
-                                          : null,
-                                );
-                              },
-                            ),
-                          ),
-                          SizedBox(width: 12.w),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 8.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.backgroundColor,
-                                borderRadius: BorderRadius.circular(24.r),
-                                border: Border.all(
-                                  color: AppColors.primaryGrey.withOpacity(0.2),
-                                ),
-                              ),
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(maxHeight: 100.h),
-                                child: TextField(
-                                  controller: _commentController,
-                                  focusNode: _focusNode,
-                                  maxLines: null,
-                                  textCapitalization:
-                                      TextCapitalization.sentences,
-                                  decoration: InputDecoration(
-                                    hintText:
-                                        _replyingToFeedback != null
-                                            ? AppLocalizations.of(
-                                              context,
-                                            )!.reply
-                                            : AppLocalizations.of(
-                                              context,
-                                            )!.addComment,
-                                    border: InputBorder.none,
-                                    isDense: true,
-                                    contentPadding: EdgeInsets.zero,
-                                    hintStyle: Theme.of(
-                                      context,
-                                    ).textTheme.bodyMedium?.copyWith(
-                                      color: AppColors.textSubtitle,
+                          return Opacity(
+                            opacity: isSubmitting ? 0.6 : 1.0,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (_replyingToFeedback != null)
+                                  Padding(
+                                    padding: EdgeInsets.only(bottom: 8.h),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          '${AppLocalizations.of(context)!.replyingTo} ${_replyingToFeedback!.user?.username ?? ""}',
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall?.copyWith(
+                                            color: AppColors.textSubtitle,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        InkWell(
+                                          onTap: _cancelReply,
+                                          child: Icon(
+                                            Icons.close,
+                                            size: 16.r,
+                                            color: AppColors.textSubtitle,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  onSubmitted: (value) {
-                                    if (value.trim().isNotEmpty) {
-                                      FocusScope.of(context).unfocus();
-                                      if (_replyingToFeedback != null) {
-                                        context
-                                            .read<ReplyCubit>()
-                                            .checkContentAndReply(
-                                              _replyingToFeedback!.id,
-                                              value.trim(),
-                                            );
-                                        // Clean up state
-                                        _cancelReply();
-                                      } else {
-                                        _cubit.addComment(
-                                          widget.itineraryId,
-                                          value.trim(),
-                                        );
-                                      }
-                                      _commentController.clear();
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 12.w),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 4.h),
-                            child: ValueListenableBuilder<TextEditingValue>(
-                              valueListenable: _commentController,
-                              builder: (context, value, child) {
-                                final isEnabled = value.text.trim().isNotEmpty;
-                                return InkWell(
-                                  onTap:
-                                      isEnabled
-                                          ? () {
-                                            FocusScope.of(context).unfocus();
-                                            if (_replyingToFeedback != null) {
-                                              context
-                                                  .read<ReplyCubit>()
-                                                  .checkContentAndReply(
-                                                    _replyingToFeedback!.id,
-                                                    _commentController.text
-                                                        .trim(),
-                                                  );
-                                              _cancelReply();
-                                            } else {
-                                              _cubit.addComment(
-                                                widget.itineraryId,
-                                                _commentController.text.trim(),
-                                              );
-                                            }
-                                            _commentController.clear();
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 8.h),
+                                      child: BlocBuilder<
+                                        GetMyProfileCubit,
+                                        GetMyProfileState
+                                      >(
+                                        builder: (context, state) {
+                                          String? avatarUrl;
+                                          if (state is GetMyProfileSuccess) {
+                                            avatarUrl = state.user.avatarUrl;
                                           }
-                                          : null,
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  child: Container(
-                                    padding: EdgeInsets.all(8.w),
-                                    decoration: BoxDecoration(
-                                      color:
-                                          isEnabled
-                                              ? AppColors.primaryBlue
-                                              : AppColors.primaryGrey
-                                                  .withOpacity(0.2),
-                                      shape: BoxShape.circle,
+
+                                          return CircleAvatar(
+                                            radius: 16.r,
+                                            backgroundColor: AppColors
+                                                .primaryGrey
+                                                .withOpacity(0.2),
+                                            backgroundImage:
+                                                avatarUrl != null &&
+                                                        avatarUrl.isNotEmpty
+                                                    ? NetworkImage(avatarUrl)
+                                                    : null,
+                                            child:
+                                                avatarUrl == null ||
+                                                        avatarUrl.isEmpty
+                                                    ? Icon(
+                                                      Icons.person,
+                                                      color:
+                                                          AppColors.primaryGrey,
+                                                    )
+                                                    : null,
+                                          );
+                                        },
+                                      ),
                                     ),
-                                    child: Icon(
-                                      Icons.send_rounded,
-                                      color:
-                                          isEnabled
-                                              ? AppColors.primaryWhite
-                                              : AppColors.textSubtitle,
-                                      size: 20.r,
+                                    SizedBox(width: 12.w),
+                                    Expanded(
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16.w,
+                                          vertical: 8.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.backgroundColor,
+                                          borderRadius: BorderRadius.circular(
+                                            24.r,
+                                          ),
+                                          border: Border.all(
+                                            color: AppColors.primaryGrey
+                                                .withOpacity(0.2),
+                                          ),
+                                        ),
+                                        child: ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            maxHeight: 100.h,
+                                          ),
+                                          child: TextField(
+                                            controller: _commentController,
+                                            enabled: !isSubmitting,
+                                            focusNode: _focusNode,
+                                            maxLines: null,
+                                            textCapitalization:
+                                                TextCapitalization.sentences,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.bodyMedium?.copyWith(
+                                              color:
+                                                  isSubmitting
+                                                      ? AppColors.textSubtitle
+                                                          .withOpacity(0.5)
+                                                      : AppColors.textPrimary,
+                                            ),
+                                            decoration: InputDecoration(
+                                              hintText:
+                                                  _replyingToFeedback != null
+                                                      ? AppLocalizations.of(
+                                                        context,
+                                                      )!.reply
+                                                      : AppLocalizations.of(
+                                                        context,
+                                                      )!.addComment,
+                                              border: InputBorder.none,
+                                              isDense: true,
+                                              contentPadding: EdgeInsets.zero,
+                                              hintStyle: Theme.of(
+                                                context,
+                                              ).textTheme.bodyMedium?.copyWith(
+                                                color: AppColors.textSubtitle,
+                                              ),
+                                            ),
+                                            onSubmitted: (value) {
+                                              if (value.trim().isNotEmpty) {
+                                                FocusScope.of(
+                                                  context,
+                                                ).unfocus();
+                                                if (_replyingToFeedback !=
+                                                    null) {
+                                                  context
+                                                      .read<ReplyCubit>()
+                                                      .checkContentAndReply(
+                                                        _replyingToFeedback!.id,
+                                                        value.trim(),
+                                                      );
+                                                  // Clean up state
+                                                  _cancelReply();
+                                                } else {
+                                                  _cubit.addComment(
+                                                    widget.itineraryId,
+                                                    value.trim(),
+                                                  );
+                                                }
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
+                                    SizedBox(width: 12.w),
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 4.h),
+                                      child: ValueListenableBuilder<
+                                        TextEditingValue
+                                      >(
+                                        valueListenable: _commentController,
+                                        builder: (context, value, child) {
+                                          final isEnabled =
+                                              value.text.trim().isNotEmpty &&
+                                              !isSubmitting;
+                                          return InkWell(
+                                            onTap:
+                                                isEnabled
+                                                    ? () {
+                                                      FocusScope.of(
+                                                        context,
+                                                      ).unfocus();
+                                                      if (_replyingToFeedback !=
+                                                          null) {
+                                                        context
+                                                            .read<ReplyCubit>()
+                                                            .checkContentAndReply(
+                                                              _replyingToFeedback!
+                                                                  .id,
+                                                              _commentController
+                                                                  .text
+                                                                  .trim(),
+                                                            );
+                                                        _commentController
+                                                            .clear();
+                                                        _cancelReply();
+                                                      } else {
+                                                        _cubit.addComment(
+                                                          widget.itineraryId,
+                                                          _commentController
+                                                              .text
+                                                              .trim(),
+                                                        );
+                                                      }
+                                                    }
+                                                    : null,
+                                            borderRadius: BorderRadius.circular(
+                                              20.r,
+                                            ),
+                                            child: Container(
+                                              padding: EdgeInsets.all(8.w),
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    isEnabled
+                                                        ? AppColors.primaryBlue
+                                                        : AppColors.primaryGrey
+                                                            .withOpacity(0.2),
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child:
+                                                  isSubmitting
+                                                      ? SizedBox(
+                                                        width: 20.r,
+                                                        height: 20.r,
+                                                        child: CircularProgressIndicator(
+                                                          strokeWidth: 2,
+                                                          valueColor:
+                                                              AlwaysStoppedAnimation<
+                                                                Color
+                                                              >(
+                                                                AppColors
+                                                                    .primaryWhite,
+                                                              ),
+                                                        ),
+                                                      )
+                                                      : Icon(
+                                                        Icons.send_rounded,
+                                                        color:
+                                                            isEnabled
+                                                                ? AppColors
+                                                                    .primaryWhite
+                                                                : AppColors
+                                                                    .textSubtitle,
+                                                        size: 20.r,
+                                                      ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ],

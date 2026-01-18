@@ -86,8 +86,15 @@ class RestaurantCommentCubit extends Cubit<RestaurantCommentState> {
   }
 
   Future<void> addComment(int restaurantId, String content, int star) async {
+    // Set isSubmitting to true to prevent spam
+    if (state is RestaurantCommentLoaded) {
+      final currentState = state as RestaurantCommentLoaded;
+      if (!isClosed) emit(currentState.copyWith(isSubmitting: true));
+    }
+
     if (content.trim().length < 5) {
       _emitError('too_short');
+      _resetSubmitting();
       return;
     }
 
@@ -96,6 +103,7 @@ class RestaurantCommentCubit extends Cubit<RestaurantCommentState> {
     await checkResult.fold(
       (failure) async {
         _emitError(failure.message);
+        _resetSubmitting();
       },
       (checkResponse) async {
         if (checkResponse.decision == 'reject') {
@@ -105,6 +113,7 @@ class RestaurantCommentCubit extends Cubit<RestaurantCommentState> {
                 reasons.isNotEmpty ? reasons.join(',') : 'rule_reject';
             _emitError('feedbackContentRejected:$localizedReasons');
           }
+          _resetSubmitting();
           return;
         }
 
@@ -124,6 +133,7 @@ class RestaurantCommentCubit extends Cubit<RestaurantCommentState> {
         createResult.fold(
           (failure) {
             _emitError(failure.message);
+            _resetSubmitting();
           },
           (success) {
             _reloadAndShowWarning(restaurantId, warningMsg);
@@ -133,11 +143,19 @@ class RestaurantCommentCubit extends Cubit<RestaurantCommentState> {
     );
   }
 
+  void _resetSubmitting() {
+    if (isClosed) return;
+    if (state is RestaurantCommentLoaded) {
+      final currentState = state as RestaurantCommentLoaded;
+      emit(currentState.copyWith(isSubmitting: false));
+    }
+  }
+
   void _emitError(String message) {
     if (isClosed) return;
     if (state is RestaurantCommentLoaded) {
       final currentState = state as RestaurantCommentLoaded;
-      emit(currentState.copyWith(errorMessage: message));
+      emit(currentState.copyWith(errorMessage: message, isSubmitting: false));
     } else {
       emit(RestaurantCommentError(message));
     }

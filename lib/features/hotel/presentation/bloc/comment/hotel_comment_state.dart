@@ -18,6 +18,7 @@ class HotelCommentLoaded extends HotelCommentState {
   final FeedbackQuery params;
   final bool hasReachedEnd;
   final bool isLoadingMore;
+  final bool isSubmitting;
   final String? warningMessage;
   final String? errorMessage;
 
@@ -26,6 +27,7 @@ class HotelCommentLoaded extends HotelCommentState {
     required this.params,
     required this.hasReachedEnd,
     this.isLoadingMore = false,
+    this.isSubmitting = false,
     this.warningMessage,
     this.errorMessage,
   });
@@ -35,6 +37,7 @@ class HotelCommentLoaded extends HotelCommentState {
     FeedbackQuery? params,
     bool? hasReachedEnd,
     bool? isLoadingMore,
+    bool? isSubmitting,
     String? warningMessage,
     String? errorMessage,
   }) {
@@ -43,6 +46,7 @@ class HotelCommentLoaded extends HotelCommentState {
       params: params ?? this.params,
       hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      isSubmitting: isSubmitting ?? this.isSubmitting,
       warningMessage: warningMessage ?? this.warningMessage,
       errorMessage: errorMessage,
     );
@@ -54,6 +58,7 @@ class HotelCommentLoaded extends HotelCommentState {
     params,
     hasReachedEnd,
     isLoadingMore,
+    isSubmitting,
     warningMessage,
     errorMessage,
   ];

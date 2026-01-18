@@ -86,8 +86,15 @@ class HotelCommentCubit extends Cubit<HotelCommentState> {
   }
 
   Future<void> addComment(int hotelId, String content, int star) async {
+    // Set isSubmitting to true to prevent spam
+    if (state is HotelCommentLoaded) {
+      final currentState = state as HotelCommentLoaded;
+      if (!isClosed) emit(currentState.copyWith(isSubmitting: true));
+    }
+
     if (content.trim().length < 5) {
       _emitError('too_short');
+      _resetSubmitting();
       return;
     }
 
@@ -96,6 +103,7 @@ class HotelCommentCubit extends Cubit<HotelCommentState> {
     await checkResult.fold(
       (failure) async {
         _emitError(failure.message);
+        _resetSubmitting();
       },
       (checkResponse) async {
         if (checkResponse.decision == 'reject') {
@@ -105,6 +113,7 @@ class HotelCommentCubit extends Cubit<HotelCommentState> {
                 reasons.isNotEmpty ? reasons.join(',') : 'rule_reject';
             _emitError('feedbackContentRejected:$localizedReasons');
           }
+          _resetSubmitting();
           return;
         }
 
@@ -124,6 +133,7 @@ class HotelCommentCubit extends Cubit<HotelCommentState> {
         createResult.fold(
           (failure) {
             _emitError(failure.message);
+            _resetSubmitting();
           },
           (success) {
             _reloadAndShowWarning(hotelId, warningMsg);
@@ -133,11 +143,19 @@ class HotelCommentCubit extends Cubit<HotelCommentState> {
     );
   }
 
+  void _resetSubmitting() {
+    if (isClosed) return;
+    if (state is HotelCommentLoaded) {
+      final currentState = state as HotelCommentLoaded;
+      emit(currentState.copyWith(isSubmitting: false));
+    }
+  }
+
   void _emitError(String message) {
     if (isClosed) return;
     if (state is HotelCommentLoaded) {
       final currentState = state as HotelCommentLoaded;
-      emit(currentState.copyWith(errorMessage: message));
+      emit(currentState.copyWith(errorMessage: message, isSubmitting: false));
     } else {
       emit(HotelCommentError(message));
     }

@@ -54,14 +54,11 @@ class ReplyCubit extends Cubit<ReplyState> {
   Future<void> checkContentAndReply(int feedbackId, String content) async {
     if (content.trim().isEmpty) return;
 
-    if (!isClosed) emit(state.copyWith(status: ReplyStatus.loading));
+    // Set isSubmitting to true at start
+    if (!isClosed) emit(state.copyWith(isSubmitting: true));
 
     // 1. Check Content
     final checkResult = await feedbackRepository.checkContent(content);
-
-    // We need to handle checkResult.
-    // If it fails (network), error.
-    // If success, check decision.
 
     await checkResult.fold(
       (failure) async {
@@ -70,6 +67,7 @@ class ReplyCubit extends Cubit<ReplyState> {
             state.copyWith(
               status: ReplyStatus.failure,
               errorMessage: failure.message,
+              isSubmitting: false,
             ),
           );
       },
@@ -83,17 +81,12 @@ class ReplyCubit extends Cubit<ReplyState> {
               state.copyWith(
                 status: ReplyStatus.failure,
                 errorMessage: 'feedbackContentRejected:$localizedReasons',
+                isSubmitting: false,
               ),
             );
           }
         } else {
           // 2. Create Reply
-          if (checkResponse.decision == 'manual_review') {
-            // Warn but allow? Or block? Usually 'review' means pending.
-            // User's previous logic: "feedbackContentUnderReview".
-            // We can proceed to create, backend handles status=pending.
-          }
-
           final createResult = await createFeedbackReplyUseCase(
             CreateFeedbackReplyParams(feedbackId: feedbackId, content: content),
           );
@@ -105,12 +98,18 @@ class ReplyCubit extends Cubit<ReplyState> {
                   state.copyWith(
                     status: ReplyStatus.failure,
                     errorMessage: failure.message,
+                    isSubmitting: false,
                   ),
                 );
             },
             (success) {
               if (!isClosed) {
-                emit(state.copyWith(status: ReplyStatus.success));
+                emit(
+                  state.copyWith(
+                    status: ReplyStatus.success,
+                    isSubmitting: false,
+                  ),
+                );
                 // Reload replies for this feedback
                 loadReplies(feedbackId);
               }

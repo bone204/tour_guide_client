@@ -86,8 +86,15 @@ class CooperationCommentCubit extends Cubit<CooperationCommentState> {
   }
 
   Future<void> addComment(int cooperationId, String content, int star) async {
+    // Set isSubmitting to true to prevent spam
+    if (state is CooperationCommentLoaded) {
+      final currentState = state as CooperationCommentLoaded;
+      if (!isClosed) emit(currentState.copyWith(isSubmitting: true));
+    }
+
     if (content.trim().length < 5) {
       _emitError('too_short');
+      _resetSubmitting();
       return;
     }
     // 1. Check content first
@@ -96,6 +103,7 @@ class CooperationCommentCubit extends Cubit<CooperationCommentState> {
     await checkResult.fold(
       (failure) async {
         _emitError(failure.message);
+        _resetSubmitting();
       },
       (checkResponse) async {
         // 2. Decide based on checkResponse
@@ -106,6 +114,7 @@ class CooperationCommentCubit extends Cubit<CooperationCommentState> {
                 reasons.isNotEmpty ? reasons.join(',') : 'rule_reject';
             _emitError('feedbackContentRejected:$localizedReasons');
           }
+          _resetSubmitting();
           return;
         }
 
@@ -126,6 +135,7 @@ class CooperationCommentCubit extends Cubit<CooperationCommentState> {
         createResult.fold(
           (failure) {
             _emitError(failure.message);
+            _resetSubmitting();
           },
           (success) {
             _reloadAndShowWarning(cooperationId, warningMsg);
@@ -135,11 +145,19 @@ class CooperationCommentCubit extends Cubit<CooperationCommentState> {
     );
   }
 
+  void _resetSubmitting() {
+    if (isClosed) return;
+    if (state is CooperationCommentLoaded) {
+      final currentState = state as CooperationCommentLoaded;
+      emit(currentState.copyWith(isSubmitting: false));
+    }
+  }
+
   void _emitError(String message) {
     if (isClosed) return;
     if (state is CooperationCommentLoaded) {
       final currentState = state as CooperationCommentLoaded;
-      emit(currentState.copyWith(errorMessage: message));
+      emit(currentState.copyWith(errorMessage: message, isSubmitting: false));
     } else {
       emit(CooperationCommentError(message));
     }

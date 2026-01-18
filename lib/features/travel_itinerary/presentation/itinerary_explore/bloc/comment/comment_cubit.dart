@@ -87,8 +87,15 @@ class CommentCubit extends Cubit<CommentState> {
   }
 
   Future<void> addComment(int itineraryId, String content) async {
+    // Set isSubmitting to true to prevent spam
+    if (state is CommentLoaded) {
+      final currentState = state as CommentLoaded;
+      if (!isClosed) emit(currentState.copyWith(isSubmitting: true));
+    }
+
     if (content.trim().length < 5) {
       _emitError('too_short');
+      _resetSubmitting();
       return;
     }
     // 1. Check content first
@@ -97,6 +104,7 @@ class CommentCubit extends Cubit<CommentState> {
     await checkResult.fold(
       (failure) async {
         _emitError(failure.message);
+        _resetSubmitting();
       },
       (checkResponse) async {
         // 2. Decide based on checkResponse
@@ -108,6 +116,7 @@ class CommentCubit extends Cubit<CommentState> {
                 reasons.isNotEmpty ? reasons.join(',') : 'rule_reject';
             _emitError('feedbackContentRejected:$localizedReasons');
           }
+          _resetSubmitting();
           return;
         }
 
@@ -128,6 +137,7 @@ class CommentCubit extends Cubit<CommentState> {
         createResult.fold(
           (failure) {
             _emitError(failure.message);
+            _resetSubmitting();
           },
           (success) {
             _reloadAndShowWarning(itineraryId, warningMsg);
@@ -137,11 +147,19 @@ class CommentCubit extends Cubit<CommentState> {
     );
   }
 
+  void _resetSubmitting() {
+    if (isClosed) return;
+    if (state is CommentLoaded) {
+      final currentState = state as CommentLoaded;
+      emit(currentState.copyWith(isSubmitting: false));
+    }
+  }
+
   void _emitError(String message) {
     if (isClosed) return;
     if (state is CommentLoaded) {
       final currentState = state as CommentLoaded;
-      emit(currentState.copyWith(errorMessage: message));
+      emit(currentState.copyWith(errorMessage: message, isSubmitting: false));
     } else {
       emit(CommentError(message));
     }

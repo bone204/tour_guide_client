@@ -49,7 +49,7 @@ class HotelReviewItem extends StatelessWidget {
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      timeago.format(feedback.createdAt),
+                      timeago.format(feedback.createdAt, locale: 'vi'),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textSubtitle,
                       ),

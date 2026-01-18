@@ -25,6 +25,7 @@ class _DestinationCommentWidgetState extends State<DestinationCommentWidget> {
   late DestinationCommentCubit _cubit;
   late GetMyProfileCubit _profileCubit;
   int _selectedRating = 5;
+  bool _wasSubmitting = false; // Track previous submitting state
 
   @override
   void initState() {
@@ -51,6 +52,18 @@ class _DestinationCommentWidgetState extends State<DestinationCommentWidget> {
       child: BlocListener<DestinationCommentCubit, DestinationCommentState>(
         listener: (context, state) {
           if (state is DestinationCommentLoaded) {
+            // Clear text field after successful submission
+            if (_wasSubmitting &&
+                !state.isSubmitting &&
+                state.errorMessage == null) {
+              _commentController.clear();
+              setState(() {
+                _selectedRating = 5;
+              });
+            }
+            // Update tracking variable
+            _wasSubmitting = state.isSubmitting;
+
             if (state.warningMessage != null) {
               final warning = _getLocalizedMessage(
                 context,
@@ -93,146 +106,186 @@ class _DestinationCommentWidgetState extends State<DestinationCommentWidget> {
   }
 
   Widget _buildInputSection() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.primaryWhite,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            offset: const Offset(0, 2),
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildRatingSelector(),
-          SizedBox(height: 12.h),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.h),
-                child: BlocBuilder<GetMyProfileCubit, GetMyProfileState>(
-                  builder: (context, state) {
-                    String? avatarUrl;
-                    if (state is GetMyProfileSuccess) {
-                      avatarUrl = state.user.avatarUrl;
-                    }
+    return BlocBuilder<DestinationCommentCubit, DestinationCommentState>(
+      builder: (context, state) {
+        final isSubmitting =
+            state is DestinationCommentLoaded && state.isSubmitting;
 
-                    return CircleAvatar(
-                      radius: 16.r,
-                      backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
-                      backgroundImage:
-                          avatarUrl != null && avatarUrl.isNotEmpty
-                              ? NetworkImage(avatarUrl)
-                              : null,
-                      child:
-                          avatarUrl == null || avatarUrl.isEmpty
-                              ? Icon(Icons.person, color: AppColors.primaryGrey)
-                              : null,
-                    );
-                  },
+        return Opacity(
+          opacity: isSubmitting ? 0.6 : 1.0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.primaryWhite,
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  offset: const Offset(0, 2),
+                  blurRadius: 10,
                 ),
-              ),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 8.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.backgroundColor,
-                    borderRadius: BorderRadius.circular(24.r),
-                    border: Border.all(
-                      color: AppColors.primaryGrey.withOpacity(0.2),
-                    ),
-                  ),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 100.h),
-                    child: TextField(
-                      controller: _commentController,
-                      maxLines: null,
-                      textCapitalization: TextCapitalization.sentences,
-                      decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.addComment,
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.zero,
-                        hintStyle: Theme.of(context).textTheme.bodyMedium
-                            ?.copyWith(color: AppColors.textSubtitle),
+              ],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildRatingSelector(isSubmitting),
+                SizedBox(height: 12.h),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 8.h),
+                      child: BlocBuilder<GetMyProfileCubit, GetMyProfileState>(
+                        builder: (context, state) {
+                          String? avatarUrl;
+                          if (state is GetMyProfileSuccess) {
+                            avatarUrl = state.user.avatarUrl;
+                          }
+
+                          return CircleAvatar(
+                            radius: 16.r,
+                            backgroundColor: AppColors.primaryGrey.withOpacity(
+                              0.2,
+                            ),
+                            backgroundImage:
+                                avatarUrl != null && avatarUrl.isNotEmpty
+                                    ? NetworkImage(avatarUrl)
+                                    : null,
+                            child:
+                                avatarUrl == null || avatarUrl.isEmpty
+                                    ? Icon(
+                                      Icons.person,
+                                      color: AppColors.primaryGrey,
+                                    )
+                                    : null,
+                          );
+                        },
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Padding(
-                padding: EdgeInsets.only(bottom: 4.h),
-                child: ValueListenableBuilder<TextEditingValue>(
-                  valueListenable: _commentController,
-                  builder: (context, value, child) {
-                    final isEnabled = value.text.trim().isNotEmpty;
-                    return InkWell(
-                      onTap:
-                          isEnabled
-                              ? () {
-                                FocusScope.of(context).unfocus();
-                                _cubit.addComment(
-                                  widget.destinationId,
-                                  _commentController.text.trim(),
-                                  _selectedRating,
-                                );
-                                _commentController.clear();
-                                setState(() {
-                                  _selectedRating = 5;
-                                });
-                              }
-                              : null,
-                      borderRadius: BorderRadius.circular(20.r),
+                    SizedBox(width: 12.w),
+                    Expanded(
                       child: Container(
-                        padding: EdgeInsets.all(8.w),
-                        decoration: BoxDecoration(
-                          color:
-                              isEnabled
-                                  ? AppColors.primaryBlue
-                                  : AppColors.primaryGrey.withOpacity(0.2),
-                          shape: BoxShape.circle,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 8.h,
                         ),
-                        child: Icon(
-                          Icons.send_rounded,
-                          color:
-                              isEnabled
-                                  ? AppColors.primaryWhite
-                                  : AppColors.textSubtitle,
-                          size: 20.r,
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundColor,
+                          borderRadius: BorderRadius.circular(24.r),
+                          border: Border.all(
+                            color: AppColors.primaryGrey.withOpacity(0.2),
+                          ),
+                        ),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(maxHeight: 100.h),
+                          child: TextField(
+                            controller: _commentController,
+                            enabled: !isSubmitting,
+                            maxLines: null,
+                            textCapitalization: TextCapitalization.sentences,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium?.copyWith(
+                              color:
+                                  isSubmitting
+                                      ? AppColors.textSubtitle.withOpacity(0.5)
+                                      : AppColors.textPrimary,
+                            ),
+                            decoration: InputDecoration(
+                              hintText:
+                                  AppLocalizations.of(context)!.addComment,
+                              border: InputBorder.none,
+                              isDense: true,
+                              contentPadding: EdgeInsets.zero,
+                              hintStyle: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(color: AppColors.textSubtitle),
+                            ),
+                          ),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                    SizedBox(width: 12.w),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 4.h),
+                      child: ValueListenableBuilder<TextEditingValue>(
+                        valueListenable: _commentController,
+                        builder: (context, value, child) {
+                          final isEnabled =
+                              value.text.trim().isNotEmpty && !isSubmitting;
+                          return InkWell(
+                            onTap:
+                                isEnabled
+                                    ? () {
+                                      FocusScope.of(context).unfocus();
+                                      _cubit.addComment(
+                                        widget.destinationId,
+                                        _commentController.text.trim(),
+                                        _selectedRating,
+                                      );
+                                    }
+                                    : null,
+                            borderRadius: BorderRadius.circular(20.r),
+                            child: Container(
+                              padding: EdgeInsets.all(8.w),
+                              decoration: BoxDecoration(
+                                color:
+                                    isEnabled
+                                        ? AppColors.primaryBlue
+                                        : AppColors.primaryGrey.withOpacity(
+                                          0.2,
+                                        ),
+                                shape: BoxShape.circle,
+                              ),
+                              child:
+                                  isSubmitting
+                                      ? SizedBox(
+                                        width: 20.r,
+                                        height: 20.r,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                AppColors.primaryWhite,
+                                              ),
+                                        ),
+                                      )
+                                      : Icon(
+                                        Icons.send_rounded,
+                                        color:
+                                            isEnabled
+                                                ? AppColors.primaryWhite
+                                                : AppColors.textSubtitle,
+                                        size: 20.r,
+                                      ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildRatingSelector() {
+  Widget _buildRatingSelector(bool isSubmitting) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(5, (index) {
         return GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedRating = index + 1;
-            });
-          },
+          onTap:
+              isSubmitting
+                  ? null
+                  : () {
+                    setState(() {
+                      _selectedRating = index + 1;
+                    });
+                  },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.w),
             child: SvgPicture.asset(

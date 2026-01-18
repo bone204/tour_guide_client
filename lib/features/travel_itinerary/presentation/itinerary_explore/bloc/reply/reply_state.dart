@@ -9,6 +9,7 @@ class ReplyState extends Equatable {
   final String? warningMessage; // For AI moderation warnings
   final Map<int, List<FeedbackReply>> repliesMap;
   final int? replyingToFeedbackId; // ID of the comment being replied to
+  final bool isSubmitting; // Track reply submission state
 
   const ReplyState({
     this.status = ReplyStatus.initial,
@@ -16,6 +17,7 @@ class ReplyState extends Equatable {
     this.warningMessage,
     this.repliesMap = const {},
     this.replyingToFeedbackId,
+    this.isSubmitting = false,
   });
 
   ReplyState copyWith({
@@ -24,6 +26,7 @@ class ReplyState extends Equatable {
     String? warningMessage,
     Map<int, List<FeedbackReply>>? repliesMap,
     int? replyingToFeedbackId,
+    bool? isSubmitting,
   }) {
     return ReplyState(
       status: status ?? this.status,
@@ -31,6 +34,7 @@ class ReplyState extends Equatable {
       warningMessage: warningMessage,
       repliesMap: repliesMap ?? this.repliesMap,
       replyingToFeedbackId: replyingToFeedbackId ?? this.replyingToFeedbackId,
+      isSubmitting: isSubmitting ?? this.isSubmitting,
     );
   }
 
@@ -41,5 +45,6 @@ class ReplyState extends Equatable {
     warningMessage,
     repliesMap,
     replyingToFeedbackId,
+    isSubmitting,
   ];
 }

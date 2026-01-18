@@ -18,24 +18,26 @@ class CommentLoaded extends CommentState {
   final FeedbackQuery params;
   final bool hasReachedEnd;
   final bool isLoadingMore;
+  final bool isSubmitting;
+  final String? warningMessage;
+  final String? errorMessage;
 
   const CommentLoaded({
     required this.comments,
     required this.params,
     required this.hasReachedEnd,
     this.isLoadingMore = false,
+    this.isSubmitting = false,
     this.warningMessage,
     this.errorMessage,
   });
-
-  final String? warningMessage;
-  final String? errorMessage;
 
   CommentLoaded copyWith({
     List<Feedback>? comments,
     FeedbackQuery? params,
     bool? hasReachedEnd,
     bool? isLoadingMore,
+    bool? isSubmitting,
     String? warningMessage,
     String? errorMessage,
   }) {
@@ -44,6 +46,7 @@ class CommentLoaded extends CommentState {
       params: params ?? this.params,
       hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      isSubmitting: isSubmitting ?? this.isSubmitting,
       warningMessage: warningMessage ?? this.warningMessage,
       errorMessage:
           errorMessage, // Do not preserve error message by default to allow clearing
@@ -56,6 +59,7 @@ class CommentLoaded extends CommentState {
     params,
     hasReachedEnd,
     isLoadingMore,
+    isSubmitting,
     warningMessage,
     errorMessage,
   ];
