@@ -147,6 +147,14 @@
   "noAttractionsFound": "No attractions found",
   "loadMore": "Load more",
   "reason": "Reason: {reason}",
+  "cardNumber": "Card Number",
+  "cardHolderName": "Card Holder Name",
+  "expiryDate": "Expiry Date (MM/YY)",
+  "cvv": "CVV",
+  "invalidCardNumber": "Invalid card number",
+  "invalidExpiryDate": "Invalid expiry date",
+  "invalidCvv": "Invalid CVV",
+  "payWithVisa": "Pay with Visa",
   "@reason": {
     "placeholders": {
       "reason": {

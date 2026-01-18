@@ -9,11 +9,17 @@ class GetVouchersCubit extends Cubit<GetVouchersState> {
   GetVouchersCubit(this.getVouchersUseCase) : super(GetVouchersInitial());
 
   Future<void> getVouchers() async {
+    if (isClosed) return;
     emit(GetVouchersLoading());
     final result = await getVouchersUseCase(NoParams());
+    if (isClosed) return;
     result.fold(
-      (failure) => emit(GetVouchersError(failure.message)),
-      (vouchers) => emit(GetVouchersLoaded(vouchers)),
+      (failure) {
+        if (!isClosed) emit(GetVouchersError(failure.message));
+      },
+      (vouchers) {
+        if (!isClosed) emit(GetVouchersLoaded(vouchers));
+      },
     );
   }
 }

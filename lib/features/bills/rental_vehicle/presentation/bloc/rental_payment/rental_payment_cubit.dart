@@ -6,6 +6,8 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/pay
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/update_rental_bill_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/confirm_qr_payment_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/confirm_qr_payment_request.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/pay_visa_request.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/pay_visa_use_case.dart';
 
 class RentalPaymentCubit extends Cubit<RentalPaymentState> {
   // Assuming 1 point = 1 unit of currency (e.g. VND)
@@ -13,14 +15,17 @@ class RentalPaymentCubit extends Cubit<RentalPaymentState> {
   final UpdateRentalBillUseCase _updateRentalBillUseCase;
   final PayRentalBillUseCase _payRentalBillUseCase;
   final ConfirmQrPaymentUseCase _confirmQrPaymentUseCase;
+  final PayVisaUseCase _payVisaUseCase;
 
   RentalPaymentCubit({
     required UpdateRentalBillUseCase updateRentalBillUseCase,
     required PayRentalBillUseCase payRentalBillUseCase,
     required ConfirmQrPaymentUseCase confirmQrPaymentUseCase,
+    required PayVisaUseCase payVisaUseCase,
   }) : _updateRentalBillUseCase = updateRentalBillUseCase,
        _payRentalBillUseCase = payRentalBillUseCase,
        _confirmQrPaymentUseCase = confirmQrPaymentUseCase,
+       _payVisaUseCase = payVisaUseCase,
        super(const RentalPaymentState());
 
   void init(RentalBill bill) {
@@ -46,7 +51,7 @@ class RentalPaymentCubit extends Cubit<RentalPaymentState> {
   }
 
   void selectPaymentMethod(PaymentMethod method) {
-    emit(state.copyWith(paymentMethod: method));
+    emit(state.copyWith(paymentMethod: method, clearPayUrl: true));
     _updateBill();
   }
 
@@ -65,6 +70,22 @@ class RentalPaymentCubit extends Cubit<RentalPaymentState> {
   void updateContactInfo(String name, String phone, String notes) {
     emit(state.copyWith(contactName: name, contactPhone: phone, notes: notes));
     _updateBill();
+  }
+
+  void updateCardDetails({
+    String? cardNumber,
+    String? cardHolderName,
+    String? expiryDate,
+    String? cvv,
+  }) {
+    emit(
+      state.copyWith(
+        cardNumber: cardNumber,
+        cardHolderName: cardHolderName,
+        expiryDate: expiryDate,
+        cvv: cvv,
+      ),
+    );
   }
 
   Future<void> _updateBill() async {
@@ -115,29 +136,73 @@ class RentalPaymentCubit extends Cubit<RentalPaymentState> {
 
     emit(state.copyWith(status: RentalPaymentStatus.loading));
 
-    final result = await _payRentalBillUseCase(state.billId!);
-
-    result.fold(
-      (failure) => emit(
-        state.copyWith(
-          status: RentalPaymentStatus.failure,
-          errorMessage: failure.message,
-        ),
-      ),
-      (response) async {
-        if (state.paymentMethod == PaymentMethod.qrCode) {
-          await _confirmQrPaymentUseCase(
-            ConfirmQrPaymentRequest(rentalId: state.billId!),
-          );
-        }
+    if (state.paymentMethod == PaymentMethod.visa) {
+      if (state.cardNumber == null ||
+          state.cardHolderName == null ||
+          state.expiryDate == null ||
+          state.cvv == null) {
         emit(
           state.copyWith(
-            status: RentalPaymentStatus.success,
-            payUrl: response.payUrl,
+            status: RentalPaymentStatus.failure,
+            errorMessage: 'Vui lòng nhập đầy đủ thông tin thẻ',
           ),
         );
-      },
-    );
+        return;
+      }
+
+      final result = await _payVisaUseCase(
+        PayVisaRequest(
+          rentalId: state.billId!,
+          amount: state.finalPrice, // Use final price
+          cardNumber: state.cardNumber!,
+          cardHolderName: state.cardHolderName!,
+          expiryDate: state.expiryDate!,
+          cvv: state.cvv!,
+        ),
+      );
+
+      result.fold(
+        (failure) => emit(
+          state.copyWith(
+            status: RentalPaymentStatus.failure,
+            errorMessage: failure.message,
+          ),
+        ),
+        (response) => emit(
+          state.copyWith(
+            status: RentalPaymentStatus.success,
+            clearPayUrl: true,
+            payUrl:
+                null, // Visa doesn't return payUrl usually, but if mock does, we can use it.
+            // But logic for success is enough probably.
+          ),
+        ),
+      );
+    } else {
+      final result = await _payRentalBillUseCase(state.billId!);
+
+      result.fold(
+        (failure) => emit(
+          state.copyWith(
+            status: RentalPaymentStatus.failure,
+            errorMessage: failure.message,
+          ),
+        ),
+        (response) async {
+          if (state.paymentMethod == PaymentMethod.qrCode) {
+            await _confirmQrPaymentUseCase(
+              ConfirmQrPaymentRequest(rentalId: state.billId!),
+            );
+          }
+          emit(
+            state.copyWith(
+              status: RentalPaymentStatus.success,
+              payUrl: response.payUrl,
+            ),
+          );
+        },
+      );
+    }
   }
 
   String _getPaymentMethodString(PaymentMethod method) {
@@ -147,6 +212,8 @@ class RentalPaymentCubit extends Cubit<RentalPaymentState> {
         return 'momo';
       case PaymentMethod.qrCode:
         return 'qr_code';
+      case PaymentMethod.visa:
+        return 'visa';
     }
   }
 

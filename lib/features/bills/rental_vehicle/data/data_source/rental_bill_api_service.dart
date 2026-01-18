@@ -9,6 +9,7 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/update_rental_bill_request.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill_pay_response.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/confirm_qr_payment_request.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/pay_visa_request.dart';
 import 'package:tour_guide_app/service_locator.dart';
 
 abstract class RentalBillApiService {
@@ -24,6 +25,7 @@ abstract class RentalBillApiService {
   Future<Either<Failure, SuccessResponse>> confirmQrPayment(
     ConfirmQrPaymentRequest body,
   );
+  Future<Either<Failure, SuccessResponse>> payVisa(PayVisaRequest body);
 
   // Workflow
   Future<Either<Failure, SuccessResponse>> userPickup(int id, File selfie);
@@ -44,33 +46,6 @@ class RentalBillApiServiceImpl implements RentalBillApiService {
     try {
       final queryParameters = <String, dynamic>{};
       if (status != null) {
-        // We need to pass the enum value string that matches backend expectation
-        // Backend expects 'pending', 'confirmed', etc. which matches our JsonValue
-        // However, standard toString() of enum might be 'RentalBillStatus.pending'.
-        // We can use the logic that JSON serialization uses or just manual map if simple.
-        // Or if we use enum_to_string or just .name (if names match).
-        // The JsonValue annotation handles serialization, but for query params we usually do it manually
-        // or rely on a helper. Here let's just use a simple regex or switch if name matches.
-        // Actually, looking at the JsonValue, the values are lower_snake_case.
-
-        // Let's create a helper or just use the name if it matches (it mostly does in camelCase vs snake_case).
-        // 'paidPendingDelivery' -> 'paid_pending_delivery'.
-        // Let's iterate values or better yet, since we have JsonValue, we could use that.
-        // For now, let's manually map or assume specific string.
-        // Actually, for query params, let's just pass the string if we can.
-        // Let's check how other services handle enum search. `MotorbikeSearchRequest` had `toJson`.
-
-        // I will trust the user to pass valid status or handle it.
-        // But wait, the API expects string.
-        // Let's look at `RentalBillStatus` in `rental_bill.dart`.
-        // @JsonValue('paid_pending_delivery') paidPendingDelivery,
-
-        // A quick way is to piggyback on json serialization logic or just switch.
-        // Since there are few values, I'll just leave it dynamic or string for now?
-        // No, strict typing is better.
-        // Simpler: use the enum index or name? Backend uses string values.
-
-        // I'll add a helper in the model file or just do a quick Map here.
         String? statusStr;
         switch (status) {
           case RentalBillStatus.pending:
@@ -281,6 +256,34 @@ class RentalBillApiServiceImpl implements RentalBillApiService {
               e.response?.data['message'] is List
                   ? (e.response?.data['message'] as List).join(', ')
                   : e.response?.data['message']?.toString() ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> payVisa(PayVisaRequest body) async {
+    try {
+      final response = await sl<DioClient>().post(
+        "${ApiUrls.payments}/visa/create",
+        data: body.toJson(),
+      );
+      return Right(
+        SuccessResponse(
+          message: response.data['message'] ?? 'Visa payment successful',
+        ),
+      );
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message:
+              e.response?.data['message'] is List
+                  ? (e.response?.data['message'] as List).join(', ')
+                  : e.response?.data['message']?.toString() ??
+                      'An error occurred paying with Visa',
           statusCode: e.response?.statusCode,
         ),
       );

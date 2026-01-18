@@ -20,6 +20,12 @@ class RentalPaymentState extends Equatable {
   final String? contactPhone;
   final String? notes;
 
+  // Visa Payment Details
+  final String? cardNumber;
+  final String? cardHolderName;
+  final String? expiryDate;
+  final String? cvv;
+
   const RentalPaymentState({
     this.billId,
     this.status = RentalPaymentStatus.initial,
@@ -35,6 +41,10 @@ class RentalPaymentState extends Equatable {
     this.contactName,
     this.contactPhone,
     this.notes,
+    this.cardNumber,
+    this.cardHolderName,
+    this.expiryDate,
+    this.cvv,
   });
 
   RentalPaymentState copyWith({
@@ -42,6 +52,7 @@ class RentalPaymentState extends Equatable {
     RentalPaymentStatus? status,
     String? errorMessage,
     String? payUrl,
+    bool clearPayUrl = false,
     PaymentMethod? paymentMethod,
     Voucher? selectedVoucher,
     bool? useTravelPoints,
@@ -52,12 +63,16 @@ class RentalPaymentState extends Equatable {
     String? contactName,
     String? contactPhone,
     String? notes,
+    String? cardNumber,
+    String? cardHolderName,
+    String? expiryDate,
+    String? cvv,
   }) {
     return RentalPaymentState(
       billId: billId ?? this.billId,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
-      payUrl: payUrl ?? this.payUrl,
+      payUrl: clearPayUrl ? null : (payUrl ?? this.payUrl),
       paymentMethod: paymentMethod ?? this.paymentMethod,
       selectedVoucher: selectedVoucher ?? this.selectedVoucher,
       useTravelPoints: useTravelPoints ?? this.useTravelPoints,
@@ -68,6 +83,10 @@ class RentalPaymentState extends Equatable {
       contactName: contactName ?? this.contactName,
       contactPhone: contactPhone ?? this.contactPhone,
       notes: notes ?? this.notes,
+      cardNumber: cardNumber ?? this.cardNumber,
+      cardHolderName: cardHolderName ?? this.cardHolderName,
+      expiryDate: expiryDate ?? this.expiryDate,
+      cvv: cvv ?? this.cvv,
     );
   }
 
@@ -91,5 +110,9 @@ class RentalPaymentState extends Equatable {
     contactName,
     contactPhone,
     notes,
+    cardNumber,
+    cardHolderName,
+    expiryDate,
+    cvv,
   ];
 }

@@ -10,6 +10,7 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/upd
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill_pay_response.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/confirm_qr_payment_request.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/pay_visa_request.dart';
 
 class RentalBillRepositoryImpl implements RentalBillRepository {
   final RentalBillApiService _apiService = sl<RentalBillApiService>();
@@ -51,6 +52,13 @@ class RentalBillRepositoryImpl implements RentalBillRepository {
     ConfirmQrPaymentRequest params,
   ) async {
     return await _apiService.confirmQrPayment(params);
+  }
+
+  @override
+  Future<Either<Failure, SuccessResponse>> payVisa(
+    PayVisaRequest params,
+  ) async {
+    return await _apiService.payVisa(params);
   }
 
   @override

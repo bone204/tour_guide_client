@@ -177,6 +177,7 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/get_rental_bill_detail_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/update_rental_bill_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/pay_rental_bill_use_case.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/pay_visa_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/confirm_qr_payment_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/presentation/bloc/rental_workflow/rental_workflow_cubit.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/user_pickup.dart';
@@ -484,6 +485,7 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<UpdateRentalBillUseCase>(UpdateRentalBillUseCase());
   sl.registerSingleton<PayRentalBillUseCase>(PayRentalBillUseCase());
   sl.registerSingleton<ConfirmQrPaymentUseCase>(ConfirmQrPaymentUseCase(sl()));
+  sl.registerSingleton<PayVisaUseCase>(PayVisaUseCase(sl()));
   sl.registerSingleton<SuggestItineraryUseCase>(SuggestItineraryUseCase());
 
   // Cooperation

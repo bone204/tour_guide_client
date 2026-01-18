@@ -335,6 +335,30 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get cardNumber => 'Card Number';
+
+  @override
+  String get cardHolderName => 'Card Holder Name';
+
+  @override
+  String get expiryDate => 'Expiry Date (MM/YY)';
+
+  @override
+  String get cvv => 'CVV';
+
+  @override
+  String get invalidCardNumber => 'Invalid card number';
+
+  @override
+  String get invalidExpiryDate => 'Invalid expiry date';
+
+  @override
+  String get invalidCvv => 'Invalid CVV';
+
+  @override
+  String get payWithVisa => 'Pay with Visa';
+
+  @override
   String get reasonLabel => 'Reason';
 
   @override

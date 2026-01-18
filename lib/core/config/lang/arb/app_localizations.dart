@@ -743,6 +743,54 @@ abstract class AppLocalizations {
   /// **'Reason: {reason}'**
   String reason(String reason);
 
+  /// No description provided for @cardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Number'**
+  String get cardNumber;
+
+  /// No description provided for @cardHolderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Holder Name'**
+  String get cardHolderName;
+
+  /// No description provided for @expiryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry Date (MM/YY)'**
+  String get expiryDate;
+
+  /// No description provided for @cvv.
+  ///
+  /// In en, this message translates to:
+  /// **'CVV'**
+  String get cvv;
+
+  /// No description provided for @invalidCardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid card number'**
+  String get invalidCardNumber;
+
+  /// No description provided for @invalidExpiryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid expiry date'**
+  String get invalidExpiryDate;
+
+  /// No description provided for @invalidCvv.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid CVV'**
+  String get invalidCvv;
+
+  /// No description provided for @payWithVisa.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with Visa'**
+  String get payWithVisa;
+
   /// No description provided for @reasonLabel.
   ///
   /// In en, this message translates to:

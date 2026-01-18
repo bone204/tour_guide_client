@@ -183,6 +183,14 @@
   "youHaveSeenAllAttractions": "Bạn đã xem tất cả các điểm du lịch",
   "noAttractionsFound": "Không tìm thấy điểm du lịch",
   "reason": "Lý do: {reason}",
+  "cardNumber": "Số thẻ",
+  "cardHolderName": "Tên chủ thẻ",
+  "expiryDate": "Ngày hết hạn (MM/YY)",
+  "cvv": "CVV",
+  "invalidCardNumber": "Số thẻ không hợp lệ",
+  "invalidExpiryDate": "Ngày hết hạn không hợp lệ",
+  "invalidCvv": "CVV không hợp lệ",
+  "payWithVisa": "Thanh toán bằng Visa",
   "@reason": {
     "placeholders": {
       "reason": {

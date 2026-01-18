@@ -13,7 +13,7 @@ enum RentalBillStatus {
 
 enum RentalBillType { hourly, daily }
 
-enum PaymentMethod { momo, qrCode }
+enum PaymentMethod { momo, qrCode, visa }
 
 enum RentalProgressStatus {
   pending,
@@ -355,6 +355,8 @@ class RentalBill {
         return PaymentMethod.momo;
       case 'qr_code':
         return PaymentMethod.qrCode;
+      case 'visa':
+        return PaymentMethod.visa;
       default:
         return null;
     }
@@ -367,6 +369,8 @@ class RentalBill {
         return 'momo';
       case PaymentMethod.qrCode:
         return 'qr_code';
+      case PaymentMethod.visa:
+        return 'visa';
     }
   }
 

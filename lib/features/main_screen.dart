@@ -9,6 +9,7 @@ import 'package:tour_guide_app/features/profile/presentation/pages/profile.page.
 import 'package:tour_guide_app/features/settings/presentation/pages/settings.page.dart';
 import 'package:tour_guide_app/features/translate/translate.page.dart';
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/common/widgets/button/primary_button.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -144,23 +145,40 @@ class _MainScreenState extends State<MainScreen> {
       context: context,
       title: AppLocalizations.of(context)!.exitApp,
       content: AppLocalizations.of(context)!.exitAppConfirm,
-      actionsAlignment: CrossAxisAlignment.end,
-      actionsSpacing: 8,
-      actions: [
-        TextButton(
-          onPressed:
-              () => Navigator.of(context, rootNavigator: true).pop(false),
-          child: Text(
-            AppLocalizations.of(context)!.cancel,
-            style: TextStyle(color: AppColors.primaryGrey),
-          ),
+      // Add Logo or Icon
+      iconWidget: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10.h),
+        child: Image.asset(
+          'assets/images/logo.png',
+          height: 80.h,
+          width: 80.w,
+          fit: BoxFit.contain,
         ),
-        TextButton(
-          onPressed: () => Navigator.of(context, rootNavigator: true).pop(true),
-          child: Text(
-            AppLocalizations.of(context)!.exit,
-            style: TextStyle(color: AppColors.primaryRed),
-          ),
+      ),
+      actionsAlignment: CrossAxisAlignment.center,
+      actionsSpacing: 16.h,
+      actions: [
+        Row(
+          children: [
+            Expanded(
+              child: PrimaryButton(
+                title: AppLocalizations.of(context)!.cancel,
+                backgroundColor: AppColors.primaryGrey.withOpacity(0.2),
+                textColor: AppColors.primaryBlack,
+                onPressed:
+                    () => Navigator.of(context, rootNavigator: true).pop(false),
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: PrimaryButton(
+                title: AppLocalizations.of(context)!.exit,
+                backgroundColor: AppColors.primaryRed,
+                onPressed:
+                    () => Navigator.of(context, rootNavigator: true).pop(true),
+              ),
+            ),
+          ],
         ),
       ],
     );

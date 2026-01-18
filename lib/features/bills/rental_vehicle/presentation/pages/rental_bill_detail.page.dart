@@ -69,6 +69,7 @@ class RentalBillDetailPage extends StatelessWidget {
                 updateRentalBillUseCase: sl(),
                 payRentalBillUseCase: sl(),
                 confirmQrPaymentUseCase: sl(),
+                payVisaUseCase: sl(),
               ),
         ),
         BlocProvider(
@@ -99,9 +100,20 @@ class _RentalBillContentState extends State<_RentalBillContent> {
   StreamSubscription? _subscription;
   Timer? _paymentPollingTimer;
 
+  // Controllers for Visa Payment
+  late final TextEditingController _cardNumberController;
+  late final TextEditingController _cardHolderNameController;
+  late final TextEditingController _expiryDateController;
+  late final TextEditingController _cvvController;
+
   @override
   void initState() {
     super.initState();
+    _cardNumberController = TextEditingController();
+    _cardHolderNameController = TextEditingController();
+    _expiryDateController = TextEditingController();
+    _cvvController = TextEditingController();
+
     _subscription = eventBus.on<RentalSocketNotificationReceivedEvent>().listen(
       (event) {
         if (mounted) {
@@ -114,6 +126,10 @@ class _RentalBillContentState extends State<_RentalBillContent> {
   @override
   void dispose() {
     _paymentPollingTimer?.cancel();
+    _cardNumberController.dispose();
+    _cardHolderNameController.dispose();
+    _expiryDateController.dispose();
+    _cvvController.dispose();
     _subscription?.cancel();
     super.dispose();
   }
@@ -153,6 +169,11 @@ class _RentalBillContentState extends State<_RentalBillContent> {
                 if (state.status == RentalBillDetailInitStatus.success ||
                     state.status == RentalBillDetailInitStatus.failure) {
                   _refreshController.refreshCompleted();
+                }
+
+                if (state.status == RentalBillDetailInitStatus.success &&
+                    state.bill != null) {
+                  context.read<RentalPaymentCubit>().init(state.bill!);
                 }
 
                 if (state.status == RentalBillDetailInitStatus.success &&
@@ -276,7 +297,8 @@ class _RentalBillContentState extends State<_RentalBillContent> {
                           ),
 
                         // 3. Cancel Reason (if cancelled)
-                        if (bill.status == RentalBillStatus.cancelled && bill.cancelReason != null) ...[
+                        if (bill.status == RentalBillStatus.cancelled &&
+                            bill.cancelReason != null) ...[
                           _buildCancelReasonCard(context, bill),
                           SizedBox(height: 16.h),
                         ],
@@ -898,6 +920,10 @@ class _RentalBillContentState extends State<_RentalBillContent> {
                 ),
               ],
             ),
+            if (paymentState.paymentMethod == PaymentMethod.visa) ...[
+              SizedBox(height: 16.h),
+              _buildVisaPaymentForm(context, paymentState),
+            ],
             SizedBox(height: 16.h),
 
             // 2. Voucher Dropdown
@@ -1107,6 +1133,71 @@ class _RentalBillContentState extends State<_RentalBillContent> {
     );
   }
 
+  Widget _buildVisaPaymentForm(
+    BuildContext context,
+    RentalPaymentState paymentState,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppLocalizations.of(context)!.payWithVisa,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        SizedBox(height: 8.h),
+        CustomTextField(
+          controller: _cardNumberController,
+          label: AppLocalizations.of(context)!.cardNumber,
+          placeholder: '',
+          onChanged:
+              (value) => context.read<RentalPaymentCubit>().updateCardDetails(
+                cardNumber: value,
+              ),
+          keyboardType: TextInputType.number,
+        ),
+        SizedBox(height: 8.h),
+        CustomTextField(
+          controller: _cardHolderNameController,
+          label: AppLocalizations.of(context)!.cardHolderName,
+          placeholder: '',
+          onChanged:
+              (value) => context.read<RentalPaymentCubit>().updateCardDetails(
+                cardHolderName: value,
+              ),
+        ),
+        SizedBox(height: 8.h),
+        Row(
+          children: [
+            Expanded(
+              child: CustomTextField(
+                controller: _expiryDateController,
+                label: AppLocalizations.of(context)!.expiryDate,
+                placeholder: '',
+                readOnly: true,
+                onTap: () => _selectExpiryDate(context),
+                keyboardType: TextInputType.datetime,
+              ),
+            ),
+            SizedBox(width: 16.w),
+            Expanded(
+              child: CustomTextField(
+                controller: _cvvController,
+                label: AppLocalizations.of(context)!.cvv,
+                placeholder: '',
+                onChanged:
+                    (value) => context
+                        .read<RentalPaymentCubit>()
+                        .updateCardDetails(cvv: value),
+                keyboardType: TextInputType.number,
+                obscureText: true,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget _buildPayButton(BuildContext context, RentalPaymentState state) {
     final bool isInfoComplete =
         state.contactName != null &&
@@ -1118,17 +1209,26 @@ class _RentalBillContentState extends State<_RentalBillContent> {
     return BlocConsumer<RentalPaymentCubit, RentalPaymentState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-        if (state.status == RentalPaymentStatus.success &&
-            state.payUrl != null) {
+        if (state.status == RentalPaymentStatus.success) {
           // Fire event to update list
           eventBus.fire(RentalBillUpdatedEvent(billId: widget.id));
 
-          if (state.payUrl!.startsWith('data:image')) {
-            _showQRCodeDialog(context, state.payUrl!);
+          if (state.payUrl != null) {
+            if (state.payUrl!.startsWith('data:image')) {
+              _showQRCodeDialog(context, state.payUrl!);
+            } else {
+              _launchUrl(context, state.payUrl!);
+            }
+            _startPaymentPolling();
           } else {
-            _launchUrl(context, state.payUrl!);
+            // Visa payment success
+            CustomSnackbar.show(
+              context,
+              message: AppLocalizations.of(context)!.paymentSuccess,
+              type: SnackbarType.success,
+            );
+            _onRefresh(context);
           }
-          _startPaymentPolling();
         } else if (state.status == RentalPaymentStatus.failure) {
           CustomSnackbar.show(
             context,
@@ -1506,6 +1606,40 @@ class _RentalBillContentState extends State<_RentalBillContent> {
               ),
             ),
       );
+    }
+  }
+
+  Future<void> _selectExpiryDate(BuildContext context) async {
+    final DateTime now = DateTime.now();
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: now,
+      lastDate: DateTime(now.year + 10),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.primaryBlue,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      // Format to MM/YY
+      final String formattedDate =
+          "${picked.month.toString().padLeft(2, '0')}/${picked.year.toString().substring(2)}";
+      _expiryDateController.text = formattedDate;
+      if (context.mounted) {
+        context.read<RentalPaymentCubit>().updateCardDetails(
+          expiryDate: formattedDate,
+        );
+      }
     }
   }
 }

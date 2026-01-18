@@ -6,6 +6,7 @@ import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_
 import 'package:tour_guide_app/features/bills/rental_vehicle/domain/usecases/update_rental_bill_use_case.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/rental_bill_pay_response.dart';
 import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/confirm_qr_payment_request.dart';
+import 'package:tour_guide_app/features/bills/rental_vehicle/data/models/pay_visa_request.dart';
 
 abstract class RentalBillRepository {
   Future<Either<Failure, List<RentalBill>>> getMyBills({
@@ -17,6 +18,7 @@ abstract class RentalBillRepository {
   Future<Either<Failure, SuccessResponse>> confirmQrPayment(
     ConfirmQrPaymentRequest params,
   );
+  Future<Either<Failure, SuccessResponse>> payVisa(PayVisaRequest params);
 
   // Workflow
   Future<Either<Failure, SuccessResponse>> userPickup(int id, File selfie);

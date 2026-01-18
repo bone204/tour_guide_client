@@ -335,6 +335,30 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get cardNumber => 'Số thẻ';
+
+  @override
+  String get cardHolderName => 'Tên chủ thẻ';
+
+  @override
+  String get expiryDate => 'Ngày hết hạn (MM/YY)';
+
+  @override
+  String get cvv => 'CVV';
+
+  @override
+  String get invalidCardNumber => 'Số thẻ không hợp lệ';
+
+  @override
+  String get invalidExpiryDate => 'Ngày hết hạn không hợp lệ';
+
+  @override
+  String get invalidCvv => 'CVV không hợp lệ';
+
+  @override
+  String get payWithVisa => 'Thanh toán bằng Visa';
+
+  @override
   String get reasonLabel => 'Lý do';
 
   @override
