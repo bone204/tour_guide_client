@@ -2,7 +2,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/services/feedback/data/models/feedback.dart'
     as feedback_model;
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:intl/intl.dart';
 
 class DestinationReviewItem extends StatelessWidget {
   final feedback_model.Feedback feedback;
@@ -50,7 +50,7 @@ class DestinationReviewItem extends StatelessWidget {
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      timeago.format(feedback.createdAt, locale: 'vi'),
+                      DateFormat('HH:mm dd/MM/yyyy').format(feedback.createdAt),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textSubtitle,
                       ),

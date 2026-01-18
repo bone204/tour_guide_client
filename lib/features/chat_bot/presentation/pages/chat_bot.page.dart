@@ -190,9 +190,10 @@ class _ChatComposer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               IconButton(
-                onPressed: isBusy
-                    ? null
-                    : () => context.read<ChatCubit>().pickImages(),
+                onPressed:
+                    isBusy
+                        ? null
+                        : () => context.read<ChatCubit>().pickImages(),
                 icon: Icon(
                   Icons.image_outlined,
                   color: AppColors.primaryBlue,
@@ -222,9 +223,8 @@ class _ChatComposer extends StatelessWidget {
                       height: 1.4,
                     ),
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(
-                        context,
-                      )!.searchDestinationHint,
+                      hintText:
+                          AppLocalizations.of(context)!.searchDestinationHint,
                       hintStyle: Theme.of(context).textTheme.displayLarge
                           ?.copyWith(color: AppColors.textSubtitle),
                       filled: false,
@@ -246,22 +246,27 @@ class _ChatComposer extends StatelessWidget {
                 height: 48.w,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: isBusy
-                        ? [AppColors.secondaryGrey, AppColors.secondaryGrey]
-                        : [AppColors.primaryBlue, AppColors.primaryLightBlue],
+                    colors:
+                        isBusy
+                            ? [AppColors.secondaryGrey, AppColors.secondaryGrey]
+                            : [
+                              AppColors.primaryBlue,
+                              AppColors.primaryLightBlue,
+                            ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   shape: BoxShape.circle,
-                  boxShadow: isBusy
-                      ? []
-                      : [
-                          BoxShadow(
-                            color: AppColors.primaryBlue.withOpacity(0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                  boxShadow:
+                      isBusy
+                          ? []
+                          : [
+                            BoxShadow(
+                              color: AppColors.primaryBlue.withOpacity(0.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                 ),
                 child: Material(
                   color: Colors.transparent,
@@ -354,17 +359,15 @@ class _ChatMessageBubble extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: isUser ? 0 : 0, vertical: 4.h),
       child: Row(
-        mainAxisAlignment: isUser
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.start,
+        mainAxisAlignment:
+            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[const _BotAvatar(), SizedBox(width: 8.w)],
           Flexible(
             child: Column(
-              crossAxisAlignment: isUser
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 if (message.images.isNotEmpty) _buildImages(context, isUser),
                 if (message.content.trim().isNotEmpty &&
@@ -376,14 +379,15 @@ class _ChatMessageBubble extends StatelessWidget {
                     SizedBox(height: 12.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: message.suggestions
-                        .map(
-                          (item) => Padding(
-                            padding: EdgeInsets.only(bottom: 12.h),
-                            child: _ChatSuggestionCard(item: item),
-                          ),
-                        )
-                        .toList(),
+                    children:
+                        message.suggestions
+                            .map(
+                              (item) => Padding(
+                                padding: EdgeInsets.only(bottom: 12.h),
+                                child: _ChatSuggestionCard(item: item),
+                              ),
+                            )
+                            .toList(),
                   ),
                 ],
               ],
@@ -402,53 +406,59 @@ class _ChatMessageBubble extends StatelessWidget {
         spacing: 8.w,
         runSpacing: 8.h,
         alignment: isUser ? WrapAlignment.end : WrapAlignment.start,
-        children: message.images.map((path) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(12.r),
-            child: path.startsWith('http')
-                ? Image.network(
-                    path,
-                    width: 150.w,
-                    height: 150.h,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      width: 150.w,
-                      height: 150.h,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.error),
-                    ),
-                  )
-                : Image.file(
-                    File(path),
-                    width: 150.w,
-                    height: 150.h,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      width: 150.w,
-                      height: 150.h,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.error),
-                    ),
-                  ),
-          );
-        }).toList(),
+        children:
+            message.images.map((path) {
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(12.r),
+                child:
+                    path.startsWith('http')
+                        ? Image.network(
+                          path,
+                          width: 150.w,
+                          height: 150.h,
+                          fit: BoxFit.cover,
+                          errorBuilder:
+                              (_, __, ___) => Container(
+                                width: 150.w,
+                                height: 150.h,
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.error),
+                              ),
+                        )
+                        : Image.file(
+                          File(path),
+                          width: 150.w,
+                          height: 150.h,
+                          fit: BoxFit.cover,
+                          errorBuilder:
+                              (_, __, ___) => Container(
+                                width: 150.w,
+                                height: 150.h,
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.error),
+                              ),
+                        ),
+              );
+            }).toList(),
       ),
     );
   }
 
   Widget _buildMessageContent(BuildContext context, bool isUser) {
-    final backgroundColor = message.isError
-        ? AppColors.primaryRed.withOpacity(0.12)
-        : isUser
-        ? Colors
-              .transparent // Gradient will be used instead
-        : AppColors.primaryWhite;
+    final backgroundColor =
+        message.isError
+            ? AppColors.primaryRed.withOpacity(0.12)
+            : isUser
+            ? Colors
+                .transparent // Gradient will be used instead
+            : AppColors.primaryWhite;
 
-    final textColor = message.isError
-        ? AppColors.primaryRed
-        : isUser
-        ? AppColors.primaryWhite
-        : AppColors.textPrimary;
+    final textColor =
+        message.isError
+            ? AppColors.primaryRed
+            : isUser
+            ? AppColors.primaryWhite
+            : AppColors.textPrimary;
 
     final borderRadius = BorderRadius.only(
       topLeft: Radius.circular(isUser ? 20.r : 4.r),
@@ -461,29 +471,32 @@ class _ChatMessageBubble extends StatelessWidget {
       constraints: BoxConstraints(maxWidth: 0.76.sw),
       decoration: BoxDecoration(
         color: !isUser || message.isError ? backgroundColor : null,
-        gradient: isUser && !message.isError
-            ? const LinearGradient(
-                colors: [AppColors.primaryBlue, AppColors.primaryLightBlue],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              )
-            : null,
+        gradient:
+            isUser && !message.isError
+                ? const LinearGradient(
+                  colors: [AppColors.primaryBlue, AppColors.primaryLightBlue],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+                : null,
         borderRadius: borderRadius,
         boxShadow: [
           BoxShadow(
-            color: isUser && !message.isError
-                ? AppColors.primaryBlue.withOpacity(0.25)
-                : AppColors.primaryBlack.withOpacity(0.06),
+            color:
+                isUser && !message.isError
+                    ? AppColors.primaryBlue.withOpacity(0.25)
+                    : AppColors.primaryBlack.withOpacity(0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
-        border: !isUser && !message.isError
-            ? Border.all(
-                color: AppColors.secondaryGrey.withOpacity(0.1),
-                width: 1,
-              )
-            : null,
+        border:
+            !isUser && !message.isError
+                ? Border.all(
+                  color: AppColors.secondaryGrey.withOpacity(0.1),
+                  width: 1,
+                )
+                : null,
       ),
       padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 14.h),
       child: _FormattedMessageText(
@@ -578,16 +591,18 @@ class _ChatSuggestionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.r),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: item.id != null
-              ? () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => DestinationDetailPage.withProvider(
-                      destinationId: item.id!,
+          onTap:
+              item.id != null
+                  ? () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (_) => DestinationDetailPage.withProvider(
+                            destinationId: item.id!,
+                          ),
                     ),
-                  ),
-                )
-              : null,
+                  )
+                  : null,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -704,9 +719,10 @@ class _ChatSuggestionCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
       decoration: BoxDecoration(
-        color: isPrimary
-            ? AppColors.primaryBlue.withOpacity(0.1)
-            : AppColors.secondaryGrey.withOpacity(0.1),
+        color:
+            isPrimary
+                ? AppColors.primaryBlue.withOpacity(0.1)
+                : AppColors.secondaryGrey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: Text(
@@ -955,17 +971,18 @@ class _ChatWelcomeSection extends StatelessWidget {
     ];
 
     return Column(
-      children: suggestions.map((suggestion) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: 12.h),
-          child: _QuickSuggestionChip(
-            icon: suggestion['icon'] as IconData,
-            label: suggestion['text'] as String,
-            color: suggestion['color'] as Color,
-            onTap: () => onQuickSend(suggestion['text'] as String),
-          ),
-        );
-      }).toList(),
+      children:
+          suggestions.map((suggestion) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: 12.h),
+              child: _QuickSuggestionChip(
+                icon: suggestion['icon'] as IconData,
+                label: suggestion['text'] as String,
+                color: suggestion['color'] as Color,
+                onTap: () => onQuickSend(suggestion['text'] as String),
+              ),
+            );
+          }).toList(),
     );
   }
 }
@@ -1074,16 +1091,17 @@ class _FormattedMessageText extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: lines.asMap().entries.map((entry) {
-        final index = entry.key;
-        final line = entry.value;
-        final isLast = index == lines.length - 1;
+      children:
+          lines.asMap().entries.map((entry) {
+            final index = entry.key;
+            final line = entry.value;
+            final isLast = index == lines.length - 1;
 
-        return Padding(
-          padding: EdgeInsets.only(bottom: isLast ? 0 : 6.h),
-          child: _buildLine(line),
-        );
-      }).toList(),
+            return Padding(
+              padding: EdgeInsets.only(bottom: isLast ? 0 : 6.h),
+              child: _buildLine(line),
+            );
+          }).toList(),
     );
   }
 
@@ -1183,9 +1201,7 @@ class _FormattedMessageText extends StatelessWidget {
       letterSpacing: 0.1,
     );
 
-    return RichText(
-      text: TextSpan(children: spans, style: baseStyle),
-    );
+    return RichText(text: TextSpan(children: spans, style: baseStyle));
   }
 
   List<TextSpan> _parseInlineFormatting(String text) {

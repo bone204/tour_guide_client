@@ -54,7 +54,12 @@ class ReviewsTab extends StatelessWidget {
 
   Widget _buildReviewItem(BuildContext context, int index) {
     final names = ['John Doe', 'Sarah Smith', 'Mike Johnson', 'Emma Wilson'];
-    final dates = ['2 days ago', '1 week ago', '2 weeks ago', '3 weeks ago'];
+    final dates = [
+      '10:30 20/01/2026',
+      '14:20 15/01/2026',
+      '09:15 10/01/2026',
+      '16:45 05/01/2026',
+    ];
     final ratings = ['5.0', '4.8', '4.5', '5.0'];
     final reviews = [
       'Amazing place! The views were spectacular and the experience was unforgettable. Highly recommend visiting this destination.',

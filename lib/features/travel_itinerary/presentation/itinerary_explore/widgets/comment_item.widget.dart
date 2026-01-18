@@ -1,7 +1,7 @@
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/services/feedback/data/models/feedback.dart'
     as feedback_model;
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/itinerary_explore/bloc/reply/reply_cubit.dart';
@@ -25,7 +25,6 @@ class _CommentItemState extends State<CommentItem> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        timeago.setLocaleMessages('vi', timeago.ViMessages());
         context.read<ReplyCubit>().loadReplies(widget.feedback.id);
       }
     });
@@ -90,10 +89,9 @@ class _CommentItemState extends State<CommentItem> {
                 child: Row(
                   children: [
                     Text(
-                      timeago.format(
-                        widget.feedback.createdAt,
-                        locale: Localizations.localeOf(context).languageCode,
-                      ),
+                      DateFormat(
+                        'HH:mm dd/MM/yyyy',
+                      ).format(widget.feedback.createdAt),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textSubtitle,
                         fontWeight: FontWeight.w500,
@@ -287,14 +285,10 @@ class _CommentItemState extends State<CommentItem> {
                                               top: 2.h,
                                             ),
                                             child: Text(
-                                              timeago.format(
-                                                reply.createdAt.add(
-                                                  const Duration(hours: 7),
-                                                ),
-                                                locale:
-                                                    Localizations.localeOf(
-                                                      context,
-                                                    ).languageCode,
+                                              DateFormat(
+                                                'HH:mm dd/MM/yyyy',
+                                              ).format(
+                                                reply.createdAt,
                                               ),
                                               style: Theme.of(
                                                 context,

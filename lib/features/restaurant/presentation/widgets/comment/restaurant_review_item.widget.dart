@@ -2,7 +2,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tour_guide_app/common_libs.dart';
 import 'package:tour_guide_app/core/services/feedback/data/models/feedback.dart'
     as feedback_model;
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:intl/intl.dart';
 
 class RestaurantReviewItem extends StatefulWidget {
   final feedback_model.Feedback feedback;
@@ -16,7 +16,6 @@ class _RestaurantReviewItemState extends State<RestaurantReviewItem> {
   @override
   void initState() {
     super.initState();
-    timeago.setLocaleMessages('vi', timeago.ViMessages());
   }
 
   @override
@@ -59,10 +58,9 @@ class _RestaurantReviewItemState extends State<RestaurantReviewItem> {
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      timeago.format(
-                        widget.feedback.createdAt,
-                        locale: Localizations.localeOf(context).languageCode,
-                      ),
+                      DateFormat(
+                        'HH:mm dd/MM/yyyy',
+                      ).format(widget.feedback.createdAt),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.textSubtitle,
                       ),
