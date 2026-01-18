@@ -17,8 +17,27 @@ class EateryRepositoryImpl implements EateryRepository {
   }
 
   @override
-  Future<Either<Failure, Eatery>> getRandomEatery(String province) {
-    return _apiService.getRandomEatery(province);
+  Future<Either<Failure, List<Eatery>>> getNearbyEateries({
+    required double latitude,
+    required double longitude,
+    double? radius,
+  }) {
+    return _apiService.getNearbyEateries(
+      latitude: latitude,
+      longitude: longitude,
+      radius: radius,
+    );
+  }
+
+  @override
+  Future<Either<Failure, Eatery>> getRandomEatery({
+    String? province,
+    List<int>? eateryIds,
+  }) {
+    return _apiService.getRandomEatery(
+      province: province,
+      eateryIds: eateryIds,
+    );
   }
 
   @override

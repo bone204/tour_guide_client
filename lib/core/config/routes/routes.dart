@@ -58,7 +58,6 @@ import 'package:tour_guide_app/features/destination/data/models/destination.dart
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/destination_selection.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/my_itinerary.page.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/itinerary_list.page.dart';
-import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/pages/food_wheel.page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tour_guide_app/service_locator.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/pages/suggest_itinerary_preview.page.dart';
@@ -103,15 +102,14 @@ class AppRouter {
       case AppRouteConstant.signIn:
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => PopScope(
-                canPop: false,
-                onPopInvokedWithResult: (didPop, result) async {
-                  if (!didPop) return;
-                  SystemNavigator.pop();
-                },
-                child: SignInPage(),
-              ),
+          builder: (_) => PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) async {
+              if (!didPop) return;
+              SystemNavigator.pop();
+            },
+            child: SignInPage(),
+          ),
         );
 
       case AppRouteConstant.itineraryDetail:
@@ -125,12 +123,11 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => AddStopPage(
-                itineraryId: args['itineraryId'] as int,
-                destination: args['destination'] as Destination,
-                dayOrder: args['dayOrder'] as int?,
-              ),
+          builder: (_) => AddStopPage(
+            itineraryId: args['itineraryId'] as int,
+            destination: args['destination'] as Destination,
+            dayOrder: args['dayOrder'] as int?,
+          ),
         );
 
       case AppRouteConstant.editItinerary:
@@ -157,29 +154,27 @@ class AppRouter {
       case AppRouteConstant.signUp:
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => PopScope(
-                canPop: false,
-                onPopInvokedWithResult: (didPop, result) async {
-                  if (!didPop) return;
-                  SystemNavigator.pop();
-                },
-                child: SignUpPage(),
-              ),
+          builder: (_) => PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) async {
+              if (!didPop) return;
+              SystemNavigator.pop();
+            },
+            child: SignUpPage(),
+          ),
         );
 
       case AppRouteConstant.mainScreen:
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => PopScope(
-                canPop: false,
-                onPopInvokedWithResult: (didPop, result) async {
-                  if (!didPop) return;
-                  SystemNavigator.pop();
-                },
-                child: const MainScreen(),
-              ),
+          builder: (_) => PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) async {
+              if (!didPop) return;
+              SystemNavigator.pop();
+            },
+            child: const MainScreen(),
+          ),
         );
 
       case AppRouteConstant.homeSearch:
@@ -425,37 +420,34 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => HotelDetailPage.withProvider(
-                hotel: args?['hotel'],
-                rooms: args?['rooms'],
-                request: args?['request'],
-              ),
+          builder: (_) => HotelDetailPage.withProvider(
+            hotel: args?['hotel'],
+            rooms: args?['rooms'],
+            request: args?['request'],
+          ),
         );
 
       case AppRouteConstant.hotelRoomList:
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => HotelRoomListPage(
-                request: args?['request'],
-                rooms: args?['rooms'],
-                hotel: args?['hotel'],
-              ),
+          builder: (_) => HotelRoomListPage(
+            request: args?['request'],
+            rooms: args?['rooms'],
+            hotel: args?['hotel'],
+          ),
         );
 
       case AppRouteConstant.hotelBookingInfo:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => HotelBookingInfoPage(
-                hotel: args['hotel'] as Hotel,
-                selectedRooms: args['selectedRooms'] as List<RoomBooking>,
-                checkInDate: args['checkInDate'] as DateTime,
-                checkOutDate: args['checkOutDate'] as DateTime,
-              ),
+          builder: (_) => HotelBookingInfoPage(
+            hotel: args['hotel'] as Hotel,
+            selectedRooms: args['selectedRooms'] as List<RoomBooking>,
+            checkInDate: args['checkInDate'] as DateTime,
+            checkOutDate: args['checkOutDate'] as DateTime,
+          ),
         );
 
       case AppRouteConstant.flightBooking:
@@ -498,58 +490,54 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => DestinationSelectionPage(
-                province: args['province'] as String,
-                itineraryId: args['itineraryId'] as int,
-                dayOrder: args['dayOrder'] as int?,
-              ),
+          builder: (_) => DestinationSelectionPage(
+            province: args['province'] as String,
+            itineraryId: args['itineraryId'] as int,
+            dayOrder: args['dayOrder'] as int?,
+          ),
         );
 
       case AppRouteConstant.itineraryStopDetail:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => MultiBlocProvider(
-                providers: [
-                  BlocProvider(create: (_) => sl<GetStopDetailCubit>()),
-                  BlocProvider(create: (_) => sl<CheckInStopCubit>()),
-                ],
-                child: StopDetailPage(
-                  stop: args['stop'] as Stop,
-                  itineraryId: args['itineraryId'] as int,
-                  itineraryStatus: args['itineraryStatus'] as String,
-                ),
-              ),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => sl<GetStopDetailCubit>()),
+              BlocProvider(create: (_) => sl<CheckInStopCubit>()),
+            ],
+            child: StopDetailPage(
+              stop: args['stop'] as Stop,
+              itineraryId: args['itineraryId'] as int,
+              itineraryStatus: args['itineraryStatus'] as String,
+            ),
+          ),
         );
 
       case AppRouteConstant.foodWheel:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => const FoodWheelPage(),
+          builder: (_) => const EateryWheelPage(),
         );
 
       case AppRouteConstant.stopImages:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => StopImagesPage(
-                stop: args['stop'] as Stop,
-                itineraryId: args['itineraryId'] as int,
-              ),
+          builder: (_) => StopImagesPage(
+            stop: args['stop'] as Stop,
+            itineraryId: args['itineraryId'] as int,
+          ),
         );
 
       case AppRouteConstant.stopVideos:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => StopVideosPage(
-                stop: args['stop'] as Stop,
-                itineraryId: args['itineraryId'] as int,
-              ),
+          builder: (_) => StopVideosPage(
+            stop: args['stop'] as Stop,
+            itineraryId: args['itineraryId'] as int,
+          ),
         );
 
       case AppRouteConstant.contract:
@@ -659,30 +647,28 @@ class AppRouter {
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => CreateRentalBillPage(
-                vehicle: args['vehicle'] as RentalVehicle,
-                rentalType: args['rentalType'] as String,
-                initialStartDate: args['initialStartDate'] as DateTime,
-                locationAddress: args['locationAddress'] as String?,
-                pickupLatitude: args['pickupLatitude'] as double?,
-                pickupLongitude: args['pickupLongitude'] as double?,
-              ),
+          builder: (_) => CreateRentalBillPage(
+            vehicle: args['vehicle'] as RentalVehicle,
+            rentalType: args['rentalType'] as String,
+            initialStartDate: args['initialStartDate'] as DateTime,
+            locationAddress: args['locationAddress'] as String?,
+            pickupLatitude: args['pickupLatitude'] as double?,
+            pickupLongitude: args['pickupLongitude'] as double?,
+          ),
         );
 
       case AppRouteConstant.createCarRentalBill:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (_) => CreateCarRentalBillPage(
-                vehicle: args['vehicle'] as RentalVehicle,
-                rentalType: args['rentalType'] as String,
-                initialStartDate: args['initialStartDate'] as DateTime,
-                locationAddress: args['locationAddress'] as String?,
-                pickupLatitude: args['pickupLatitude'] as double?,
-                pickupLongitude: args['pickupLongitude'] as double?,
-              ),
+          builder: (_) => CreateCarRentalBillPage(
+            vehicle: args['vehicle'] as RentalVehicle,
+            rentalType: args['rentalType'] as String,
+            initialStartDate: args['initialStartDate'] as DateTime,
+            locationAddress: args['locationAddress'] as String?,
+            pickupLatitude: args['pickupLatitude'] as double?,
+            pickupLongitude: args['pickupLongitude'] as double?,
+          ),
         );
 
       case AppRouteConstant.suggestItineraryPreview:
@@ -765,19 +751,18 @@ class AppRouter {
       default:
         return MaterialPageRoute(
           settings: settings,
-          builder:
-              (context) => PopScope(
-                canPop: false,
-                child: Scaffold(
-                  body: Center(
-                    child: Text(
-                      AppLocalizations.of(
-                        context,
-                      )!.noRouteDefined(settings.name ?? 'unknown'),
-                    ),
-                  ),
+          builder: (context) => PopScope(
+            canPop: false,
+            child: Scaffold(
+              body: Center(
+                child: Text(
+                  AppLocalizations.of(
+                    context,
+                  )!.noRouteDefined(settings.name ?? 'unknown'),
                 ),
               ),
+            ),
+          ),
         );
     }
   }

@@ -32,15 +32,36 @@ class Eatery extends Equatable {
       description: json['description'] as String?,
       phone: json['phone'] as String?,
       imageUrl: json['imageUrl'] as String?,
-      createdAt:
-          json['createdAt'] != null
-              ? DateTime.parse(json['createdAt'] as String)
-              : null,
-      updatedAt:
-          json['updatedAt'] != null
-              ? DateTime.parse(json['updatedAt'] as String)
-              : null,
+      createdAt: _parseDateTime(json['createdAt']),
+      updatedAt: _parseDateTime(json['updatedAt']),
     );
+  }
+
+  static DateTime? _parseDateTime(dynamic value) {
+    if (value == null) return null;
+    if (value is String) {
+      // Try ISO format first
+      try {
+        return DateTime.parse(value);
+      } catch (_) {}
+      // Try dd-MM-yyyy HH:mm:ss format
+      try {
+        final parts = value.split(' ');
+        final dateParts = parts[0].split('-');
+        final timeParts = parts.length > 1
+            ? parts[1].split(':')
+            : ['0', '0', '0'];
+        return DateTime(
+          int.parse(dateParts[2]), // year
+          int.parse(dateParts[1]), // month
+          int.parse(dateParts[0]), // day
+          int.parse(timeParts[0]), // hour
+          int.parse(timeParts[1]), // minute
+          timeParts.length > 2 ? int.parse(timeParts[2]) : 0, // second
+        );
+      } catch (_) {}
+    }
+    return null;
   }
 
   Map<String, dynamic> toJson() {

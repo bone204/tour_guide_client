@@ -190,10 +190,9 @@ class _ChatComposer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               IconButton(
-                onPressed:
-                    isBusy
-                        ? null
-                        : () => context.read<ChatCubit>().pickImages(),
+                onPressed: isBusy
+                    ? null
+                    : () => context.read<ChatCubit>().pickImages(),
                 icon: Icon(
                   Icons.image_outlined,
                   color: AppColors.primaryBlue,
@@ -223,8 +222,9 @@ class _ChatComposer extends StatelessWidget {
                       height: 1.4,
                     ),
                     decoration: InputDecoration(
-                      hintText:
-                          AppLocalizations.of(context)!.searchDestinationHint,
+                      hintText: AppLocalizations.of(
+                        context,
+                      )!.searchDestinationHint,
                       hintStyle: Theme.of(context).textTheme.displayLarge
                           ?.copyWith(color: AppColors.textSubtitle),
                       filled: false,
@@ -246,27 +246,22 @@ class _ChatComposer extends StatelessWidget {
                 height: 48.w,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors:
-                        isBusy
-                            ? [AppColors.secondaryGrey, AppColors.secondaryGrey]
-                            : [
-                              AppColors.primaryBlue,
-                              AppColors.primaryLightBlue,
-                            ],
+                    colors: isBusy
+                        ? [AppColors.secondaryGrey, AppColors.secondaryGrey]
+                        : [AppColors.primaryBlue, AppColors.primaryLightBlue],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   shape: BoxShape.circle,
-                  boxShadow:
-                      isBusy
-                          ? []
-                          : [
-                            BoxShadow(
-                              color: AppColors.primaryBlue.withOpacity(0.3),
-                              blurRadius: 12,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
+                  boxShadow: isBusy
+                      ? []
+                      : [
+                          BoxShadow(
+                            color: AppColors.primaryBlue.withOpacity(0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                 ),
                 child: Material(
                   color: Colors.transparent,
@@ -359,33 +354,36 @@ class _ChatMessageBubble extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: isUser ? 0 : 0, vertical: 4.h),
       child: Row(
-        mainAxisAlignment:
-            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[const _BotAvatar(), SizedBox(width: 8.w)],
           Flexible(
             child: Column(
-              crossAxisAlignment:
-                  isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: isUser
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
-                if (isUser && message.images.isNotEmpty)
-                  _buildImages(context, isUser),
-                if (message.content.trim().isNotEmpty)
+                if (message.images.isNotEmpty) _buildImages(context, isUser),
+                if (message.content.trim().isNotEmpty &&
+                    (isUser || !message.hasSuggestions))
                   _buildMessageContent(context, isUser),
                 if (message.hasSuggestions) ...[
-                  if (message.content.trim().isNotEmpty) SizedBox(height: 12.h),
+                  if (message.images.isNotEmpty ||
+                      (isUser && message.content.trim().isNotEmpty))
+                    SizedBox(height: 12.h),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                        message.suggestions
-                            .map(
-                              (item) => Padding(
-                                padding: EdgeInsets.only(bottom: 12.h),
-                                child: _ChatSuggestionCard(item: item),
-                              ),
-                            )
-                            .toList(),
+                    children: message.suggestions
+                        .map(
+                          (item) => Padding(
+                            padding: EdgeInsets.only(bottom: 12.h),
+                            child: _ChatSuggestionCard(item: item),
+                          ),
+                        )
+                        .toList(),
                   ),
                 ],
               ],
@@ -404,59 +402,53 @@ class _ChatMessageBubble extends StatelessWidget {
         spacing: 8.w,
         runSpacing: 8.h,
         alignment: isUser ? WrapAlignment.end : WrapAlignment.start,
-        children:
-            message.images.map((path) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(12.r),
-                child:
-                    path.startsWith('http')
-                        ? Image.network(
-                          path,
-                          width: 150.w,
-                          height: 150.h,
-                          fit: BoxFit.cover,
-                          errorBuilder:
-                              (_, __, ___) => Container(
-                                width: 150.w,
-                                height: 150.h,
-                                color: Colors.grey[300],
-                                child: const Icon(Icons.error),
-                              ),
-                        )
-                        : Image.file(
-                          File(path),
-                          width: 150.w,
-                          height: 150.h,
-                          fit: BoxFit.cover,
-                          errorBuilder:
-                              (_, __, ___) => Container(
-                                width: 150.w,
-                                height: 150.h,
-                                color: Colors.grey[300],
-                                child: const Icon(Icons.error),
-                              ),
-                        ),
-              );
-            }).toList(),
+        children: message.images.map((path) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(12.r),
+            child: path.startsWith('http')
+                ? Image.network(
+                    path,
+                    width: 150.w,
+                    height: 150.h,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Container(
+                      width: 150.w,
+                      height: 150.h,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.error),
+                    ),
+                  )
+                : Image.file(
+                    File(path),
+                    width: 150.w,
+                    height: 150.h,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Container(
+                      width: 150.w,
+                      height: 150.h,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.error),
+                    ),
+                  ),
+          );
+        }).toList(),
       ),
     );
   }
 
   Widget _buildMessageContent(BuildContext context, bool isUser) {
-    final backgroundColor =
-        message.isError
-            ? AppColors.primaryRed.withOpacity(0.12)
-            : isUser
-            ? Colors
-                .transparent // Gradient will be used instead
-            : AppColors.primaryWhite;
+    final backgroundColor = message.isError
+        ? AppColors.primaryRed.withOpacity(0.12)
+        : isUser
+        ? Colors
+              .transparent // Gradient will be used instead
+        : AppColors.primaryWhite;
 
-    final textColor =
-        message.isError
-            ? AppColors.primaryRed
-            : isUser
-            ? AppColors.primaryWhite
-            : AppColors.textPrimary;
+    final textColor = message.isError
+        ? AppColors.primaryRed
+        : isUser
+        ? AppColors.primaryWhite
+        : AppColors.textPrimary;
 
     final borderRadius = BorderRadius.only(
       topLeft: Radius.circular(isUser ? 20.r : 4.r),
@@ -469,32 +461,29 @@ class _ChatMessageBubble extends StatelessWidget {
       constraints: BoxConstraints(maxWidth: 0.76.sw),
       decoration: BoxDecoration(
         color: !isUser || message.isError ? backgroundColor : null,
-        gradient:
-            isUser && !message.isError
-                ? const LinearGradient(
-                  colors: [AppColors.primaryBlue, AppColors.primaryLightBlue],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                )
-                : null,
+        gradient: isUser && !message.isError
+            ? const LinearGradient(
+                colors: [AppColors.primaryBlue, AppColors.primaryLightBlue],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
+            : null,
         borderRadius: borderRadius,
         boxShadow: [
           BoxShadow(
-            color:
-                isUser && !message.isError
-                    ? AppColors.primaryBlue.withOpacity(0.25)
-                    : AppColors.primaryBlack.withOpacity(0.06),
+            color: isUser && !message.isError
+                ? AppColors.primaryBlue.withOpacity(0.25)
+                : AppColors.primaryBlack.withOpacity(0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
-        border:
-            !isUser && !message.isError
-                ? Border.all(
-                  color: AppColors.secondaryGrey.withOpacity(0.1),
-                  width: 1,
-                )
-                : null,
+        border: !isUser && !message.isError
+            ? Border.all(
+                color: AppColors.secondaryGrey.withOpacity(0.1),
+                width: 1,
+              )
+            : null,
       ),
       padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 14.h),
       child: _FormattedMessageText(
@@ -565,202 +554,212 @@ class _ChatSuggestionCard extends StatelessWidget {
 
   final ChatResultItem item;
 
-  Color _chipColor() {
-    switch (item.type) {
-      case 'restaurant':
-        return AppColors.primaryOrange.withOpacity(0.12);
-      case 'hotel':
-        return AppColors.primaryPurple.withOpacity(0.12);
-      default:
-        return AppColors.primaryBlue.withOpacity(0.12);
-    }
-  }
-
-  Color _chipTextColor() {
-    switch (item.type) {
-      case 'restaurant':
-        return AppColors.primaryOrange;
-      case 'hotel':
-        return AppColors.primaryPurple;
-      default:
-        return AppColors.primaryBlue;
-    }
-  }
-
-  IconData _getIconByType() {
-    switch (item.type) {
-      case 'restaurant':
-        return Icons.restaurant_rounded;
-      case 'hotel':
-        return Icons.hotel_rounded;
-      default:
-        return Icons.place_rounded;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 0.75.sw,
+      width: 0.8.sw,
       decoration: BoxDecoration(
         color: AppColors.primaryWhite,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: AppColors.secondaryGrey.withOpacity(0.2),
-          width: 1,
-        ),
+        borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryBlack.withOpacity(0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: AppColors.primaryBlack.withOpacity(0.06),
+            blurRadius: 15,
+            offset: const Offset(0, 4),
           ),
         ],
+        border: Border.all(
+          color: AppColors.secondaryGrey.withOpacity(0.1),
+          width: 1,
+        ),
       ),
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(20.r),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap:
-              item.id != null
-                  ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (_) => DestinationDetailPage.withProvider(
-                              destinationId: item.id!,
-                            ),
-                      ),
-                    );
-                  }
-                  : null,
-          child: Padding(
-            padding: EdgeInsets.all(12.w),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (item.images?.isNotEmpty == true) ...[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12.r),
-                    child: Image.network(
-                      item.images!.first,
-                      width: 80.w,
-                      height: 80.w,
-                      fit: BoxFit.cover,
-                      errorBuilder:
-                          (_, __, ___) => Container(
-                            width: 80.w,
-                            height: 80.w,
-                            color: AppColors.secondaryGrey.withOpacity(0.1),
-                            child: Icon(
-                              Icons.image_not_supported_outlined,
-                              color: AppColors.textSubtitle,
-                              size: 24.sp,
-                            ),
-                          ),
+          onTap: item.id != null
+              ? () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DestinationDetailPage.withProvider(
+                      destinationId: item.id!,
                     ),
                   ),
-                  SizedBox(width: 12.w),
-                ],
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 10.w,
-                              vertical: 4.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _chipColor(),
-                              borderRadius: BorderRadius.circular(20.r),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  _getIconByType(),
-                                  size: 12.sp,
-                                  color: _chipTextColor(),
-                                ),
-                                SizedBox(width: 4.w),
-                                Text(
-                                  item.type.toUpperCase(),
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.labelSmall?.copyWith(
-                                    color: _chipTextColor(),
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 10.sp,
-                                    letterSpacing: 0.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                )
+              : null,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (item.images?.isNotEmpty == true)
+                _buildCardImage()
+              else
+                _buildPlaceholderImage(),
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTagsRow(context),
+                    SizedBox(height: 10.h),
+                    Text(
+                      item.name,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16.sp,
                       ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        item.name,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      if ((item.address ?? '').isNotEmpty) ...[
-                        SizedBox(height: 4.h),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              size: 14.sp,
-                              color: AppColors.textSubtitle,
-                            ),
-                            SizedBox(width: 4.w),
-                            Expanded(
-                              child: Text(
-                                item.address!,
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textSubtitle,
-                                  fontSize: 11.sp,
-                                  height: 1.3,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                      if ((item.description ?? '').isNotEmpty) ...[
-                        SizedBox(height: 8.h),
-                        Text(
-                          item.description!,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textPrimary.withOpacity(0.7),
-                            fontSize: 12.sp,
-                            height: 1.4,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (item.rating != null) ...[
+                      SizedBox(height: 6.h),
+                      _buildRatingRow(context),
                     ],
-                  ),
+                    if (item.address != null && item.address!.isNotEmpty) ...[
+                      SizedBox(height: 8.h),
+                      _buildAddressRow(context),
+                    ],
+                    if (item.description != null &&
+                        item.description!.isNotEmpty) ...[
+                      SizedBox(height: 10.h),
+                      Text(
+                        item.description!,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textPrimary.withOpacity(0.65),
+                          fontSize: 13.sp,
+                          height: 1.4,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildCardImage() {
+    return SizedBox(
+      height: 140.h,
+      width: double.infinity,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.network(
+            item.images!.first,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => _buildPlaceholderImage(),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.black.withOpacity(0.2), Colors.transparent],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlaceholderImage() {
+    return Container(
+      height: 120.h,
+      width: double.infinity,
+      color: AppColors.secondaryGrey.withOpacity(0.1),
+      child: Icon(
+        Icons.image_not_supported_outlined,
+        color: AppColors.textSubtitle,
+        size: 32.sp,
+      ),
+    );
+  }
+
+  Widget _buildTagsRow(BuildContext context) {
+    final List<String> tags = [];
+    if (item.type != 'destination') {
+      tags.add(item.type.toUpperCase());
+    }
+    if (item.categories != null) {
+      tags.addAll(item.categories!.take(2));
+    }
+
+    return Wrap(
+      spacing: 6.w,
+      runSpacing: 4.h,
+      children: tags.map((tag) => _buildTagChip(context, tag)).toList(),
+    );
+  }
+
+  Widget _buildTagChip(BuildContext context, String label) {
+    final isPrimary = label == item.type.toUpperCase();
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: isPrimary
+            ? AppColors.primaryBlue.withOpacity(0.1)
+            : AppColors.secondaryGrey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: isPrimary ? AppColors.primaryBlue : AppColors.textSubtitle,
+          fontWeight: FontWeight.bold,
+          fontSize: 10.sp,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRatingRow(BuildContext context) {
+    return Row(
+      children: [
+        Icon(Icons.star_rounded, color: Colors.amber, size: 16.sp),
+        SizedBox(width: 4.w),
+        Text(
+          item.rating!.toStringAsFixed(1),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 13.sp,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAddressRow(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          Icons.location_on_rounded,
+          size: 14.sp,
+          color: AppColors.primaryBlue,
+        ),
+        SizedBox(width: 6.w),
+        Expanded(
+          child: Text(
+            item.address!,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSubtitle,
+              fontSize: 12.sp,
+              height: 1.3,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -956,18 +955,17 @@ class _ChatWelcomeSection extends StatelessWidget {
     ];
 
     return Column(
-      children:
-          suggestions.map((suggestion) {
-            return Padding(
-              padding: EdgeInsets.only(bottom: 12.h),
-              child: _QuickSuggestionChip(
-                icon: suggestion['icon'] as IconData,
-                label: suggestion['text'] as String,
-                color: suggestion['color'] as Color,
-                onTap: () => onQuickSend(suggestion['text'] as String),
-              ),
-            );
-          }).toList(),
+      children: suggestions.map((suggestion) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: 12.h),
+          child: _QuickSuggestionChip(
+            icon: suggestion['icon'] as IconData,
+            label: suggestion['text'] as String,
+            color: suggestion['color'] as Color,
+            onTap: () => onQuickSend(suggestion['text'] as String),
+          ),
+        );
+      }).toList(),
     );
   }
 }
@@ -1076,17 +1074,16 @@ class _FormattedMessageText extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-          lines.asMap().entries.map((entry) {
-            final index = entry.key;
-            final line = entry.value;
-            final isLast = index == lines.length - 1;
+      children: lines.asMap().entries.map((entry) {
+        final index = entry.key;
+        final line = entry.value;
+        final isLast = index == lines.length - 1;
 
-            return Padding(
-              padding: EdgeInsets.only(bottom: isLast ? 0 : 6.h),
-              child: _buildLine(line),
-            );
-          }).toList(),
+        return Padding(
+          padding: EdgeInsets.only(bottom: isLast ? 0 : 6.h),
+          child: _buildLine(line),
+        );
+      }).toList(),
     );
   }
 
@@ -1186,7 +1183,9 @@ class _FormattedMessageText extends StatelessWidget {
       letterSpacing: 0.1,
     );
 
-    return RichText(text: TextSpan(children: spans, style: baseStyle));
+    return RichText(
+      text: TextSpan(children: spans, style: baseStyle),
+    );
   }
 
   List<TextSpan> _parseInlineFormatting(String text) {

@@ -6,6 +6,7 @@ class ChatResultItem {
   final String type;
   final List<String>? images;
   final List<String>? categories;
+  final double? rating;
 
   const ChatResultItem({
     required this.name,
@@ -15,21 +16,30 @@ class ChatResultItem {
     this.description,
     this.images,
     this.categories,
+    this.rating,
   });
 
   factory ChatResultItem.fromJson(Map<String, dynamic> json) {
+    // Handling destination entity fields which might differ from default ChatResultItem fields
+    final address =
+        json['address'] ?? json['specificAddress'] ?? json['reformAddress'];
+    final description =
+        json['description'] ??
+        json['descriptionViet'] ??
+        json['descriptionEng'];
+    final images = json['images'] ?? json['photos'];
+
     return ChatResultItem(
       id: json['id'] as int?,
       name: json['name'] ?? '',
       type: json['type'] ?? 'destination',
-      address: json['address'] as String?,
-      description: json['description'] as String?,
-      images:
-          (json['images'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
-      categories:
-          (json['categories'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList(),
+      address: address as String?,
+      description: description as String?,
+      images: (images as List<dynamic>?)?.map((e) => e.toString()).toList(),
+      categories: (json['categories'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList(),
+      rating: (json['rating'] as num?)?.toDouble(),
     );
   }
 
@@ -42,6 +52,7 @@ class ChatResultItem {
       'description': description,
       'images': images,
       'categories': categories,
+      'rating': rating,
     };
   }
 }

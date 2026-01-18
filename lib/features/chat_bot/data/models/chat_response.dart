@@ -41,23 +41,49 @@ class ChatResponse {
   });
 
   factory ChatResponse.fromJson(Map<String, dynamic> json) {
+    final List<ChatResultItem> items = [];
+
+    // Parse legacy 'data' field
     final rawData = json['data'];
-    final items =
-        rawData is List
-            ? rawData
-                .whereType<Map<String, dynamic>>()
-                .map(ChatResultItem.fromJson)
-                .toList()
-            : <ChatResultItem>[];
+    if (rawData is List) {
+      items.addAll(
+        rawData
+            .whereType<Map<String, dynamic>>()
+            .map(ChatResultItem.fromJson)
+            .toList(),
+      );
+    }
+
+    // Parse new 'relatedEntities' field
+    final rawEntities = json['relatedEntities'];
+    if (rawEntities is List) {
+      for (final entity in rawEntities) {
+        if (entity is Map<String, dynamic>) {
+          final entityType = entity['type'] as String?;
+          final entityData = entity['data'];
+          if (entityData is List) {
+            for (final item in entityData) {
+              if (item is Map<String, dynamic>) {
+                // Ensure type is preserved or set if missing
+                final Map<String, dynamic> itemMap = Map.from(item);
+                if (itemMap['type'] == null && entityType != null) {
+                  itemMap['type'] = entityType;
+                }
+                items.add(ChatResultItem.fromJson(itemMap));
+              }
+            }
+          }
+        }
+      }
+    }
 
     final rawImages = json['images'];
-    final imagePayloads =
-        rawImages is List
-            ? rawImages
-                .whereType<Map<String, dynamic>>()
-                .map(ChatImagePayload.fromJson)
-                .toList()
-            : <ChatImagePayload>[];
+    final imagePayloads = rawImages is List
+        ? rawImages
+              .whereType<Map<String, dynamic>>()
+              .map(ChatImagePayload.fromJson)
+              .toList()
+        : <ChatImagePayload>[];
 
     String? textContent;
     final rawText = json['text'];

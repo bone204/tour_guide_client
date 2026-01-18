@@ -103,6 +103,7 @@ import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_iti
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_provinces.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/add_stop.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/get_stop_detail.dart';
+import 'package:tour_guide_app/features/eatery/domain/usecases/get_nearby_eateries_use_case.dart';
 import 'package:tour_guide_app/features/travel_itinerary/domain/usecases/checkin_stop_usecase.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/update_itinerary/bloc/create_itinerary/create_itinerary_cubit.dart';
 import 'package:tour_guide_app/features/travel_itinerary/presentation/my_itinerary/bloc/get_itinerary_me/get_itinerary_me_cubit.dart';
@@ -330,6 +331,16 @@ void setUpServiceLocator(SharedPreferences prefs) {
   sl.registerSingleton<CarRentalRepository>(CarRentalRepositoryImpl());
   sl.registerSingleton<RentalBillRepository>(RentalBillRepositoryImpl());
   sl.registerSingleton<EateryRepository>(EateryRepositoryImpl());
+  sl.registerLazySingleton<GetEateriesUseCase>(() => GetEateriesUseCase());
+  sl.registerLazySingleton<GetNearbyEateriesUseCase>(
+    () => GetNearbyEateriesUseCase(),
+  );
+  sl.registerLazySingleton<GetRandomEateryUseCase>(
+    () => GetRandomEateryUseCase(),
+  );
+  sl.registerLazySingleton<GetEateryDetailUseCase>(
+    () => GetEateryDetailUseCase(),
+  );
   sl.registerSingleton<CooperationRepository>(CooperationRepositoryImpl());
   sl.registerSingleton<NotificationRepository>(
     NotificationRepositoryImpl(apiService: sl()),
@@ -408,10 +419,6 @@ void setUpServiceLocator(SharedPreferences prefs) {
   );
 
   // Eatery
-  sl.registerSingleton<GetEateriesUseCase>(GetEateriesUseCase());
-  sl.registerSingleton<GetRandomEateryUseCase>(GetRandomEateryUseCase());
-  sl.registerSingleton<GetEateryDetailUseCase>(GetEateryDetailUseCase());
-
   sl.registerSingleton<UseItineraryUseCase>(UseItineraryUseCase());
 
   // Like Itinerary

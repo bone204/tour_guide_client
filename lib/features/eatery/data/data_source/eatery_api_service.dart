@@ -10,7 +10,15 @@ abstract class EateryApiService {
     String? province,
     String? keyword,
   });
-  Future<Either<Failure, Eatery>> getRandomEatery(String province);
+  Future<Either<Failure, List<Eatery>>> getNearbyEateries({
+    required double latitude,
+    required double longitude,
+    double? radius,
+  });
+  Future<Either<Failure, Eatery>> getRandomEatery({
+    String? province,
+    List<int>? eateryIds,
+  });
   Future<Either<Failure, Eatery>> getEateryDetail(int id);
 }
 
@@ -28,10 +36,9 @@ class EateryApiServiceImpl implements EateryApiService {
           if (keyword != null) 'keyword': keyword,
         },
       );
-      final result =
-          (response.data as List)
-              .map((e) => Eatery.fromJson(e as Map<String, dynamic>))
-              .toList();
+      final result = (response.data as List)
+          .map((e) => Eatery.fromJson(e as Map<String, dynamic>))
+          .toList();
       return Right(result);
     } on DioException catch (e) {
       return Left(
@@ -46,11 +53,49 @@ class EateryApiServiceImpl implements EateryApiService {
   }
 
   @override
-  Future<Either<Failure, Eatery>> getRandomEatery(String province) async {
+  Future<Either<Failure, List<Eatery>>> getNearbyEateries({
+    required double latitude,
+    required double longitude,
+    double? radius,
+  }) async {
+    try {
+      final response = await sl<DioClient>().get(
+        '/eateries/nearby',
+        queryParameters: {
+          'latitude': latitude,
+          'longitude': longitude,
+          if (radius != null) 'radius': radius,
+        },
+      );
+      final result = (response.data as List)
+          .map((e) => Eatery.fromJson(e as Map<String, dynamic>))
+          .toList();
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(
+          message: e.response?.data['message'] ?? 'Unknown error',
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Eatery>> getRandomEatery({
+    String? province,
+    List<int>? eateryIds,
+  }) async {
     try {
       final response = await sl<DioClient>().get(
         '/eateries/random',
-        queryParameters: {'province': province},
+        queryParameters: {
+          if (province != null) 'province': province,
+          if (eateryIds != null && eateryIds.isNotEmpty)
+            'ids': eateryIds.join(','),
+        },
       );
       final result = Eatery.fromJson(response.data as Map<String, dynamic>);
       return Right(result);
