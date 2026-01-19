@@ -1002,7 +1002,7 @@ class _ChatWelcomeSection extends StatelessWidget {
       },
       {
         'icon': Icons.water_drop_outlined,
-        'text': 'Cho lời khuyên về việc đi Đầm Sen nước',
+        'text': 'Cho lời khuyên về việc đi công viên nước Đầm Sen',
         'color': AppColors.primaryLightBlue,
       },
       {
