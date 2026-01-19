@@ -30,17 +30,53 @@ class RentalPaymentCubit extends Cubit<RentalPaymentState> {
 
   void init(RentalBill bill) {
     double subTotal = 0;
-    if (bill.details.isNotEmpty) {
-      subTotal = bill.details.fold(0, (sum, item) => sum + item.price);
+
+    // If no voucher is applied, bill.total is the best source of truth for the subtotal
+    if (bill.voucherId == null || bill.voucherId == 0) {
+      subTotal = bill.total;
+    } else {
+      if (bill.details.isNotEmpty) {
+        subTotal = bill.details.fold(0, (sum, item) => sum + item.price);
+      }
+      // Add fees to subTotal
+      subTotal += bill.shippingFee;
+      subTotal += bill.overtimeFee;
+
+      if (subTotal == 0) subTotal = bill.total;
     }
-    if (subTotal == 0) subTotal = bill.total;
+
+    // Calculate voucher discount if exists
+    double voucherDisc = 0;
+    if (bill.voucher != null) {
+      if (bill.voucher!.discountType == VoucherDiscountType.percentage) {
+        voucherDisc =
+            (subTotal - bill.shippingFee - bill.overtimeFee) *
+            (bill.voucher!.value / 100);
+        if (bill.voucher!.maxDiscountValue != null) {
+          double max =
+              double.tryParse(bill.voucher!.maxDiscountValue.toString()) ?? 0;
+          if (max > 0 && voucherDisc > max) {
+            voucherDisc = max;
+          }
+        }
+      } else {
+        voucherDisc = bill.voucher!.value;
+      }
+      // Ensure discount doesn't exceed rental price
+      double rentalPrice = subTotal - bill.shippingFee - bill.overtimeFee;
+      if (voucherDisc > rentalPrice) voucherDisc = rentalPrice;
+    }
 
     emit(
       state.copyWith(
         billId: bill.id,
         totalPrice: subTotal,
+        rentalPrice: subTotal - bill.shippingFee - bill.overtimeFee,
+        fees: bill.shippingFee + bill.overtimeFee,
         finalPrice: bill.total,
         paymentMethod: bill.paymentMethod,
+        selectedVoucher: bill.voucher,
+        voucherDiscount: voucherDisc, // Set calculated discount
         useTravelPoints: bill.travelPointsUsed > 0,
         pointDiscount: bill.travelPointsUsed * pointToCurrencyRate,
         contactName: bill.contactName,
@@ -222,11 +258,11 @@ class RentalPaymentCubit extends Cubit<RentalPaymentState> {
     double voucherDisc = 0;
     double pointDisc = 0;
 
-    // 1. Apply Voucher
+    // 1. Apply Voucher ON RENTAL PRICE
     if (state.selectedVoucher != null) {
       final v = state.selectedVoucher!;
       if (v.discountType == VoucherDiscountType.percentage) {
-        voucherDisc = tempFinal * (v.value / 100);
+        voucherDisc = state.rentalPrice * (v.value / 100);
         if (v.maxDiscountValue != null) {
           double max = double.tryParse(v.maxDiscountValue.toString()) ?? 0;
           if (max > 0 && voucherDisc > max) {
@@ -238,9 +274,11 @@ class RentalPaymentCubit extends Cubit<RentalPaymentState> {
       }
     }
 
-    // Ensure discount doesn't exceed total
-    if (voucherDisc > tempFinal) voucherDisc = tempFinal;
-    tempFinal -= voucherDisc;
+    // Ensure discount doesn't exceed rental price (base)
+    if (voucherDisc > state.rentalPrice) voucherDisc = state.rentalPrice;
+
+    // Final price = rental - voucher + fees
+    tempFinal = (state.rentalPrice - voucherDisc) + state.fees;
 
     // 2. Apply Points
     // We need userPoints here. If not passed, we might reuse last known?

@@ -1,3 +1,5 @@
+import 'package:tour_guide_app/core/utils/date_formatter.dart';
+
 class User {
   final int id;
   final String username;
@@ -111,7 +113,12 @@ class User {
       feedbackTimes:
           int.tryParse(json['feedbackTimes']?.toString() ?? '0') ?? 0,
       dayParticipation:
-          int.tryParse(json['dayParticipation']?.toString() ?? '0') ?? 0,
+          int.tryParse(json['dayParticipation']?.toString() ?? '0') ??
+          (json['createdAt'] != null
+              ? DateTime.now()
+                  .difference(DateFormatter.parse(json['createdAt']))
+                  .inDays
+              : 0),
       userTier: json['userTier'] ?? '',
       role: json['role'] ?? '',
       createdAt: json['createdAt'] ?? '',

@@ -297,6 +297,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bikeRental => 'Motorbike Rental';
 
   @override
+  String get tourTicket => 'Tour Tickets';
+
+  @override
   String get busBooking => 'Bus Booking';
 
   @override
@@ -3424,4 +3427,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statusConfirmed => 'Confirmed';
+
+  @override
+  String get ticketBooking => 'Booking Ticket';
+
+  @override
+  String get ticketBookingSuccess => 'Booking Successful!';
+
+  @override
+  String get perTicket => ' / ticket';
+
+  @override
+  String get openingHours => 'Opening Hours: ';
+
+  @override
+  String get ticketQuantity => 'Ticket Quantity';
+
+  @override
+  String get visitDate => 'Visit Date';
+
+  @override
+  String get totalAmount => 'Total Amount';
+
+  @override
+  String get ticketListTitle => 'Attraction Tickets';
+
+  @override
+  String get noTicketLocationsFound => 'No ticket locations found';
+
+  @override
+  String get searchAttractions => 'Search attractions...';
+
+  @override
+  String get all => 'All';
 }

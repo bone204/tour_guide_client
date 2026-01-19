@@ -671,6 +671,12 @@ abstract class AppLocalizations {
   /// **'Motorbike Rental'**
   String get bikeRental;
 
+  /// No description provided for @tourTicket.
+  ///
+  /// In en, this message translates to:
+  /// **'Tour Tickets'**
+  String get tourTicket;
+
   /// No description provided for @busBooking.
   ///
   /// In en, this message translates to:
@@ -6736,6 +6742,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirmed'**
   String get statusConfirmed;
+
+  /// No description provided for @ticketBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Ticket'**
+  String get ticketBooking;
+
+  /// No description provided for @ticketBookingSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Successful!'**
+  String get ticketBookingSuccess;
+
+  /// No description provided for @perTicket.
+  ///
+  /// In en, this message translates to:
+  /// **' / ticket'**
+  String get perTicket;
+
+  /// No description provided for @openingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Hours: '**
+  String get openingHours;
+
+  /// No description provided for @ticketQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Ticket Quantity'**
+  String get ticketQuantity;
+
+  /// No description provided for @visitDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit Date'**
+  String get visitDate;
+
+  /// No description provided for @totalAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get totalAmount;
+
+  /// No description provided for @ticketListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attraction Tickets'**
+  String get ticketListTitle;
+
+  /// No description provided for @noTicketLocationsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No ticket locations found'**
+  String get noTicketLocationsFound;
+
+  /// No description provided for @searchAttractions.
+  ///
+  /// In en, this message translates to:
+  /// **'Search attractions...'**
+  String get searchAttractions;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -797,6 +797,22 @@
   "enterIdNumber": "Nhập số CMND/CCCD",
 
   "selectDeparturePoint": "Chọn điểm đi",
+  "ticketBooking": "Đặt vé",
+  "ticketBookingSuccess": "Đặt vé thành công!",
+  "perTicket": " / vé",
+  "openingHours": "Giờ hoạt động: ",
+  "ticketQuantity": "Số lượng vé",
+  "visitDate": "Ngày tham quan",
+  "totalAmount": "Tổng cộng",
+  "payNow": "Thanh toán ngay",
+  "ticketListTitle": "Vé tham quan",
+  "noTicketLocationsFound": "Không tìm thấy địa điểm bán vé",
+  "searchAttractions": "Tìm kiếm điểm tham quan...",
+  "all": "Tất cả",
+  "contactInfo": "Thông tin liên hệ",
+  "fullName": "Họ và tên",
+  "phoneNumber": "Số điện thoại",
+  "paymentMethod": "Phương thức thanh toán",
 
   "selectArrivalPoint": "Chọn điểm đến",
 

@@ -1,4 +1,5 @@
 import 'package:tour_guide_app/common_libs.dart';
+import 'package:tour_guide_app/core/utils/money_formatter.dart';
 
 class TicketCard extends StatelessWidget {
   final String name;
@@ -48,11 +49,12 @@ class TicketCard extends StatelessWidget {
                 height: 120.h,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  height: 120.h,
-                  color: AppColors.primaryGrey.withOpacity(0.3),
-                  child: const Icon(Icons.image_not_supported),
-                ),
+                errorBuilder:
+                    (context, error, stackTrace) => Container(
+                      height: 120.h,
+                      color: AppColors.primaryGrey.withOpacity(0.3),
+                      child: const Icon(Icons.image_not_supported),
+                    ),
               ),
             ),
             Padding(
@@ -106,7 +108,7 @@ class TicketCard extends StatelessWidget {
                           style: AppTypography.textTheme.bodySmall!.copyWith(
                             fontSize: 10.sp,
                             color: AppColors.primaryBlue,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w900,
                           ),
                         ),
                       ],
@@ -117,7 +119,7 @@ class TicketCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "${price.toInt().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')} đ",
+                        Formatter.currency(price),
                         style: AppTypography.textTheme.titleSmall!.copyWith(
                           fontSize: 14.sp,
                           color: AppColors.primaryOrange,
@@ -133,7 +135,7 @@ class TicketCard extends StatelessWidget {
                               style: AppTypography.textTheme.bodySmall!
                                   .copyWith(
                                     fontSize: 10.sp,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w900,
                                   ),
                             ),
                           ],

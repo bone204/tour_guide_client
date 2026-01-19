@@ -67,9 +67,7 @@ class DestinationTicketApiServiceImpl extends DestinationTicketApiService {
   @override
   Future<Either<Failure, List<DestinationBillModel>>> getMyBills() async {
     try {
-      final response = await sl<DioClient>().get(
-        "${ApiUrls.destinationBills}/me",
-      );
+      final response = await sl<DioClient>().get(ApiUrls.destinationBills);
       final List data = response.data;
       return Right(data.map((e) => DestinationBillModel.fromJson(e)).toList());
     } on DioException catch (e) {

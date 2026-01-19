@@ -1947,5 +1947,21 @@
   "statusPending": "Pending",
   "statusConfirmed": "Confirmed",
   "statusCancelled": "Cancelled",
-  "statusCompleted": "Completed"
+  "statusCompleted": "Completed",
+  "ticketBooking": "Booking Ticket",
+  "ticketBookingSuccess": "Booking Successful!",
+  "perTicket": " / ticket",
+  "openingHours": "Opening Hours: ",
+  "ticketQuantity": "Ticket Quantity",
+  "visitDate": "Visit Date",
+  "totalAmount": "Total Amount",
+  "payNow": "Pay Now",
+  "ticketListTitle": "Attraction Tickets",
+  "noTicketLocationsFound": "No ticket locations found",
+  "searchAttractions": "Search attractions...",
+  "all": "All",
+  "contactInfo": "Contact Information",
+  "fullName": "Full Name",
+  "phoneNumber": "Phone Number",
+  "paymentMethod": "Payment Method"
 }

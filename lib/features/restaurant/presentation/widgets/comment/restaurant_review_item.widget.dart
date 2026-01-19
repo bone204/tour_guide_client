@@ -50,7 +50,7 @@ class _RestaurantReviewItemState extends State<RestaurantReviewItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.feedback.user?.username ??
+                      widget.feedback.user?.fullName ??
                           AppLocalizations.of(context)!.unknownUser,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: AppColors.textPrimary,

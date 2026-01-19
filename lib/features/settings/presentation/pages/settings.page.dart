@@ -75,13 +75,6 @@ class SettingsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 12.w),
                   NavigationButton(
-                    icon: AppIcons.user,
-                    title: AppLocalizations.of(context)!.personalInfo,
-                    trailingIcon: AppIcons.arrowRight,
-                    onTap: () {},
-                  ),
-                  SizedBox(height: 12.w),
-                  NavigationButton(
                     icon: AppIcons.lock,
                     title: AppLocalizations.of(context)!.changePassword,
                     trailingIcon: AppIcons.arrowRight,

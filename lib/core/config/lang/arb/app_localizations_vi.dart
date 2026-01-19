@@ -297,6 +297,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get bikeRental => 'Thuê Xe Máy';
 
   @override
+  String get tourTicket => 'Vé du lịch';
+
+  @override
   String get busBooking => 'Đặt Xe Buýt';
 
   @override
@@ -3430,4 +3433,37 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get statusConfirmed => 'Đã xác nhận';
+
+  @override
+  String get ticketBooking => 'Đặt vé';
+
+  @override
+  String get ticketBookingSuccess => 'Đặt vé thành công!';
+
+  @override
+  String get perTicket => ' / vé';
+
+  @override
+  String get openingHours => 'Giờ hoạt động: ';
+
+  @override
+  String get ticketQuantity => 'Số lượng vé';
+
+  @override
+  String get visitDate => 'Ngày tham quan';
+
+  @override
+  String get totalAmount => 'Tổng cộng';
+
+  @override
+  String get ticketListTitle => 'Vé tham quan';
+
+  @override
+  String get noTicketLocationsFound => 'Không tìm thấy địa điểm bán vé';
+
+  @override
+  String get searchAttractions => 'Tìm kiếm điểm tham quan...';
+
+  @override
+  String get all => 'Tất cả';
 }

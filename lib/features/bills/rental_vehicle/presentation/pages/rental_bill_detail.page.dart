@@ -936,7 +936,7 @@ class _RentalBillContentState extends State<_RentalBillContent> {
                           .where(
                             (v) =>
                                 v.minOrderValue == null ||
-                                v.minOrderValue! <= bill.total,
+                                v.minOrderValue! <= paymentState.rentalPrice,
                           )
                           .toList();
                 }

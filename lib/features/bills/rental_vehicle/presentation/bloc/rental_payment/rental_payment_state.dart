@@ -13,6 +13,8 @@ class RentalPaymentState extends Equatable {
   final Voucher? selectedVoucher;
   final bool useTravelPoints;
   final double totalPrice;
+  final double rentalPrice; // Price without fees
+  final double fees; // shipping + overtime
   final double pointDiscount;
   final double voucherDiscount;
   final double finalPrice;
@@ -35,6 +37,8 @@ class RentalPaymentState extends Equatable {
     this.selectedVoucher,
     this.useTravelPoints = false,
     this.totalPrice = 0,
+    this.rentalPrice = 0,
+    this.fees = 0,
     this.pointDiscount = 0,
     this.voucherDiscount = 0,
     this.finalPrice = 0,
@@ -57,6 +61,8 @@ class RentalPaymentState extends Equatable {
     Voucher? selectedVoucher,
     bool? useTravelPoints,
     double? totalPrice,
+    double? rentalPrice,
+    double? fees,
     double? pointDiscount,
     double? voucherDiscount,
     double? finalPrice,
@@ -77,6 +83,8 @@ class RentalPaymentState extends Equatable {
       selectedVoucher: selectedVoucher ?? this.selectedVoucher,
       useTravelPoints: useTravelPoints ?? this.useTravelPoints,
       totalPrice: totalPrice ?? this.totalPrice,
+      rentalPrice: rentalPrice ?? this.rentalPrice,
+      fees: fees ?? this.fees,
       pointDiscount: pointDiscount ?? this.pointDiscount,
       voucherDiscount: voucherDiscount ?? this.voucherDiscount,
       finalPrice: finalPrice ?? this.finalPrice,
@@ -104,6 +112,8 @@ class RentalPaymentState extends Equatable {
     selectedVoucher,
     useTravelPoints,
     totalPrice,
+    rentalPrice,
+    fees,
     pointDiscount,
     voucherDiscount,
     finalPrice,

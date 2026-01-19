@@ -87,7 +87,7 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: CustomAppBar(
-          title: "Đặt vé",
+          title: AppLocalizations.of(context)!.ticketBooking,
           showBackButton: true,
           onBackPressed: () => Navigator.pop(context),
         ),
@@ -96,7 +96,7 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
             if (state is TicketBookingSuccess) {
               CustomSnackbar.show(
                 context,
-                message: "Đặt vé thành công!",
+                message: AppLocalizations.of(context)!.ticketBookingSuccess,
                 type: SnackbarType.success,
               );
               Navigator.pop(context);
@@ -163,12 +163,13 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
                   width: 80.w,
                   height: 80.w,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: 80.w,
-                    height: 80.w,
-                    color: AppColors.primaryGrey.withOpacity(0.3),
-                    child: const Icon(Icons.image_not_supported),
-                  ),
+                  errorBuilder:
+                      (context, error, stackTrace) => Container(
+                        width: 80.w,
+                        height: 80.w,
+                        color: AppColors.primaryGrey.withOpacity(0.3),
+                        child: const Icon(Icons.image_not_supported),
+                      ),
                 ),
               ),
               SizedBox(width: 12.w),
@@ -179,7 +180,7 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
                     Text(
                       widget.destination.name,
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w900,
                         fontSize: 16.sp,
                       ),
                       maxLines: 2,
@@ -191,10 +192,10 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      "${Formatter.currency(widget.destination.ticketPrice ?? 0)} / vé",
+                      "${Formatter.currency(widget.destination.ticketPrice ?? 0)}${AppLocalizations.of(context)!.perTicket}",
                       style: TextStyle(
                         color: AppColors.primaryOrange,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w900,
                         fontSize: 15.sp,
                       ),
                     ),
@@ -217,7 +218,7 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
                 ),
                 SizedBox(width: 8.w),
                 Text(
-                  "Giờ hoạt động: ",
+                  AppLocalizations.of(context)!.openingHours,
                   style: TextStyle(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w500,
@@ -228,7 +229,7 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
                   style: TextStyle(
                     fontSize: 13.sp,
                     color: AppColors.primaryBlue,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
               ],
@@ -243,9 +244,9 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Phương thức thanh toán",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        Text(
+          AppLocalizations.of(context)!.paymentMethod,
+          style: TextStyle(fontWeight: FontWeight.w900),
         ),
         SizedBox(height: 12.h),
         PaymentMethodSelector(
@@ -265,21 +266,20 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
-          "Số lượng vé",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        Text(
+          AppLocalizations.of(context)!.ticketQuantity,
+          style: TextStyle(fontWeight: FontWeight.w900),
         ),
         Row(
           children: [
             IconButton(
-              onPressed: _quantity > 1
-                  ? () => setState(() => _quantity--)
-                  : null,
+              onPressed:
+                  _quantity > 1 ? () => setState(() => _quantity--) : null,
               icon: const Icon(Icons.remove_circle_outline),
             ),
             Text(
               "$_quantity",
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w900),
             ),
             IconButton(
               onPressed: () => setState(() => _quantity++),
@@ -295,15 +295,15 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Thông tin liên hệ",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        Text(
+          AppLocalizations.of(context)!.contactInfo,
+          style: TextStyle(fontWeight: FontWeight.w900),
         ),
         SizedBox(height: 12.h),
         TextField(
           controller: _nameController,
-          decoration: const InputDecoration(
-            labelText: "Họ và tên",
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.fullName,
             border: OutlineInputBorder(),
           ),
         ),
@@ -311,8 +311,8 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
         TextField(
           controller: _phoneController,
           keyboardType: TextInputType.phone,
-          decoration: const InputDecoration(
-            labelText: "Số điện thoại",
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context)!.phoneNumber,
             border: OutlineInputBorder(),
           ),
         ),
@@ -332,7 +332,7 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("Ngày tham quan"),
+            Text(AppLocalizations.of(context)!.visitDate),
             Text(DateFormat('dd/MM/yyyy').format(_visitDate)),
           ],
         ),
@@ -346,15 +346,15 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              "Tổng cộng",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              AppLocalizations.of(context)!.totalAmount,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
             ),
             Text(
               "${_totalAmount.toInt()} đ",
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w900,
                 color: AppColors.primaryOrange,
               ),
             ),
@@ -372,15 +372,16 @@ class _TicketBookingPageState extends State<TicketBookingPage> {
                 borderRadius: BorderRadius.circular(12.r),
               ),
             ),
-            child: isLoading
-                ? const CircularProgressIndicator(color: Colors.white)
-                : const Text(
-                    "Thanh toán ngay",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+            child:
+                isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : Text(
+                      AppLocalizations.of(context)!.payNow,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
-                  ),
           ),
         ),
       ],

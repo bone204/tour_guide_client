@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:tour_guide_app/features/my_vehicle/data/models/rental_vehicle.dart';
 import 'package:tour_guide_app/features/profile/data/models/user.dart';
+import 'package:tour_guide_app/features/voucher/data/models/voucher.dart';
 
 enum RentalBillStatus {
   pending,
@@ -95,6 +96,7 @@ class RentalBill {
   final double total;
   final double ownerTotal; // Added per request
   final int? voucherId;
+  final Voucher? voucher;
   final int travelPointsUsed;
   final RentalBillStatus status;
   final String? notes;
@@ -149,6 +151,7 @@ class RentalBill {
     required this.total,
     required this.ownerTotal,
     this.voucherId,
+    this.voucher,
     required this.travelPointsUsed,
     required this.status,
     this.notes,
@@ -210,6 +213,8 @@ class RentalBill {
           json['voucherId'] is int
               ? json['voucherId']
               : int.tryParse(json['voucherId']?.toString() ?? ''),
+      voucher:
+          json['voucher'] != null ? Voucher.fromJson(json['voucher']) : null,
       travelPointsUsed:
           json['travelPointsUsed'] is int
               ? json['travelPointsUsed']
@@ -298,6 +303,7 @@ class RentalBill {
       'total': total,
       'ownerTotal': ownerTotal,
       'voucherId': voucherId,
+      'voucher': voucher?.toJson(),
       'travelPointsUsed': travelPointsUsed,
       'status': _statusToString(status),
       'notes': notes,

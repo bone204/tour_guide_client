@@ -66,7 +66,7 @@ class _CommentItemState extends State<CommentItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.feedback.user?.username ??
+                      widget.feedback.user?.fullName ??
                           AppLocalizations.of(context)!.unknownUser,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w700,
@@ -252,7 +252,7 @@ class _CommentItemState extends State<CommentItem> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  reply.user?.username ??
+                                                  reply.user?.fullName ??
                                                       AppLocalizations.of(
                                                         context,
                                                       )!.unknownUser,
@@ -287,9 +287,7 @@ class _CommentItemState extends State<CommentItem> {
                                             child: Text(
                                               DateFormat(
                                                 'HH:mm dd/MM/yyyy',
-                                              ).format(
-                                                reply.createdAt,
-                                              ),
+                                              ).format(reply.createdAt),
                                               style: Theme.of(
                                                 context,
                                               ).textTheme.bodySmall?.copyWith(

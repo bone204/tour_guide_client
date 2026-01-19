@@ -41,7 +41,7 @@ class HotelReviewItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      feedback.user?.username ??
+                      feedback.user?.fullName ??
                           AppLocalizations.of(context)!.unknownUser,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: AppColors.textPrimary,

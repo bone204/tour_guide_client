@@ -26,6 +26,9 @@ class ApiUrls {
   static String favoriteDestination(int id) =>
       "$baseURL/destinations/$id/favorite";
 
+  //Destination Bills URLs
+  static String get destinationBills => "$baseURL/destination-bills";
+
   //Rental Contracts URLs
   static String get rentalContracts => "$baseURL/rental-contracts";
 

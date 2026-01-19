@@ -47,7 +47,7 @@ class _TicketListingPageState extends State<TicketListingPage> {
       child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
         appBar: CustomAppBar(
-          title: "Vé tham quan",
+          title: AppLocalizations.of(context)!.ticketListTitle,
           showBackButton: true,
           onBackPressed: () => Navigator.pop(context),
         ),
@@ -66,8 +66,10 @@ class _TicketListingPageState extends State<TicketListingPage> {
                   if (state is TicketListingSuccess) {
                     final destinations = state.destinations;
                     if (destinations.isEmpty) {
-                      return const Center(
-                        child: Text("Không tìm thấy địa điểm bán vé"),
+                      return Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.noTicketLocationsFound,
+                        ),
                       );
                     }
                     return RefreshIndicator(
@@ -92,9 +94,9 @@ class _TicketListingPageState extends State<TicketListingPage> {
                               closeTime: dest.closeTime,
                               imageUrl:
                                   (dest.photos != null &&
-                                      dest.photos!.isNotEmpty)
-                                  ? dest.photos!.first
-                                  : "https://via.placeholder.com/150",
+                                          dest.photos!.isNotEmpty)
+                                      ? dest.photos!.first
+                                      : "https://via.placeholder.com/150",
                               onTap: () {
                                 Navigator.pushNamed(
                                   context,
@@ -128,7 +130,7 @@ class _TicketListingPageState extends State<TicketListingPage> {
             controller: _searchController,
             onSubmitted: (_) => _fetchTickets(),
             decoration: InputDecoration(
-              hintText: "Tìm kiếm điểm tham quan...",
+              hintText: AppLocalizations.of(context)!.searchAttractions,
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.r),
@@ -143,7 +145,7 @@ class _TicketListingPageState extends State<TicketListingPage> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildFilterChip(null, "Tất cả"),
+                _buildFilterChip(null, AppLocalizations.of(context)!.all),
                 _buildFilterChip("Hồ Chí Minh", "TP. HCM"),
                 _buildFilterChip("Hà Nội", "Hà Nội"),
                 _buildFilterChip("Đà Nẵng", "Đà Nẵng"),
