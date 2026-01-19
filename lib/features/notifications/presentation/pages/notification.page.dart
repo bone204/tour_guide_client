@@ -106,9 +106,12 @@ class _NotificationPageState extends State<NotificationPage> {
                           if (routeIdStr != null) {
                             final routeId = int.tryParse(routeIdStr.toString());
                             if (routeId != null) {
-                              context
-                                  .read<AnniversaryCubit>()
-                                  .getAnniversaryDetail(routeId);
+                              final anniversaryCubit =
+                                  context.read<AnniversaryCubit>();
+                              if (anniversaryCubit.state
+                                  is! AnniversaryLoading) {
+                                anniversaryCubit.getAnniversaryDetail(routeId);
+                              }
                             }
                           }
                         } catch (e) {

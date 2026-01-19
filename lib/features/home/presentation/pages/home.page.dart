@@ -296,9 +296,11 @@ class _HomePageState extends State<HomePage> {
                         child: FloatingActionButton(
                           heroTag: 'anniversary_fab',
                           onPressed: () {
-                            context
-                                .read<AnniversaryCubit>()
-                                .getAnniversaryDetail(route.id);
+                            final anniversaryCubit =
+                                context.read<AnniversaryCubit>();
+                            if (anniversaryCubit.state is! AnniversaryLoading) {
+                              anniversaryCubit.getAnniversaryDetail(route.id);
+                            }
                           },
                           backgroundColor: Colors.white,
                           child: Lottie.asset(
